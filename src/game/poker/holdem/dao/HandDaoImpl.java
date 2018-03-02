@@ -36,22 +36,21 @@ import hibernate.config.BaseHibernateDAO;
 public class HandDaoImpl extends BaseHibernateDAO implements HandDao{
 
 	@Override
-	public HandEntity save(HandEntity game) {
+	public HandEntity save(HandEntity game, Connection conn) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public HandEntity merge(HandEntity game) {
+	public HandEntity merge(HandEntity game, Connection conn) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public HandEntity findById(long id) {
+	public HandEntity findById(long id, Connection conn) {
 		HandEntity hand = new HandEntity();
 		try {
-			Connection conn = null;
 			try {
 				conn = getConnection();
 			} catch (AMSException e) {

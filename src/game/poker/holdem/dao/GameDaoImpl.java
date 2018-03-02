@@ -27,6 +27,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Set;
 
 import tools.AMSException;
 
@@ -34,49 +35,83 @@ import com.mysql.jdbc.Statement;
 import common.user.UserENT;
 
 import game.poker.holdem.domain.Game;
+import game.poker.holdem.domain.GameStructure;
+import game.poker.holdem.domain.GameType;
+import game.poker.holdem.domain.Player;
 import hibernate.config.BaseHibernateDAO;
 
 public class GameDaoImpl extends BaseHibernateDAO implements GameDao {
 
 	@Override
-	public Game findById(long id) {
+	public Game findById(long id, Connection conn) {
 		Game game = new Game();
 		try {
-			Connection conn = null;
-			try {
-				conn = getConnection();
-			} catch (AMSException e) {
-				e.printStackTrace();
-			}
+			boolean isNewConn = false;
+			if (conn == null)
+				try {
+					conn = getConnection();
+					conn.setAutoCommit(false);
+					isNewConn = true;
+				} catch (AMSException e) {
+					e.printStackTrace();
+				}
 			String query = "";
-			query = "select * from game where game_id = " + id ;
+			query = "select * from game where game_id = " + id;
 			PreparedStatement ps = conn.prepareStatement(query);
 			ps.execute();
 			ResultSet rs = ps.getResultSet();
+			HandDaoImpl handDaoImpl = new HandDaoImpl();
+			PlayerDaoImpl player = new PlayerDaoImpl();
 			while (rs.next()) {
 				game.setName(rs.getString("players_left"));
-				game.setGameType(rs.getString("game_type"));
+				if (rs.getString("game_type").equalsIgnoreCase("T"))
+					game.setGameType(GameType.TOURNAMENT);
+				else
+					game.setGameType(GameType.CASH);
 				game.setName(rs.getString("name"));
 				game.setStarted(rs.getBoolean("is_started"));
-				game.setCurrentHand(rs.getString("current_hand_id"));
-				game.setGameStructure(rs.getString("game_structure_id"));
-				game.setPlayerInBTN(rs.getString("btn_player_id"));
+				game.setCurrentHand(handDaoImpl.findById(
+						rs.getLong("current_hand_id"), conn));
+				game.setGameStructure(getGameStructure(id));
+				game.setPlayerInBTN(player.findById(rs
+						.getString("btn_player_id"), conn));
+				game.setPlayers(getAllPlayersInGame(id, conn));
 			}
 			rs.close();
 			ps.close();
-			conn.close();
+			if (isNewConn) {
+				conn.commit();
+				conn.close();
+			}
 		} catch (SQLException e) {
+			try {
+				conn.rollback();
+				conn.close();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
 			e.printStackTrace();
 		}
 		return game;
 	}
 
+	private GameStructure getGameStructure(long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	@Override
-	public Game save(Game game) {
+	public Game save(Game game, Connection conn) {
 		try {
-			Connection conn = getConnection();
-			conn = getConnection();
-			conn.setAutoCommit(false);
+			boolean isNewConn = false;
+			if (conn == null)
+				try {
+					conn = getConnection();
+					conn.setAutoCommit(false);
+					isNewConn = true;
+				} catch (AMSException e) {
+					e.printStackTrace();
+				}
 			String query = "";
 			query = "INSERT INTO `game` (`players_left`, `game_type`, `name`, `is_started`, `current_hand_id`, `game_structure_id`, `btn_player_id`) "
 					+ "VALUES (?, ?, ?, ?, ?, ?, ?);";
@@ -96,13 +131,14 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDao {
 			ResultSet rs = ps.getGeneratedKeys();
 			if (rs.next()) {
 				game.setId(rs.getLong(1));
+//				game
 			}
 			rs.close();
 			ps.close();
-			conn.commit();
-			conn.close();
-		} catch (AMSException e) {
-			e.printStackTrace();
+			if (isNewConn) {
+				conn.commit();
+				conn.close();
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -110,14 +146,14 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDao {
 	}
 
 	@Override
-	public Game merge(Game game) {
+	public Game merge(Game game, Connection conn) {
 		try {
 			Connection conn = getConnection();
 			conn = getConnection();
 			conn.setAutoCommit(false);
 			String query = "";
-			query = "UPDATE `game`  SET `players_left` = ?, `game_type` = ?, `name` =?, `is_started` = ?, " +
-					"`current_hand_id` = ?, `game_structure_id` =?, `btn_player_id` =? WHERE `game_id` = ? "
+			query = "UPDATE `game`  SET `players_left` = ?, `game_type` = ?, `name` =?, `is_started` = ?, "
+					+ "`current_hand_id` = ?, `game_structure_id` =?, `btn_player_id` =? WHERE `game_id` = ? "
 					+ "VALUES (?, ?, ?, ?, ?, ?, ?);";
 			PreparedStatement ps = conn.prepareStatement(query,
 					Statement.RETURN_GENERATED_KEYS);
@@ -146,6 +182,11 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		return null;
+	}
+
+	private static Set<Player> getAllPlayersInGame(long id, Connection conn) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 

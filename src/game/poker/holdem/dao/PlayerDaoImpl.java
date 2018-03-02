@@ -20,27 +20,29 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
-*/
+ */
 package game.poker.holdem.dao;
+
+import java.sql.Connection;
 
 import game.poker.holdem.domain.Player;
 
 public class PlayerDaoImpl implements PlayerDao {
 
 	@Override
-	public Player save(Player game) {
+	public Player save(Player game, Connection conn) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Player merge(Player game) {
+	public Player merge(Player game, Connection conn) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Player findById(String playerId) {
+	public Player findById(String playerId, Connection conn) {
 		// TODO Auto-generated method stub
 		return null;
 	}

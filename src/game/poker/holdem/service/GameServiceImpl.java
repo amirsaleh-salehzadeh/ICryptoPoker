@@ -54,7 +54,7 @@ public class GameServiceImpl implements GameService {
 	}
 	
 	public Game saveGame(Game game){
-		return gameDao.save(game);
+		return gameDao.save(game, null);
 	}
 	
 	public Game startGame(Game game){

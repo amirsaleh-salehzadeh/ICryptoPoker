@@ -23,13 +23,15 @@ THE SOFTWARE.
 */
 package game.poker.holdem.dao;
 
+import java.sql.Connection;
+
 import game.poker.holdem.domain.HandEntity;
 
 public interface HandDao {
 	
-	HandEntity save(HandEntity game);
+	HandEntity save(HandEntity game, Connection conn);
 
-	HandEntity merge(HandEntity hand);
+	HandEntity merge(HandEntity hand, Connection conn);
 
-	HandEntity findById(long id);
+	HandEntity findById(long id, Connection conn);
 }

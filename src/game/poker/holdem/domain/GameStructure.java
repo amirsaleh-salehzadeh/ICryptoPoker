@@ -23,13 +23,11 @@ THE SOFTWARE.
 */
 package game.poker.holdem.domain;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class GameStructure implements Serializable {
+public class GameStructure {
 	
-	private static final long serialVersionUID = 3663515999002547153L;
 	private long id;
 	private BlindLevel currentBlindLevel;
 	private int blindLength;
@@ -76,6 +74,7 @@ public class GameStructure implements Serializable {
 	public Date getPuaseStartTime() {
 		return puaseStartTime;
 	}
+	
 	public void setPuaseStartTime(Date puaseStartTime) {
 		this.puaseStartTime = puaseStartTime;
 	}

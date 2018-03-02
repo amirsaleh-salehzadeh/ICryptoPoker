@@ -27,9 +27,8 @@ import java.io.Serializable;
 import java.util.Set;
 
 
-public class Game implements Serializable {
+public class Game {
 
-	private static final long serialVersionUID = -495064662454346171L;
 	private long id;
 	private int playersRemaining;
 	private Player playerInBTN;
@@ -54,8 +53,6 @@ public class Game implements Serializable {
 		this.playersRemaining = playersRemaining;
 	}
 	
-//	@OneToOne
-//	@JoinColumn(name="btn_player_id")
 	public Player getPlayerInBTN(){
 		return playerInBTN;
 	}
@@ -70,7 +67,6 @@ public class Game implements Serializable {
 		this.gameType = gameType;
 	}
 	
-//	@OneToMany(mappedBy="game", fetch=FetchType.LAZY)
 	public Set<Player> getPlayers() {
 		return players;
 	}
@@ -92,8 +88,6 @@ public class Game implements Serializable {
 		this.isStarted = isStarted;
 	}
 	
-//	@OneToOne(fetch=FetchType.EAGER)
-//	@JoinColumn(name="current_hand_id")
 	public HandEntity getCurrentHand() {
 		return currentHand;
 	}
@@ -101,8 +95,6 @@ public class Game implements Serializable {
 		this.currentHand = currentHand;
 	}
 	
-//	@OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.ALL})
-//	@JoinColumn(name="game_structure_id")
 	public GameStructure getGameStructure() {
 		return gameStructure;
 	}

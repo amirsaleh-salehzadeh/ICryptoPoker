@@ -23,13 +23,15 @@ THE SOFTWARE.
  */
 package game.poker.holdem.dao;
 
+import java.sql.Connection;
+
 import game.poker.holdem.domain.Player;
 
 public interface PlayerDao {
 	
-	Player save(Player p);
+	Player save(Player p, Connection conn);
 
-	Player merge(Player p);
+	Player merge(Player p, Connection conn);
 
-	Player findById(String playerId);
+	Player findById(String playerId, Connection conn);
 }

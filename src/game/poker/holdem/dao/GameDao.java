@@ -27,6 +27,7 @@ import java.sql.Connection;
 import java.util.Set;
 
 import game.poker.holdem.domain.Game;
+import game.poker.holdem.domain.GameStructure;
 import game.poker.holdem.domain.Player;
 
 
@@ -37,5 +38,13 @@ public interface GameDao {
 	Game merge(Game game, Connection conn);
 
 	Game findById(long id, Connection conn);
+	
+	Set<Player> getAllPlayersInGame(long id, Connection conn);
+	
+	GameStructure getGameStructure(long id, Connection conn);
+	
+	GameStructure saveGameStructure(GameStructure gs, Connection conn);
+	
+	GameStructure mergeGameStructure(GameStructure gs, Connection conn);
 	
 }

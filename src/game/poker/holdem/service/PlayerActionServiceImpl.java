@@ -41,11 +41,11 @@ public class PlayerActionServiceImpl implements PlayerActionService {
 	private HandDao handDao;
 	
 	public Player getPlayerById(String playerId){
-		return playerDao.findById(playerId);
+		return playerDao.findById(playerId, null);
 	}
 	
 	public boolean fold(Player player, HandEntity hand) {
-		hand = handDao.merge(hand);
+		hand = handDao.merge(hand, null);
 		
 		//Cannot fold out of turn
 		if(!player.equals(hand.getCurrentToAct())){
@@ -58,12 +58,12 @@ public class PlayerActionServiceImpl implements PlayerActionService {
 		}
 		hand.setCurrentToAct(next);
 		
-		handDao.save(hand);
+		handDao.save(hand, null);
 		return true;
 	}
 
 	public boolean check(Player player, HandEntity hand) {
-		hand = handDao.merge(hand);
+		hand = handDao.merge(hand, null);
 		
 		//Cannot check out of turn
 		if(!player.equals(hand.getCurrentToAct())){
@@ -77,12 +77,12 @@ public class PlayerActionServiceImpl implements PlayerActionService {
 		
 		Player next = PlayerUtil.getNextPlayerToAct(hand, player);
 		hand.setCurrentToAct(next);
-		handDao.merge(hand);
+		handDao.merge(hand, null);
 		return true;
 	}
 
 	public boolean bet(Player player, HandEntity hand, int betAmount) {
-		hand = handDao.merge(hand);
+		hand = handDao.merge(hand, null);
 		if(!player.equals(hand.getCurrentToAct())){
 			return false;
 		}
@@ -117,13 +117,13 @@ public class PlayerActionServiceImpl implements PlayerActionService {
 		
 		Player next = PlayerUtil.getNextPlayerToAct(hand, player);
 		hand.setCurrentToAct(next);
-		handDao.merge(hand);
-		playerDao.merge(player);
+		handDao.merge(hand, null);
+		playerDao.merge(player, null);
 		return true;
 	}
 
 	public boolean call(Player player, HandEntity hand) {
-		hand = handDao.merge(hand);
+		hand = handDao.merge(hand, null);
 		//Cannot call out of turn
 		if(!player.equals(hand.getCurrentToAct())){
 			return false;
@@ -149,18 +149,18 @@ public class PlayerActionServiceImpl implements PlayerActionService {
 		
 		Player next = PlayerUtil.getNextPlayerToAct(hand, player);
 		hand.setCurrentToAct(next);
-		handDao.merge(hand);
-		playerDao.merge(player);
+		handDao.merge(hand, null);
+		playerDao.merge(player, null);
 		return true;
 	}
 	
 	public void sitIn(Player player){
 		player.setSittingOut(false);
-		playerDao.save(player);
+		playerDao.save(player, null);
 	}
 
 	public PlayerStatus getPlayerStatus(Player player) {
-		player = playerDao.merge(player);
+		player = playerDao.merge(player, null);
 		if(player == null){
 			return PlayerStatus.ELIMINATED;
 		}

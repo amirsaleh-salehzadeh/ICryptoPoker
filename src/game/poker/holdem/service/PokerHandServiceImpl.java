@@ -47,7 +47,7 @@ public class PokerHandServiceImpl implements PokerHandService {
 	private PlayerDao playerDao;
 	
 	public HandEntity startNewHand(Game game) {
-		game = gameDao.merge(game);
+		game = gameDao.merge(game, null);
 		HandEntity hand = new HandEntity();
 		updateBlindLevel(game);
 		hand.setBlindLevel(game.getGameStructure().getCurrentBlindLevel()); 
@@ -103,15 +103,15 @@ public class PokerHandServiceImpl implements PokerHandService {
 		BoardEntity b = new BoardEntity();
 		hand.setBoard(b);
 		hand.setCards(d.exportDeck());
-		hand = handDao.save(hand);
+		hand = handDao.save(hand, null);
 		
 		game.setCurrentHand(hand);
-		gameDao.save(game);
+		gameDao.save(game, null);
 		return hand;
 	}
 	
 	public void endHand(HandEntity hand){
-		hand = handDao.merge(hand);
+		hand = handDao.merge(hand, null);
 		if(!isActionResolved(hand)){
 			throw new IllegalStateException("There are unresolved betting actions");
 		}
@@ -132,7 +132,7 @@ public class PokerHandServiceImpl implements PokerHandService {
 			if(ph.getPlayer().getChips() <= 0){
 				ph.getPlayer().setFinishPosition(game.getPlayersRemaining());
 				game.setPlayersRemaining(game.getPlayersRemaining() - 1);
-				playerDao.save(ph.getPlayer());
+				playerDao.save(ph.getPlayer(), null);
 			}
 		}
 		
@@ -157,19 +157,19 @@ public class PokerHandServiceImpl implements PokerHandService {
 		Player nextButton = PlayerUtil.getNextPlayerInGameOrder(players, game.getPlayerInBTN());
 		game.setPlayerInBTN(nextButton);
 		
-		gameDao.merge(game);
+		gameDao.merge(game, null);
 		
 		//Remove Deck from database. No need to keep that around anymore
 		hand.setCards(new ArrayList<Card>());
-		handDao.merge(hand);
+		handDao.merge(hand, null);
 	}
 
 	public HandEntity getHandById(long id) {
-		return handDao.findById(id);
+		return handDao.findById(id, null);
 	}
 
 	public HandEntity saveHand(HandEntity hand) {
-		return handDao.save(hand);
+		return handDao.save(hand, null);
 	}
 	
 
@@ -178,7 +178,7 @@ public class PokerHandServiceImpl implements PokerHandService {
 			throw new IllegalStateException("Unexpected Flop.");
 		}
 		//Re-attach to persistent context for this transaction (Lazy Loading stuff)
-		hand = handDao.merge(hand);
+		hand = handDao.merge(hand, null);
 		if(!isActionResolved(hand)){
 			throw new IllegalStateException("There are unresolved preflop actions");
 		}
@@ -191,7 +191,7 @@ public class PokerHandServiceImpl implements PokerHandService {
 		board.setFlop3(d.dealCard());
 		hand.setCards(d.exportDeck());
 		resetRoundValues(hand);
-		return handDao.merge(hand);
+		return handDao.merge(hand, null);
 	}
 	
 	public HandEntity turn(HandEntity hand) throws IllegalStateException{
@@ -199,7 +199,7 @@ public class PokerHandServiceImpl implements PokerHandService {
 			throw new IllegalStateException("Unexpected Turn.");
 		}
 		//Re-attach to persistent context for this transaction (Lazy Loading stuff)
-		hand = handDao.merge(hand);
+		hand = handDao.merge(hand, null);
 		if(!isActionResolved(hand)){
 			throw new IllegalStateException("There are unresolved flop actions");
 		}
@@ -210,7 +210,7 @@ public class PokerHandServiceImpl implements PokerHandService {
 		board.setTurn(d.dealCard());
 		hand.setCards(d.exportDeck());
 		resetRoundValues(hand);
-		return handDao.merge(hand);
+		return handDao.merge(hand, null);
 	}
 	
 	public HandEntity river(HandEntity hand) throws IllegalStateException{
@@ -219,7 +219,7 @@ public class PokerHandServiceImpl implements PokerHandService {
 			throw new IllegalStateException("Unexpected River.");
 		}
 		//Re-attach to persistent context for this transaction (Lazy Loading stuff)
-		hand = handDao.merge(hand);
+		hand = handDao.merge(hand, null);
 		if(!isActionResolved(hand)){
 			throw new IllegalStateException("There are unresolved turn actions");
 		}
@@ -230,17 +230,17 @@ public class PokerHandServiceImpl implements PokerHandService {
 		board.setRiver(d.dealCard());
 		hand.setCards(d.exportDeck());
 		resetRoundValues(hand);
-		return handDao.merge(hand);
+		return handDao.merge(hand, null);
 	}
 	
 	public boolean sitOutCurrentPlayer(HandEntity hand){
-		hand = handDao.merge(hand);
+		hand = handDao.merge(hand, null);
 		Player currentPlayer = hand.getCurrentToAct();
 		if(currentPlayer == null){
 			return false;
 		}
 		currentPlayer.setSittingOut(true);
-		playerDao.save(currentPlayer);
+		playerDao.save(currentPlayer, null);
 		PlayerHand playerHand = null;
 		for(PlayerHand ph : hand.getPlayers()){
 			if(ph.getPlayer().equals(currentPlayer)){
@@ -257,7 +257,7 @@ public class PokerHandServiceImpl implements PokerHandService {
 		}
 		
 		hand.setCurrentToAct(next);
-		handDao.save(hand);
+		handDao.save(hand, null);
 		return true;
 	}
 	
@@ -350,7 +350,7 @@ public class PokerHandServiceImpl implements PokerHandService {
 		if(hand.getPlayers().size() == 1){
 			Player winner = hand.getPlayers().iterator().next().getPlayer();
 			winner.setChips(winner.getChips() + hand.getPot());
-			playerDao.merge(winner);
+			playerDao.merge(winner, null);
 		}
 		else{
 			//Refund all in overbet player if applicable before determining winner
@@ -364,7 +364,7 @@ public class PokerHandServiceImpl implements PokerHandService {
 			for(Map.Entry<Player, Integer> entry : winners.entrySet()){
 				Player player = entry.getKey();
 				player.setChips(player.getChips() + entry.getValue());
-				playerDao.merge(player);
+				playerDao.merge(player, null);
 			}
 		}
 	}

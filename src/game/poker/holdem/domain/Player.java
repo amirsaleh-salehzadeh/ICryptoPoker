@@ -35,7 +35,35 @@ public class Player implements Comparable<Player>, Serializable{
 	private int gamePosition;
 	private int finishPosition;
 	private boolean sittingOut;
+	private String registrationDate;
+	private String password;
 	
+	
+	
+	/**
+	 * @return the registrationDate
+	 */
+	public String getRegistrationDate() {
+		return registrationDate;
+	}
+	/**
+	 * @param registrationDate the registrationDate to set
+	 */
+	public void setRegistrationDate(String registrationDate) {
+		this.registrationDate = registrationDate;
+	}
+	/**
+	 * @return the password
+	 */
+	public String getPassword() {
+		return password;
+	}
+	/**
+	 * @param password the password to set
+	 */
+	public void setPassword(String password) {
+		this.password = password;
+	}
 	public String getId() {
 		return id;
 	}

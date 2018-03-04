@@ -20,20 +20,22 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
-*/
+ */
 package game.poker.holdem.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Set;
 
 import tools.AMSException;
 import game.poker.holdem.domain.Game;
 import game.poker.holdem.domain.HandEntity;
+import game.poker.holdem.domain.PlayerHand;
 import hibernate.config.BaseHibernateDAO;
 
-public class HandDaoImpl extends BaseHibernateDAO implements HandDao{
+public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 
 	@Override
 	public HandEntity save(HandEntity game, Connection conn) {
@@ -57,18 +59,18 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao{
 				e.printStackTrace();
 			}
 			String query = "";
-			query = "select * from hand where hand_id = " + id ;
+			query = "select * from hand where hand_id = " + id;
 			PreparedStatement ps = conn.prepareStatement(query);
 			ps.execute();
 			ResultSet rs = ps.getResultSet();
 			while (rs.next()) {
-				hand.setBlindLevel(blindLevel)Name(rs.getString("players_left"));
-				hand.setGameType(rs.getString("game_type"));
-				hand.setName(rs.getString("name"));
-				hand.setStarted(rs.getBoolean("is_started"));
-				hand.setCurrentHand(rs.getString("current_hand_id"));
-				hand.setGameStructure(rs.getString("game_structure_id"));
-				hand.setPlayerInBTN(rs.getString("btn_player_id"));
+				// hand.setBlindLevel(blindLevel)Name(rs.getString("players_left"));
+				// hand.setGameType(rs.getString("game_type"));
+				// hand.setName(rs.getString("name"));
+				// hand.setStarted(rs.getBoolean("is_started"));
+				// hand.setCurrentHand(rs.getString("current_hand_id"));
+				// hand.setGameStructure(rs.getString("game_structure_id"));
+				// hand.setPlayerInBTN(rs.getString("btn_player_id"));
 			}
 			rs.close();
 			ps.close();
@@ -76,7 +78,13 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao{
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return game;
+		return hand;
+	}
+
+	@Override
+	public Set<PlayerHand> getAllPlayerHands(long handId, Connection conn) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

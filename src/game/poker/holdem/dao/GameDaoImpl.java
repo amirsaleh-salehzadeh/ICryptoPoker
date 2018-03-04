@@ -27,6 +27,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashSet;
 import java.util.Set;
 
 import tools.AMSException;
@@ -72,9 +73,9 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDao {
 				game.setStarted(rs.getBoolean("is_started"));
 				game.setCurrentHand(handDaoImpl.findById(
 						rs.getLong("current_hand_id"), conn));
-				game.setGameStructure(getGameStructure(id));
-				game.setPlayerInBTN(player.findById(rs
-						.getString("btn_player_id"), conn));
+				game.setGameStructure(getGameStructure(id, null));
+				game.setPlayerInBTN(player.findById(
+						rs.getString("btn_player_id"), conn));
 				game.setPlayers(getAllPlayersInGame(id, conn));
 			}
 			rs.close();
@@ -95,12 +96,6 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDao {
 		return game;
 	}
 
-	private GameStructure getGameStructure(long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public Game save(Game game, Connection conn) {
 		try {
 			boolean isNewConn = false;
@@ -129,9 +124,9 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDao {
 			ps.setString(7, game.getPlayerInBTN().getId());
 			ps.executeUpdate();
 			ResultSet rs = ps.getGeneratedKeys();
+			GameDaoImpl gdi = new GameDaoImpl();
 			if (rs.next()) {
 				game.setId(rs.getLong(1));
-//				game
 			}
 			rs.close();
 			ps.close();
@@ -148,7 +143,6 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDao {
 	@Override
 	public Game merge(Game game, Connection conn) {
 		try {
-			Connection conn = getConnection();
 			conn = getConnection();
 			conn.setAutoCommit(false);
 			String query = "";
@@ -182,10 +176,73 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		return game;
+	}
+
+	@Override
+	public Set<Player> getAllPlayersInGame(long id, Connection conn) {
+		Set<Player> players = new HashSet<Player>();
+		try {
+			boolean isNewConn = false;
+			if (conn == null)
+				try {
+					conn = getConnection();
+					conn.setAutoCommit(false);
+					isNewConn = true;
+				} catch (AMSException e) {
+					e.printStackTrace();
+				}
+			String query = "";
+			query = "select * from player where game_id = " + id;
+			PreparedStatement ps = conn.prepareStatement(query);
+			ps.execute();
+			ResultSet rs = ps.getResultSet();
+			while (rs.next()) {
+				Player p = new Player();
+				p.setId(rs.getString("username"));
+				p.setName(rs.getString("name"));
+				p.setPassword(rs.getString("password"));
+				p.setRegistrationDate(rs.getString("registeration_date	"));
+				p.setGamePosition(rs.getInt("game_position"));
+				p.setFinishPosition(rs.getInt("finished_place"));
+				if (rs.getInt("finished_place") == 1)
+					p.setSittingOut(true);
+				else
+					p.setSittingOut(false);
+				p.setChips(rs.getInt("chips"));
+				players.add(p);
+			}
+			rs.close();
+			ps.close();
+			if (isNewConn) {
+				conn.commit();
+				conn.close();
+			}
+		} catch (SQLException e) {
+			try {
+				conn.rollback();
+				conn.close();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+		}
+		return players;
+	}
+
+	public GameStructure getGameStructure(long id, Connection conn) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	private static Set<Player> getAllPlayersInGame(long id, Connection conn) {
+	@Override
+	public GameStructure saveGameStructure(GameStructure gs, Connection conn) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public GameStructure mergeGameStructure(GameStructure gs, Connection conn) {
 		// TODO Auto-generated method stub
 		return null;
 	}

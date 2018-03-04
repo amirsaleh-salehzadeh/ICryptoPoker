@@ -24,8 +24,12 @@ THE SOFTWARE.
 package game.poker.holdem.dao;
 
 import java.sql.Connection;
+import java.util.List;
+import java.util.Set;
 
+import game.poker.holdem.Card;
 import game.poker.holdem.domain.HandEntity;
+import game.poker.holdem.domain.PlayerHand;
 
 public interface HandDao {
 	
@@ -34,4 +38,7 @@ public interface HandDao {
 	HandEntity merge(HandEntity hand, Connection conn);
 
 	HandEntity findById(long id, Connection conn);
+	
+	Set<PlayerHand> getAllPlayerHands (long handId, Connection conn);
+	
 }

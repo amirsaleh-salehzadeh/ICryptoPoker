@@ -23,6 +23,7 @@ THE SOFTWARE.
  */
 package webservices;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -34,6 +35,10 @@ import java.util.Map;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 
 import game.poker.holdem.domain.CommonTournamentFormats;
 import game.poker.holdem.domain.Game;
@@ -71,12 +76,26 @@ public class GameServiceWS {
 	 *         that is the unique identifier for that format type.
 	 */
 	@GET
-	@Path("/GetAGame")
+	@Path("/GetGameStructures")
 	@Produces("application/json")
-	public List<CommonTournamentFormats> getGameStructures() {
+	public String getGameStructures() {
 		List<CommonTournamentFormats> structures = Arrays
 				.asList(CommonTournamentFormats.values());
-		return structures;
+		ObjectMapper mapper = new ObjectMapper();
+		String json = "";
+		try {
+			json = mapper.writeValueAsString(structures);
+		} catch (JsonGenerationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return json;
 	}
 
 	/**
@@ -97,9 +116,9 @@ public class GameServiceWS {
 	 *         which is converted by Spring to the JSON object.
 	 */
 	@GET
-	@Path("/GetAGame")
+	@Path("/CreateGame")
 	@Produces("application/json")
-	public Map<String, Long> createGame(String gameName,
+	public String createGame(String gameName,
 			CommonTournamentFormats gameStructure) {
 		Game game = new Game();
 		game.setName(gameName);
@@ -110,8 +129,22 @@ public class GameServiceWS {
 		gs.setStartingChips(gameStructure.getStartingChips());
 		game.setGameStructure(gs);
 		game = gameService.saveGame(game);
-
-		return Collections.singletonMap("gameId", game.getId());
+		ObjectMapper mapper = new ObjectMapper();
+		String json = "";
+		try {
+			json = mapper.writeValueAsString(Collections.singletonMap("gameId",
+					game.getId()));
+		} catch (JsonGenerationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return json;
 	}
 
 	/**
@@ -131,9 +164,9 @@ public class GameServiceWS {
 	 *         sittingOut:false},...],cards:[Xx,Xx...]}
 	 */
 	@GET
-	@Path("/GetAGame")
+	@Path("/GetGameStatus")
 	@Produces("application/json")
-	public Map<String, ? extends Object> getGameStatus(long gameId) {
+	public String getGameStatus(long gameId) {
 		Game game = gameService.getGameById(gameId, true);
 		GameStatus gs = GameUtil.getGameStatus(game);
 		Collection<Player> players = game.getPlayers();
@@ -160,7 +193,21 @@ public class GameServiceWS {
 			results.put("cards", game.getCurrentHand().getBoard()
 					.getBoardCards());
 		}
-		return results;
+		ObjectMapper mapper = new ObjectMapper();
+		String json = "";
+		try {
+			json = mapper.writeValueAsString(results);
+		} catch (JsonGenerationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return json;
 	}
 
 	/**
@@ -172,22 +219,38 @@ public class GameServiceWS {
 	 * @return Map representing a JSON string with a single field for "success"
 	 *         which is either true or false. example: {"success":true}
 	 */
-	
+
 	@GET
-	@Path("/GetAGame")
+	@Path("/StartGame")
 	@Produces("application/json")
-	public Map<String, Boolean> startGame(long gameId) {
-		Game game = gameService.getGameById(gameId, false);
-		if (!game.isStarted()) {
-			try {
-				game = gameService.startGame(game);
-				return Collections.singletonMap("success", true);
-			} catch (Exception e) {
-				// Failure of some sort starting the game. Probably
-				// IllegalStateException
+	public String startGame(long gameId) {
+		ObjectMapper mapper = new ObjectMapper();
+		String json = "";
+		try {
+			Game game = gameService.getGameById(gameId, false);
+			if (!game.isStarted()) {
+				try {
+					game = gameService.startGame(game);
+					mapper.writeValueAsString(Collections.singletonMap(
+							"success", true));
+				} catch (Exception e) {
+					// Failure of some sort starting the game. Probably
+					// IllegalStateException
+				}
 			}
+			json = mapper.writeValueAsString(Collections.singletonMap(
+					"success", false));
+		} catch (JsonGenerationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		return Collections.singletonMap("success", false);
+		return json;
 	}
 
 	/**
@@ -199,14 +262,28 @@ public class GameServiceWS {
 	 * @return Map translated to a JSON string with a single field for handId of
 	 *         the new hand. Example: {"handId":xxx}
 	 */
-	
+
 	@GET
-	@Path("/GetAGame")
+	@Path("/StartHand")
 	@Produces("application/json")
-	public Map<String, Long> startHand(long gameId) {
+	public String startHand(long gameId) {
 		Game game = gameService.getGameById(gameId, false);
 		HandEntity hand = handService.startNewHand(game);
-		return Collections.singletonMap("handId", hand.getId());
+		ObjectMapper mapper = new ObjectMapper();
+		String json = "";
+		try {
+			json = mapper.writeValueAsString(Collections.singletonMap("handId", hand.getId()));
+		} catch (JsonGenerationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return json;
 	}
 
 	/**
@@ -224,18 +301,32 @@ public class GameServiceWS {
 	 *         The json field values are card1, card2, card3. Example:
 	 *         {"card1":"Xx","card2":"Xx","card3":"Xx"}
 	 */
-	
+
 	@GET
-	@Path("/GetAGame")
+	@Path("/Flop")
 	@Produces("application/json")
-	public Map<String, String> flop(long handId) {
+	public String flop(long handId) {
 		HandEntity hand = handService.getHandById(handId);
 		hand = handService.flop(hand);
 		Map<String, String> result = new HashMap<String, String>();
 		result.put("card1", hand.getBoard().getFlop1().toString());
 		result.put("card2", hand.getBoard().getFlop2().toString());
 		result.put("card3", hand.getBoard().getFlop3().toString());
-		return result;
+		ObjectMapper mapper = new ObjectMapper();
+		String json = "";
+		try {
+			json = mapper.writeValueAsString(result);
+		} catch (JsonGenerationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return json;
 	}
 
 	/**
@@ -247,15 +338,29 @@ public class GameServiceWS {
 	 * @return Map represented as a JSON String for the turn card, labeled as
 	 *         card4. Example: {"card4":"Xx"}
 	 */
-	
+
 	@GET
-	@Path("/GetAGame")
+	@Path("/Turn")
 	@Produces("application/json")
-	public Map<String, String> turn(long handId) {
+	public String turn(long handId) {
 		HandEntity hand = handService.getHandById(handId);
 		hand = handService.turn(hand);
-		return Collections.singletonMap("card4", hand.getBoard().getTurn()
-				.toString());
+		ObjectMapper mapper = new ObjectMapper();
+		String json = "";
+		try {
+			json = mapper.writeValueAsString(Collections.singletonMap("card4", hand.getBoard().getTurn()
+					.toString()));
+		} catch (JsonGenerationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return json;
 	}
 
 	/**
@@ -268,15 +373,29 @@ public class GameServiceWS {
 	 * @return Map represented as a JSON String for the river card, labeled as
 	 *         card5. Example: {"card5":"Xx"}
 	 */
-	
+
 	@GET
-	@Path("/GetAGame")
+	@Path("/River")
 	@Produces("application/json")
-	public Map<String, String> river(long handId) {
+	public String river(long handId) {
 		HandEntity hand = handService.getHandById(handId);
 		hand = handService.river(hand);
-		return Collections.singletonMap("card5", hand.getBoard().getRiver()
-				.toString());
+		ObjectMapper mapper = new ObjectMapper();
+		String json = "";
+		try {
+			json = mapper.writeValueAsString(Collections.singletonMap("card5", hand.getBoard().getRiver()
+					.toString()));
+		} catch (JsonGenerationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return json;
 	}
 
 	/**
@@ -290,10 +409,27 @@ public class GameServiceWS {
 	 * @return Map represented as a JSON String determining if the action was
 	 *         successful. Example: {"success":true}
 	 */
-	public Map<String, Boolean> endHand(long handId) {
+	@GET
+	@Path("/EndHand")
+	@Produces("application/json")
+	public String endHand(long handId) {
 		HandEntity hand = handService.getHandById(handId);
 		handService.endHand(hand);
-		return Collections.singletonMap("success", true);
+		ObjectMapper mapper = new ObjectMapper();
+		String json = "";
+		try {
+			json = mapper.writeValueAsString(Collections.singletonMap("success", true));
+		} catch (JsonGenerationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return json;
 	}
 
 	/**
@@ -305,14 +441,28 @@ public class GameServiceWS {
 	 *            Current hand where the current player to act will be sat out.
 	 * @return {"success":true} if the player was sat out. Error otherwise.
 	 */
-	
+
 	@GET
-	@Path("/GetAGame")
+	@Path("/SitOutCurrentPlayer")
 	@Produces("application/json")
-	public Map<String, Boolean> sitOutCurrentPlayer(long handId) {
+	public String sitOutCurrentPlayer(long handId) {
 		HandEntity hand = handService.getHandById(handId);
 		boolean result = handService.sitOutCurrentPlayer(hand);
-		return Collections.singletonMap("success", result);
+		ObjectMapper mapper = new ObjectMapper();
+		String json = "";
+		try {
+			json = mapper.writeValueAsString(Collections.singletonMap("success", result));
+		} catch (JsonGenerationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return json;
 	}
 
 	/**
@@ -320,11 +470,25 @@ public class GameServiceWS {
 	 * 
 	 * @return {"success":true}
 	 */
-	
+
 	@GET
-	@Path("/GetAGame")
+	@Path("/PingServer")
 	@Produces("application/json")
-	public Map<String, Boolean> pingServer() {
-		return Collections.singletonMap("success", true);
+	public String pingServer() {
+		ObjectMapper mapper = new ObjectMapper();
+		String json = "";
+		try {
+			json = mapper.writeValueAsString(Collections.singletonMap("success", true));
+		} catch (JsonGenerationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return json;
 	}
 }

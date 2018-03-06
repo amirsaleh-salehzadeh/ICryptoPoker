@@ -32,7 +32,7 @@ import game.poker.holdem.Card;
 public class HandEntity implements Serializable {
 	
 	private static final long serialVersionUID = 4557343585146763024L;
-	private long id;
+	private long id = 0;
 	private Game game;
 	private BoardEntity board;
 	private Set<PlayerHand> players;

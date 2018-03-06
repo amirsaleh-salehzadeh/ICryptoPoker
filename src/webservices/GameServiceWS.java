@@ -40,6 +40,8 @@ import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
+import game.poker.holdem.dao.GameDao;
+import game.poker.holdem.dao.GameDaoImpl;
 import game.poker.holdem.domain.CommonTournamentFormats;
 import game.poker.holdem.domain.Game;
 import game.poker.holdem.domain.GameStatus;
@@ -85,6 +87,28 @@ public class GameServiceWS {
 		String json = "";
 		try {
 			json = mapper.writeValueAsString(structures);
+		} catch (JsonGenerationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return json;
+	}
+	
+	@GET
+	@Path("/GetAllGames")
+	@Produces("application/json")
+	public String getAllGames() {
+		ObjectMapper mapper = new ObjectMapper();
+		String json = "";
+		GameDaoImpl gameDao = new GameDaoImpl();
+		try {
+			json = mapper.writeValueAsString(gameDao.getAllGames(null));
 		} catch (JsonGenerationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

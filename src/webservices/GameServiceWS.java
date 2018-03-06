@@ -104,8 +104,6 @@ public class GameServiceWS {
 	@Path("/GetAllGames")
 	@Produces("application/json")
 	public String getAllGames() {
-		List<CommonTournamentFormats> structures = Arrays
-				.asList(CommonTournamentFormats.values());
 		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
 		GameDaoImpl gameDao = new GameDaoImpl();

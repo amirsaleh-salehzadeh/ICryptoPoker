@@ -19,11 +19,13 @@ import org.apache.struts.action.ActionMapping;
  * @struts.action parameter="reqCode" validate="true"
  * @struts.action-forward name="list" path="/jsp/farsi/news/newsList.jsp"
  */
-public class T_NEWSFeedAction extends Action {
+public class T_GameAction extends Action {
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response) {
 		// TODO Auto-generated method stub
 		String reqCode=request.getParameter("reqCode");
+		if(reqCode==null||reqCode.equalsIgnoreCase(""))
+			reqCode = "goToLobby";
 		return mapping.findForward(reqCode);
 	}
 }

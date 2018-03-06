@@ -5,7 +5,7 @@ import hibernate.security.SecurityDAOInterface;
 import hibernate.user.UserDAO;
 import hibernate.user.UserDAOInterface;
 
-public class NMMUMobileDAOManager {
+public class ICryptoPokerDAOManager {
 	
 	static UserDAOInterface _userDAOInterface ;
 	static SecurityDAOInterface _securityDAOInterface ;

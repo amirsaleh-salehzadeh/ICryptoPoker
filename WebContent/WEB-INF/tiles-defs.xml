@@ -24,9 +24,9 @@
 		<put name="body" value="/location.do" />
 	</definition>
 	
-	<definition name="page.newsfeed" extends="baseLayout">
-		<put name="title" value="NEWS Feed Page" />
-		<put name="body" value="/newsfeed.do" />
+	<definition name="page.game" extends="baseLayout">
+		<put name="title" value="i Crypto Poker" />
+		<put name="body" value="/game.do" />
 	</definition>
 	
 </tiles-definitions>

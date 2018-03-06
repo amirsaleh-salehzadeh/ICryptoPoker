@@ -15,10 +15,9 @@
 			<forward name="groupEdit" path="page.security" />
 			<forward name="userBuildings" path="page.security" />
 		</action>
-		<action path="/t_newsfeed" type="struts.actions.tiles.T_NEWSFeedAction">
+		<action path="/t_game" type="struts.actions.tiles.T_GameAction">
 			<set-property property="cancellable" value="true" />
-			<forward name="newsFeedList" path="page.newsfeed" />
-			<forward name="mapView" path="page.location" />
+			<forward name="goToLobby" path="page.game" />
 		</action>
 		<action path="/t_user" type="struts.actions.tiles.T_UserAction">
 			<set-property property="cancellable" value="true" />

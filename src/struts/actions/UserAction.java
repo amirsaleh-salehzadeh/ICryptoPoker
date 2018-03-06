@@ -4,7 +4,7 @@
  */
 package struts.actions;
 
-import hibernate.config.NMMUMobileDAOManager;
+import hibernate.config.ICryptoPokerDAOManager;
 import hibernate.security.SecurityDAOInterface;
 import hibernate.user.UserDAOInterface;
 
@@ -83,7 +83,7 @@ public class UserAction extends Action {
 			return userBuildings(request, mapping);
 		} else if (reqCode.equalsIgnoreCase("passwordChange")) {
 			return passwordChange(request, mapping);
-		}
+		} 
 
 		return af;
 	}
@@ -402,6 +402,6 @@ public class UserAction extends Action {
 	}
 
 	private static UserDAOInterface getUserDAO() {
-		return NMMUMobileDAOManager.getUserDAOInterface();
+		return ICryptoPokerDAOManager.getUserDAOInterface();
 	}
 }

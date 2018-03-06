@@ -12,7 +12,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
-public class NEWSFeedAction extends Action {
+public class GameAction extends Action {
 	private String success = "";
 	private String error = "";
 
@@ -20,7 +20,8 @@ public class NEWSFeedAction extends Action {
 			HttpServletRequest request, HttpServletResponse response) {
 		ActionForward af = null;
 		String reqCode = request.getParameter("reqCode");
-		af = mapping.findForward("mapView");
-		return af;
+		if(reqCode==null||reqCode.equalsIgnoreCase(""))
+			reqCode = "goToLobby";
+		return mapping.findForward(reqCode);
 	}
 }

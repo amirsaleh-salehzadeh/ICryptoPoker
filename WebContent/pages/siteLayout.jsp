@@ -54,14 +54,18 @@
 	top: 2;
 	text-shadow: none;
 }
+
+div.jqm-header>h2 {
+	color: #b00000;
+}
 </style>
 </head>
 <body dir="ltr">
 	<div data-role="page" class="jqm-demos jqm-home">
 		<div data-role="header" class="jqm-header">
 			<h2>
-				<img src="images/MandelaUniversity_logo_B.png"
-					alt="NMMU Web Application">
+				ICrypt<img src="images/chipLogo.png" alt="ICryptoPoker">P<img
+					src="images/chipLogo.png" alt="ICryptoPoker">ker
 			</h2>
 			<a href="#"
 				class="menu-icon jqm-navmenu-link ui-btn ui-corner-all ui-btn-left"

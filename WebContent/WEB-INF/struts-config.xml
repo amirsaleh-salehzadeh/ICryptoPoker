@@ -38,10 +38,9 @@
 			<forward name="gridJson" path="/pages/json.jsp" />
 			<forward name="userBuildings" path="/pages/user/userBuildings.jsp" />
 		</action>
-		<action path="/newsfeed" type="struts.actions.NEWSFeedAction">
+		<action path="/game" type="struts.actions.GameAction">
 			<set-property property="cancellable" value="true" />
-			<forward name="newsFeedList" path="/pages/newsFeed/newsFeedList.jsp" />
-			<forward name="mapView" path="/pages/location/map.jsp" />
+			<forward name="goToLobby" path="/pages/game/lobby.jsp" />
 		</action>
 		<action path="/mapBuddyNavigation" type="struts.actions.MapBuddyNavigationAction">
 			<set-property property="cancellable" value="true" />

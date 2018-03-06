@@ -20,7 +20,7 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
-*/
+ */
 package game.poker.holdem.dao;
 
 import java.sql.Connection;
@@ -31,7 +31,6 @@ import game.poker.holdem.domain.Game;
 import game.poker.holdem.domain.GameStructure;
 import game.poker.holdem.domain.Player;
 
-
 public interface GameDao {
 
 	Game save(Game game, Connection conn);
@@ -39,14 +38,15 @@ public interface GameDao {
 	Game merge(Game game, Connection conn);
 
 	Game findById(long id, Connection conn);
+
 	List<Game> getAllGames(Connection conn);
-	
+
 	Set<Player> getAllPlayersInGame(long id, Connection conn);
-	
+
 	GameStructure getGameStructure(long id, Connection conn);
-	
+
 	GameStructure saveGameStructure(GameStructure gs, Connection conn);
-	
+
 	GameStructure mergeGameStructure(GameStructure gs, Connection conn);
-	
+
 }

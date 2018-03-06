@@ -16,9 +16,6 @@ body {
 		<a id="btnHeading" href="../"
 		data-ajax="false">Home</a>
 	</li>
-	<%		String uname = request.getRemoteUser();
-	        if (SecurityDAO.isUserAuthorised(uname, "SuperAdmin")) {
-	%>
 	<li id="liMenu" data-role="collapsible" data-enhanced="true"
 		data-collapsed-icon="carat-d" data-expanded-icon="carat-u"
 		data-iconpos="right" data-inset="false"
@@ -38,40 +35,17 @@ body {
 					data-filtertext="form checkboxradio widget radio input radio buttons controlgroups"><a
 					id="btnMenu" class="userMenu ui-btn"
 					href="t_user.do?reqCode=userManagement" data-ajax="false">User</a></li>
-				<%
-					if (SecurityDAO.isUserAuthorised(uname, "RoleManagement")) {
-				%>
 				<li id="liMenu"
 					data-filtertext="form checkboxradio widget checkbox input checkboxes controlgroups"><a
 					id="btnMenu" class="userMenu ui-btn"
 					href="t_security.do?reqCode=roleManagement" data-ajax="false">Roles</a></li>
-				<%
-					}
-						if (SecurityDAO.isUserAuthorised(uname, "GroupManagement")) {
-				%>
 				<li id="liMenu"
 					data-filtertext="form checkboxradio widget radio input radio buttons controlgroups"><a
 					id="btnMenu" class="userMenu ui-btn"
 					href="t_security.do?reqCode=groupManagement" data-ajax="false">Groups</a></li>
-				<%
-					}
-				%>
 			</ul>
 		</div>
 	</li>
-	<%
-		}
-		if (SecurityDAO.isUserAuthorised(uname, "SuperAdmin")
-				|| SecurityDAO.isUserAuthorised(uname, "ClientSuperAdmin")) {
-	%>
-	<li class="userMenu"
-		data-filtertext="form checkboxradio widget radio input radio buttons controlgroups">
-		<a id="btnHeading" href="t_location.do?reqCode=pathManagement"
-		data-ajax="false">Location/Path Management</a>
-	</li>
-	<%
-		}
-	%>
 	<li id="liMenu" data-role="collapsible" data-enhanced="true"
 		data-collapsed-icon="carat-d" data-expanded-icon="carat-u"
 		data-iconpos="right" data-inset="false"

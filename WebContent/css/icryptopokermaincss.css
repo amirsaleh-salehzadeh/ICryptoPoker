@@ -20,15 +20,15 @@ body {
 }
 
 #btnHeading {
-	color: #b00000 !important;
-	background-color: black !important;
+	color: #fff !important;
+	background-color: #444 !important;
 	border: 0;
 	text-shadow: none;
 }
 
 .jqm-home {
 	background: black;
-	color: #b00000 !important;
+	color: #fff !important;
 	text-shadow: none;
 	min-height: 100%;
 }
@@ -90,7 +90,7 @@ body {
 	padding-top: .33em;
 	padding-bottom: .33em;
 	margin: 0px;
-	color: #b00000 !important;
+	color: #fff !important;
 	background-color: black !important;
 	text-shadow: none;
 	border-radius: 0;
@@ -325,7 +325,7 @@ h3.collapsible-heading {
 }
 
 #btnMenu {
-	color: #b00000 !important;
+	color: #fff !important;
 	background-color: black !important;
 	display: -webkit-flex; /* Safari */
 	-webkit-flex-wrap: wrap; /* Safari 6.1+ */
@@ -841,7 +841,7 @@ table.dataTable,table.dataTable th,table.dataTable td {
 }
 
 .userMenu {
-	color: #b00000 !important;
+	color: #fff !important;
 	background-color: black !important;
 	text-shadow: none !important;
 	border-color: black !important;
@@ -878,13 +878,13 @@ textarea.ui-input-text.ui-textinput-autogrow {
 }
 
 #btnMenu:hover {
-	color: #b00000 !important;
+	color: #fff !important;
 	background-color: #383c40 !important;
 	text-shadow: none !important;
 }
 
 #btnHeading:hover {
-	color: #b00000 !important;
+	color: #fff !important;
 	background-color: #383c40 !important;
 	text-shadow: none !important;
 }

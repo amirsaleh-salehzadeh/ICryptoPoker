@@ -60,6 +60,7 @@ div.jqm-header>h2 {
 	text-shadow: none;
 	letter-spacing: 11px;
 	font-size: 66px !important;
+	padding: 0 !important;
 }
 
 .mainLogoIcon {

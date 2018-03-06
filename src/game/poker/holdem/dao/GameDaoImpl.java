@@ -27,9 +27,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -37,21 +36,17 @@ import java.util.Set;
 import tools.AMSException;
 
 import com.mysql.jdbc.Statement;
-import common.user.UserENT;
 
 import game.poker.holdem.domain.BlindLevel;
 import game.poker.holdem.domain.Game;
 import game.poker.holdem.domain.GameStructure;
 import game.poker.holdem.domain.GameType;
+import game.poker.holdem.domain.HandEntity;
 import game.poker.holdem.domain.Player;
 import hibernate.config.BaseHibernateDAO;
 
 public class GameDaoImpl extends BaseHibernateDAO implements GameDao {
-	
 
-	
-	
-    
 	@Override
 	public Game findById(long id, Connection conn) {
 		Game game = new Game();
@@ -82,7 +77,8 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDao {
 				game.setStarted(rs.getBoolean("is_started"));
 				game.setCurrentHand(handDaoImpl.findById(
 						rs.getLong("current_hand_id"), conn));
-				game.setGameStructure(getGameStructure(rs.getLong("game_structure_id"),conn));
+				game.setGameStructure(getGameStructure(
+						rs.getLong("game_structure_id"), conn));
 				game.setPlayerInBTN(player.findById(
 						rs.getString("btn_player_id"), conn));
 				game.setPlayers(getAllPlayersInGame(id, conn));
@@ -103,6 +99,26 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDao {
 			e.printStackTrace();
 		}
 		return game;
+	}
+
+	public static void main(String[] args) {
+		Game g = new Game();
+		g.setGameType(GameType.TOURNAMENT);
+		g.setName("naaameTest");
+		GameStructure gs = new GameStructure();
+		gs.setBlindLength(1);
+		List<BlindLevel> blinds = new ArrayList<>();
+		Collections.sort(blinds);
+		gs.setBlindLevels(blinds);
+//		gs.setCurrentBlindEndTime(currentBlindEndTime)
+		gs.setCurrentBlindLevel(BlindLevel.BLIND_15_30);
+		gs.setStartingChips(15);
+		g.setGameStructure(gs);
+		g.setCurrentHand(new HandEntity());
+		g.setPlayerInBTN(new Player());
+		g.setStarted(false);
+		GameDaoImpl gdi = new GameDaoImpl();
+		gdi.save(g, null);
 	}
 
 	public Game save(Game game, Connection conn) {
@@ -136,6 +152,7 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDao {
 			GameDaoImpl gdi = new GameDaoImpl();
 			if (rs.next()) {
 				game.setId(rs.getLong(1));
+				gdi.saveGameStructure(game.getGameStructure(), conn);
 			}
 			rs.close();
 			ps.close();
@@ -252,34 +269,33 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDao {
 					e.printStackTrace();
 				}
 			String query = "";
-			query = "select * from game_structure where game_structure_id = " + id;
+			query = "select * from game_structure where game_structure_id = "
+					+ id;
 			PreparedStatement ps = conn.prepareStatement(query);
 			ps.execute();
 			ResultSet rs = ps.getResultSet();
-			GameStructure g = new GameStructure() ;
-			if(rs.next()){
-			   
-			    g.setId(id) ;
+			GameStructure g = new GameStructure();
+			if (rs.next()) {
+
+				g.setId(id);
 				g.setBlindLength(rs.getInt("blind_length"));
-				BlindLevel temp = (BlindLevel) BlindLevel.class.getField(rs.getString("current_blind_level")).get(null);
-				
-				g.setCurrentBlindLevel(temp) ;
-				g.setCurrentBlindEndTime(setTime((rs.getString("current_blind_ends"))));
-				g.setPuaseStartTime(setTime((rs.getString("pause_sart_time"))));
-				
+				BlindLevel temp = (BlindLevel) BlindLevel.class.getField(
+						rs.getString("current_blind_level")).get(null);
+				g.setCurrentBlindLevel(temp);
+				g.setCurrentBlindEndTime(rs.getDate("current_blind_ends"));
+				g.setPuaseStartTime(rs.getDate("pause_sart_time"));
 				g.setStartingChips(rs.getInt("starting chips"));
-				
 			}
-			
 			rs.close();
 			ps.close();
-			
 			if (isNewConn) {
 				conn.commit();
 				conn.close();
 			}
-			return g ;
-		} catch (SQLException | IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
+			return g;
+		} catch (SQLException | IllegalArgumentException
+				| IllegalAccessException | NoSuchFieldException
+				| SecurityException e) {
 			try {
 				conn.rollback();
 				conn.close();
@@ -288,16 +304,12 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDao {
 			}
 			e.printStackTrace();
 		}
-		return null ;
-		
-		
-		
+		return null;
+
 	}
 
 	@Override
 	public GameStructure saveGameStructure(GameStructure gs, Connection conn) {
-		// TODO Auto-generated method stub
-		
 		try {
 			boolean isNewConn = false;
 			if (conn == null)
@@ -309,20 +321,27 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDao {
 					e.printStackTrace();
 				}
 			String query = "";
-			query = "INSERT INTO `game_structure` (`game_structure_id`, `current_blind_level`, `blind_length`, `current_blind_ends`, `pause_start_time`, `starting_chips`) "
-					+ "VALUES (?, ?, ?, ?, ?, ?);";
+			query = "INSERT INTO `game_structure` (`current_blind_level`, `blind_length`, `current_blind_ends`, `pause_start_time`, `starting_chips`) "
+					+ "VALUES (?, ?, ?, ?, ?);";
 			PreparedStatement ps = conn.prepareStatement(query,
 					Statement.RETURN_GENERATED_KEYS);
 			ps.setString(1, gs.getCurrentBlindLevel().toString());
 			ps.setInt(2, gs.getBlindLength());
-			ps.setString(3,gs.getCurrentBlindEndTime().toString()) ;
-			ps.setString(4, gs.getPuaseStartTime().toString());
+//			ps.setDate(3, new java.sql.Date(gs.getCurrentBlindEndTime().getTime()));
+			ps.setDate(3, null);
+//			ps.setDate(4, new java.sql.Date(gs.getPuaseStartTime().getTime()));
+			ps.setDate(4, null);
 			ps.setInt(5, gs.getStartingChips());
 			ps.executeUpdate();
 			ResultSet rs = ps.getGeneratedKeys();
-			GameDaoImpl gdi = new GameDaoImpl();
 			if (rs.next()) {
 				gs.setId(rs.getLong(1));
+				ps.close();
+				query = "INSERT INTO `game_blind` (`game_structure_id`, `blind`)"
+						+ "VALUES (?, ?);";
+				ps = conn.prepareStatement(query);
+				ps.setLong(1, gs.getId());
+				ps.setString(2, gs.getCurrentBlindLevel().name());
 			}
 			rs.close();
 			ps.close();
@@ -333,16 +352,12 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return gs ;
-	
-		
+		return gs;
+
 	}
 
 	@Override
 	public GameStructure mergeGameStructure(GameStructure gs, Connection conn) {
-		// TODO Auto-generated method stub
-		
-		
 		try {
 			boolean isNewConn = false;
 			if (conn == null)
@@ -353,24 +368,22 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDao {
 				} catch (AMSException e) {
 					e.printStackTrace();
 				}
-			
+
 			String query = "";
 			query = "UPDATE `game_structure`  SET `current_blind_level` = ?, `blind_level` = ?, `current_blind_ends` =?, `pause_start_time` = ?, "
-					+ "`starting chips` = ?"
-					+ "VALUES (?, ?, ?, ?, ?);" ;
-				
+					+ "`starting chips` = ?" + "VALUES (?, ?, ?, ?, ?);";
+
 			PreparedStatement ps = conn.prepareStatement(query,
 					Statement.RETURN_GENERATED_KEYS);
-			
+
 			ps.setString(1, gs.getCurrentBlindLevel().toString());
 			ps.setInt(2, gs.getBlindLength());
-			ps.setString(3,gs.getCurrentBlindEndTime().toString()) ;
+			ps.setString(3, gs.getCurrentBlindEndTime().toString());
 			ps.setString(4, gs.getPuaseStartTime().toString());
 			ps.setInt(5, gs.getStartingChips());
-			
+
 			ps.executeUpdate();
 			ResultSet rs = ps.getGeneratedKeys();
-			GameDaoImpl gdi = new GameDaoImpl();
 			if (rs.next()) {
 				gs.setId(rs.getLong(1));
 			}
@@ -383,13 +396,13 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return gs ;
+		return gs;
 	}
 
 	@Override
 	public List<Game> getAllGames(Connection conn) {
 		// TODO Auto-generated method stub
-		List<Game> games = new ArrayList<>() ;
+		List<Game> games = new ArrayList<>();
 		try {
 			boolean isNewConn = false;
 			if (conn == null)
@@ -405,12 +418,12 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDao {
 			PreparedStatement ps = conn.prepareStatement(query);
 			ps.execute();
 			ResultSet rs = ps.getResultSet();
-			
+
 			while (rs.next()) {
 				Game game = new Game();
 				HandDaoImpl handDaoImpl = new HandDaoImpl();
 				PlayerDaoImpl player = new PlayerDaoImpl();
-				game.setId(rs.getLong("game_id")) ;
+				game.setId(rs.getLong("game_id"));
 				game.setName(rs.getString("players_left"));
 				if (rs.getString("game_type").equalsIgnoreCase("T"))
 					game.setGameType(GameType.TOURNAMENT);
@@ -420,12 +433,13 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDao {
 				game.setStarted(rs.getBoolean("is_started"));
 				game.setCurrentHand(handDaoImpl.findById(
 						rs.getLong("current_hand_id"), conn));
-				game.setGameStructure(getGameStructure(rs.getLong("game_structure_id"),conn));
+				game.setGameStructure(getGameStructure(
+						rs.getLong("game_structure_id"), conn));
 				game.setPlayerInBTN(player.findById(
 						rs.getString("btn_player_id"), conn));
 				game.setPlayers(getAllPlayersInGame(game.getId(), conn));
 				games.add(game);
-				
+
 			}
 			rs.close();
 			ps.close();
@@ -442,20 +456,7 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDao {
 			}
 			e.printStackTrace();
 		}
-		return games ;
+		return games;
 	}
-		
-	
-	
-
-	private LocalDateTime setTime(String temp){
-
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-
-		LocalDateTime dateTime = LocalDateTime.parse(temp, formatter);
-		return dateTime ;
-
-	}////
-	
 
 }

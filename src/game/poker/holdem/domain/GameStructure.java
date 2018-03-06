@@ -20,75 +20,87 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
-*/
+ */
 package game.poker.holdem.domain;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
 public class GameStructure {
-	
+
 	private long id;
 	private BlindLevel currentBlindLevel;
 	private int blindLength;
-	private LocalDateTime currentBlindEndTime;
-	private LocalDateTime puaseStartTime;
-	public void setCurrentBlindEndTime(LocalDateTime currentBlindEndTime) {
-		this.currentBlindEndTime = currentBlindEndTime;
-	}
-	public void setPuaseStartTime(LocalDateTime puaseStartTime) {
-		this.puaseStartTime = puaseStartTime;
-	}
+	private Date currentBlindEndTime;
+	private Date puaseStartTime;
 	private List<BlindLevel> blindLevels;
 	private int startingChips;
+
 	
-	public long getId() {
-		return id;
-	}
-	public void setId(long id) {
-		this.id = id;
-	}
-	
-	public BlindLevel getCurrentBlindLevel() {
-		return currentBlindLevel;
-	}
-	public void setCurrentBlindLevel(BlindLevel currentBlindLevel) {
-		this.currentBlindLevel = currentBlindLevel;
-	}
-	
-	public int getBlindLength() {
-		return blindLength;
-	}
-	public void setBlindLength(int blindLength) {
-		this.blindLength = blindLength;
-	}
-	
+	/**
+	 * @return the currentBlindEndTime
+	 */
 	public Date getCurrentBlindEndTime() {
 		return currentBlindEndTime;
 	}
+
+	/**
+	 * @param currentBlindEndTime the currentBlindEndTime to set
+	 */
 	public void setCurrentBlindEndTime(Date currentBlindEndTime) {
 		this.currentBlindEndTime = currentBlindEndTime;
 	}
-	
-	public int getStartingChips(){
-		return startingChips;
-	}
-	public void setStartingChips(int startingChips){
-		this.startingChips = startingChips;
-	}
-	
+
+	/**
+	 * @return the puaseStartTime
+	 */
 	public Date getPuaseStartTime() {
 		return puaseStartTime;
 	}
-	
+
+	/**
+	 * @param puaseStartTime the puaseStartTime to set
+	 */
 	public void setPuaseStartTime(Date puaseStartTime) {
 		this.puaseStartTime = puaseStartTime;
 	}
-	
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public BlindLevel getCurrentBlindLevel() {
+		return currentBlindLevel;
+	}
+
+	public void setCurrentBlindLevel(BlindLevel currentBlindLevel) {
+		this.currentBlindLevel = currentBlindLevel;
+	}
+
+	public int getBlindLength() {
+		return blindLength;
+	}
+
+	public void setBlindLength(int blindLength) {
+		this.blindLength = blindLength;
+	}
+
+	public int getStartingChips() {
+		return startingChips;
+	}
+
+	public void setStartingChips(int startingChips) {
+		this.startingChips = startingChips;
+	}
+
 	public List<BlindLevel> getBlindLevels() {
 		return blindLevels;
 	}
+
 	public void setBlindLevels(List<BlindLevel> blindLevels) {
 		this.blindLevels = blindLevels;
 	}

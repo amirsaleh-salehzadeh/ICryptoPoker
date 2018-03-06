@@ -31,7 +31,6 @@ package game.poker.holdem.domain;
  * @author jacobhyphenated
  */
 public enum BlindLevel {
-
 	BLIND_10_20(10,20),
 	BLIND_15_30(15,30),
 	BLIND_20_40(20,40),

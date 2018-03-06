@@ -28,7 +28,7 @@ import java.util.Set;
 
 public class Game {
 
-	private long id;
+	private long id = 0;
 	private int playersRemaining;
 	private Player playerInBTN;
 	private GameType gameType;

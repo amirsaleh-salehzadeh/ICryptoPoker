@@ -48,9 +48,7 @@ import hibernate.config.BaseHibernateDAO;
 
 public class GameDaoImpl extends BaseHibernateDAO implements GameDao {
 	
-	public static void main(){
-		
-	}
+
 	
 	
     

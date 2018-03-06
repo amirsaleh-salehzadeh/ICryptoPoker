@@ -23,6 +23,7 @@ THE SOFTWARE.
 */
 package game.poker.holdem.domain;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -31,8 +32,14 @@ public class GameStructure {
 	private long id;
 	private BlindLevel currentBlindLevel;
 	private int blindLength;
-	private Date currentBlindEndTime;
-	private Date puaseStartTime;
+	private LocalDateTime currentBlindEndTime;
+	private LocalDateTime puaseStartTime;
+	public void setCurrentBlindEndTime(LocalDateTime currentBlindEndTime) {
+		this.currentBlindEndTime = currentBlindEndTime;
+	}
+	public void setPuaseStartTime(LocalDateTime puaseStartTime) {
+		this.puaseStartTime = puaseStartTime;
+	}
 	private List<BlindLevel> blindLevels;
 	private int startingChips;
 	

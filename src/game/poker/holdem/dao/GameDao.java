@@ -24,6 +24,7 @@ THE SOFTWARE.
 package game.poker.holdem.dao;
 
 import java.sql.Connection;
+import java.util.List;
 import java.util.Set;
 
 import game.poker.holdem.domain.Game;
@@ -38,6 +39,7 @@ public interface GameDao {
 	Game merge(Game game, Connection conn);
 
 	Game findById(long id, Connection conn);
+	List<Game> getAllGames(Connection conn);
 	
 	Set<Player> getAllPlayersInGame(long id, Connection conn);
 	

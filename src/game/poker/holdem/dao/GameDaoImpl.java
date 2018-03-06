@@ -48,8 +48,12 @@ import hibernate.config.BaseHibernateDAO;
 
 public class GameDaoImpl extends BaseHibernateDAO implements GameDao {
 	
+	public static void main(){
+		
+	}
 	
-
+	
+    
 	@Override
 	public Game findById(long id, Connection conn) {
 		Game game = new Game();
@@ -80,7 +84,7 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDao {
 				game.setStarted(rs.getBoolean("is_started"));
 				game.setCurrentHand(handDaoImpl.findById(
 						rs.getLong("current_hand_id"), conn));
-				game.setGameStructure(getGameStructure(id, null));
+				game.setGameStructure(getGameStructure(rs.getLong("game_structure_id"),conn));
 				game.setPlayerInBTN(player.findById(
 						rs.getString("btn_player_id"), conn));
 				game.setPlayers(getAllPlayersInGame(id, conn));
@@ -418,7 +422,7 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDao {
 				game.setStarted(rs.getBoolean("is_started"));
 				game.setCurrentHand(handDaoImpl.findById(
 						rs.getLong("current_hand_id"), conn));
-				game.setGameStructure(getGameStructure(game.getId(), null));
+				game.setGameStructure(getGameStructure(rs.getLong("game_structure_id"),conn));
 				game.setPlayerInBTN(player.findById(
 						rs.getString("btn_player_id"), conn));
 				game.setPlayers(getAllPlayersInGame(game.getId(), conn));

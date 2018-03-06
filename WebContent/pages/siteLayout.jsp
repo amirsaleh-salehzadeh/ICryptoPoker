@@ -57,6 +57,14 @@
 
 div.jqm-header>h2 {
 	color: #b00000;
+	text-shadow: none;
+	letter-spacing: 11px;
+	font-size: 66px !important;
+}
+
+.mainLogoIcon {
+	width: 66 !important;
+	height: 66 !important;
 }
 </style>
 </head>
@@ -64,8 +72,8 @@ div.jqm-header>h2 {
 	<div data-role="page" class="jqm-demos jqm-home">
 		<div data-role="header" class="jqm-header">
 			<h2>
-				ICrypt<img src="images/chipLogo.png" alt="ICryptoPoker">P<img
-					src="images/chipLogo.png" alt="ICryptoPoker">ker
+				iCrypt <img src="images/chipLogo.png" alt="ICryptoPoker" width="66" height="66" class="mainLogoIcon"> P <img
+					src="images/chipLogo.png" width="66" height="66" alt="ICryptoPoker" class="mainLogoIcon"> ker
 			</h2>
 			<a href="#"
 				class="menu-icon jqm-navmenu-link ui-btn ui-corner-all ui-btn-left"

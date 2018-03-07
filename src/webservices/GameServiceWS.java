@@ -32,10 +32,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -43,6 +45,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 import game.poker.holdem.dao.GameDao;
 import game.poker.holdem.dao.GameDaoImpl;
+import game.poker.holdem.domain.BlindLevel;
 import game.poker.holdem.domain.CommonTournamentFormats;
 import game.poker.holdem.domain.Game;
 import game.poker.holdem.domain.GameStatus;
@@ -100,7 +103,7 @@ public class GameServiceWS {
 		}
 		return json;
 	}
-	
+
 	@GET
 	@Path("/GetAllGames")
 	@Produces("application/json")
@@ -143,17 +146,25 @@ public class GameServiceWS {
 	@POST
 	@Path("/CreateGame")
 	@Produces("application/json")
+	@Consumes({MediaType.APPLICATION_JSON,MediaType.TEXT_HTML})
 	public String createGame(String gameName,
-			CommonTournamentFormats gameStructure) {
-		//http://localhost:8080/ICryptoPoker/REST/GetGameServiceWS/CreateGame?gameName=hshshs&description=hfhfhf&timeInMins=33&startingChips=400
+			CommonTournamentFormats gameStructure, int gameType, String blindLevel) {
+		// http://localhost:8080/ICryptoPoker/REST/GetGameServiceWS/CreateGame?gameName=hshshs&description=hfhfhf&timeInMins=33&startingChips=400
 		Game game = new Game();
 		game.setName(gameName);
-		game.setGameType(GameType.TOURNAMENT); // Until Cash games are supported
 		GameStructure gs = new GameStructure();
-		gs.setBlindLength(gameStructure.getTimeInMinutes());
-		gs.setBlindLevels(gameStructure.getBlindLevels());
-		gs.setStartingChips(gameStructure.getStartingChips());
+		if (gameType == 0) {
+			game.setGameType(GameType.CASH);
+			gs.setCurrentBlindLevel(BlindLevel.valueOf(blindLevel));
+		} else {
+			game.setGameType(GameType.TOURNAMENT); // Until Cash games are supported
+			gs.setBlindLength(gameStructure.getTimeInMinutes());
+			gs.setBlindLevels(gameStructure.getBlindLevels());
+			gs.setStartingChips(gameStructure.getStartingChips());
+		}
 		game.setGameStructure(gs);
+		game.setPlayersRemaining(0);
+		game.setStarted(false);
 		game = gameService.saveGame(game);
 		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
@@ -298,7 +309,8 @@ public class GameServiceWS {
 		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
 		try {
-			json = mapper.writeValueAsString(Collections.singletonMap("handId", hand.getId()));
+			json = mapper.writeValueAsString(Collections.singletonMap("handId",
+					hand.getId()));
 		} catch (JsonGenerationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -374,8 +386,8 @@ public class GameServiceWS {
 		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
 		try {
-			json = mapper.writeValueAsString(Collections.singletonMap("card4", hand.getBoard().getTurn()
-					.toString()));
+			json = mapper.writeValueAsString(Collections.singletonMap("card4",
+					hand.getBoard().getTurn().toString()));
 		} catch (JsonGenerationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -409,8 +421,8 @@ public class GameServiceWS {
 		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
 		try {
-			json = mapper.writeValueAsString(Collections.singletonMap("card5", hand.getBoard().getRiver()
-					.toString()));
+			json = mapper.writeValueAsString(Collections.singletonMap("card5",
+					hand.getBoard().getRiver().toString()));
 		} catch (JsonGenerationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -444,7 +456,8 @@ public class GameServiceWS {
 		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
 		try {
-			json = mapper.writeValueAsString(Collections.singletonMap("success", true));
+			json = mapper.writeValueAsString(Collections.singletonMap(
+					"success", true));
 		} catch (JsonGenerationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -477,7 +490,8 @@ public class GameServiceWS {
 		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
 		try {
-			json = mapper.writeValueAsString(Collections.singletonMap("success", result));
+			json = mapper.writeValueAsString(Collections.singletonMap(
+					"success", result));
 		} catch (JsonGenerationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -504,7 +518,8 @@ public class GameServiceWS {
 		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
 		try {
-			json = mapper.writeValueAsString(Collections.singletonMap("success", true));
+			json = mapper.writeValueAsString(Collections.singletonMap(
+					"success", true));
 		} catch (JsonGenerationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

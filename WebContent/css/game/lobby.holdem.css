@@ -10,6 +10,10 @@
 	height: 100%;
 }
 
+#select-SB-CreateNew , .ui-selectmenu-open{
+	width: 97% !important;
+}
+
 .spanTopBannerInfo {
 	border-left: 1px #888 solid;
 	padding-left: 3px;

@@ -110,7 +110,7 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDao {
 		List<BlindLevel> blinds = new ArrayList<>();
 		Collections.sort(blinds);
 		gs.setBlindLevels(blinds);
-//		gs.setCurrentBlindEndTime(currentBlindEndTime)
+		// gs.setCurrentBlindEndTime(currentBlindEndTime)
 		gs.setCurrentBlindLevel(BlindLevel.BLIND_15_30);
 		gs.setStartingChips(15);
 		g.setGameStructure(gs);
@@ -257,7 +257,6 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDao {
 	}
 
 	public GameStructure getGameStructure(long id, Connection conn) {
-		// TODO Auto-generated method stub
 		try {
 			boolean isNewConn = false;
 			if (conn == null)
@@ -276,15 +275,14 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDao {
 			ResultSet rs = ps.getResultSet();
 			GameStructure g = new GameStructure();
 			if (rs.next()) {
-
-				g.setId(id);
+				g.setId(rs.getLong("game_structure_id"));
 				g.setBlindLength(rs.getInt("blind_length"));
 				BlindLevel temp = (BlindLevel) BlindLevel.class.getField(
 						rs.getString("current_blind_level")).get(null);
 				g.setCurrentBlindLevel(temp);
 				g.setCurrentBlindEndTime(rs.getDate("current_blind_ends"));
-				g.setPuaseStartTime(rs.getDate("pause_sart_time"));
-				g.setStartingChips(rs.getInt("starting chips"));
+				g.setPuaseStartTime(rs.getDate("pause_start_time"));
+				g.setStartingChips(rs.getInt("starting_chips"));
 			}
 			rs.close();
 			ps.close();
@@ -327,9 +325,11 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDao {
 					Statement.RETURN_GENERATED_KEYS);
 			ps.setString(1, gs.getCurrentBlindLevel().toString());
 			ps.setInt(2, gs.getBlindLength());
-//			ps.setDate(3, new java.sql.Date(gs.getCurrentBlindEndTime().getTime()));
+			// ps.setDate(3, new
+			// java.sql.Date(gs.getCurrentBlindEndTime().getTime()));
 			ps.setDate(3, null);
-//			ps.setDate(4, new java.sql.Date(gs.getPuaseStartTime().getTime()));
+			// ps.setDate(4, new
+			// java.sql.Date(gs.getPuaseStartTime().getTime()));
 			ps.setDate(4, null);
 			ps.setInt(5, gs.getStartingChips());
 			ps.executeUpdate();
@@ -435,8 +435,9 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDao {
 						rs.getLong("current_hand_id"), conn));
 				game.setGameStructure(getGameStructure(
 						rs.getLong("game_structure_id"), conn));
-				game.setPlayerInBTN(player.findById(
-						rs.getString("btn_player_id"), conn));
+				if (rs.getString("btn_player_id") != null)
+					game.setPlayerInBTN(player.findById(
+							rs.getString("btn_player_id"), conn));
 				game.setPlayers(getAllPlayersInGame(game.getId(), conn));
 				games.add(game);
 

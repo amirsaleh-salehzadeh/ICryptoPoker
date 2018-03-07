@@ -1,0 +1,55 @@
+.ui-grid-b {
+	font-weight: bold;
+	font-size: 14pt;
+	color: white;
+	vertical-align: middle;
+}
+
+.ui-grid-b div {
+	border-left: 1px #888 solid;
+	height: 100%;
+}
+
+.spanTopBannerInfo {
+	border-left: 1px #888 solid;
+	padding-left: 3px;
+	display: inline-block;
+	width: inherit;
+	background-color: black;
+}
+
+#table-lobby {
+	margin-top: 7px;
+	text-align: center !important;
+	border-top: 7px black solid;
+}
+
+#table-lobby td {
+	color: white;
+	font-size: 9pt;
+	text-align: center !important;
+	border-left: 1px #999 solid;
+}
+
+#table-lobby th {
+	border: 2px black solid;
+	text-align: center !important;
+	color: black;
+	font-weight: bold;
+	font-size: 11pt;
+	background-color: #ccc;
+}
+
+#table-lobby tbody tr:nth-child(even) {
+	background-color: #666;
+	border-top: 1px black solid;
+}
+
+#table-lobby tbody tr:hover {
+	background-color: #111;
+	color: 1px black solid;
+}
+
+#table-lobby tbody tr {
+	cursor: pointer;
+}

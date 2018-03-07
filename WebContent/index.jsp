@@ -10,5 +10,8 @@
 <title>Insert title here</title>
 </head>
 <body>
+<form>
+<input>
+</form>
 </body>
 </html>

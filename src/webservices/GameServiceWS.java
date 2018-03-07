@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
@@ -139,11 +140,12 @@ public class GameServiceWS {
 	 * @return {"gameId":xxxx}. The Java Method returns the Map<String,Long>
 	 *         which is converted by Spring to the JSON object.
 	 */
-	@GET
+	@POST
 	@Path("/CreateGame")
 	@Produces("application/json")
 	public String createGame(String gameName,
 			CommonTournamentFormats gameStructure) {
+		//http://localhost:8080/ICryptoPoker/REST/GetGameServiceWS/CreateGame?gameName=hshshs&description=hfhfhf&timeInMins=33&startingChips=400
 		Game game = new Game();
 		game.setName(gameName);
 		game.setGameType(GameType.TOURNAMENT); // Until Cash games are supported

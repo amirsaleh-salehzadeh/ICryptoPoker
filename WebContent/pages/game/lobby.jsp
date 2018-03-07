@@ -1,43 +1,61 @@
+<%@page import="game.poker.holdem.domain.BlindLevel"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <link rel="stylesheet" href="css/game/lobby.holdem.css" />
 <script type="text/javascript">
-$(document).ready(function(){
-	var url = "/ICryptoPoker/REST/GetGameServiceWS/GetAllGames";
-		$.ajax({
-			url : url,
-			cache : false,
-			async : true,
-			beforeSend : function() {
-				ShowLoadingScreen();
-			},
-			success : function(data) {
-				var tableRows = "";
-				$.each(data, function(k, l) {
-					tableRows += "<tr onclick='alert(" + l.id + ")'><td>" + l.name
-							+ "</td><td>";
-					var smallBig = l.gameStructure.currentBlindLevel.split("_");
-					tableRows += smallBig[1] + " / " + smallBig[2] + "</td><td>"
-							+ l.gameStructure.startingChips + "</td><td>"
-							+ l.players.length + " / 10</td></tr>";
-				});
-				console.log($("#lobbyTableTBody").html());
-				console.log(tableRows);
-				$("#lobbyTableTBody").html(tableRows);
-				$("#table-lobby").trigger("create");   
+	$(document)
+			.ready(
+					function() {
+						var url = "/ICryptoPoker/REST/GetGameServiceWS/GetAllGames";
+						$
+								.ajax({
+									url : url,
+									cache : false,
+									async : true,
+									beforeSend : function() {
+										ShowLoadingScreen();
+									},
+									success : function(data) {
+										var tableRows = "";
+										$
+												.each(
+														data,
+														function(k, l) {
+															tableRows += "<tr onclick='alert("
+																	+ l.id
+																	+ ")'><td>"
+																	+ l.name
+																	+ "</td><td>";
+															var smallBig = l.gameStructure.currentBlindLevel
+																	.split("_");
+															tableRows += smallBig[1]
+																	+ " / "
+																	+ smallBig[2]
+																	+ "</td><td>"
+																	+ l.gameStructure.startingChips
+																	+ "</td><td>"
+																	+ l.players.length
+																	+ " / 10</td></tr>";
+														});
+										console.log($("#lobbyTableTBody")
+												.html());
+										console.log(tableRows);
+										$("#lobbyTableTBody").html(tableRows);
+										$("#table-lobby").trigger("create");
 
-			},
-			complete : function() {
-				HideLoadingScreen();
-			},
-			error : function(xhr, ajaxOptions, thrownError) {
-				popErrorMessage("An error occured while removing the marker. "
-						+ thrownError);
-			}
-		});
-		$("#popupConfirmation").popup("close");
-});
+									},
+									complete : function() {
+										HideLoadingScreen();
+									},
+									error : function(xhr, ajaxOptions,
+											thrownError) {
+										popErrorMessage("An error occured while removing the marker. "
+												+ thrownError);
+									}
+								});
+						$("#popupConfirmation").popup("close");
+					});
 </script>
 <div class="ui-grid-b">
 	<div class="ui-block-a">
@@ -51,11 +69,15 @@ $(document).ready(function(){
 			class="spanTopBannerInfo">25,000</span>
 	</div>
 	<div class="ui-block-c">
-		<a href="#" class="ui-btn">Create New Game</a>
+		<a href="#popupCreateNewGame" data-rel="popup"
+			data-position-to="window" data-transition="pop"
+			class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-icon-delete ui-btn-icon-left ui-btn-b">Create
+			New Game</a>
 	</div>
 </div>
 <div class="ui-block-solo">
-	<table data-role="table" id="table-lobby" class="ui-responsive" data-mode="reflow">
+	<table data-role="table" id="table-lobby" class="ui-responsive"
+		data-mode="reflow">
 		<thead>
 			<tr>
 				<th data-priority="2">Table</th>
@@ -66,4 +88,44 @@ $(document).ready(function(){
 		</thead>
 		<tbody id="lobbyTableTBody"></tbody>
 	</table>
+</div>
+<!-- CMND + SHIFT + F >>>>> FORMAT THE CODES 
+cmnd + D  is my favorite shortcut removes a line
+cmnd + SHIft + C comment and un-comment   u can change shortcuts there-->
+<div data-role="popup" id="popupCreateNewGame" data-overlay-theme="b"
+	data-theme="b" data-dismissible="false" style="max-width: 400px;">
+	<div data-role="header" data-theme="a">
+		    
+		<h1>Create New GAME</h1>
+		    
+	</div>
+	    
+	<div role="main" class="ui-content">
+		        
+		<h3 class="ui-title">
+
+			<input type="text" name="name" placeholder="name" data-mini="true">
+		</h3>
+		<label for="select-choice-mini" class="select">Mini select,
+			inline</label> <select name="select-choice-mini" id="select-choice-mini"
+			data-mini="true" data-inline="true">
+			<%
+				
+				//we need to print all blind levels.toString here in this drop down
+				for (BlindLevel cur : BlindLevel.values()) {
+			%>
+			<option value="standard"> <%= cur.toString() %></option>  
+<!-- 			we use < % = when we want to print a value 
+and in jsp (Java server page) page  < % u write a noremal java code-->
+			<%
+				}
+			%>    
+		</select>     
+		<p>This action cannot be undone.</p>
+		        <a href="#"
+			class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b"
+			data-rel="back">Cancel</a>         <a href="#"
+			class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b"
+			data-rel="back" data-transition="flow">Save</a>     
+	</div>
 </div>

@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.tomcat.util.security.MD5Encoder;
@@ -82,7 +83,7 @@ public class UserDAO extends BaseHibernateDAO implements UserDAOInterface {
 			}
 
 			String query = "";
-			query = "select * from users where username = ?";
+			query = "select * from player where username = ?";
 			PreparedStatement ps = conn.prepareStatement(query);
 			ps.setString(1, ent.getUserName());
 			ResultSet rs = ps.executeQuery();
@@ -90,11 +91,12 @@ public class UserDAO extends BaseHibernateDAO implements UserDAOInterface {
 				throw new AMSException("The username already exist");
 			rs.close();
 			ps.clearBatch();
-			query = "insert into users (password,username)"
-					+ " values (?,?)";
+			query = "insert into player (password, username, game_id,game_position,registeration_date) values (?,?,0,0,?)";
 			ps = conn.prepareStatement(query);
 			ps.setString(2, ent.getUserName());
-			ps.setString(1, MD5Encryptor.encode(ent.getUserPassword()));
+			// ps.setString(1, MD5Encryptor.encode(ent.getUserPassword()));
+			ps.setString(1, ent.getUserPassword());
+			ps.setString(3, new Date().toString());
 			ps.execute();
 			ps.close();
 			conn.commit();
@@ -116,7 +118,7 @@ public class UserDAO extends BaseHibernateDAO implements UserDAOInterface {
 				e.printStackTrace();
 			}
 			String query = "";
-			query = "select * from player " ;
+			query = "select * from player ";
 			PreparedStatement ps = conn.prepareStatement(query);
 			ps.execute();
 			ResultSet rs = ps.getResultSet();
@@ -162,7 +164,6 @@ public class UserDAO extends BaseHibernateDAO implements UserDAOInterface {
 			throw getAMSException("", e);
 		}
 	}
-
 
 	public UserENT getUserENT(UserENT user) throws AMSException {
 		UserENT userENT = new UserENT();
@@ -274,9 +275,9 @@ public class UserDAO extends BaseHibernateDAO implements UserDAOInterface {
 			} catch (AMSException e) {
 				e.printStackTrace();
 			}
-			query = "Insert into player ( date_of_birth, gender, name, surname, username, password)" +
-					" values (?,?,?,?,?,?) on duplicate key " +
-					"UPDATE date_of_birth = ? , gender = ?"
+			query = "Insert into player ( date_of_birth, gender, name, surname, username, password)"
+					+ " values (?,?,?,?,?,?) on duplicate key "
+					+ "UPDATE date_of_birth = ? , gender = ?"
 					+ ", name = ?, registeration_date = ?, surname = ? ";
 			ps = conn.prepareStatement(query);
 			ps.setString(1, user.getDateOfBirth());

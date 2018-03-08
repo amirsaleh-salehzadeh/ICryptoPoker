@@ -23,8 +23,8 @@ THE SOFTWARE.
 */
 package game.poker.holdem.service;
 
-import game.poker.holdem.dao.GameDao;
-import game.poker.holdem.dao.PlayerDao;
+import game.poker.holdem.dao.GameDaoImpl;
+import game.poker.holdem.dao.PlayerDaoImpl;
 import game.poker.holdem.domain.BlindLevel;
 import game.poker.holdem.domain.Game;
 import game.poker.holdem.domain.GameStructure;
@@ -38,9 +38,9 @@ import java.util.List;
 
 public class GameServiceImpl implements GameService {
 	
-	private GameDao gameDao;
+	private GameDaoImpl gameDao;
 	
-	private PlayerDao playerDao;
+	private PlayerDaoImpl playerDao;
 
 	public Game getGameById(long id, boolean fetchPlayers) {
 		Game game = gameDao.findById(id, null);
@@ -100,7 +100,8 @@ public class GameServiceImpl implements GameService {
 		if(game.isStarted() && game.getGameType() == GameType.TOURNAMENT){
 			throw new IllegalStateException("Tournament in progress, no new players may join");
 		}
-		game = gameDao.merge(game, null);
+//		game = gameDao.merge(game, null);
+		game = gameDao.addOnePlayerToGame(game, null);
 		if(game.getPlayers().size() >= 10){
 			throw new IllegalStateException("Cannot have more than 10 players in one game");
 		}
@@ -110,12 +111,13 @@ public class GameServiceImpl implements GameService {
 			player.setChips(game.getGameStructure().getStartingChips());
 		}
 		
-		player = playerDao.save(player, null);
+//		player = playerDao.merge(player, null);
+		player = playerDao.addGameToPlayer(player, null);
 		if(player == null){
 			return null;
 		}
 		game.setPlayersRemaining(game.getPlayersRemaining() + 1);
-		game = gameDao.save(game, null);
+		game = gameDao.updatePlayerLeft(game, null);
 		player.setGame(game);
 		return player;
 	}

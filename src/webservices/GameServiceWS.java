@@ -33,17 +33,19 @@ import java.util.List;
 import java.util.Map;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
-import game.poker.holdem.dao.GameDao;
 import game.poker.holdem.dao.GameDaoImpl;
 import game.poker.holdem.domain.BlindLevel;
 import game.poker.holdem.domain.CommonTournamentFormats;
@@ -54,6 +56,7 @@ import game.poker.holdem.domain.GameType;
 import game.poker.holdem.domain.HandEntity;
 import game.poker.holdem.domain.Player;
 import game.poker.holdem.service.GameService;
+import game.poker.holdem.service.GameServiceImpl;
 import game.poker.holdem.service.PokerHandService;
 import game.poker.holdem.util.GameUtil;
 
@@ -69,7 +72,7 @@ import game.poker.holdem.util.GameUtil;
 @Path("GetGameServiceWS")
 public class GameServiceWS {
 
-	private GameService gameService;
+	private GameServiceImpl gameService;
 	private PokerHandService handService;
 
 	/**
@@ -106,8 +109,8 @@ public class GameServiceWS {
 
 	@GET
 	@Path("/GetAllGames")
-	@Produces("application/json")
-	public String getAllGames() {
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAllGames() {
 		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
 		GameDaoImpl gameDao = new GameDaoImpl();
@@ -123,7 +126,7 @@ public class GameServiceWS {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return json;
+		return Response.ok(json, MediaType.APPLICATION_JSON).build();
 	}
 
 	/**
@@ -146,31 +149,33 @@ public class GameServiceWS {
 	@POST
 	@Path("/CreateGame")
 	@Produces("application/json")
-	@Consumes({MediaType.APPLICATION_JSON,MediaType.TEXT_HTML})
-	public String createGame(String gameName,
-			CommonTournamentFormats gameStructure, int gameType, String blindLevel) {
+	public String createGame(@FormParam("gameName") String gameName,
+			@FormParam("gameType") int gameType,
+			@FormParam("blindLevel") String blindLevel) {
+		// CommonTournamentFormats gameStructure,
 		// http://localhost:8080/ICryptoPoker/REST/GetGameServiceWS/CreateGame?gameName=hshshs&description=hfhfhf&timeInMins=33&startingChips=400
 		Game game = new Game();
+		GameDaoImpl gameDao = new GameDaoImpl();
 		game.setName(gameName);
 		GameStructure gs = new GameStructure();
 		if (gameType == 0) {
 			game.setGameType(GameType.CASH);
 			gs.setCurrentBlindLevel(BlindLevel.valueOf(blindLevel));
 		} else {
-			game.setGameType(GameType.TOURNAMENT); // Until Cash games are supported
-			gs.setBlindLength(gameStructure.getTimeInMinutes());
-			gs.setBlindLevels(gameStructure.getBlindLevels());
-			gs.setStartingChips(gameStructure.getStartingChips());
+			game.setGameType(GameType.TOURNAMENT); // Until Cash games are
+													// supported
+			// gs.setBlindLength(gameStructure.getTimeInMinutes());
+			// gs.setBlindLevels(gameStructure.getBlindLevels());
+			// gs.setStartingChips(gameStructure.getStartingChips());
 		}
 		game.setGameStructure(gs);
 		game.setPlayersRemaining(0);
 		game.setStarted(false);
-		game = gameService.saveGame(game);
+		game = gameDao.save(game, null);
 		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
 		try {
-			json = mapper.writeValueAsString(Collections.singletonMap("gameId",
-					game.getId()));
+			json = mapper.writeValueAsString(game);
 		} catch (JsonGenerationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

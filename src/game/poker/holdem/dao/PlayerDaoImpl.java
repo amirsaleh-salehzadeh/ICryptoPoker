@@ -36,13 +36,10 @@ import tools.MD5Encryptor;
 import game.poker.holdem.domain.Player;
 import hibernate.config.BaseHibernateDAO;
 
-public class PlayerDaoImpl extends BaseHibernateDAO implements PlayerDao {
+public class PlayerDaoImpl extends BaseHibernateDAO implements PlayerDaoInterface {
 
 	@Override
 	public Player save(Player game, Connection conn) {
-		// TODO Auto-generated method stub
-		
-		
 		try {
 			boolean isNewConn = false;
 			if (conn == null)
@@ -91,8 +88,6 @@ public class PlayerDaoImpl extends BaseHibernateDAO implements PlayerDao {
 
 	@Override
 	public Player merge(Player game, Connection conn) {
-		
-		// TODO Auto-generated method stub
 		try {
 			boolean isNewConn = false;
 			if (conn == null)
@@ -103,7 +98,6 @@ public class PlayerDaoImpl extends BaseHibernateDAO implements PlayerDao {
 				} catch (AMSException e) {
 					e.printStackTrace();
 				}
-			
 			String query = "";
 			query = "UPDATE `hand`  SET `username`= ?, `game_id` = ?,`chips` = ?, `game_position` = ?, `finished_position`= ?, " +
 					" `sitting_out` = ?, `password` = ?,'gender'= ?,'dob' = ?,'surname' = ?, 'registeration_date' = ?,'name'= ?"
@@ -199,6 +193,12 @@ public class PlayerDaoImpl extends BaseHibernateDAO implements PlayerDao {
 			e.printStackTrace();
 		}
 		return null ;
+	}
+
+	@Override
+	public Player addGameToPlayer(Player p, Connection conn) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -2,29 +2,81 @@
 
 <html>
 <head>
-    <title>Find It | Nelson Mandela University</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="css/location/login.css">
+<title>iCryptoPoker</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="css/login.css">
 <script src="js/jquery.mobile-1.4.5.min.js"></script>
+<script src="js/jquery.js"></script>
+<script type="text/javascript">
+	function registerNew() {
+		if ($("#uNameEmail").val() == "") {
+			return;
+		}
+		if ($("#reTypePassDiv").css("display") == "none") {
+			$("#reTypePassDiv").fadeIn(2000);
+			return;
+		}
 
+		if ($("#loginRePass").val() != $("#loginPass").val()) {
+			$("#message").hide();
+			$("#message").html("Password and Re-type of password DO NOT match");
+			$("#message").fadeIn(2000);
+			return;
+		}
+
+		var url = "/ICryptoPoker/REST/GetGeneralServiceWS/RegisterNew?userName="
+				+ $("#uNameEmail").val()
+				+ "&userPassword="
+				+ $("#loginPass").val();
+		$.ajax({
+			url : url,
+			cache : false,
+			async : false,
+			dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+			success : function(data) {
+				alert("Success");
+			},
+			error : function(xhr, resp, text) {
+				$("#message").hide();
+				$("#message").html(xhr.responseText);
+				$("#message").fadeIn(2000);
+			}
+		});
+	}
+</script>
 </head>
 <body class="login">
-    <div id="loginPage" data-role="page">
- <div id="loginContents">
-       <img id="logo" src="images/MandelaUniversity_logo_B.png">
-       <div class="ui-block-solo"> 
-       <input type="text" name="uNameEmail" id="uNameEmail" value="" placeholder="Username/Email"  />
-      </div>
-      <div class="ui-block-solo">
-        <input type="text" name="loginPass" id="loginPass" value="" placeholder="Password"  />
-      </div>
-     
-      <div class="ui-block-solo" >
-       <button id="loginBtn" class="ui-btn">Login</button>
-      </div>
-       <label>Haven't got an account yet? </label>
-<!--        <label>Register <a href="https://localhost:8443/NMMUWebApp/location.do?reqCode=register">Here!</a></label> -->
- </div>
-    </div><!-- /page -->
+	<div id="loginPage" data-role="page">
+		<div id="loginContents">
+			<img id="logo" src="images/icryptoLogo.png">
+			<div class="ui-block-solo">
+				<input type="text" name="uNameEmail" id="uNameEmail" value=""
+					placeholder="Username/Email" />
+			</div>
+			<div class="ui-block-solo">
+				<input type="password" name="loginPass" id="loginPass" value=""
+					placeholder="Password" />
+			</div>
+
+			<div class="ui-grid-a">
+				<div class="ui-block-a">
+					<button id="loginBtn">Login</button>
+				</div>
+				<div class="ui-block-b">
+					<button id="loginBtn" onclick="registerNew()">Register</button>
+				</div>
+			</div>
+
+			<div class="ui-block-solo" id="reTypePassDiv"
+				style="display: none; text-align: center;">
+				<span id="message" style="color: #b00000;">Please retype the
+					password</span> <input type="password" name="loginPass" id="loginRePass"
+					value="" placeholder="Re-Type Password" />
+			</div>
+		</div>
+	</div>
+	<!-- /page -->
 </body>
 </html>

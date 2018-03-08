@@ -28,7 +28,7 @@ function getAllGames() {
 		success : function(data) {
 			var tableRows = "";
 			$.each(data, function(k, l) {
-				tableRows += "<tr onclick='alert(" + l.id + ")'><td>" + l.name
+				tableRows += "<tr onclick='joinGame(" + l.id + ")'><td>" + l.name
 						+ "</td><td>";
 				var smallBig = l.gameStructure.currentBlindLevel.split("_");
 				tableRows += smallBig[1] + " / " + smallBig[2] + "</td><td>"
@@ -49,14 +49,32 @@ function getAllGames() {
 	});
 }
 
+function joinGame(gameID){
+	if($("#playerName").val()==""){
+		alert("player name????");
+		return;
+	}
+	window.location.replace("t_game.do?reqCode=goToTable&gameId="+gameID+"&playerName="+$("#playerName").val());
+}
+
 function createNewGame() {
 	$.ajax({
 		url : '/ICryptoPoker/REST/GetGameServiceWS/CreateGame',
-		type : "POST", 
-		dataType : 'json', 
+		type : "POST",
+		dataType : 'json',
 		data : $("#createNewGameForm").serialize(),
+		// data : JSON.stringify($('#createNewGameForm').serializeObject()),
+		contentType : "application/json",
 		success : function(result) {
-			alert("hi");
+			var tableRows = "<tr onclick='alert(" + result.id + ")'><td>"
+					+ result.name + "</td><td>";
+			var smallBig = result.gameStructure.currentBlindLevel.split("_");
+			tableRows += smallBig[1] + " / " + smallBig[2] + "</td><td>"
+					+ result.gameStructure.startingChips + "</td><td>"
+					+ result.players.length + " / 10</td></tr>";
+			$("#lobbyTableTBody")
+					.html(tableRows + $("#lobbyTableTBody").html());
+			$("#table-lobby").trigger("create");
 		},
 		error : function(xhr, resp, text) {
 			console.log(xhr, resp, text);

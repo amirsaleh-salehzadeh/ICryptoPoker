@@ -4,6 +4,12 @@
  */
 package struts.actions;
 
+import game.poker.holdem.dao.GameDaoImpl;
+import game.poker.holdem.domain.Game;
+import game.poker.holdem.domain.Player;
+import game.poker.holdem.service.GameServiceImpl;
+
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -18,10 +24,29 @@ public class GameAction extends Action {
 
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response) {
-		ActionForward af = null;
 		String reqCode = request.getParameter("reqCode");
+//		try {
+//			request.login("admin", "111");
+//			System.out.println(request.getRemoteUser());
+//		} catch (ServletException e) {
+//			return new ActionRedirect("/login.html");
+////			e.printStackTrace();
+//		}
+//		
 		if(reqCode==null||reqCode.equalsIgnoreCase(""))
 			reqCode = "goToLobby";
+		if(reqCode.equalsIgnoreCase("goToTable")){
+			request.getRemoteUser();
+			GameDaoImpl gamedao = new GameDaoImpl();
+			long gameId = Long.parseLong(request.getParameter("gameId"));
+			Game game = gamedao.findById(gameId, null);
+//			Player player = new Player();
+//			player.setName(request.getRemoteUser());
+//			player.setName(request.getParameter("playerName"));
+			GameServiceImpl gameService = new GameServiceImpl();
+//			player = gameService.addNewPlayerToGame(game, player);
+			request.setAttribute("game", game);
+		}
 		return mapping.findForward(reqCode);
 	}
 }

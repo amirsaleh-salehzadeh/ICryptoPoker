@@ -11,7 +11,7 @@
 	<div class="ui-block-a">
 		<img alt="chips" title="Total Chips" src="images/game/user.png"
 			width="33px" height="33px">&nbsp;<span id="name"
-			class="spanTopBannerInfo">Amir Saleh</span>
+			class="spanTopBannerInfo"><input type="text" value="amir" id="playerName" placeholder="Player Name"></span>
 	</div>
 
 
@@ -57,7 +57,7 @@
 						<option value="1">Tournament</option>
 					</select>   
 					<h3 class="ui-title">
-						<label for="name">Game Name</label> <input type="text" name="name"
+						<label for="name">Game Name</label> <input type="text" name="gameName"
 							placeholder="Game Name" data-mini="true">
 					</h3>
 					<label for="select-SB-CreateNew">Small / Blind</label> <select

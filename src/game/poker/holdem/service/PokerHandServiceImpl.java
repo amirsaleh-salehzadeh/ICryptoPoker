@@ -42,9 +42,9 @@ public class PokerHandServiceImpl implements PokerHandService {
 	
 	private HandDao handDao;
 	
-	private GameDao gameDao;
+	private GameDaoInterface gameDao;
 	
-	private PlayerDao playerDao;
+	private PlayerDaoImpl playerDao;
 	
 	public HandEntity startNewHand(Game game) {
 		game = gameDao.merge(game, null);

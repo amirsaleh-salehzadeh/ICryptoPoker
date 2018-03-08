@@ -26,7 +26,7 @@
 		<action path="/game" type="struts.actions.GameAction">
 			<set-property property="cancellable" value="true" />
 			<forward name="goToLobby" path="/pages/game/lobby.jsp" />
-			<forward name="goToTable" path="/pages/game/table.jsp" />
+			<forward name="joinAGame" path="/pages/game/table.jsp" />
 		</action>
 		<action parameter="reqCode" path="/logOut" type="struts.actions.LogOutAction">
 			<set-property property="cancellable" value="true" />

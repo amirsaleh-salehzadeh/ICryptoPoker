@@ -35,12 +35,14 @@ public class GameAction extends Action {
 //		
 		if(reqCode==null||reqCode.equalsIgnoreCase(""))
 			reqCode = "goToLobby";
-		if(reqCode.equalsIgnoreCase("goToTable")){
+		if(reqCode.equalsIgnoreCase("joinAGame")){
 			request.getRemoteUser();
 			GameDaoImpl gamedao = new GameDaoImpl();
 			long gameId = Long.parseLong(request.getParameter("gameId"));
 			Game game = gamedao.findById(gameId, null);
-//			Player player = new Player();
+			Player player = new Player();
+			player.setGame(game);
+			pl
 //			player.setName(request.getRemoteUser());
 //			player.setName(request.getParameter("playerName"));
 			GameServiceImpl gameService = new GameServiceImpl();

@@ -15,7 +15,7 @@
 		<action path="/t_game" type="struts.actions.tiles.T_GameAction">
 			<set-property property="cancellable" value="true" />
 			<forward name="goToLobby" path="page.game" />
-			<forward name="goToTable" path="page.game" />
+			<forward name="joinAGame" path="page.game" />
 		</action>
 		<action path="/t_user" type="struts.actions.tiles.T_UserAction">
 			<set-property property="cancellable" value="true" />

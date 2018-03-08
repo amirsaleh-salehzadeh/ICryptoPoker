@@ -54,7 +54,7 @@ function joinGame(gameID){
 		alert("player name????");
 		return;
 	}
-	window.location.replace("t_game.do?reqCode=goToTable&gameId="+gameID+"&playerName="+$("#playerName").val());
+	window.location.replace("t_game.do?reqCode=joinAGame&gameId="+gameID+"&playerName="+$("#playerName").val());
 }
 
 function createNewGame() {

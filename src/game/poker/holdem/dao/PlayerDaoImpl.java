@@ -33,6 +33,7 @@ import com.mysql.jdbc.Statement;
 import tools.AMSException;
 import tools.MD5Encryptor;
 
+import game.poker.holdem.domain.Game;
 import game.poker.holdem.domain.Player;
 import hibernate.config.BaseHibernateDAO;
 
@@ -198,7 +199,13 @@ public class PlayerDaoImpl extends BaseHibernateDAO implements PlayerDaoInterfac
 	@Override
 	public Player addGameToPlayer(Player p, Connection conn) {
 		// TODO Auto-generated method stub
-		return null;
+		//need to get 
+		PlayerDaoImpl dao = new PlayerDaoImpl() ;
+		Player playerTMP = dao.findById(p.getId(), conn);
+		playerTMP.setGame(p.getGame()) ;
+		return dao.merge(playerTMP, conn);
+		
+		
 	}
 
 }

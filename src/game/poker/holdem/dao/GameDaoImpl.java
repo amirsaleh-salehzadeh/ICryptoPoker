@@ -480,13 +480,88 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDaoInterface {
 	@Override
 	public Game addOnePlayerToGame(Game game, Connection conn) {
 		// TODO Auto-generated method stub
-		return null;
+		GameDaoImpl dao = new GameDaoImpl();
+		Game gameTMP = dao.findById(game.getId(), conn);
+		gameTMP.setPlayersRemaining(game.getPlayersRemaining());
+		return dao.merge(gameTMP, conn);
+//		try {
+//			boolean isNewConn = false;
+//			if (conn == null)
+//				try {
+//					conn = getConnection();
+//					conn.setAutoCommit(false);
+//					isNewConn = true;
+//				} catch (AMSException e) {
+//					e.printStackTrace();
+//				}
+//
+//			String query = "";
+//		query = "UPDATE `game`  SET `players_left` = ?," + "VALUES (?);";
+//
+//		PreparedStatement ps = conn.prepareStatement(query,
+//				Statement.RETURN_GENERATED_KEYS);
+//             game.setPlayersRemaining(game.getPlayersRemaining()+1) ;
+//			ps.setInt(1, game.getPlayersRemaining());
+//			
+
+//			ps.executeUpdate();
+//			ResultSet rs = ps.getGeneratedKeys();
+//			if (rs.next()) {
+//				game.setId(rs.getLong(1));
+//			}
+//			rs.close();
+//			ps.close();
+//			if (isNewConn) {
+//				conn.commit();
+//				conn.close();
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//		return game ;
 	}
 
 	@Override
 	public Game updatePlayerLeft(Game game, Connection conn) {
-		// TODO Auto-generated method stub
-		return null;
+		GameDaoImpl dao = new GameDaoImpl();
+	Game gameTMP = dao.findById(game.getId(), conn);
+	gameTMP.setPlayersRemaining(game.getPlayersRemaining());
+	return dao.merge(gameTMP, conn);
+//		try {
+//			boolean isNewConn = false;
+//			if (conn == null)
+//				try {
+//					conn = getConnection();
+//					conn.setAutoCommit(false);
+//					isNewConn = true;
+//				} catch (AMSException e) {
+//					e.printStackTrace();
+//				}
+//
+//			String query = "";
+//			query = "UPDATE `game`  SET `players_left` = ?," + "VALUES (?);";
+//
+//			PreparedStatement ps = conn.prepareStatement(query,
+//					Statement.RETURN_GENERATED_KEYS);
+//             game.setPlayersRemaining(game.getPlayersRemaining()-1) ;
+//			ps.setInt(1, game.getPlayersRemaining());
+//			
+//
+//			ps.executeUpdate();
+//			ResultSet rs = ps.getGeneratedKeys();
+//			if (rs.next()) {
+//				game.setId(rs.getLong(1));
+//			}
+//			rs.close();
+//			ps.close();
+//			if (isNewConn) {
+//				conn.commit();
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//		return game ;
+		
 	}
 
 }

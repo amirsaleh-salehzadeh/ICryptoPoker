@@ -16,55 +16,101 @@
 			<img alt="" src="images/game/money.png" width="33px" height="33px">220,000$
 		</div>
 		<div class="ui-block-c"><%=request.getParameter("playerName")%></div>
-		<div class="ui-block-d"><%=game.getName()%></div>
+		<div class="ui-block-d"><%=game.getName()%>
+			<br />
+			<%
+				String val = game.getGameStructure().getCurrentBlindLevel()
+						.toString().split("_")[1]
+						+ "/"
+						+ game.getGameStructure().getCurrentBlindLevel().toString()
+								.split("_")[2];
+				out.write(val);
+			%>
+
+		</div>
 
 	</div>
+
+
+	<div class="ui-block-solo horizontalSpacer"></div>
 
 
 	<!-- MIDDLE PANEL  -->
 
 
-	<div class="ui-block-solo ui-grid-b" id="mainBoardContainerDIV">
+	<div class="ui-grid-b" id="middleBlockContainerDIV">
 
-		<!-- LEFT GRID  -->
+		<div class="ui-block-solo ui-block-a ui-grid-b"
+			id="mainBoardContainerDIV">
 
-		<div class="ui-block-a" style="width: 20%; height: 100%;">
-			<div class="ui-block-solo" style="height: 25%;"></div>
-			<div class="ui-block-solo sitPlaceContainer" style="height: 25%;">Player</div>
-			<div class="ui-block-solo sitPlaceContainer" style="height: 25%;">Player</div>
-			<div class="ui-block-solo" style="height: 25%;"></div>
-		</div>
+			<!-- LEFT GRID  -->
 
-		<!-- CENTER GRID  -->
-
-		<div class="ui-block-b" style="width: 60%; height: 100%;">
-			<div class="ui-block-solo ui-grid-b" style="height: 20%;">
-				<div class="ui-block-a sitPlaceContainer"  style="height: 100% !important;">Player</div>
-				<div class="ui-block-b sitPlaceContainer"  style="height: 100% !important;">Player</div>
-				<div class="ui-block-c sitPlaceContainer"  style="height: 100% !important;">Player</div>
+			<div class="ui-block-a" style="width: 20%; height: 100%;">
+				<div class="ui-block-solo" style="height: 25%;"></div>
+				<div class="ui-block-solo sitPlaceContainer" style="height: 25%;">
+				</div>
+				<div class="ui-block-solo sitPlaceContainer" style="height: 25%;">Player</div>
+				<div class="ui-block-solo" style="height: 25%;"></div>
 			</div>
-			<div class="ui-block-solo" style="height: 60%;" id="mainTable">
-				<div class="ui-block-solo" id="flopsContainer"></div>
+
+			<!-- CENTER GRID  -->
+
+			<div class="ui-block-b" style="width: 60%; height: 100%;">
+				<div class="ui-block-solo ui-grid-b" style="height: 20%;">
+					<div class="ui-block-a sitPlaceContainer"
+						style="height: 100% !important;">Player</div>
+					<div class="ui-block-b sitPlaceContainer"
+						style="height: 100% !important;">Player</div>
+					<div class="ui-block-c sitPlaceContainer"
+						style="height: 100% !important;">Player</div>
+				</div>
+				<div class="ui-block-solo" style="height: 60%;"
+					id="mainTableParentDIV">
+					<div class="ui-block-solo" style="height: 100%; width: 100%;"
+						id="mainTable">
+						<div class="ui-block-solo ui-grid-d" id="flopsContainer">
+							<div class="ui-block-a" id="flop1">
+								<img alt="" src="images/game/card.jpg">
+							</div>
+							<div class="ui-block-b" id="flop2">
+								<img alt="" src="images/game/card.jpg">
+							</div>
+							<div class="ui-block-c" id="flop3">
+								<img alt="" src="images/game/card.jpg">
+							</div>
+							<div class="ui-block-d" id="flop4">
+								<img alt="" src="images/game/card.jpg">
+							</div>
+							<div class="ui-block-e" id="flop5">
+								<img alt="" src="images/game/card.jpg">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="ui-block-solo ui-grid-b" style="height: 20%;">
+					<div class="ui-block-a sitPlaceContainer"
+						style="height: 100% !important;">Player</div>
+					<div class="ui-block-b sitPlaceContainer"
+						style="height: 100% !important;" id="userSitPlace">
+					</div>
+					<div class="ui-block-c sitPlaceContainer"
+						style="height: 100% !important;">Player</div>
+				</div>
 			</div>
-			<div class="ui-block-solo ui-grid-b" style="height: 20%;">
-				<div class="ui-block-a sitPlaceContainer"
-					style="height: 100% !important;">Player</div>
-				<div class="ui-block-b sitPlaceContainer"
-					style="height: 100% !important;">Player</div>
-				<div class="ui-block-c sitPlaceContainer"
-					style="height: 100% !important;">Player</div>
+
+			<!-- RIGHT GRID  -->
+
+			<div class="ui-block-c" style="width: 20%; height: 100%;">
+				<div class="ui-block-solo" style="height: 25%;"></div>
+				<div class="ui-block-solo sitPlaceContainer" style="height: 25%;">Player</div>
+				<div class="ui-block-solo sitPlaceContainer" style="height: 25%;">Player</div>
+				<div class="ui-block-solo" style="height: 25%;"></div>
 			</div>
 		</div>
-
-		<!-- RIGHT GRID  -->
-
-		<div class="ui-block-c" style="width: 20%; height: 100%;">
-			<div class="ui-block-solo" style="height: 25%;"></div>
-			<div class="ui-block-solo sitPlaceContainer" style="height: 25%;">Player</div>
-			<div class="ui-block-solo sitPlaceContainer" style="height: 25%;">Player</div>
-			<div class="ui-block-solo" style="height: 25%;"></div>
-		</div>
+		<div class="ui-block-b" id="rightSideToolBar"></div>
 	</div>
+	<div class="ui-block-solo horizontalSpacer"></div>
+
 
 	<!-- bottom -->
 

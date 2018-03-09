@@ -2,37 +2,95 @@
 	background-color: #777;
 	border: 11px double #111;
 	border-radius: 50%;
-	text-align: middle;
 	background-image: url('../../images/icryptoLogo.png');
-	background-size: contain;
+	background-size: 66% 66%;
+	background-repeat: no-repeat;
+	background-position: center;
 }
 
-#buttonsContainerDIV {
-	bottom: 0;
+#flopsContainer {
+	margin: 10% auto;
+	height: 44%;
+	width: 66%;
+}
+
+#flopsContainer div {
+	padding-left: 3px;
+	padding-right: 3px;
+}
+
+#flopsContainer img {
+	height: 100%;
+	width: 100%;
+}
+
+.horizontalSpacer {
+	height: 1%;
 }
 
 .constantBannersDiv {
-	height: 15%;
+	height: 14%;
 	display: block;
 	position: absolute;
 	right: 0;
 	left: 0;
 }
 
-.sitPlaceContainer {
-	background-color: #b00000;
-	border: 3px double #bb0000;
+.sitPlaceThumbnail {
+	/* 		background-color: #b00000; */
+	box-shadow: inset 1px 1px 2px rgba(111, 0, 0, 0.3), inset 3px 15px 45px
+		rgba(133, 0, 0, 0.1), inset -1px -1px 2px rgba(122, 0, 0, 0.5), inset
+		-3px -15px 45px rgba(112, 0, 0, 0.8), 1px 5px 30px -4px
+		rgba(188, 0, 0, 1);
 	border-radius: 50%;
+	margin: 0 auto;
+	border-radius: 50%;
+	position: relative;
+	height: 100%;
+}
+
+.sitPlaceContainer {
+	position: relative;
+}
+
+.playerNamePlace {
+	margin: 0 auto;
+	color: white;
+	background-color: black;
+	position: absolute;
+	font-size: 8pt;
+	padding: 1px;
+	border: 1px solid #666;
+	border-radius: 3px;
+	bottom: 0;
+	left: 0;
+}
+
+.playerTotalChipsPlace {
+	margin: 0 auto;
+	background-image: url("../../images/game/chips.png");
+	background-position: 0 0;
+	background-repeat: no-repeat;
+	background-size: contain;
+	padding: 1px;
+	padding-left: 13%;
+	color: white;
+	background-color: black;
+	position: absolute;
+	font-size: 7pt;
+	border: 1px solid #666;
+	border-radius: 3px;
+	top: 0;
+	left: 0;
 }
 
 .constantBannersDiv>div {
 	height: 100%;
-	border-top: 1px solid white;
-	border-bottom: 1px solid white;
+	border-top: 1px solid #bb0000;
+	border-bottom: 1px solid #bb0000;
 }
 
-#mainBoardContainerDIV {
-	display: block;
+#middleBlockContainerDIV {
 	top: 15%;
 	bottom: 15%;
 	position: absolute;
@@ -40,13 +98,16 @@
 	left: 0;
 	text-align: center !important;
 	height: 70%;
-	padding-bottom: 3px;
 }
 
-#flopsContainer {
-	margin: 20% 20%;
-	height: 33%;
-	border: 1px solid white;
+#mainBoardContainerDIV {
+	width: 90%;
+}
+
+#rightSideToolBar {
+	background-color: white;
+	width: 10%;
+	height: 100%;
 }
 
 #gamePlayScreen {
@@ -85,7 +146,6 @@
 		1px 5px 30px -4px rgba(40, 166, 255, 1);
 	color: #fff !important;
 	border-color: rgb(164, 214, 255) !important;
-	height: 88%;
 }
 
 #raiseBTN {
@@ -97,6 +157,43 @@
 	border-color: rgb(66, 244, 66) !important;
 }
 
-#buttonsContainerDIV a{
+#buttonsContainerDIV {
+	bottom: 0;
+}
+
+#buttonsContainerDIV a {
 	height: 33% !important;
+}
+
+.card-small {
+	border: .2em solid black;
+	border-radius: 10%;
+	height: 80px;
+	width: 56px; /*70% of height*/
+	margin-right: 5px;
+	float: left;
+	background-color: white;
+}
+
+.card-text {
+	margin: 0;
+	margin-top: 15%;
+	text-align: center;
+	font-size: 1.5em;
+	font-weight: bold;
+	padding: 0;
+}
+
+.card-img {
+	text-align: center;
+	margin: 0;
+	font-size: 2em;
+}
+
+.red {
+	color: red;
+}
+
+.black {
+	color: black;
 }

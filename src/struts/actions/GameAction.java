@@ -49,9 +49,6 @@ public class GameAction extends Action {
 //			Player player = playerDaoImpl.findById(request.getRemoteUser(), null);
 			Player player = playerDaoImpl.findById(request.getParameter("playerName"), null);
 			player.setChips(100);
-//			Set<Player> players= game.getPlayers();
-//			players.add(player);
-//			game.setPlayers(players);
 			GameServiceImpl gameService = new GameServiceImpl();
 			player = gameService.addNewPlayerToGame(game, player);
 			request.setAttribute("game", game);

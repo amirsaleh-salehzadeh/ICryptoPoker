@@ -7,7 +7,6 @@
 <div class="ui-grid-b">
 
 
-
 	<div class="ui-block-a">
 		<img alt="chips" title="Total Chips" src="images/game/user.png"
 			width="33px" height="33px">&nbsp;<span id="name"

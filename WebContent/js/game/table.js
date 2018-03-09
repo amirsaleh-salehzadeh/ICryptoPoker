@@ -3,27 +3,28 @@ $(window)
 				"load",
 				function() {
 					$(".jqm-header").css("display", "none");
-					fitElementsWithinScreen();
-					$(window).on("resize",fitElementsWithinScreen());
+					$(window).on("resize", fitElementsWithinScreen());
 					$(".sitPlaceContainer")
 							.each(
 									function() {
+										var pname = "";
+										if ($(this).attr("id") != "userSitPlace")
+											pname = getOtherPlayersName();
+										else
+											pname = $("#playerNameDiv").html();
+
 										var content = "<div class='sitPlaceThumbnail'>"
 												+ "<img alt='' src='images/game/user.png' height='100%' /></div>"
-												+ "<div class='playerNamePlace'>SIT</div>"
-												+ "<div class='playerTotalChipsPlace'>2,000,000$</div>";
-										$(this).html(content);
+												+ "<div class='playerNamePlace'>";
+										content += pname + "</div><div class='playerTotalChipsPlace'></div>";
+										if (pname.length > 0)
+											$(this).html(content);
 
 									});
-					$(".sitPlaceThumbnail").each(function() {
-						$(this).width($("#userSitPlace").css("height"));
-						$(this).height($("#userSitPlace").css("height"));
-						$(this).trigger("create");
-					});
-					// $(".playerNamePlace").each(function() {
-					// $(this).trigger("create");
-					// });
-
+					fitElementsWithinScreen();
+					generateACard("A", "clubs", 1);
+					generateACard("2", "spades", 2);
+					generateACard("5", "hearts", 3);
 				});
 
 function fitElementsWithinScreen() {
@@ -31,11 +32,25 @@ function fitElementsWithinScreen() {
 	$("#mainTable").css("height", $("mainTableParentDIV").height());
 	$("#mainTable").css("width", $("mainTableParentDIV").width());
 	$(".sitPlaceThumbnail").each(function() {
-		$(this).width($("#userSitPlace").css("height"));
-		$(this).height($("#userSitPlace").css("height"));
+		$(this).width($("#userSitPlace").height() / 2);
+		$(this).height($("#userSitPlace").height() / 2);
 		$(this).trigger("create");
 	});
 	// $("#mainBoardContainerDIV").width();
+}
+
+function getOtherPlayersName() {
+	if ($("#playerIDs").val().length == 0)
+		return "";
+	var name = $("#playerIDs").val().split(",");
+	if (name.length > 1) {
+		var res = name[0];
+		$("#playerIDs").val($("#playerIDs").val().replace(res + ",", ""));
+		return res;
+	} else {
+		$("#playerIDs").val("");
+		return name[0];
+	}
 }
 
 function generateACard(text, img, flopNo) {

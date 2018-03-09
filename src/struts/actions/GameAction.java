@@ -51,7 +51,8 @@ public class GameAction extends Action {
 			player.setChips(100);
 			GameServiceImpl gameService = new GameServiceImpl();
 			player = gameService.addNewPlayerToGame(game, player);
-			request.setAttribute("game", game);
+			request.setAttribute("player", player);
+			
 		}
 		
 		//startNewHand

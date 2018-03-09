@@ -55,7 +55,7 @@ public class GameServiceImpl implements GameService {
 	
 	public Game startGame(Game game){
 		GameDaoImpl gameDao = new GameDaoImpl();
-		game = gameDao.merge(game, null);
+		game = gameDao.findById(game.getId(), null);
 		if(game.getPlayers().size() < 2){
 			throw new IllegalStateException("Not Enough Players");
 		}
@@ -83,7 +83,7 @@ public class GameServiceImpl implements GameService {
 		for(int i = 0; i < players.size(); i++){
 			Player p = players.get(i);
 			p.setGamePosition(i+1);
-			playerDao.save(p, null);
+			playerDao.merge(p, null);
 		}
 		
 		//Set Button and Big Blind.  Button is position 1 (index 0)

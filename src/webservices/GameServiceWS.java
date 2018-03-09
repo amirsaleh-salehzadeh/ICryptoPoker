@@ -265,7 +265,7 @@ public class GameServiceWS {
 	@GET
 	@Path("/StartGame")
 	@Produces("application/json")
-	public String startGame(long gameId) {
+	public String startGame(@QueryParam("gameId") long gameId) {
 		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
 		try {

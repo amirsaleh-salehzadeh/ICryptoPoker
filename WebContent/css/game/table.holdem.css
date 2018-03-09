@@ -166,10 +166,10 @@
 }
 
 .card-small {
-	border: .2em solid black;
+	border: 2px solid black;
 	border-radius: 10%;
-	height: 80px;
-	width: 56px; /*70% of height*/
+	height: 100%;
+	width: 100%; /*70% of height*/
 	margin-right: 5px;
 	float: left;
 	background-color: white;

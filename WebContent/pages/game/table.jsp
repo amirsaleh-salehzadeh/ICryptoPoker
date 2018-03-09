@@ -5,6 +5,7 @@
 
 <link rel="stylesheet" href="css/game/table.holdem.css" />
 <script src="js/game/table.js"></script>
+
 <%
 	Game game = (Game) request.getAttribute("game");
 %>
@@ -91,8 +92,7 @@
 					<div class="ui-block-a sitPlaceContainer"
 						style="height: 100% !important;">Player</div>
 					<div class="ui-block-b sitPlaceContainer"
-						style="height: 100% !important;" id="userSitPlace">
-					</div>
+						style="height: 100% !important;" id="userSitPlace"></div>
 					<div class="ui-block-c sitPlaceContainer"
 						style="height: 100% !important;">Player</div>
 				</div>
@@ -107,7 +107,13 @@
 				<div class="ui-block-solo" style="height: 25%;"></div>
 			</div>
 		</div>
-		<div class="ui-block-b" id="rightSideToolBar"></div>
+		<div class="ui-block-b" id="rightSideToolBar">
+			<form class="full-width-slider">
+				<label for="slider-12" class="ui-hidden-accessible">Slider:</label>
+				<input type="range" name="slider-12" id="slider-12" min="0"
+					max="100" value="50"  data-vertical="true" >
+			</form>
+		</div>
 	</div>
 	<div class="ui-block-solo horizontalSpacer"></div>
 

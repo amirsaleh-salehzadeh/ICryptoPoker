@@ -34,7 +34,8 @@
 	position: absolute;
 	right: 0;
 	left: 0;
-}
+	background-color: rgba(108, 112, 120,0.4) ;
+
 
 .sitPlaceThumbnail {
 	/* 		background-color: #b00000; */
@@ -88,6 +89,11 @@
 	height: 100%;
 	border-top: 1px solid #bb0000;
 	border-bottom: 1px solid #bb0000;
+	box-shadow:inset 1px 1px 2px rgba(190, 191, 193,0.3), inset 3px 15px 45px
+		rgba(128, 135, 151,0.1), inset -1px -1px 2px rgba(81, 89, 106,0.5), inset
+		-3px -15px 45px rgba(108, 112, 120,0.8), 1px 5px 30px -4px
+	rgba(142, 145, 151,0.1)  ;
+}
 }
 
 #middleBlockContainerDIV {
@@ -105,10 +111,11 @@
 }
 
 #rightSideToolBar {
-	background-color: white;
+	
 	width: 10%;
 	height: 100%;
 }
+
 
 #gamePlayScreen {
 	background-color: rgba(1, 1, 1, 1);
@@ -196,4 +203,10 @@
 
 .black {
 	color: black;
+}
+.full-width-slider input {
+    display: none;
+}
+.full-width-slider .ui-slider-track {
+    margin-left: 15px;
 }

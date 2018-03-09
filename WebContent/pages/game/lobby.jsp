@@ -90,6 +90,7 @@
 
 
 <div class="ui-block-solo">
+
 	<table data-role="table" id="table-lobby" class="ui-responsive"
 		data-mode="reflow">
 		<thead>
@@ -102,4 +103,5 @@
 		</thead>
 		<tbody id="lobbyTableTBody"></tbody>
 	</table>
+	
 </div>

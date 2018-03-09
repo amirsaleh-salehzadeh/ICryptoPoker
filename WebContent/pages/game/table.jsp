@@ -6,22 +6,25 @@
 
 <link rel="stylesheet" href="css/game/table.holdem.css" />
 <script src="js/game/table.js"></script>
-<script src="js/game/slider.js"></script>
 <%
 	Player player = (Player) request.getAttribute("player");
 	Game game = player.getGame();
-	// 	if (request.getParameter("reqCode").equalsIgnoreCase("joinAGame")) {
-
-	// 	}
 	String playerIDs = "";
 	for (Player p : game.getPlayers()) {
 		if (!p.getId().equalsIgnoreCase(
-				request.getParameter("playerName")))
-			playerIDs += p.getId() + ",";
+		request.getParameter("playerName")))
+	playerIDs += p.getId() + "," + p.getChips() + ";";
 	}
 	if (playerIDs.length() > 1)
 		playerIDs = playerIDs.substring(0, playerIDs.length() - 1);
-	System.out.println(playerIDs);
+	if (request.getParameter("reqCode").equalsIgnoreCase("joinAGame")
+	&& !game.isStarted() && game.getPlayers().size() == 2) {
+%>
+<script type="text/javascript">
+	startTheGame();
+</script>
+<%
+	}
 %>
 <input type="hidden" id="playerIDs" value="<%=playerIDs%>">
 <input type="hidden" id="playerPot" value="<%=player.getChips()%>">
@@ -121,10 +124,7 @@
 				<div class="ui-block-solo" style="height: 25%;"></div>
 			</div>
 		</div>
-		<div class="ui-block-b" id="rightSideToolBar">
-			<input type="range" name="slider-12" id="slider-12" min="0" max="100"
-				value="50" data-vertical="true">
-		</div>
+		<div class="ui-block-b" id="rightSideToolBar"></div>
 	</div>
 	<div class="ui-block-solo horizontalSpacer"></div>
 

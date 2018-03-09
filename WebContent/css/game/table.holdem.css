@@ -18,8 +18,8 @@
 	position: absolute;
 	right: 0;
 	left: 0;
-	background-color: rgba(108, 112, 120,0.4) ;
-
+	background-color: rgba(108, 112, 120, .4);
+}
 
 .sitPlaceThumbnail {
 	/* 		background-color: #b00000; */
@@ -31,7 +31,19 @@
 	margin: 0 auto;
 	border-radius: 50%;
 	position: relative;
-	height: 100%;
+}
+
+.sitPlaceThumbnailEmpty{
+	box-shadow: inset 1px 1px 2px rgba(111, 111, 111, .3), inset 3px 15px 45px
+		rgba(133, 133, 133, .1), inset -1px -1px 2px rgba(122, 122, 122, .5), inset
+		-3px -15px 45px rgba(112, 112, 112, .8), 1px 5px 30px -4px
+		rgba(188, 0, 0, 1);
+	border-radius: 50%;
+	margin: 0 auto;
+	border-radius: 50%;
+	position: relative;
+	color: black;
+	font-size: 11pt;
 }
 
 .sitPlaceContainer {
@@ -73,11 +85,10 @@
 	height: 100%;
 	border-top: 1px solid #bb0000;
 	border-bottom: 1px solid #bb0000;
-	box-shadow:inset 1px 1px 2px rgba(190, 191, 193,0.3), inset 3px 15px 45px
-		rgba(128, 135, 151,0.1), inset -1px -1px 2px rgba(81, 89, 106,0.5), inset
-		-3px -15px 45px rgba(108, 112, 120,0.8), 1px 5px 30px -4px
-	rgba(142, 145, 151,0.1)  ;
-}
+	box-shadow: inset 1px 1px 2px rgba(190, 191, 193, 0.3), inset 3px 15px
+		45px rgba(128, 135, 151, 0.1), inset -1px -1px 2px
+		rgba(81, 89, 106, 0.5), inset -3px -15px 45px rgba(108, 112, 120, 0.8),
+		1px 5px 30px -4px rgba(142, 145, 151, 0.1);
 }
 
 #middleBlockContainerDIV {
@@ -95,11 +106,10 @@
 }
 
 #rightSideToolBar {
-	
-	width: 10%;
+	background-color: white; width : 10%;
 	height: 100%;
+	width: 10%;
 }
-
 
 #gamePlayScreen {
 	background-color: rgba(1, 1, 1, 1);
@@ -205,11 +215,4 @@
 
 .black {
 	color: black;
-}
-
-.full-width-slider input {
-    display: none;
-}
-.full-width-slider .ui-slider-track {
-    margin-left: 15px;
 }

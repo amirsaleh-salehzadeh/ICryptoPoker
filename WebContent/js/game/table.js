@@ -8,19 +8,23 @@ $(window)
 							.each(
 									function() {
 										var pname = "";
-										if ($(this).attr("id") != "userSitPlace")
+										if ($(this).attr("id") != "userSitPlace" )
 											pname = getOtherPlayersName();
 										else
-											pname = $("#playerNameDiv").html();
+											pname = $("#playerNameDiv").html()
+													+ ","
+													+ $("#playerPot").val();
 
 										var content = "<div class='sitPlaceThumbnail'>"
 												+ "<img alt='' src='images/game/user.png' height='100%' /></div>"
-												+ "<div class='playerNamePlace'>";
-										content += pname
-												+ "</div><div class='playerTotalChipsPlace'></div>";
-										if (pname.length > 0)
-											$(this).html(content);
-
+												+ "<div class='playerNamePlace'> "
+												+ pname.split(",")[0]
+												+ "</div><div class='playerTotalChipsPlace'>$"
+												+ pname.split(",")[1]
+												+ "</div>";
+										if (pname.length <= 0)
+											content = "<div class='sitPlaceThumbnailEmpty'>SIT</div>";
+										$(this).html(content);
 									});
 					fitElementsWithinScreen();
 					generateACard("A", "clubs", 1);
@@ -37,16 +41,21 @@ function fitElementsWithinScreen() {
 		$(this).height($("#userSitPlace").height() / 2);
 		$(this).trigger("create");
 	});
+	$(".sitPlaceThumbnailEmpty").each(function() {
+		$(this).width($("#userSitPlace").height() / 2);
+		$(this).height($("#userSitPlace").height() / 2);
+		$(this).trigger("create");
+	});
 	// $("#mainBoardContainerDIV").width();
 }
 
 function getOtherPlayersName() {
 	if ($("#playerIDs").val().length == 0)
 		return "";
-	var name = $("#playerIDs").val().split(",");
+	var name = $("#playerIDs").val().split(";");
 	if (name.length > 1) {
 		var res = name[0];
-		$("#playerIDs").val($("#playerIDs").val().replace(res + ",", ""));
+		$("#playerIDs").val($("#playerIDs").val().replace(res + ";", ""));
 		return res;
 	} else {
 		$("#playerIDs").val("");
@@ -62,7 +71,7 @@ function generateACard(text, img, flopNo) {
 		img = "&spades;";
 	else if (img == "diam") {
 		img = "&diams;";
-		color = "red"
+		color = "red";
 	} else if (img == "hearts") {
 		img = "&hearts;";
 		color = "red";

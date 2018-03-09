@@ -38,28 +38,28 @@ public class Player implements Comparable<Player>, Serializable{
 	private boolean sittingOut;
 	private String registrationDate;
 	private String password;
-	private int gender ;
-	private Date dob ;
-	private String surname ;
+//	private int gender ;
+//	private Date dob ;
+//	private String surname ;
 	
-	public String getSurname() {
-		return surname;
-	}
-	public void setSurname(String surname) {
-		this.surname = surname;
-	}
-	public Date getDob() {
-		return dob;
-	}
-	public void setDob(Date dob) {
-		this.dob = dob;
-	}
-	public int getGender() {
-		return gender;
-	}
-	public void setGender(int gender) {
-		this.gender = gender;
-	}
+//	public String getSurname() {
+//		return surname;
+//	}
+//	public void setSurname(String surname) {
+//		this.surname = surname;
+//	}
+//	public Date getDob() {
+//		return dob;
+//	}
+//	public void setDob(Date dob) {
+//		this.dob = dob;
+//	}
+//	public int getGender() {
+//		return gender;
+//	}
+//	public void setGender(int gender) {
+//		this.gender = gender;
+//	}
 	/**
 	 * @return the registrationDate
 	 */

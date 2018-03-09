@@ -37,7 +37,7 @@ public interface GameDaoInterface {
 
 	Game merge(Game game, Connection conn);
 
-	Game addOnePlayerToGame(Game game, Connection conn);
+//	Game addOnePlayerToGame(Game game, Connection conn);
 
 	Game findById(long id, Connection conn);
 
@@ -51,6 +51,6 @@ public interface GameDaoInterface {
 
 	GameStructure mergeGameStructure(GameStructure gs, Connection conn);
 
-	Game updatePlayerLeft(Game game, Connection conn);
+//	Game updatePlayerLeft(Game game, Connection conn);
 
 }

@@ -4,7 +4,10 @@
  */
 package struts.actions;
 
+import java.util.Set;
+
 import game.poker.holdem.dao.GameDaoImpl;
+import game.poker.holdem.dao.PlayerDaoImpl;
 import game.poker.holdem.domain.Game;
 import game.poker.holdem.domain.Player;
 import game.poker.holdem.service.GameServiceImpl;
@@ -17,6 +20,8 @@ import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+
+import com.sun.xml.internal.bind.v2.TODO;
 
 public class GameAction extends Action {
 	private String success = "";
@@ -36,19 +41,23 @@ public class GameAction extends Action {
 		if(reqCode==null||reqCode.equalsIgnoreCase(""))
 			reqCode = "goToLobby";
 		if(reqCode.equalsIgnoreCase("joinAGame")){
-			request.getRemoteUser();
 			GameDaoImpl gamedao = new GameDaoImpl();
 			long gameId = Long.parseLong(request.getParameter("gameId"));
 			Game game = gamedao.findById(gameId, null);
-			Player player = new Player();
-			player.setGame(game);
-			pl
-//			player.setName(request.getRemoteUser());
-//			player.setName(request.getParameter("playerName"));
+			PlayerDaoImpl playerDaoImpl = new PlayerDaoImpl();
+//			TODO: AMS>> FIX Username
+//			Player player = playerDaoImpl.findById(request.getRemoteUser(), null);
+			Player player = playerDaoImpl.findById(request.getParameter("playerName"), null);
+			player.setChips(100);
+//			Set<Player> players= game.getPlayers();
+//			players.add(player);
+//			game.setPlayers(players);
 			GameServiceImpl gameService = new GameServiceImpl();
-//			player = gameService.addNewPlayerToGame(game, player);
+			player = gameService.addNewPlayerToGame(game, player);
 			request.setAttribute("game", game);
 		}
+		
+		//startNewHand
 		return mapping.findForward(reqCode);
 	}
 }

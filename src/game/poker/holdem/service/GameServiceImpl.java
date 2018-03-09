@@ -38,11 +38,10 @@ import java.util.List;
 
 public class GameServiceImpl implements GameService {
 	
-	private GameDaoImpl gameDao;
 	
-	private PlayerDaoImpl playerDao;
 
 	public Game getGameById(long id, boolean fetchPlayers) {
+		GameDaoImpl gameDao = new GameDaoImpl();
 		Game game = gameDao.findById(id, null);
 		//Player list is lazy fetched.  force fetch for players if necessary
 		if(fetchPlayers){
@@ -53,11 +52,9 @@ public class GameServiceImpl implements GameService {
 		return game;
 	}
 	
-	public Game saveGame(Game game){
-		return gameDao.save(game, null);
-	}
 	
 	public Game startGame(Game game){
+		GameDaoImpl gameDao = new GameDaoImpl();
 		game = gameDao.merge(game, null);
 		if(game.getPlayers().size() < 2){
 			throw new IllegalStateException("Not Enough Players");
@@ -82,6 +79,7 @@ public class GameServiceImpl implements GameService {
 		List<Player> players = new ArrayList<Player>();
 		players.addAll(game.getPlayers());
 		Collections.shuffle(players);
+		PlayerDaoImpl playerDao = new PlayerDaoImpl();
 		for(int i = 0; i < players.size(); i++){
 			Player p = players.get(i);
 			p.setGamePosition(i+1);
@@ -101,7 +99,7 @@ public class GameServiceImpl implements GameService {
 			throw new IllegalStateException("Tournament in progress, no new players may join");
 		}
 //		game = gameDao.merge(game, null);
-		game = gameDao.addOnePlayerToGame(game, null);
+//		game = gameDao.addOnePlayerToGame(game, null);
 		if(game.getPlayers().size() >= 10){
 			throw new IllegalStateException("Cannot have more than 10 players in one game");
 		}
@@ -110,20 +108,18 @@ public class GameServiceImpl implements GameService {
 		if(game.getGameType() == GameType.TOURNAMENT){
 			player.setChips(game.getGameStructure().getStartingChips());
 		}
-		
-//		player = playerDao.merge(player, null);
-		player = playerDao.addGameToPlayer(player, null);
+		PlayerDaoImpl playerDao = new PlayerDaoImpl();
+
+		player = playerDao.merge(player, null);
+//		player = playerDao.addGameToPlayer(player, null);
 		if(player == null){
 			return null;
 		}
+		GameDaoImpl gameDao = new GameDaoImpl();
 		game.setPlayersRemaining(game.getPlayersRemaining() + 1);
-		game = gameDao.updatePlayerLeft(game, null);
+		game = gameDao.merge(game, null);
 		player.setGame(game);
 		return player;
-	}
-	
-	public Player savePlayer(Player player){
-		return playerDao.save(player, null);
 	}
 	
 }

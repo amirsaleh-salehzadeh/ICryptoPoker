@@ -44,13 +44,6 @@ public interface GameService {
 	public Game getGameById(long id, boolean fetchPlayers);
 	
 	/**
-	 * Save any changes to the {@link Game} object to the persistent context
-	 * @param game game to be saved
-	 * @return saved game attached to the persistent context
-	 */
-	public Game saveGame(Game game);
-	
-	/**
 	 * Start a game. This begins the current game tracking.  Setup of the game is completed.  If it
 	 * is a tournament, all players should be registered at this time.<br /><br />
 	 * 
@@ -74,8 +67,6 @@ public interface GameService {
 	 * @param player Player to be saved
 	 * @return Player attached to the persistent context
 	 */
-	public Player savePlayer(Player player);
-	
 	//TODO List active games
 	//Games that are not started, games that are cash games and still in progress
 	//Need a way to weed out old/expired/inactive games

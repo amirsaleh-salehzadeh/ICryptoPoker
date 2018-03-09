@@ -53,6 +53,9 @@ public class Game {
 	}
 	
 	public Player getPlayerInBTN(){
+		if (playerInBTN == null) {
+			playerInBTN = new Player();
+		}
 		return playerInBTN;
 	}
 	public void setPlayerInBTN(Player playerInBTN){
@@ -88,6 +91,9 @@ public class Game {
 	}
 	
 	public HandEntity getCurrentHand() {
+		if (currentHand == null) {
+			currentHand = new HandEntity();
+		}
 		return currentHand;
 	}
 	public void setCurrentHand(HandEntity currentHand) {

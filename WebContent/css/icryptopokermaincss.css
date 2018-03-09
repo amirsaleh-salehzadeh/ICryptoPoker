@@ -1,8 +1,12 @@
 @CHARSET "ISO-8859-1";
 
-body {
+html, body {
+	overflow: hidden;
+	max-width: 100%;
+	max-height: 100%;
 	overflow: hidden;
 }
+
 #userInfoContainer {
 	color: rgb(248, 182, 36);
 	position: absolute;
@@ -23,6 +27,7 @@ div.jqm-header>h2 {
 	width: 66 !important;
 	height: 66 !important;
 }
+
 #mainMenu {
 	top: 12.5%;
 	position: absolute !important;

@@ -6,7 +6,7 @@
 
 <link rel="stylesheet" href="css/game/table.holdem.css" />
 <script src="js/game/table.js"></script>
-
+<script src="js/game/slider.js"></script>
 <%
 	Player player = (Player) request.getAttribute("player");
 	Game game = player.getGame();
@@ -23,14 +23,13 @@
 		playerIDs = playerIDs.substring(0, playerIDs.length() - 1);
 	System.out.println(playerIDs);
 %>
+<input type="hidden" id="playerIDs" value="<%=playerIDs%>">
+<input type="hidden" id="playerPot" value="<%=player.getChips()%>">
 <div id="gamePlayScreen">
 	<div class="ui-block-solo ui-grid-c constantBannersDiv">
 		<div class="ui-block-a" onclick="window.location.replace('t_game.do')"
-			style="cursor: pointer;">
-			Back to Lobby<input type="hidden" id="playerIDs"
-				value="<%=playerIDs%>">
-		</div>
-		<div class="ui-block-b">
+			style="cursor: pointer;">Back to Lobby</div>
+		<div class="ui-block-b" id="playerChipsDiv">
 			<img alt="" src="images/game/money.png" width="33px" height="33px"><%=player.getChips()%>
 		</div>
 		<div class="ui-block-c" id="playerNameDiv"><%=request.getParameter("playerName")%></div>
@@ -44,9 +43,7 @@
 								.split("_")[2];
 				out.write(val);
 			%>
-
 		</div>
-
 	</div>
 
 
@@ -125,11 +122,8 @@
 			</div>
 		</div>
 		<div class="ui-block-b" id="rightSideToolBar">
-			<form class="full-width-slider">
-				<label for="slider-12" class="ui-hidden-accessible">Slider:</label>
-				<input type="range" name="slider-12" id="slider-12" min="0"
-					max="100" value="50"  data-vertical="true" >
-			</form>
+			<input type="range" name="slider-12" id="slider-12" min="0" max="100"
+				value="50" data-vertical="true">
 		</div>
 	</div>
 	<div class="ui-block-solo horizontalSpacer"></div>

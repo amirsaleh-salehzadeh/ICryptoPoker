@@ -8,22 +8,6 @@
 	background-position: center;
 }
 
-#flopsContainer {
-	margin: 10% auto;
-	height: 44%;
-	width: 66%;
-}
-
-#flopsContainer div {
-	padding-left: 3px;
-	padding-right: 3px;
-}
-
-#flopsContainer img {
-	height: 100%;
-	width: 100%;
-}
-
 .horizontalSpacer {
 	height: 1%;
 }
@@ -172,29 +156,47 @@
 	height: 33% !important;
 }
 
+#flopsContainer {
+	margin: 10% auto;
+	height: 44%;
+	width: 66%;
+}
+
+#flopsContainer div {
+	padding-left: 3px;
+	padding-right: 3px;
+	position: relative;
+}
+
+#flopsContainer img {
+	height: 100%;
+	width: 100%;
+}
+
 .card-small {
-	border: 2px solid black;
+	border: 1px inset black;
 	border-radius: 10%;
 	height: 100%;
-	width: 100%; /*70% of height*/
-	margin-right: 5px;
+	width: 90%; /*70% of height*/
 	float: left;
 	background-color: white;
 }
 
 .card-text {
-	margin: 0;
-	margin-top: 15%;
+	margin: 0 auto;
 	text-align: center;
-	font-size: 1.5em;
+	font-size: 18pt;
 	font-weight: bold;
-	padding: 0;
+	position: absolute;
+	top: 3px;
 }
 
 .card-img {
 	text-align: center;
 	margin: 0;
-	font-size: 2em;
+	font-size: 18pt;
+	position: absolute;
+	bottom: 3px;
 }
 
 .red {
@@ -204,6 +206,7 @@
 .black {
 	color: black;
 }
+
 .full-width-slider input {
     display: none;
 }

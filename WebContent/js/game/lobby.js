@@ -28,11 +28,12 @@ function getAllGames() {
 		success : function(data) {
 			var tableRows = "";
 			$.each(data, function(k, l) {
-				tableRows += "<tr onclick='joinGame(" + l.id + ")'><td>" + l.name
-						+ "</td><td>";
+				tableRows += "<tr onclick='joinGame(" + l.id + ")'><td>"
+						+ l.name + "</td><td>";
 				var smallBig = l.gameStructure.currentBlindLevel.split("_");
-				tableRows += smallBig[1] + " / " + smallBig[2] + "</td><td>"
-						+ l.gameStructure.startingChips + "</td><td>"
+				tableRows += smallBig[1] + " / " + smallBig[2] + "</td><td>";
+				tableRows += parseInt(smallBig[2]) * 40 + " / "
+				+ parseInt(smallBig[2]) * 200  + "</td><td>"
 						+ l.players.length + " / 10</td></tr>";
 			});
 			$("#lobbyTableTBody").html(tableRows);
@@ -49,12 +50,13 @@ function getAllGames() {
 	});
 }
 
-function joinGame(gameID){
-	if($("#playerName").val()==""){
+function joinGame(gameID) {
+	if ($("#playerName").val() == "") {
 		alert("player name????");
 		return;
 	}
-	window.location.replace("t_game.do?reqCode=joinAGame&gameId="+gameID+"&playerName="+$("#playerName").val());
+	window.location.replace("t_game.do?reqCode=joinAGame&gameId=" + gameID
+			+ "&playerName=" + $("#playerName").val());
 }
 
 function createNewGame() {
@@ -69,9 +71,10 @@ function createNewGame() {
 			var tableRows = "<tr onclick='alert(" + result.id + ")'><td>"
 					+ result.name + "</td><td>";
 			var smallBig = result.gameStructure.currentBlindLevel.split("_");
-			tableRows += smallBig[1] + " / " + smallBig[2] + "</td><td>"
-					+ result.gameStructure.startingChips + "</td><td>"
-					+ result.players.length + " / 10</td></tr>";
+			tableRows += smallBig[1] + " / " + smallBig[2] + "</td><td>";
+			tableRows += parseInt(smallBig[2]) * 40 + "/"
+					+ parseInt(smallBig[2]) * 200 +
+			"</td><td>" + result.players.length + " / 10</td></tr>";
 			$("#lobbyTableTBody")
 					.html(tableRows + $("#lobbyTableTBody").html());
 			$("#table-lobby").trigger("create");

@@ -18,7 +18,8 @@
 				request.getParameter("playerName")))
 			playerIDs += p.getId() + ",";
 	}
-	playerIDs = playerIDs.substring(0, playerIDs.length() - 1);
+	if (playerIDs.length() > 1)
+		playerIDs = playerIDs.substring(0, playerIDs.length() - 1);
 	System.out.println(playerIDs);
 %>
 <div id="gamePlayScreen">
@@ -29,7 +30,7 @@
 				value="<%=playerIDs%>">
 		</div>
 		<div class="ui-block-b">
-			<img alt="" src="images/game/money.png" width="33px" height="33px"><%=player.getChips() %>
+			<img alt="" src="images/game/money.png" width="33px" height="33px"><%=player.getChips()%>
 		</div>
 		<div class="ui-block-c" id="playerNameDiv"><%=request.getParameter("playerName")%></div>
 		<div class="ui-block-d"><%=game.getName()%>

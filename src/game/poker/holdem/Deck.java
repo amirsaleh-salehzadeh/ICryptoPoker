@@ -20,72 +20,97 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
-*/
+ */
 package game.poker.holdem;
+
+import game.poker.holdem.domain.PlayerHand;
+import game.poker.holdem.holder.Board;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 /**
- * Standard deck of cards for poker. 52 Cards. 13 Clubs, Diamonds, Spades, and Hearts.
+ * Standard deck of cards for poker. 52 Cards. 13 Clubs, Diamonds, Spades, and
+ * Hearts.
  * 
  * @author jacobhyphenated
  */
 public class Deck {
 	private List<Card> cards;
-	
+
 	/**
 	 * Construct a standard shuffled playing card deck.
 	 */
-	public Deck(){
+	public Deck() {
 		this(true);
 	}
-	
+
 	/**
 	 * Create a standard deck of playing cards
-	 * @param shuffle true for shuffled deck.  False for not shuffled.
+	 * 
+	 * @param shuffle
+	 *            true for shuffled deck. False for not shuffled.
 	 */
-	public Deck(boolean shuffle){
+	public Deck(boolean shuffle) {
 		initDeck();
-		if(shuffle){
+		if (shuffle) {
 			shuffleDeck();
 		}
 	}
-	
+
 	/**
 	 * Initialize a deck using a pre existing list of cards
-	 * @param cards List of cards, assumed correctly shuffled
+	 * 
+	 * @param cards
+	 *            List of cards, assumed correctly shuffled
 	 */
-	public Deck(List<Card> cards){
-		//this.cards = new LinkedList<Card>();
-		//this.cards.addAll(cards);
+	public Deck(List<Card> cards) {
+		// this.cards = new LinkedList<Card>();
+		// this.cards.addAll(cards);
 		this.cards = cards;
 	}
-	
-	public void initDeck(){
+
+	public Deck(List<Card> cards, Set<PlayerHand> ph, Board b) {
+		for (Iterator iterator = ph.iterator(); iterator.hasNext();) {
+			PlayerHand playerHand = (PlayerHand) iterator.next();
+			cards.remove(playerHand.getCard1());
+			cards.remove(playerHand.getCard2());
+		}
+		for (Iterator iterator = b.iterator(); iterator.hasNext();) {
+			Card c = (Card) iterator.next();
+			cards.remove(c);
+		}
+		this.cards = cards;
+	}
+
+	public void initDeck() {
 		cards = new LinkedList<Card>();
 		cards.addAll(Arrays.asList(Card.values()));
 	}
-	
-	public void shuffleDeck(){
+
+	public void shuffleDeck() {
 		Collections.shuffle(cards);
 	}
-	
+
 	/**
-	 * Returns the top card from the deck.  Removes the card from the deck.
+	 * Returns the top card from the deck. Removes the card from the deck.
+	 * 
 	 * @return {@link Card}
 	 */
-	public Card dealCard(){
+	public Card dealCard() {
 		return cards.remove(0);
 	}
-	
+
 	/**
 	 * Get the cards in the deck in the form of a list
+	 * 
 	 * @return
 	 */
-	public List<Card> exportDeck(){
+	public List<Card> exportDeck() {
 		return cards;
 	}
 }

@@ -64,7 +64,7 @@ public class PlayerHand implements Comparable<PlayerHand> {
 		this.handEntity = hand;
 	}
 
-	protected Card getCard1() {
+	public Card getCard1() {
 		return card1;
 	}
 
@@ -72,7 +72,7 @@ public class PlayerHand implements Comparable<PlayerHand> {
 		this.card1 = card1;
 	}
 
-	protected Card getCard2() {
+	public Card getCard2() {
 		return card2;
 	}
 

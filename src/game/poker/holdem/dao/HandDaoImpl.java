@@ -82,9 +82,31 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 			ps.setInt(7, hand.getTotalBetAmount());
 			ps.executeUpdate();
 			rs = ps.getGeneratedKeys();
+			Set<PlayerHand> newPHs = new HashSet<PlayerHand>();
 			if (rs.next()) {
 				hand.setId(rs.getLong(1));
+				query = "INSERT INTO `player_hand` (`player_hand_id`, `player_id`, `hand_id`, `card1`, `card2`, `bet_amount`, `round_bet_amount`) "
+						+ "VALUES (?, ?, ?, ?, ?, ?, ?)";
+				for (PlayerHand ph : hand.getPlayers()) {
+					PreparedStatement ps2 = conn.prepareStatement(query,
+							Statement.RETURN_GENERATED_KEYS);
+					ps2.setLong(1, ph.getId());
+					ps2.setString(2, ph.getPlayer().getId());
+					ps2.setLong(3, hand.getId());
+					ps2.setString(4, ph.getCard1().name());
+					ps2.setString(5, ph.getCard2().name());
+					ps2.setInt(6, ph.getBetAmount());
+					ps2.setInt(7, ph.getRoundBetAmount());
+					ps2.executeUpdate();
+					ResultSet rs2 = ps.getGeneratedKeys();
+					if (rs2.next())
+						ph.setId(rs.getLong(1));
+					newPHs.add(ph);
+					ps2.close();
+					rs2.close();
+				}
 			}
+			hand.setPlayers(newPHs);
 			rs.close();
 			ps.close();
 			if (isNewConn) {
@@ -92,6 +114,14 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 				conn.close();
 			}
 		} catch (SQLException e) {
+			try {
+				if (!conn.isClosed()) {
+					conn.rollback();
+					conn.close();
+				}
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
 			e.printStackTrace();
 		}
 		return hand;
@@ -132,6 +162,14 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 				conn.close();
 			}
 		} catch (SQLException e) {
+			try {
+				if (!conn.isClosed()) {
+					conn.rollback();
+					conn.close();
+				}
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
 			e.printStackTrace();
 		}
 		return hand;
@@ -165,6 +203,14 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 				conn.close();
 			}
 		} catch (SQLException e) {
+			try {
+				if (!conn.isClosed()) {
+					conn.rollback();
+					conn.close();
+				}
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
 			e.printStackTrace();
 		}
 	}
@@ -195,9 +241,13 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 				hand.setCurrentToAct(pdao.findById(
 						rs.getString("player_to_act_id"), conn));
 				GameDaoImpl gdao = new GameDaoImpl();
-				Game g = gdao.findById(rs.getLong("game_id"),null);
-				g.setPlayers(null);
-				hand.setGame(g);
+//				Game g = gdao.findById(rs.getLong("game_id"), null);
+//				hand.setGame(g);
+				Set<PlayerHand> phs = new HashSet<PlayerHand>();
+				for (Player p : gdao.getAllPlayersInGame(rs.getLong("game_id"), conn)) {
+					phs.add(getPlayerHand(id, p.getId(), conn));
+				}
+				hand.setPlayers(phs);
 				hand.setId(id);
 				hand.setLastBetAmount(rs.getInt("bet_amount"));
 				hand.setTotalBetAmount(rs.getInt("total_bet_amount"));
@@ -209,6 +259,14 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 				conn.close();
 			}
 		} catch (SQLException e) {
+			try {
+				if (!conn.isClosed()) {
+					conn.rollback();
+					conn.close();
+				}
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
 			e.printStackTrace();
 		}
 		return hand;
@@ -227,10 +285,12 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 					e.printStackTrace();
 				}
 			String query = "";
-			query = "select * from board where hand_id = " + id;
+			query = "select * from board where board_id = " + id;
 			PreparedStatement ps = conn.prepareStatement(query);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
+				if (rs.getString("flop1") == null)
+					continue;
 				board.setFlop1(Card.valueOf(rs.getString("flop1")));
 				board.setFlop2(Card.valueOf(rs.getString("flop2")));
 				board.setFlop3(Card.valueOf(rs.getString("flop3")));
@@ -245,9 +305,66 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 				conn.close();
 			}
 		} catch (SQLException e) {
+			try {
+				if (!conn.isClosed()) {
+					conn.rollback();
+					conn.close();
+				}
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	private PlayerHand getPlayerHand(long handId, String playerId,
+			Connection conn) {
+		PlayerHand ph = new PlayerHand();
+		try {
+			boolean isNewConn = false;
+			if (conn == null)
+				try {
+					conn = getConnection();
+					conn.setAutoCommit(false);
+					isNewConn = true;
+				} catch (AMSException e) {
+					e.printStackTrace();
+				}
+			String query = "";
+			query = "select * from player_hand where hand_id = " + handId
+					+ " and player_id = '" + playerId + "'";
+			PreparedStatement ps = conn.prepareStatement(query);
+			ResultSet rs = ps.executeQuery();
+			PlayerDaoImpl pdao = new PlayerDaoImpl();
+			HandDaoImpl hdao = new HandDaoImpl();
+			while (rs.next()) {
+				ph.setPlayer(pdao.findById(rs.getString("player_id"), conn));
+//				ph.setHandEntity(hdao.findById(rs.getLong("hand_id"), conn));
+				ph.setCard1(Card.valueOf(rs.getString("card1")));
+				ph.setCard2(Card.valueOf(rs.getString("card2")));
+				ph.setBetAmount(rs.getInt("bet_amount"));
+				ph.setRoundBetAmount(rs.getInt("round_bet_amount"));
+				ph.setId(rs.getLong("player_hand_id"));
+			}
+			rs.close();
+			ps.close();
+			if (isNewConn) {
+				conn.commit();
+				conn.close();
+			}
+		} catch (SQLException e) {
+			try {
+				if (!conn.isClosed()) {
+					conn.rollback();
+					conn.close();
+				}
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+		}
+		return ph;
 	}
 
 	@Override
@@ -290,8 +407,10 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 			}
 		} catch (SQLException e) {
 			try {
-				conn.rollback();
-				conn.close();
+				if (!conn.isClosed()) {
+					conn.rollback();
+					conn.close();
+				}
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}

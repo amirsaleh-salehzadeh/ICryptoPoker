@@ -60,6 +60,7 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 					+ "VALUES (NULL, NULL, NULL, NULL, NULL, NULL);";
 			PreparedStatement ps = conn.prepareStatement(query,
 					Statement.RETURN_GENERATED_KEYS);
+			ps.executeUpdate();
 			ResultSet rs = ps.getGeneratedKeys();
 			if (rs.next()) {
 				BoardEntity board = new BoardEntity();
@@ -79,6 +80,7 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 			ps.setInt(5, hand.getPot());
 			ps.setInt(6, hand.getLastBetAmount());
 			ps.setInt(7, hand.getTotalBetAmount());
+			ps.executeUpdate();
 			rs = ps.getGeneratedKeys();
 			if (rs.next()) {
 				hand.setId(rs.getLong(1));
@@ -193,7 +195,9 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 				hand.setCurrentToAct(pdao.findById(
 						rs.getString("player_to_act_id"), conn));
 				GameDaoImpl gdao = new GameDaoImpl();
-				hand.setGame(gdao.findById(rs.getLong("game_id"), conn));
+				Game g = gdao.findById(rs.getLong("game_id"),null);
+				g.setPlayers(null);
+				hand.setGame(g);
 				hand.setId(id);
 				hand.setLastBetAmount(rs.getInt("bet_amount"));
 				hand.setTotalBetAmount(rs.getInt("total_bet_amount"));
@@ -225,7 +229,7 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 			String query = "";
 			query = "select * from board where hand_id = " + id;
 			PreparedStatement ps = conn.prepareStatement(query);
-			ResultSet rs = ps.getResultSet();
+			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				board.setFlop1(Card.valueOf(rs.getString("flop1")));
 				board.setFlop2(Card.valueOf(rs.getString("flop2")));

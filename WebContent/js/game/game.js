@@ -1,5 +1,5 @@
 function startTheGame() {
-	if ($("#isStarted").val() == true)
+//	if ($("#isStarted").val() == true)
 		return;
 	var url = "/ICryptoPoker/REST/GetGameServiceWS/StartHand?gameId="
 			+ $("#gameID").val();

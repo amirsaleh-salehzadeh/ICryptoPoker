@@ -23,6 +23,8 @@ THE SOFTWARE.
  */
 package game.poker.holdem.domain;
 
+import java.util.HashSet;
+
 import game.poker.holdem.Card;
 import game.poker.holdem.holder.Hand;
 
@@ -57,6 +59,8 @@ public class PlayerHand implements Comparable<PlayerHand> {
 	}
 
 	public void setHandEntity(HandEntity hand) {
+//		if(hand.getPlayers()!=null&&hand.getPlayers().size()>0)
+//			hand.setPlayers(new HashSet<PlayerHand>());
 		this.handEntity = hand;
 	}
 

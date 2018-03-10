@@ -47,6 +47,7 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import game.poker.holdem.dao.GameDaoImpl;
+import game.poker.holdem.dao.HandDaoImpl;
 import game.poker.holdem.domain.BlindLevel;
 import game.poker.holdem.domain.CommonTournamentFormats;
 import game.poker.holdem.domain.Game;
@@ -314,7 +315,12 @@ public class GameServiceWS {
 		gameService = new GameServiceImpl();
 		handService = new PokerHandServiceImpl();
 		Game game = gameService.getGameById(gameId, false);
-		HandEntity hand = handService.startNewHand(game);
+		HandEntity hand = new HandEntity();
+		HandDaoImpl hdao = new HandDaoImpl();
+		if (game.getCurrentHand().getId() > 0)
+			hand = hdao.findById(game.getCurrentHand().getId(), null);
+		else
+			hand = handService.startNewHand(game);
 		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
 		try {
@@ -460,7 +466,7 @@ public class GameServiceWS {
 	@Path("/EndHand")
 	@Produces("application/json")
 	public String endHand(long handId) {
-		
+
 		HandEntity hand = handService.getHandById(handId);
 		handService.endHand(hand);
 		ObjectMapper mapper = new ObjectMapper();

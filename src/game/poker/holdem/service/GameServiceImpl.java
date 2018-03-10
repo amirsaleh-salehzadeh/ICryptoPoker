@@ -47,6 +47,8 @@ public class GameServiceImpl implements GameServiceInterface {
 				p.getId();
 			}
 		}
+//		else
+//			game.setPlayers(new HashSet<Player>());
 		return game;
 	}
 

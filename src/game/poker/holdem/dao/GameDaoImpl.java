@@ -75,8 +75,9 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDaoInterface {
 					game.setGameType(GameType.CASH);
 				game.setName(rs.getString("name"));
 				game.setStarted(rs.getBoolean("is_started"));
-				game.setCurrentHand(handDaoImpl.findById(
-						rs.getLong("current_hand_id"), conn));
+				if (rs.getLong("current_hand_id") != 0)
+					game.setCurrentHand(handDaoImpl.findById(
+							rs.getLong("current_hand_id"), conn));
 				game.setGameStructure(getGameStructure(
 						rs.getLong("game_structure_id"), conn));
 				if (rs.getString("btn_player_id") != null)
@@ -93,8 +94,10 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDaoInterface {
 			}
 		} catch (SQLException e) {
 			try {
-				conn.rollback();
-				conn.close();
+				if (!conn.isClosed()) {
+					conn.rollback();
+					conn.close();
+				}
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}
@@ -171,6 +174,14 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDaoInterface {
 				conn.close();
 			}
 		} catch (SQLException e) {
+			try {
+				if (!conn.isClosed()) {
+					conn.rollback();
+					conn.close();
+				}
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
 			e.printStackTrace();
 		}
 		return game;
@@ -211,6 +222,14 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDaoInterface {
 				conn.close();
 			}
 		} catch (SQLException e) {
+			try {
+				if (!conn.isClosed()) {
+					conn.rollback();
+					conn.close();
+				}
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
 			e.printStackTrace();
 		}
 		return game;
@@ -256,8 +275,10 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDaoInterface {
 			}
 		} catch (SQLException e) {
 			try {
-				conn.rollback();
-				conn.close();
+				if (!conn.isClosed()) {
+					conn.rollback();
+					conn.close();
+				}
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}
@@ -305,8 +326,10 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDaoInterface {
 				| IllegalAccessException | NoSuchFieldException
 				| SecurityException e) {
 			try {
-				conn.rollback();
-				conn.close();
+				if (!conn.isClosed()) {
+					conn.rollback();
+					conn.close();
+				}
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}
@@ -360,6 +383,14 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDaoInterface {
 				conn.close();
 			}
 		} catch (SQLException e) {
+			try {
+				if (!conn.isClosed()) {
+					conn.rollback();
+					conn.close();
+				}
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
 			e.printStackTrace();
 		}
 		return gs;
@@ -404,6 +435,14 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDaoInterface {
 				conn.close();
 			}
 		} catch (SQLException e) {
+			try {
+				if (!conn.isClosed()) {
+					conn.rollback();
+					conn.close();
+				}
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
 			e.printStackTrace();
 		}
 		return gs;
@@ -411,7 +450,6 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDaoInterface {
 
 	@Override
 	public List<Game> getAllGames(Connection conn) {
-		// TODO Auto-generated method stub
 		List<Game> games = new ArrayList<>();
 		try {
 			boolean isNewConn = false;
@@ -460,8 +498,10 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDaoInterface {
 			}
 		} catch (SQLException e) {
 			try {
-				conn.rollback();
-				conn.close();
+				if (!conn.isClosed()) {
+					conn.rollback();
+					conn.close();
+				}
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}

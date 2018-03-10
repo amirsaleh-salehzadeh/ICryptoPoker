@@ -26,25 +26,13 @@ function getAllGames() {
 			ShowLoadingScreen();
 		},
 		success : function(data) {
-			var tableRows = "";
-			$.each(data, function(k, l) {
-				tableRows += "<tr onclick='joinGame(" + l.id + ")'><td>"
-						+ l.name + "</td><td>";
-				var smallBig = l.gameStructure.currentBlindLevel.split("_");
-				tableRows += smallBig[1] + " / " + smallBig[2] + "</td><td>";
-				tableRows += parseInt(smallBig[2]) * 40 + " / "
-				+ parseInt(smallBig[2]) * 200  + "</td><td>"
-						+ l.players.length + " / 10</td></tr>";
-			});
-			$("#lobbyTableTBody").html(tableRows);
-			$("#table-lobby").trigger("create");
-
+			alert(data);
 		},
 		complete : function() {
 			HideLoadingScreen();
 		},
 		error : function(xhr, ajaxOptions, thrownError) {
-			popErrorMessage("An error occured while removing the marker. "
+			alert("An error occured while removing the marker. "
 					+ thrownError);
 		}
 	});
@@ -73,8 +61,8 @@ function createNewGame() {
 			var smallBig = result.gameStructure.currentBlindLevel.split("_");
 			tableRows += smallBig[1] + " / " + smallBig[2] + "</td><td>";
 			tableRows += parseInt(smallBig[2]) * 40 + "/"
-					+ parseInt(smallBig[2]) * 200 +
-			"</td><td>" + result.players.length + " / 10</td></tr>";
+					+ parseInt(smallBig[2]) * 200 + "</td><td>"
+					+ result.players.length + " / 10</td></tr>";
 			$("#lobbyTableTBody")
 					.html(tableRows + $("#lobbyTableTBody").html());
 			$("#table-lobby").trigger("create");

@@ -24,6 +24,7 @@ THE SOFTWARE.
 package game.poker.holdem.service;
 
 import game.poker.holdem.dao.HandDao;
+import game.poker.holdem.dao.PlayerDaoImpl;
 import game.poker.holdem.dao.PlayerDaoInterface;
 import game.poker.holdem.domain.Game;
 import game.poker.holdem.domain.HandEntity;
@@ -35,9 +36,9 @@ import game.poker.holdem.util.PlayerUtil;
 import java.util.Map;
 
 
-public class PlayerActionServiceImpl implements PlayerActionService {
+public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 
-	private PlayerDaoInterface playerDao;
+	private PlayerDaoImpl playerDao;
 	private HandDao handDao;
 	
 	public Player getPlayerById(String playerId){

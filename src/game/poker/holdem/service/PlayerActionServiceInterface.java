@@ -33,7 +33,7 @@ import game.poker.holdem.domain.PlayerStatus;
  * 
  * @author jacobhyphenated
  */
-public interface PlayerActionService {
+public interface PlayerActionServiceInterface {
 
 	/**
 	 * Get the {@link Player} domain object based on the unique id for that player

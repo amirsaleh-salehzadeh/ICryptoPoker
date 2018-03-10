@@ -20,7 +20,7 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
-*/
+ */
 package game.poker.holdem.service;
 
 import game.poker.holdem.dao.GameDaoImpl;
@@ -33,86 +33,88 @@ import game.poker.holdem.domain.Player;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
-
-public class GameServiceImpl implements GameService {
-	
-	
+public class GameServiceImpl implements GameServiceInterface {
 
 	public Game getGameById(long id, boolean fetchPlayers) {
 		GameDaoImpl gameDao = new GameDaoImpl();
 		Game game = gameDao.findById(id, null);
-		//Player list is lazy fetched.  force fetch for players if necessary
-		if(fetchPlayers){
-			for(Player p : game.getPlayers()){
+		// Player list is lazy fetched. force fetch for players if necessary
+		if (fetchPlayers) {
+			for (Player p : game.getPlayers()) {
 				p.getId();
 			}
 		}
 		return game;
 	}
-	
-	
-	public Game startGame(Game game){
+
+	public Game startGame(Game game) {
 		GameDaoImpl gameDao = new GameDaoImpl();
-		game = gameDao.findById(game.getId(), null);
-		if(game.getPlayers().size() < 2){
+		// game = gameDao.findById(game.getId(), null);
+		if (game.getPlayers().size() < 2) {
 			throw new IllegalStateException("Not Enough Players");
 		}
-		if(game.getPlayers().size() > 10){
+		if (game.getPlayers().size() > 10) {
 			throw new IllegalStateException("Too Many Players");
 		}
-		if(game.isStarted()){
+		if (game.isStarted()) {
 			throw new IllegalStateException("Game already started");
 		}
-		
-		//Set started flag
+
+		// Set started flag
 		game.setStarted(true);
-		//Start at the first blind level for the game
+		// Start at the first blind level for the game
 		GameStructure gs = game.getGameStructure();
-		List<BlindLevel> blinds = gs.getBlindLevels();
-		Collections.sort(blinds);
-		gs.setCurrentBlindLevel(blinds.get(0));
-		
-		//Get all players associated with the game. 
-		//Assign random position.  Save the player.
+		if (game.getGameType() == GameType.TOURNAMENT) {
+			List<BlindLevel> blinds = gs.getBlindLevels();
+			Collections.sort(blinds);
+			gs.setCurrentBlindLevel(blinds.get(0));
+		}
+
+		// Get all players associated with the game.
+		// Assign random position. Save the player.
 		List<Player> players = new ArrayList<Player>();
 		players.addAll(game.getPlayers());
 		Collections.shuffle(players);
 		PlayerDaoImpl playerDao = new PlayerDaoImpl();
-		for(int i = 0; i < players.size(); i++){
+		for (int i = 0; i < players.size(); i++) {
 			Player p = players.get(i);
-			p.setGamePosition(i+1);
+			p.setGame(game);
+			p.setGamePosition(i + 1);
 			playerDao.merge(p, null);
 		}
-		
-		//Set Button and Big Blind.  Button is position 1 (index 0)
+
+		// Set Button and Big Blind. Button is position 1 (index 0)
 		Collections.sort(players);
 		game.setPlayerInBTN(players.get(0));
-		
-		//Save and return the updated game
+
+		// Save and return the updated game
 		return gameDao.merge(game, null);
 	}
-	
-	public Player addNewPlayerToGame(Game game, Player player){
-		if(game.isStarted() && game.getGameType() == GameType.TOURNAMENT){
-			throw new IllegalStateException("Tournament in progress, no new players may join");
+
+	public Player addNewPlayerToGame(Game game, Player player) {
+		if (game.isStarted() && game.getGameType() == GameType.TOURNAMENT) {
+			throw new IllegalStateException(
+					"Tournament in progress, no new players may join");
 		}
-//		game = gameDao.merge(game, null);
-//		game = gameDao.addOnePlayerToGame(game, null);
-		if(game.getPlayers().size() >= 10){
-			throw new IllegalStateException("Cannot have more than 10 players in one game");
+		// game = gameDao.merge(game, null);
+		// game = gameDao.addOnePlayerToGame(game, null);
+		if (game.getPlayers().size() >= 10) {
+			throw new IllegalStateException(
+					"Cannot have more than 10 players in one game");
 		}
 		player.setGame(game);
-		//Set up player according to game logic.
-		if(game.getGameType() == GameType.TOURNAMENT){
+		// Set up player according to game logic.
+		if (game.getGameType() == GameType.TOURNAMENT) {
 			player.setChips(game.getGameStructure().getStartingChips());
 		}
 		PlayerDaoImpl playerDao = new PlayerDaoImpl();
 
 		player = playerDao.merge(player, null);
-//		player = playerDao.addGameToPlayer(player, null);
-		if(player == null){
+		// player = playerDao.addGameToPlayer(player, null);
+		if (player == null) {
 			return null;
 		}
 		GameDaoImpl gameDao = new GameDaoImpl();
@@ -121,5 +123,5 @@ public class GameServiceImpl implements GameService {
 		player.setGame(game);
 		return player;
 	}
-	
+
 }

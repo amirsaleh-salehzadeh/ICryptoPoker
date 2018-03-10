@@ -34,17 +34,20 @@ import game.poker.holdem.view.PlayerStatusObject;
 
 public class PlayerServiceManagerImpl implements PlayerServiceManager {
 	
-	private GameService gameService;
+	private GameServiceImpl gameService;
 	
-	private PlayerActionService playerActionService;
+	private PlayerActionServiceImpl playerActionService;
 	
-	private PokerHandService handService;
+	private PokerHandServiceImpl handService;
 	
 
 	public PlayerStatusObject buildPlayerStatus(long gameId, String playerId) {
+		gameService = new GameServiceImpl();
 		Game game = gameService.getGameById(gameId, false);
+		playerActionService = new PlayerActionServiceImpl();
 		Player player = playerActionService.getPlayerById(playerId);
 		PlayerStatusObject results = new PlayerStatusObject();
+		handService = new PokerHandServiceImpl();
 		//Get the player status.
 		//In the special case of preflop, player is not current to act, see if the player is SB or BB
 		PlayerStatus playerStatus = playerActionService.getPlayerStatus(player);

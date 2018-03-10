@@ -33,9 +33,7 @@ import com.google.common.collect.Iterators;
 /**
  * A container designed for storing cards.
  */
-public class CardHolder implements Serializable {
-
-	private static final long serialVersionUID = -6289334212535961129L;
+public class CardHolder {
 
 	private final Card[] cards;
 

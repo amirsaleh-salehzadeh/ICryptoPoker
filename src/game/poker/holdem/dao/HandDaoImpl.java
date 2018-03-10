@@ -35,6 +35,7 @@ import com.mysql.jdbc.Statement;
 import tools.AMSException;
 import game.poker.holdem.Card;
 import game.poker.holdem.domain.BlindLevel;
+import game.poker.holdem.domain.BoardEntity;
 import game.poker.holdem.domain.Game;
 import game.poker.holdem.domain.HandEntity;
 import game.poker.holdem.domain.Player;
@@ -44,9 +45,7 @@ import hibernate.config.BaseHibernateDAO;
 public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 
 	@Override
-	public HandEntity save(HandEntity game, Connection conn) {
-		// TODO Auto-generated method stub
-		
+	public HandEntity save(HandEntity hand, Connection conn) {
 		try {
 			boolean isNewConn = false;
 			if (conn == null)
@@ -57,25 +56,32 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 				} catch (AMSException e) {
 					e.printStackTrace();
 				}
-			String query = "";
-			query = "INSERT INTO `hand` (`board_id`, `game_id`, `player_to_act_id`, `blind_level`, `pot`," +
-					" `bet_amount`, `total_bet_amount`) "
+			String query = "INSERT INTO `board` (`board_id`, `flop1`, `flop2`, `flop3`, `turn`, `river`) "
+					+ "VALUES (NULL, NULL, NULL, NULL, NULL, NULL);";
+			PreparedStatement ps = conn.prepareStatement(query,
+					Statement.RETURN_GENERATED_KEYS);
+			ResultSet rs = ps.getGeneratedKeys();
+			if (rs.next()) {
+				BoardEntity board = new BoardEntity();
+				board.setId(rs.getLong(1));
+				hand.setBoard(board);
+			}
+			ps.close();
+			rs.close();
+			query = "INSERT INTO `hand` (`board_id`, `game_id`, `player_to_act_id`, `blind_level`, `pot`,"
+					+ " `bet_amount`, `total_bet_amount`) "
 					+ "VALUES (?, ?, ?, ?, ?, ?, ?);";
-			PreparedStatement ps = conn.prepareStatement(query,
-					Statement.RETURN_GENERATED_KEYS);
-			
-			ps.setLong(1, game.getBoard().getId());
-			ps.setLong(2, game.getGame().getId());
-			ps.setString(3, game.getCurrentToAct().getId());
-		    ps.setString(4, game.getBlindLevel().toString()) ;
-			ps.setInt(5, game.getPot());
-			ps.setInt(6, game.getLastBetAmount());
-			ps.setInt(7, game.getTotalBetAmount());
-			ps.executeUpdate();
-			ResultSet rs = ps.getGeneratedKeys();
-			GameDaoImpl gdi = new GameDaoImpl();
+			ps = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+			ps.setLong(1, hand.getBoard().getId());
+			ps.setLong(2, hand.getGame().getId());
+			ps.setString(3, hand.getCurrentToAct().getId());
+			ps.setString(4, hand.getBlindLevel().toString());
+			ps.setInt(5, hand.getPot());
+			ps.setInt(6, hand.getLastBetAmount());
+			ps.setInt(7, hand.getTotalBetAmount());
+			rs = ps.getGeneratedKeys();
 			if (rs.next()) {
-				game.setId(rs.getLong(1));
+				hand.setId(rs.getLong(1));
 			}
 			rs.close();
 			ps.close();
@@ -86,13 +92,12 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return game;
-		
+		return hand;
+
 	}
 
 	@Override
-	public HandEntity merge(HandEntity game, Connection conn) {
-		// TODO Auto-generated method stub
+	public HandEntity merge(HandEntity hand, Connection conn) {
 		try {
 			boolean isNewConn = false;
 			if (conn == null)
@@ -103,77 +108,146 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 				} catch (AMSException e) {
 					e.printStackTrace();
 				}
-			
+
 			String query = "";
-			query = "UPDATE `hand`  SET ``board_id` = ?, `game_id` =?, `player_to_act_id`  =?, `blind_level`  =?, `pot`  =?," +
-					" `bet_amount` =?, `total_bet_amount' =?"
-					+ "VALUES (?, ?, ?, ?, ?, ?, ?);" ;
-				
-			PreparedStatement ps = conn.prepareStatement(query,
-					Statement.RETURN_GENERATED_KEYS);
-			
-			ps.setLong(1, game.getBoard().getId());
-			ps.setLong(2, game.getGame().getId());
-			ps.setString(3, game.getCurrentToAct().getId());
-		    ps.setString(4, game.getBlindLevel().toString()) ;
-			ps.setInt(5, game.getPot());
-			ps.setInt(6, game.getLastBetAmount());
-			ps.setInt(7, game.getTotalBetAmount());
-			
+			query = "UPDATE `hand`  SET ``board_id` = ?, `game_id` =?, `player_to_act_id`  =?, `blind_level`  =?, `pot`  =?,"
+					+ " `bet_amount` =?, `total_bet_amount' =? where hand_id = ?";
+			PreparedStatement ps = conn.prepareStatement(query);
+
+			ps.setLong(1, hand.getBoard().getId());
+			ps.setLong(2, hand.getGame().getId());
+			ps.setString(3, hand.getCurrentToAct().getId());
+			ps.setString(4, hand.getBlindLevel().toString());
+			ps.setInt(5, hand.getPot());
+			ps.setInt(6, hand.getLastBetAmount());
+			ps.setInt(7, hand.getTotalBetAmount());
+			ps.setLong(8, hand.getId());
+			updateBoard(hand.getBoard(), conn);
 			ps.executeUpdate();
-			ResultSet rs = ps.getGeneratedKeys();
-			GameDaoImpl gdi = new GameDaoImpl();
-			if (rs.next()) {
-				game.setId(rs.getLong(1));
-			}
-			rs.close();
 			ps.close();
 			if (isNewConn) {
 				conn.commit();
 				conn.close();
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return game;
-	}
-
-	@Override
-	public HandEntity findById(long id, Connection conn) {
-		HandEntity hand = new HandEntity();
-		try {
-			try {
-				conn = getConnection();
-			} catch (AMSException e) {
-				e.printStackTrace();
-			}
-			String query = "";
-			query = "select * from hand where hand_id = " + id;
-			PreparedStatement ps = conn.prepareStatement(query);
-			ps.execute();
-			ResultSet rs = ps.getResultSet();
-			while (rs.next()) {
-				// hand.setBlindLevel(blindLevel)Name(rs.getString("players_left"));
-				// hand.setGameType(rs.getString("game_type"));
-				// hand.setName(rs.getString("name"));
-				// hand.setStarted(rs.getBoolean("is_started"));
-				// hand.setCurrentHand(rs.getString("current_hand_id"));
-				// hand.setGameStructure(rs.getString("game_structure_id"));
-				// hand.setPlayerInBTN(rs.getString("btn_player_id"));
-			}
-			rs.close();
-			ps.close();
-			conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return hand;
 	}
 
+	private void updateBoard(BoardEntity board, Connection conn) {
+		try {
+			boolean isNewConn = false;
+			if (conn == null)
+				try {
+					conn = getConnection();
+					conn.setAutoCommit(false);
+					isNewConn = true;
+				} catch (AMSException e) {
+					e.printStackTrace();
+				}
+
+			String query = "";
+			query = "UPDATE `board` SET `flop1` = ?, `flop2` = ?, `flop3` = ?, `turn` = ?, `river` = ? WHERE `board_id` = ?";
+			PreparedStatement ps = conn.prepareStatement(query);
+			ps.setString(1, board.getFlop1().toString());
+			ps.setString(2, board.getFlop1().toString());
+			ps.setString(3, board.getFlop1().toString());
+			ps.setString(4, board.getFlop1().toString());
+			ps.setString(5, board.getFlop1().toString());
+			ps.setLong(6, board.getId());
+			ps.executeUpdate();
+			ps.close();
+			if (isNewConn) {
+				conn.commit();
+				conn.close();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public HandEntity findById(long id, Connection conn) {
+		HandEntity hand = new HandEntity();
+		try {
+			boolean isNewConn = false;
+			if (conn == null)
+				try {
+					conn = getConnection();
+					conn.setAutoCommit(false);
+					isNewConn = true;
+				} catch (AMSException e) {
+					e.printStackTrace();
+				}
+			String query = "";
+			query = "select * from hand where hand_id = " + id;
+			PreparedStatement ps = conn.prepareStatement(query);
+			ps.execute();
+			ResultSet rs = ps.getResultSet();
+			while (rs.next()) {
+				hand.setBlindLevel(BlindLevel.valueOf(rs
+						.getString("blind_level")));
+				hand.setBoard(getBoard(rs.getLong("board_id"), conn));
+				PlayerDaoImpl pdao = new PlayerDaoImpl();
+				hand.setCurrentToAct(pdao.findById(
+						rs.getString("player_to_act_id"), conn));
+				GameDaoImpl gdao = new GameDaoImpl();
+				hand.setGame(gdao.findById(rs.getLong("game_id"), conn));
+				hand.setId(id);
+				hand.setLastBetAmount(rs.getInt("bet_amount"));
+				hand.setTotalBetAmount(rs.getInt("total_bet_amount"));
+			}
+			rs.close();
+			ps.close();
+			if (isNewConn) {
+				conn.commit();
+				conn.close();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return hand;
+	}
+
+	private BoardEntity getBoard(long id, Connection conn) {
+		BoardEntity board = new BoardEntity();
+		try {
+			boolean isNewConn = false;
+			if (conn == null)
+				try {
+					conn = getConnection();
+					conn.setAutoCommit(false);
+					isNewConn = true;
+				} catch (AMSException e) {
+					e.printStackTrace();
+				}
+			String query = "";
+			query = "select * from board where hand_id = " + id;
+			PreparedStatement ps = conn.prepareStatement(query);
+			ResultSet rs = ps.getResultSet();
+			while (rs.next()) {
+				board.setFlop1(Card.valueOf(rs.getString("flop1")));
+				board.setFlop2(Card.valueOf(rs.getString("flop2")));
+				board.setFlop3(Card.valueOf(rs.getString("flop3")));
+				board.setRiver(Card.valueOf(rs.getString("river")));
+				board.setTurn(Card.valueOf(rs.getString("turn")));
+				board.setId(id);
+			}
+			rs.close();
+			ps.close();
+			if (isNewConn) {
+				conn.commit();
+				conn.close();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	@Override
 	public Set<PlayerHand> getAllPlayerHands(long handId, Connection conn) {
-		// TODO Auto-generated method stub
-		  
 		Set<PlayerHand> players = new HashSet<PlayerHand>();
 		try {
 			boolean isNewConn = false;
@@ -191,15 +265,18 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 			ps.execute();
 			ResultSet rs = ps.getResultSet();
 			while (rs.next()) {
-				PlayerHand p = new PlayerHand() ;
+				PlayerHand p = new PlayerHand();
 				p.setId(rs.getLong("player_hand_id"));
-				p.setPlayer(new PlayerDaoImpl().findById((rs.getString("player_id")),null));
-				p.setHandEntity(findById((rs.getLong("password")),null));
-				p.setCard1((Card) Card.class.getField(rs.getString("card1")).get(null)) ;
-				p.setCard2((Card) Card.class.getField(rs.getString("card2")).get(null)) ;
+				p.setPlayer(new PlayerDaoImpl().findById(
+						(rs.getString("player_id")), null));
+				p.setHandEntity(findById((rs.getLong("password")), null));
+				p.setCard1((Card) Card.class.getField(rs.getString("card1"))
+						.get(null));
+				p.setCard2((Card) Card.class.getField(rs.getString("card2"))
+						.get(null));
 				p.setBetAmount(rs.getInt("bet_amount"));
 				p.setRoundBetAmount(rs.getInt("round_bet_amount"));
-				players.add(p) ;
+				players.add(p);
 			}
 			rs.close();
 			ps.close();

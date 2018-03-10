@@ -29,9 +29,8 @@ import java.util.List;
 
 import game.poker.holdem.Card;
 
-public class BoardEntity implements Serializable {
+public class BoardEntity  {
 	
-	private static final long serialVersionUID = 7043793786047807514L;
 	private long id;
 	private Card flop1;
 	private Card flop2;

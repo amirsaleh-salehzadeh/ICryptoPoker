@@ -113,19 +113,9 @@ public class PlayerDaoImpl extends BaseHibernateDAO implements
 				ps.setInt(5, 1);
 			} else
 				ps.setInt(5, 0);
-//			ps.setString(7, MD5Encryptor.encode(player.getPassword()));
-//			ps.setInt(8, game.getGender());
-//			ps.setDate(9, game.getDob());
-//			ps.setString(10, game.getSurname());
 			ps.setString(6, player.getName());
 			ps.setString(7, player.getId());
 			ps.executeUpdate();
-//			ResultSet rs = ps.getGeneratedKeys();
-//			GameDaoImpl gdi = new GameDaoImpl();
-//			if (rs.next()) {
-//				player.setId(rs.getString(1));
-//			}
-//			rs.close();
 			ps.close();
 			if (isNewConn) {
 				conn.commit();

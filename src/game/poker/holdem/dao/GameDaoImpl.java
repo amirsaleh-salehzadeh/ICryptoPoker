@@ -232,8 +232,7 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDaoInterface {
 			String query = "";
 			query = "select * from player where game_id = " + id;
 			PreparedStatement ps = conn.prepareStatement(query);
-			ps.execute();
-			ResultSet rs = ps.getResultSet();
+			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				Player p = new Player();
 				p.setId(rs.getString("username"));

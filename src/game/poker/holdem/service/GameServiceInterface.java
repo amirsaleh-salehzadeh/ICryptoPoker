@@ -31,7 +31,7 @@ import game.poker.holdem.domain.Player;
  * 
  * @author jacobhyphenated
  */
-public interface GameService {
+public interface GameServiceInterface {
 
 	/**
 	 * Get the game from the persistent context based on the unique identifier

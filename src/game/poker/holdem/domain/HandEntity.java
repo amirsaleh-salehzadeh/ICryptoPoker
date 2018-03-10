@@ -23,15 +23,13 @@ THE SOFTWARE.
 */
 package game.poker.holdem.domain;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
 import game.poker.holdem.Card;
 
-public class HandEntity implements Serializable {
+public class HandEntity  {
 	
-	private static final long serialVersionUID = 4557343585146763024L;
 	private long id = 0;
 	private Game game;
 	private BoardEntity board;

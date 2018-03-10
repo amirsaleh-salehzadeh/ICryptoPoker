@@ -39,10 +39,10 @@ import org.codehaus.jackson.map.ObjectMapper;
 import game.poker.holdem.domain.Game;
 import game.poker.holdem.domain.Player;
 import game.poker.holdem.domain.PlayerStatus;
-import game.poker.holdem.service.GameService;
-import game.poker.holdem.service.PlayerActionService;
+import game.poker.holdem.service.GameServiceImpl;
+import game.poker.holdem.service.PlayerActionServiceImpl;
 import game.poker.holdem.service.PlayerServiceManager;
-import game.poker.holdem.service.PokerHandService;
+import game.poker.holdem.service.PlayerServiceManagerImpl;
 import game.poker.holdem.view.PlayerStatusObject;
 
 /**
@@ -55,11 +55,11 @@ import game.poker.holdem.view.PlayerStatusObject;
 @Path("GetPlayerServiceWS")
 public class PlayerServiceWS {
 
-	private PlayerActionService playerActionService;
+	private PlayerActionServiceImpl playerActionService;
 
-	private PlayerServiceManager playerService;
+	private PlayerServiceManagerImpl playerService;
 
-	private GameService gameService;
+	private GameServiceImpl gameService;
 
 //	public ModelAndView getGames() {
 		// TODO - Service method not yet written. For now, use gameId from game
@@ -123,6 +123,7 @@ public class PlayerServiceWS {
 	public String getPlayerStatus(long gameId, String playerId) {
 		ObjectMapper mapper = new ObjectMapper();
 		String json ="";
+		playerService = new PlayerServiceManagerImpl();
 		try {
 			json = mapper.writeValueAsString(playerService.buildPlayerStatus(gameId, playerId));
 		} catch (JsonGenerationException e) {
@@ -155,6 +156,8 @@ public class PlayerServiceWS {
 	@Path("/fold")
 	@Produces("application/json")
 	public String fold(long gameId, String playerId) {
+		gameService = new GameServiceImpl();
+		playerActionService = new PlayerActionServiceImpl();
 		Game game = gameService.getGameById(gameId, false);
 		Player player = playerActionService.getPlayerById(playerId);
 		boolean folded = playerActionService
@@ -194,7 +197,9 @@ public class PlayerServiceWS {
 	@Path("/call")
 	@Produces("application/json")
 	public String call(long gameId, String playerId) {
+		gameService = new GameServiceImpl();
 		Game game = gameService.getGameById(gameId, false);
+		playerActionService = new PlayerActionServiceImpl();
 		Player player = playerActionService.getPlayerById(playerId);
 		boolean called = playerActionService
 				.call(player, game.getCurrentHand());
@@ -234,7 +239,9 @@ public class PlayerServiceWS {
 	@Path("/check")
 	@Produces("application/json")
 	public String check(long gameId, String playerId) {
+		gameService = new GameServiceImpl();
 		Game game = gameService.getGameById(gameId, false);
+		playerActionService = new PlayerActionServiceImpl();
 		Player player = playerActionService.getPlayerById(playerId);
 		boolean checked = playerActionService.check(player,
 				game.getCurrentHand());
@@ -284,6 +291,8 @@ public class PlayerServiceWS {
 	@Produces("application/json")
 	public String bet(long gameId, String playerId,
 			int betAmount) {
+		gameService = new GameServiceImpl();
+		playerActionService = new PlayerActionServiceImpl();
 		Game game = gameService.getGameById(gameId, false);
 		Player player = playerActionService.getPlayerById(playerId);
 		boolean bet = playerActionService.bet(player, game.getCurrentHand(),
@@ -319,6 +328,7 @@ public class PlayerServiceWS {
 	@Path("/sitIn")
 	@Produces("application/json")
 	public String sitIn(String playerId) {
+		playerActionService = new PlayerActionServiceImpl();
 		Player player = playerActionService.getPlayerById(playerId);
 		playerActionService.sitIn(player);
 		ObjectMapper mapper = new ObjectMapper();

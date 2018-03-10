@@ -31,7 +31,7 @@ import game.poker.holdem.domain.*;
  * 
  * @author jacobhyphenated
  */
-public interface PokerHandService {
+public interface PokerHandServiceInterface {
 	
 	/**
 	 * Start a new hand on the given game
@@ -55,13 +55,6 @@ public interface PokerHandService {
 	 * @return {@link HandEntity}
 	 */
 	public HandEntity getHandById(long id);
-	
-	/**
-	 * Save the hand to the persistence context
-	 * @param hand Detached {@link HandEntity}
-	 * @return HandEntity with attached persistence context
-	 */
-	public HandEntity saveHand(HandEntity hand);
 	
 	/**
 	 * Handle the flop for the hand

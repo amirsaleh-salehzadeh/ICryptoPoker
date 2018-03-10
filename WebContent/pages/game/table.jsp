@@ -6,28 +6,27 @@
 
 <link rel="stylesheet" href="css/game/table.holdem.css" />
 <script src="js/game/table.js"></script>
+<script src="js/game/game.js"></script>
 <%
 	Player player = (Player) request.getAttribute("player");
 	Game game = player.getGame();
 	String playerIDs = "";
 	for (Player p : game.getPlayers()) {
 		if (!p.getId().equalsIgnoreCase(
-		request.getParameter("playerName")))
-	playerIDs += p.getId() + "," + p.getChips() + ";";
+				request.getParameter("playerName")))
+			playerIDs += p.getId() + "," + p.getChips() + ";";
 	}
 	if (playerIDs.length() > 1)
 		playerIDs = playerIDs.substring(0, playerIDs.length() - 1);
-	if (request.getParameter("reqCode").equalsIgnoreCase("joinAGame")
-	&& !game.isStarted() && game.getPlayers().size() == 2) {
+// 	if (request.getParameter("reqCode").equalsIgnoreCase("joinAGame")
+// 			&& !game.isStarted() && game.getPlayers().size() == 2) {
+// 		game.setStarted(false);
+// 	}
 %>
-<script type="text/javascript">
-	startTheGame();
-</script>
-<%
-	}
-%>
+<input type="hidden" id="isStarted" value="<%=game.isStarted()%>">
 <input type="hidden" id="playerIDs" value="<%=playerIDs%>">
 <input type="hidden" id="playerPot" value="<%=player.getChips()%>">
+<input type="hidden" id="gameID" value="<%=game.getId()%>">
 <div id="gamePlayScreen">
 	<div class="ui-block-solo ui-grid-c constantBannersDiv">
 		<div class="ui-block-a" onclick="window.location.replace('t_game.do')"

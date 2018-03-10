@@ -55,9 +55,8 @@ import game.poker.holdem.domain.GameStructure;
 import game.poker.holdem.domain.GameType;
 import game.poker.holdem.domain.HandEntity;
 import game.poker.holdem.domain.Player;
-import game.poker.holdem.service.GameService;
 import game.poker.holdem.service.GameServiceImpl;
-import game.poker.holdem.service.PokerHandService;
+import game.poker.holdem.service.PokerHandServiceImpl;
 import game.poker.holdem.util.GameUtil;
 
 /**
@@ -73,7 +72,7 @@ import game.poker.holdem.util.GameUtil;
 public class GameServiceWS {
 
 	private GameServiceImpl gameService;
-	private PokerHandService handService;
+	private PokerHandServiceImpl handService;
 
 	/**
 	 * Get a list of currently available game structures <br />
@@ -209,6 +208,7 @@ public class GameServiceWS {
 	@Path("/GetGameStatus")
 	@Produces("application/json")
 	public String getGameStatus(long gameId) {
+		gameService = new GameServiceImpl();
 		Game game = gameService.getGameById(gameId, true);
 		GameStatus gs = GameUtil.getGameStatus(game);
 		Collection<Player> players = game.getPlayers();
@@ -266,6 +266,7 @@ public class GameServiceWS {
 	@Path("/StartGame")
 	@Produces("application/json")
 	public String startGame(@QueryParam("gameId") long gameId) {
+		gameService = new GameServiceImpl();
 		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
 		try {
@@ -278,6 +279,7 @@ public class GameServiceWS {
 				} catch (Exception e) {
 					// Failure of some sort starting the game. Probably
 					// IllegalStateException
+					e.printStackTrace();
 				}
 			}
 			json = mapper.writeValueAsString(Collections.singletonMap(
@@ -308,14 +310,15 @@ public class GameServiceWS {
 	@GET
 	@Path("/StartHand")
 	@Produces("application/json")
-	public String startHand(long gameId) {
+	public String startHand(@QueryParam("gameId") long gameId) {
+		gameService = new GameServiceImpl();
+		handService = new PokerHandServiceImpl();
 		Game game = gameService.getGameById(gameId, false);
 		HandEntity hand = handService.startNewHand(game);
 		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
 		try {
-			json = mapper.writeValueAsString(Collections.singletonMap("handId",
-					hand.getId()));
+			json = mapper.writeValueAsString(hand);
 		} catch (JsonGenerationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -349,6 +352,7 @@ public class GameServiceWS {
 	@Path("/Flop")
 	@Produces("application/json")
 	public String flop(long handId) {
+		handService = new PokerHandServiceImpl();
 		HandEntity hand = handService.getHandById(handId);
 		hand = handService.flop(hand);
 		Map<String, String> result = new HashMap<String, String>();
@@ -456,6 +460,7 @@ public class GameServiceWS {
 	@Path("/EndHand")
 	@Produces("application/json")
 	public String endHand(long handId) {
+		
 		HandEntity hand = handService.getHandById(handId);
 		handService.endHand(hand);
 		ObjectMapper mapper = new ObjectMapper();

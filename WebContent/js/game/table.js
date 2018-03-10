@@ -27,9 +27,7 @@ $(window)
 										$(this).html(content);
 									});
 					fitElementsWithinScreen();
-					generateACard("A", "clubs", 1);
-					generateACard("2", "spades", 2);
-					generateACard("5", "hearts", 3);
+					startTheGame();
 				});
 
 function fitElementsWithinScreen() {
@@ -63,16 +61,22 @@ function getOtherPlayersName() {
 	}
 }
 
-function generateACard(text, img, flopNo) {
+function generateACard(cardVal, flopNo) {
+	var text, img;
+	if(cardVal.charAt(0)=="T")
+		text = "10";
+	else
+		text = cardVal.charAt(0);
+	img = cardVal.charAt(1);
 	var color = "black";
-	if (img == "clubs")
+	if (img == "c")
 		img = "&clubs;";
 	else if (img == "spades")
-		img = "&spades;";
+		img = "&s;";
 	else if (img == "diam") {
-		img = "&diams;";
+		img = "&d;";
 		color = "red";
-	} else if (img == "hearts") {
+	} else if (img == "h") {
 		img = "&hearts;";
 		color = "red";
 	}

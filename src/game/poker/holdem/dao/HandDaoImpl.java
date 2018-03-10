@@ -34,6 +34,7 @@ import com.mysql.jdbc.Statement;
 
 import tools.AMSException;
 import game.poker.holdem.Card;
+import game.poker.holdem.Deck;
 import game.poker.holdem.domain.BlindLevel;
 import game.poker.holdem.domain.BoardEntity;
 import game.poker.holdem.domain.Game;
@@ -251,6 +252,8 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 				hand.setId(id);
 				hand.setLastBetAmount(rs.getInt("bet_amount"));
 				hand.setTotalBetAmount(rs.getInt("total_bet_amount"));
+				Deck d = new Deck(true);
+				hand.setCards(d.getRemainingCardsInDeck(phs, hand.getBoard()));
 			}
 			rs.close();
 			ps.close();
@@ -289,6 +292,7 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 			PreparedStatement ps = conn.prepareStatement(query);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
+				board.setId(id);
 				if (rs.getString("flop1") == null)
 					continue;
 				board.setFlop1(Card.valueOf(rs.getString("flop1")));
@@ -296,7 +300,7 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 				board.setFlop3(Card.valueOf(rs.getString("flop3")));
 				board.setRiver(Card.valueOf(rs.getString("river")));
 				board.setTurn(Card.valueOf(rs.getString("turn")));
-				board.setId(id);
+				
 			}
 			rs.close();
 			ps.close();
@@ -315,7 +319,7 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 			}
 			e.printStackTrace();
 		}
-		return null;
+		return board;
 	}
 
 	private PlayerHand getPlayerHand(long handId, String playerId,

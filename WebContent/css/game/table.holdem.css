@@ -216,3 +216,9 @@
 .black {
 	color: black;
 }
+
+.playerCardsContainer{
+	background-color: white;
+	position: absolute;
+	float: right;
+}

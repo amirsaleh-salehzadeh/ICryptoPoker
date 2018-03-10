@@ -27,6 +27,7 @@
 <input type="hidden" id="playerIDs" value="<%=playerIDs%>">
 <input type="hidden" id="playerPot" value="<%=player.getChips()%>">
 <input type="hidden" id="gameID" value="<%=game.getId()%>">
+<input type="hidden" id="boardID" value="<%=game.getId()%>">
 <div id="gamePlayScreen">
 	<div class="ui-block-solo ui-grid-c constantBannersDiv">
 		<div class="ui-block-a" onclick="window.location.replace('t_game.do')"

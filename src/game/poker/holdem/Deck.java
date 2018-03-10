@@ -23,9 +23,11 @@ THE SOFTWARE.
  */
 package game.poker.holdem;
 
+import game.poker.holdem.domain.BoardEntity;
 import game.poker.holdem.domain.PlayerHand;
 import game.poker.holdem.holder.Board;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
@@ -74,17 +76,20 @@ public class Deck {
 		this.cards = cards;
 	}
 
-	public Deck(List<Card> cards, Set<PlayerHand> ph, Board b) {
+	public List<Card> getRemainingCardsInDeck(Set<PlayerHand> ph, BoardEntity b) {
+		initDeck();
+		shuffleDeck();
+		List<Card> res = this.cards;
 		for (Iterator iterator = ph.iterator(); iterator.hasNext();) {
 			PlayerHand playerHand = (PlayerHand) iterator.next();
-			cards.remove(playerHand.getCard1());
-			cards.remove(playerHand.getCard2());
+			res.remove(playerHand.getCard1());
+			res.remove(playerHand.getCard2());
 		}
-		for (Iterator iterator = b.iterator(); iterator.hasNext();) {
-			Card c = (Card) iterator.next();
-			cards.remove(c);
-		}
-		this.cards = cards;
+		if (b.getBoardCards() != null && b.getBoardCards().size() > 0)
+			for (int i = 0; i < b.getBoardCards().size(); i++) {
+				res.remove(b.getBoardCards().get(i));
+			}
+		return res;
 	}
 
 	public void initDeck() {

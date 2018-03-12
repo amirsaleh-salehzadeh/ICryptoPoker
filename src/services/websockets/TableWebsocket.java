@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-import javax.
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
 import javax.websocket.OnMessage;
@@ -37,12 +36,12 @@ public class TableWebsocket {
 		String username = (String)userSession.getUserProperties().get("username") ;
 		if(username==null){
 			userSession.getUserProperties().put("username",message) ;
-			userSession.getBasicRemote().sendText(buildJsonData("System", message)) ;
+//			userSession.getBasicRemote().sendText(buildJsonData("System", message)) ;
 		}else{
 			Iterator<Session> iterator = users.iterator() ;
-			while(iterator.hasNext()){
-				iterator.next().getBasicRemote().sendText(buildJsonData(username,message)) ;
-			}
+//			while(iterator.hasNext()){
+//				iterator.next().getBasicRemote().sendText(buildJsonData(username,message)) ;
+//			}
 		}
 		
 	}
@@ -66,9 +65,9 @@ public class TableWebsocket {
 		ObjectMapper mapper = new ObjectMapper() ;
 		
 		String[] temp = {"message",username +":" +message};
-		 String json = mapper.writeValueAsString(temp) ;
+//		 String json = mapper.writeValueAsString(temp) ;
 		
-		return json ;
+		return "" ;
 		
 	}
 	

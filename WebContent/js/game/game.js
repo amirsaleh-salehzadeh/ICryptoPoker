@@ -11,9 +11,9 @@ function startTheGame() {
 				success : function(data) {
 					// if(data.success==true)
 					// startHand();
-					$(data.players).each(function(k, l) {
-
-					});
+//					$(data.players).each(function(k, l) {
+//
+//					});
 				},
 				error : function(xhr, ajaxOptions, thrownError) {
 					alert("An error occured while removing the marker. "

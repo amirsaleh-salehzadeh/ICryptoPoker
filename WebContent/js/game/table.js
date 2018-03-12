@@ -24,6 +24,8 @@ $(window)
 									});
 					fitElementsWithinScreen();
 					startTheGame();
+					generateACard("Tc","flopsContainer", 1);
+					generateACard("4d","flopsContainer", 2);
 				});
 function addAPlyerToTable(playerName, chips) {
 	var content = "<div class='sitPlaceThumbnail'>"
@@ -76,28 +78,34 @@ function getOtherPlayersName() {
 	}
 }
 
-function generateACard(cardVal, flopNo) {
+function generateACard(cardVal, divID, cardNumber) {
 	var text, img;
 	if (cardVal.charAt(0) == "T")
 		text = "10";
 	else
 		text = cardVal.charAt(0);
 	img = cardVal.charAt(1);
+	//	img = cardVal.split("_")[2].charAt(1).toLowerCase;
 	var color = "black";
 	if (img == "c")
 		img = "&clubs;";
-	else if (img == "spades")
-		img = "&s;";
-	else if (img == "diam") {
-		img = "&d;";
+	else if (img == "s")
+		img = "&spades;";
+	else if (img == "d") {
+		img = "&diams;";
 		color = "red";
 	} else if (img == "h") {
 		img = "&hearts;";
 		color = "red";
 	}
 
-	var res = "<div class='card-small'><span class='card-text black'>" + text
-			+ "</span><span class='card-img " + color + "'>" + img
+	var res = "<div class='card-small'><span class='card-text " + color + "'>"
+			+ text + "</span><span class='card-img " + color + "'>" + img
 			+ "</span></div>";
-	$("#flop" + flopNo).html(res).trigger("create");
+	if (divID=="flopsContainer"){
+	$("#flop" + cardNumber).html(res).trigger("create");// i only show this for ids starting with flop u shud make a small change here...
+	}else{
+		$("#" + divID).find(".card"+ cardNumber).html(res).trigger("create");
+		
+	}
 }

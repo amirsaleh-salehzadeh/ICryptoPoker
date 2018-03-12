@@ -7,7 +7,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
-	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/google-collect-1.0.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/mysql-connector-java-5.1.7-bin.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jersey-archive-1.19.1/lib/jackson-core-asl-1.9.2.jar"/>
@@ -21,7 +21,7 @@
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jersey-archive-1.19.1/lib/jersey-servlet-1.19.1.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jersey-archive-1.19.1/lib/jettison-1.1.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jersey-archive-1.19.1/lib/jsr311-api-1.1.1.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/com.google.guava_1.6.0.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry exported="true" kind="lib" path="WebContent/WEB-INF/lib/com.google.guava_1.6.0.jar"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

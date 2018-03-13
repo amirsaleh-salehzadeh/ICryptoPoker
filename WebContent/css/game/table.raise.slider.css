@@ -21,8 +21,9 @@
 	position: absolute;
 	left: -30%;
 	width: 200%;
-	height: 10%;
+	height: 7%;
 	background-color: #b00000;
+	border-color: 1px solid black;
 	cursor: n-resize;
 	top: 44%;
 }

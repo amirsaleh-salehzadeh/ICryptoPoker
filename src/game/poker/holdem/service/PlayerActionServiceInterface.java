@@ -23,6 +23,7 @@ THE SOFTWARE.
 */
 package game.poker.holdem.service;
 
+import game.poker.holdem.domain.Game;
 import game.poker.holdem.domain.HandEntity;
 import game.poker.holdem.domain.Player;
 import game.poker.holdem.domain.PlayerStatus;
@@ -58,7 +59,7 @@ public interface PlayerActionServiceInterface {
 	 * @return true if the player checks. False if a check is not permitted 
 	 * (The player is out of turn, there is a bet and a check is not allowed).
 	 */
-	public boolean check(Player player, HandEntity hand);
+	public boolean check(Player player, Game game);
 	
 	/**
 	 * The Player places a bet

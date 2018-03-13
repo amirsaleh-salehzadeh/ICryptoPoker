@@ -24,8 +24,6 @@ $(window)
 									});
 					fitElementsWithinScreen();
 					startTheGame();
-					generateACard("Tc","flopsContainer", 1);
-					generateACard("4d","flopsContainer", 2);
 				});
 function addAPlyerToTable(playerName, chips) {
 	var content = "<div class='sitPlaceThumbnail'>"

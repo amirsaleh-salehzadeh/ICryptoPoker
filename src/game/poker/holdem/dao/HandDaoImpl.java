@@ -143,8 +143,8 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 				}
 
 			String query = "";
-			query = "UPDATE `hand`  SET ``board_id` = ?, `game_id` =?, `player_to_act_id`  =?, `blind_level`  =?, `pot`  =?,"
-					+ " `bet_amount` =?, `total_bet_amount' =? where hand_id = ?";
+			query = "UPDATE `hand` SET `board_id` = ?, `game_id` = ?, `player_to_act_id` = ?, `blind_level` = ?, `pot` = ?,"
+					+ " `bet_amount` = ?, `total_bet_amount` = ? where hand_id = ?";
 			PreparedStatement ps = conn.prepareStatement(query);
 
 			ps.setLong(1, hand.getBoard().getId());
@@ -192,10 +192,10 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 			query = "UPDATE `board` SET `flop1` = ?, `flop2` = ?, `flop3` = ?, `turn` = ?, `river` = ? WHERE `board_id` = ?";
 			PreparedStatement ps = conn.prepareStatement(query);
 			ps.setString(1, board.getFlop1().toString());
-			ps.setString(2, board.getFlop1().toString());
-			ps.setString(3, board.getFlop1().toString());
-			ps.setString(4, board.getFlop1().toString());
-			ps.setString(5, board.getFlop1().toString());
+			ps.setString(2, board.getFlop2().toString());
+			ps.setString(3, board.getFlop3().toString());
+			ps.setString(4, board.getTurn().toString());
+			ps.setString(5, board.getRiver().toString());
 			ps.setLong(6, board.getId());
 			ps.executeUpdate();
 			ps.close();
@@ -251,6 +251,7 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 				hand.setPlayers(phs);
 				hand.setId(id);
 				hand.setLastBetAmount(rs.getInt("bet_amount"));
+				hand.setPot(rs.getInt("pot"));
 				hand.setTotalBetAmount(rs.getInt("total_bet_amount"));
 				Deck d = new Deck(true);
 				hand.setCards(d.getRemainingCardsInDeck(phs, hand.getBoard()));

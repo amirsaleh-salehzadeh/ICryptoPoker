@@ -103,7 +103,6 @@ public class PlayerDaoImpl extends BaseHibernateDAO implements
 			String query = "";
 			query = "UPDATE `player`  SET `game_id` = ?,`chips` = ?, `game_position` = ?, `finished_place`= ?, "
 					+ " `sitting_out` = ?, name= ? where username = ?";
-//					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";'gender'= ?,'dob' = ?,'surname' = ?, 
 			PreparedStatement ps = conn.prepareStatement(query);
 			ps.setLong(1, player.getGame().getId());
 			ps.setInt(2, player.getChips());

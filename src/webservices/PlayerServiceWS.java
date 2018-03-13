@@ -252,8 +252,7 @@ public class PlayerServiceWS {
 		Game game = gameService.getGameById(gameId, false);
 		playerActionService = new PlayerActionServiceImpl();
 		Player player = playerActionService.getPlayerById(playerId);
-		boolean checked = playerActionService.check(player,
-				game.getCurrentHand());
+		boolean checked = playerActionService.check(player, game);
 		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
 		try {

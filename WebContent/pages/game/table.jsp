@@ -10,6 +10,7 @@
 <script src="js/game/table.js"></script>
 <script src="js/game/circle.js"></script>
 <script src="js/game/game.js"></script>
+<!-- <script src="js/jquery/jquery.ui.touch-punch.min.js"></script> -->
 <script src="js/jquery/jquery-ui.js"></script>
 <%
 	Player player = (Player) request.getAttribute("player");
@@ -17,8 +18,8 @@
 	String playerIDs = "";
 	for (Player p : game.getPlayers()) {
 		if (!p.getId().equalsIgnoreCase(
-				request.getParameter("playerName")))
-			playerIDs += p.getId() + "," + p.getChips() + ";";
+		request.getParameter("playerName")))
+	playerIDs += p.getId() + "," + p.getChips() + ";";
 	}
 	if (playerIDs.length() > 1)
 		playerIDs = playerIDs.substring(0, playerIDs.length() - 1);
@@ -28,25 +29,34 @@
 	// 	}
 %>
 <script>
-$(document).ready(function(){
-	$('.slider-handle').draggable({
-		containment:'parent',
-		axis:'y',
-		drag:function(e,ui){
-			if(!this.par)
-			{
-				this.par = $(this).parent();
-				this.parHeight = this.par.height();
-				this.height = $(this).height();
-				this.color = $.trim(this.par.attr('class').replace('colorful-slider',''));
-			}
-			
-			var ratio = 1-(ui.position.top+this.height)/this.parHeight;
-			console.log(ratio);
-// 			resizeBar(this.color,ratio);
-		}
-	});
-});
+	$(document).ready(
+			function() {
+				$('.slider-handle').draggable(
+						{
+							containment : 'parent',
+							axis : 'y',
+							drag : function(e, ui) {
+								if (!this.par) {
+									this.par = $(this).parent();
+									this.parHeight = this.par.height();
+									this.height = $(this).height();
+									this.color = $.trim(this.par.attr('class')
+											.replace('colorful-slider', ''));
+								}
+
+								var ratio = 1 - (ui.position.top + this.height)
+										/ this.parHeight;
+								console.log(ratio);
+								// 			resizeBar(this.color,ratio);
+							}
+						});
+				$("#circle-1").Circlebar({
+					maxValue : 20,
+					fontSize : "14px",
+					triggerPercentage : true,
+					size : "66px",
+				});
+			});
 </script>
 <input type="hidden" id="isStarted" value="<%=game.isStarted()%>">
 <input type="hidden" id="playerIDs" value="<%=playerIDs%>">
@@ -110,8 +120,7 @@ $(document).ready(function(){
 						style="height: 100% !important;"></div>
 				</div>
 				<div class="ui-block-solo" style="height: 60%;" id="mainTable">
-					<div class="ui-block-solo" style="height: 20%; width: 100%;">
-						<img alt="" src="images/game/stack.png" height="100%">roundBetAmount
+					<div class="ui-block-solo" id="handPotContainer" style="height: 20%; width: 100%;">
 					</div>
 					<div class="ui-block-solo ui-grid-d"
 						style="height: 60%; width: 100%;" id="flopsContainer">
@@ -176,16 +185,20 @@ $(document).ready(function(){
 	<div class=" ui-block-solo ui-grid-c constantBannersDiv"
 		id="buttonsContainerDIV">
 		<div class="ui-block-a">
-			<a href="#" data-role="button" data-mini="true" id="foldBTN">Fold</a>
+			<a href="#" data-role="button" data-mini="true" onclick="fold()"
+				id="foldBTN">Fold</a>
 		</div>
 		<div class="ui-block-b">
-			<a href="#" data-role="button" data-mini="true" id="allInBTN">All-In</a>
+			<a href="#" data-role="button" data-mini="true" onclick="allIn()"
+				id="allInBTN">All-In</a>
 		</div>
 		<div class="ui-block-c">
-			<a href="#" data-role="button" data-mini="true" id="checkBTN">Check</a>
+			<a href="#" data-role="button" data-mini="true" onclick="check()"
+				id="checkBTN">Check</a>
 		</div>
 		<div class="ui-block-d">
-			<a href="#" data-role="button" data-mini="true" id="raiseBTN">Raise</a>
+			<a href="#" data-role="button" data-mini="true" onclick="raise()"
+				id="raiseBTN">Raise</a>
 		</div>
 	</div>
 </div>

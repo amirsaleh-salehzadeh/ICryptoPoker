@@ -1,4 +1,10 @@
 function startTheGame() {
+	$("#circle-1").Circlebar({
+		maxValue : 20,
+		fontSize : "14px",
+		triggerPercentage : true,
+		size: "66px",
+	});
 	if ($("#isStarted").val() == true)
 		return;
 	var url = "/ICryptoPoker/REST/GetGameServiceWS/StartHand?gameId="

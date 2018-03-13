@@ -32,6 +32,7 @@ import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -122,8 +123,8 @@ public class PlayerServiceWS {
 	@GET
 	@Path("/getPlayerStatus")
 	@Produces("application/json")
-	public String getPlayerStatus(@FormParam("gameId") long gameId,
-			@FormParam("playerId") String playerId) {
+	public String getPlayerStatus(@QueryParam("gameId") long gameId,
+			@QueryParam("playerId") String playerId) {
 		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
 		playerService = new PlayerServiceManagerImpl();
@@ -159,8 +160,8 @@ public class PlayerServiceWS {
 	@GET
 	@Path("/fold")
 	@Produces("application/json")
-	public String fold(@FormParam("gameId") long gameId,
-			@FormParam("playerId") String playerId) {
+	public String fold(@QueryParam("gameId") long gameId,
+			@QueryParam("playerId") String playerId) {
 		gameService = new GameServiceImpl();
 		playerActionService = new PlayerActionServiceImpl();
 		Game game = gameService.getGameById(gameId, false);
@@ -202,8 +203,8 @@ public class PlayerServiceWS {
 	@GET
 	@Path("/call")
 	@Produces("application/json")
-	public String call(@FormParam("gameId") long gameId,
-			@FormParam("playerId") String playerId) {
+	public String call(@QueryParam("gameId") long gameId,
+			@QueryParam("playerId") String playerId) {
 		gameService = new GameServiceImpl();
 		Game game = gameService.getGameById(gameId, false);
 		playerActionService = new PlayerActionServiceImpl();
@@ -245,8 +246,8 @@ public class PlayerServiceWS {
 	@GET
 	@Path("/check")
 	@Produces("application/json")
-	public String check(@FormParam("gameId") long gameId,
-			@FormParam("playerId") String playerId) {
+	public String check(@QueryParam("gameId") long gameId,
+			@QueryParam("playerId") String playerId) {
 		gameService = new GameServiceImpl();
 		Game game = gameService.getGameById(gameId, false);
 		playerActionService = new PlayerActionServiceImpl();
@@ -298,9 +299,9 @@ public class PlayerServiceWS {
 	@GET
 	@Path("/bet")
 	@Produces("application/json")
-	public String bet(@FormParam("gameId") long gameId,
-			@FormParam("playerId") String playerId,
-			@FormParam("betAmount") int betAmount) {
+	public String bet(@QueryParam("gameId") long gameId,
+			@QueryParam("playerId") String playerId,
+			@QueryParam("betAmount") int betAmount) {
 		gameService = new GameServiceImpl();
 		playerActionService = new PlayerActionServiceImpl();
 		Game game = gameService.getGameById(gameId, false);
@@ -337,7 +338,7 @@ public class PlayerServiceWS {
 	@GET
 	@Path("/sitIn")
 	@Produces("application/json")
-	public String sitIn(@FormParam("playerId") String playerId) {
+	public String sitIn(@QueryParam("playerId") String playerId) {
 		playerActionService = new PlayerActionServiceImpl();
 		Player player = playerActionService.getPlayerById(playerId);
 		playerActionService.sitIn(player);

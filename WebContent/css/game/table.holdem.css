@@ -217,8 +217,8 @@
 	color: black;
 }
 
-.playerCardsContainer {
-	background-color: white;
+.playerCardsContainer{
+	border:  1px solid white;
 	position: absolute;
 	float: right;
 }

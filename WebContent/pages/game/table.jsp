@@ -42,7 +42,7 @@ $(document).ready(function(){
 			}
 			
 			var ratio = 1-(ui.position.top+this.height)/this.parHeight;
-			
+			console.log(ratio);
 // 			resizeBar(this.color,ratio);
 		}
 	});

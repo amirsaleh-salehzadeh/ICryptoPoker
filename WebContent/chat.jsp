@@ -16,6 +16,7 @@ function start() {
     // override Methode: when recive msg from server.
     websocket.onmessage = function (msg) {
       console.log("msg recived from server: " + msg.data);
+      
     }
     // override Methode: when server throw an error.
     websocket.onerror = function (evt) {

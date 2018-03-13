@@ -35,8 +35,26 @@ public class PlayerHand implements Comparable<PlayerHand> {
 	private HandEntity handEntity;
 	private Card card1;
 	private Card card2;
+	private String card1S;
+	private String card2S;
 	private int betAmount;
 	private int roundBetAmount;
+
+	public String getCard1S() {
+		return card1S;
+	}
+
+	public void setCard1S(String card1s) {
+		card1S = card1s;
+	}
+
+	public String getCard2S() {
+		return card2S;
+	}
+
+	public void setCard2S(String card2s) {
+		card2S = card2s;
+	}
 
 	public long getId() {
 		return id;
@@ -69,10 +87,13 @@ public class PlayerHand implements Comparable<PlayerHand> {
 	}
 
 	public void setCard1(Card card1) {
+		this.card1S = card1.toString();
 		this.card1 = card1;
 	}
 
 	public Card getCard2() {
+		this.card2S = card2.toString();
+		System.out.println(this.card2S);
 		return card2;
 	}
 

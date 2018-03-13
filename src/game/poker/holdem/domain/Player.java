@@ -23,26 +23,36 @@ THE SOFTWARE.
 */
 package game.poker.holdem.domain;
 
-import java.io.Serializable;
-import java.sql.Date;
+public class Player implements Comparable<Player>{
 
-public class Player implements Comparable<Player>, Serializable{
-
-	private static final long serialVersionUID = -1384636077333014255L;
 	private String id;
 	private Game game;
 	private String name;
 	private int chips;
 	private int gamePosition;
 	private int finishPosition;
+	private int totalChips;
 	private boolean sittingOut;
 	private String registrationDate;
 	private String password;
+	
 //	private int gender ;
 //	private Date dob ;
 //	private String surname ;
 	
-//	public String getSurname() {
+/**
+	 * @return the totalChips
+	 */
+	public int getTotalChips() {
+		return totalChips;
+	}
+	/**
+	 * @param totalChips the totalChips to set
+	 */
+	public void setTotalChips(int totalChips) {
+		this.totalChips = totalChips;
+	}
+	//	public String getSurname() {
 //		return surname;
 //	}
 //	public void setSurname(String surname) {

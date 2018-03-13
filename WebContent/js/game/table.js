@@ -41,9 +41,9 @@ function addAPlyerToTable(playerName, chips) {
 }
 
 function fitElementsWithinScreen() {
-	var mainBoardHeight = $(window).height() - 88;// Bottom and
-	$("#mainTable").css("height", $("mainTableParentDIV").height());
-	$("#mainTable").css("width", $("mainTableParentDIV").width());
+//	var mainBoardHeight = $(window).height() - 88;// Bottom and
+//	$("#mainTable").css("height", $("mainTableParentDIV").height());
+//	$("#mainTable").css("width", $("mainTableParentDIV").width());
 	$(".sitPlaceThumbnail").each(function() {
 		$(this).width($("#userSitPlace").height() / 2);
 		$(this).height($("#userSitPlace").height() / 2);

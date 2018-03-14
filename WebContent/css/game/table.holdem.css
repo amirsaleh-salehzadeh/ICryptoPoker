@@ -33,34 +33,12 @@
 	left: 0;
 	background-color: rgba(108, 112, 120, .4);
 }
-
-.sitPlaceThumbnail {
-	/* 		background-color: #b00000; */
-	box-shadow: inset 1px 1px 2px rgba(111, 0, 0, 0.3), inset 3px 15px 45px
-		rgba(133, 0, 0, 0.1), inset -1px -1px 2px rgba(122, 0, 0, 0.5), inset
-		-3px -15px 45px rgba(112, 0, 0, 0.8), 1px 5px 30px -4px
-		rgba(188, 0, 0, 1);
-	border-radius: 50%;
-	margin: 0 auto;
-	border-radius: 50%;
-	position: relative;
+.playerBlock1{
+	width:25% !important;
 }
-
-.sitPlaceThumbnailEmpty {
-	box-shadow: inset 1px 1px 2px rgba(111, 111, 111, .3), inset 3px 15px
-		45px rgba(133, 133, 133, .1), inset -1px -1px 2px
-		rgba(122, 122, 122, .5), inset -3px -15px 45px rgba(112, 112, 112, .8),
-		1px 5px 30px -4px rgba(188, 0, 0, 1);
-	border-radius: 50%;
-	margin: 0 auto;
-	border-radius: 50%;
-	position: relative;
-	color: black;
-	font-size: 11pt;
-}
-
 .sitPlaceContainer {
 	position: relative;
+	z-index: 1;
 }
 
 .playerNamePlace {
@@ -199,19 +177,21 @@
 	width: 90%; /*70% of height*/
 	float: left;
 	background-color: white;
+	text-align:center !important;
+  border-color:black;
 }
 
 .card-text {
 	margin: 0 auto;
-	text-align: center;
+	text-align: left;
 	font-size: 18pt;
 	font-weight: bold;
-	position: absolute;
+	position: relative;
 	top: 3px;
 }
 
 .card-img {
-	text-align: center;
+	text-align: left;
 	margin: 0;
 	font-size: 18pt;
 	position: absolute;
@@ -225,11 +205,24 @@
 .black {
 	color: black;
 }
+.card-holder {
+  grid-row-start: 1;
+/*   border: 1px solid black; */
+}
+.card-holder:nth-child(1) { grid-column: 1/ 6; }
+.card-holder:nth-child(2) { grid-column: 4/ 9; }
 
 .playerCardsContainer {
+ display: grid;
+  grid-template-columns: repeat(9, 80%);
+  grid-template-rows: 100%;
+   max-width: 7%; 
+	height: 100% !important;
+	width:inherit !iportant;
 	border: 1px solid white;
 	position: absolute;
 	float: right;
+	z-index: 0;
 }
 
 .sbchipcontainer {

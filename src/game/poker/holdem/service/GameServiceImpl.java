@@ -83,7 +83,7 @@ public class GameServiceImpl implements GameServiceInterface {
 		PlayerDaoImpl playerDao = new PlayerDaoImpl();
 		for (int i = 0; i < players.size(); i++) {
 			Player p = players.get(i);
-			p.setGame(game);
+			p.setGameId(game.getId());
 			p.setGamePosition(i + 1);
 			playerDao.merge(p, null);
 		}
@@ -107,7 +107,7 @@ public class GameServiceImpl implements GameServiceInterface {
 			throw new IllegalStateException(
 					"Cannot have more than 10 players in one game");
 		}
-		player.setGame(game);
+		player.setGameId(game.getId());
 		// Set up player according to game logic.
 		if (game.getGameType() == GameType.TOURNAMENT) {
 			player.setChips(game.getGameStructure().getStartingChips());
@@ -122,7 +122,7 @@ public class GameServiceImpl implements GameServiceInterface {
 		GameDaoImpl gameDao = new GameDaoImpl();
 		game.setPlayersRemaining(game.getPlayersRemaining() + 1);
 		game = gameDao.merge(game, null);
-		player.setGame(game);
+		player.setGameId(game.getId());
 		return player;
 	}
 

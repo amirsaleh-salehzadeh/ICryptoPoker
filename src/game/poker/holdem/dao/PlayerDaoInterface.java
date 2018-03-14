@@ -33,7 +33,5 @@ public interface PlayerDaoInterface {
 
 	Player merge(Player p, Connection conn);
 	
-	Player addGameToPlayer(Player p, Connection conn);
-
 	Player findById(String playerId, Connection conn);
 }

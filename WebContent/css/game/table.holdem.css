@@ -231,3 +231,13 @@
 	position: absolute;
 	float: right;
 }
+
+.sbchipcontainer {
+	background-color: red;
+	position: absolute;
+	float: right;
+	top: 0;
+	right: 0;
+	width: 25px;
+	height: 25px;
+}

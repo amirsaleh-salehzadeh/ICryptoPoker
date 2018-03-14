@@ -23,6 +23,7 @@ THE SOFTWARE.
  */
 package game.poker.holdem.service;
 
+import game.poker.holdem.dao.GameDaoImpl;
 import game.poker.holdem.dao.HandDaoImpl;
 import game.poker.holdem.dao.PlayerDaoImpl;
 import game.poker.holdem.domain.Game;
@@ -44,7 +45,6 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 		playerDao = new PlayerDaoImpl();
 		handDao = new HandDaoImpl();
 	}
-
 
 	public Player getPlayerById(String playerId) {
 		return playerDao.findById(playerId, null);
@@ -179,8 +179,8 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 		if (player.isSittingOut()) {
 			return PlayerStatus.SIT_OUT_GAME;
 		}
-
-		Game game = player.getGame();
+		GameDaoImpl gdao = new GameDaoImpl();
+		Game game = gdao.findById(player.getGameId(), null);
 		if (!game.isStarted()) {
 			return PlayerStatus.NOT_STARTED;
 		}

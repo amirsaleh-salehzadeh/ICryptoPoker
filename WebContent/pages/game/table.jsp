@@ -14,7 +14,7 @@
 <script src="js/jquery/jquery-ui.js"></script>
 <%
 	Player player = (Player) request.getAttribute("player");
-	Game game = player.getGame();
+	Game game = (Game) request.getAttribute("game");
 	String playerIDs = "";
 	for (Player p : game.getPlayers()) {
 		if (!p.getId().equalsIgnoreCase(

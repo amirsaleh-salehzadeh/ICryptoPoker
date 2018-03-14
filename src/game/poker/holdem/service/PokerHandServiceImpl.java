@@ -62,7 +62,7 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 			if (p.getChips() > 0) {
 				PlayerHand ph = new PlayerHand();
 				ph.setHandEntity(hand);
-				p.setGame(null);
+				p.setGameId(game.getId());
 				ph.setPlayer(p);
 				ph.setCard1(d.dealCard());
 				ph.setCard2(d.dealCard());

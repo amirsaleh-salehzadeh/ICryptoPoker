@@ -36,7 +36,7 @@ function addAPlyerToTable(playerName, chips) {
 			+ "<div class='ui-grid-a playerCardsContainer' id='cards"
 			+ playerName
 			+ "'><div class='ui-block-a card1'>a</div><div class='ui-block-b card2'>b</div>"
-			+ "</div>";
+			+ "</div><div class='sbchipcontainer'></div>";
 	return content;
 }
 

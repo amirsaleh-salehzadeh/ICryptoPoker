@@ -46,6 +46,10 @@ import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
+import tools.AMSException;
+
+import common.user.UserPassword;
+
 import game.poker.holdem.dao.GameDaoImpl;
 import game.poker.holdem.dao.HandDaoImpl;
 import game.poker.holdem.domain.BlindLevel;
@@ -59,6 +63,7 @@ import game.poker.holdem.domain.Player;
 import game.poker.holdem.service.GameServiceImpl;
 import game.poker.holdem.service.PokerHandServiceImpl;
 import game.poker.holdem.util.GameUtil;
+import hibernate.user.UserDAO;
 
 /**
  * Controller class that will handle the API interactions with the front-end for
@@ -162,8 +167,9 @@ public class GameServiceWS {
 			game.setGameType(GameType.CASH);
 			gs.setCurrentBlindLevel(BlindLevel.valueOf(blindLevel));
 		} else {
-			game.setGameType(GameType.TOURNAMENT); // Until Cash games are
-													// supported
+			game.setGameType(GameType.TOURNAMENT);
+			// Until Cash games are
+			// supported
 			// gs.setBlindLength(gameStructure.getTimeInMinutes());
 			// gs.setBlindLevels(gameStructure.getBlindLevels());
 			// gs.setStartingChips(gameStructure.getStartingChips());
@@ -265,37 +271,27 @@ public class GameServiceWS {
 
 	@GET
 	@Path("/StartGame")
-	@Produces("application/json")
-	public String startGame(@QueryParam("gameId") long gameId) {
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response startGame(@QueryParam("gameId") long gameId) {
 		gameService = new GameServiceImpl();
 		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
 		try {
 			Game game = gameService.getGameById(gameId, false);
 			if (!game.isStarted()) {
-				try {
-					game = gameService.startGame(game);
-					mapper.writeValueAsString(Collections.singletonMap(
-							"success", true));
-				} catch (Exception e) {
-					// Failure of some sort starting the game. Probably
-					// IllegalStateException
-					e.printStackTrace();
-				}
+				game = gameService.startGame(game);
 			}
-			json = mapper.writeValueAsString(Collections.singletonMap(
-					"success", false));
+			json = mapper.writeValueAsString(game);
 		} catch (JsonGenerationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (AMSException e) {
+			return Response.serverError().entity(e.getMessage()).build();
 		}
-		return json;
+		return Response.ok(json, MediaType.APPLICATION_JSON).build();
 	}
 
 	/**

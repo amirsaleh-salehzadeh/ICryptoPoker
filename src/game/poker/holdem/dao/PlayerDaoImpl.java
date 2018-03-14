@@ -27,6 +27,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 import com.mysql.jdbc.Statement;
 
@@ -34,6 +38,7 @@ import tools.AMSException;
 import tools.MD5Encryptor;
 
 import game.poker.holdem.domain.Game;
+import game.poker.holdem.domain.HandEntity;
 import game.poker.holdem.domain.Player;
 import hibernate.config.BaseHibernateDAO;
 
@@ -59,7 +64,7 @@ public class PlayerDaoImpl extends BaseHibernateDAO implements
 			PreparedStatement ps = conn.prepareStatement(query,
 					Statement.RETURN_GENERATED_KEYS);
 			ps.setString(1, game.getId());
-			ps.setLong(2, game.getGame().getId());
+			ps.setLong(2, game.getGameId());
 			ps.setInt(3, game.getChips());
 			ps.setInt(4, game.getGamePosition());
 			ps.setLong(5, game.getFinishPosition());
@@ -102,10 +107,9 @@ public class PlayerDaoImpl extends BaseHibernateDAO implements
 				}
 			String query = "";
 			query = "UPDATE `player`  SET `game_id` = ?,`chips` = ?, `game_position` = ?, `finished_place`= ?, "
-					+ " `sitting_out` = ?, name= ? where username = ?";
-//					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";'gender'= ?,'dob' = ?,'surname' = ?, 
+					+ " `sitting_out` = ?, name= ?, total_chips = ? where username = ?";
 			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setLong(1, player.getGame().getId());
+			ps.setLong(1, player.getGameId());
 			ps.setInt(2, player.getChips());
 			ps.setInt(3, player.getGamePosition());
 			ps.setLong(4, player.getFinishPosition());
@@ -114,7 +118,8 @@ public class PlayerDaoImpl extends BaseHibernateDAO implements
 			} else
 				ps.setInt(5, 0);
 			ps.setString(6, player.getName());
-			ps.setString(7, player.getId());
+			ps.setInt(7, player.getTotalChips());
+			ps.setString(8, player.getId());
 			ps.executeUpdate();
 			ps.close();
 			if (isNewConn) {
@@ -130,8 +135,6 @@ public class PlayerDaoImpl extends BaseHibernateDAO implements
 
 	@Override
 	public Player findById(String playerId, Connection conn) {
-		// TODO Auto-generated method stub
-
 		try {
 			boolean isNewConn = false;
 			if (conn == null)
@@ -148,6 +151,7 @@ public class PlayerDaoImpl extends BaseHibernateDAO implements
 			ps.setString(1, playerId);
 			ResultSet rs = ps.executeQuery();
 			Player p = new Player();
+			GameDaoImpl gdao = new GameDaoImpl();
 			if (rs.next()) {
 				p.setId(rs.getString("username"));
 				p.setName(rs.getString("name"));
@@ -160,6 +164,8 @@ public class PlayerDaoImpl extends BaseHibernateDAO implements
 				else
 					p.setSittingOut(false);
 				p.setChips(rs.getInt("chips"));
+				p.setTotalChips(rs.getInt("total_chips"));
+				p.setGameId(rs.getLong("game_id"));
 //				p.setDob(rs.getDate("dob"));
 //				p.setSurname(rs.getString("surname"));
 //				p.setGender(rs.getInt("gender"));
@@ -181,17 +187,6 @@ public class PlayerDaoImpl extends BaseHibernateDAO implements
 			e.printStackTrace();
 		}
 		return null;
-	}
-
-	@Override
-	public Player addGameToPlayer(Player p, Connection conn) {
-		// TODO Auto-generated method stub
-		// need to get
-		PlayerDaoImpl dao = new PlayerDaoImpl();
-		Player playerTMP = dao.findById(p.getId(), conn);
-		playerTMP.setGame(p.getGame());
-		return dao.merge(playerTMP, conn);
-
 	}
 
 }

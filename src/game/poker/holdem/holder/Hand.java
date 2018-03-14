@@ -30,8 +30,6 @@ import game.poker.holdem.Card;
  */
 public class Hand extends CardHolder {
 
-	private static final long serialVersionUID = 6963213701843967416L;
-
 	/**
 	 * Creates new hand with two cards.
 	 * 

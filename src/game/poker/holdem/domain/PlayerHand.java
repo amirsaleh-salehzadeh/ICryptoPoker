@@ -39,6 +39,21 @@ public class PlayerHand implements Comparable<PlayerHand> {
 	private String card2S;
 	private int betAmount;
 	private int roundBetAmount;
+	private PlayerStatus playerStatus;
+
+	/**
+	 * @return the playerStatus
+	 */
+	public PlayerStatus getPlayerStatus() {
+		return playerStatus;
+	}
+
+	/**
+	 * @param playerStatus the playerStatus to set
+	 */
+	public void setPlayerStatus(PlayerStatus playerStatus) {
+		this.playerStatus = playerStatus;
+	}
 
 	public String getCard1S() {
 		return card1S;
@@ -77,8 +92,6 @@ public class PlayerHand implements Comparable<PlayerHand> {
 	}
 
 	public void setHandEntity(HandEntity hand) {
-//		if(hand.getPlayers()!=null&&hand.getPlayers().size()>0)
-//			hand.setPlayers(new HashSet<PlayerHand>());
 		this.handEntity = hand;
 	}
 
@@ -92,12 +105,11 @@ public class PlayerHand implements Comparable<PlayerHand> {
 	}
 
 	public Card getCard2() {
-		this.card2S = card2.toString();
-		System.out.println(this.card2S);
 		return card2;
 	}
 
 	public void setCard2(Card card2) {
+		this.card2S = card2.toString();
 		this.card2 = card2;
 	}
 

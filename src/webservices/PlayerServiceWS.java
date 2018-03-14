@@ -28,9 +28,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -61,11 +63,11 @@ public class PlayerServiceWS {
 
 	private GameServiceImpl gameService;
 
-//	public ModelAndView getGames() {
-		// TODO - Service method not yet written. For now, use gameId from game
-//		// controller
-//		return null;
-//	}
+	// public ModelAndView getGames() {
+	// TODO - Service method not yet written. For now, use gameId from game
+	// // controller
+	// return null;
+	// }
 
 	/**
 	 * Have a new player join a game.
@@ -78,29 +80,30 @@ public class PlayerServiceWS {
 	 *         The playerId will be used for that player's actions in future
 	 *         requests. Example: {"playerId":xxx}
 	 */
-	
-//	@GET
-//	@Path("/JoinGame")
-//	@Produces("application/json")
-//	public String joinGame(long gameId, String playerName) {
-//		Game game = gameService.getGameById(gameId, false);
-//		Player player = new Player();
-//		player.setName(playerName);
-//		player = gameService.addNewPlayerToGame(game, player);
-//		ObjectMapper mapper = new ObjectMapper();
-//		String json ="";
-//		try {
-//			json = mapper.writeValueAsString(Collections.singletonMap("playerId", player.getId()));
-//		} catch (JsonGenerationException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (JsonMappingException e) {
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//		return json;
-//	}
+
+	// @GET
+	// @Path("/JoinGame")
+	// @Produces("application/json")
+	// public String joinGame(long gameId, String playerName) {
+	// Game game = gameService.getGameById(gameId, false);
+	// Player player = new Player();
+	// player.setName(playerName);
+	// player = gameService.addNewPlayerToGame(game, player);
+	// ObjectMapper mapper = new ObjectMapper();
+	// String json ="";
+	// try {
+	// json = mapper.writeValueAsString(Collections.singletonMap("playerId",
+	// player.getId()));
+	// } catch (JsonGenerationException e) {
+	// // TODO Auto-generated catch block
+	// e.printStackTrace();
+	// } catch (JsonMappingException e) {
+	// e.printStackTrace();
+	// } catch (IOException e) {
+	// e.printStackTrace();
+	// }
+	// return json;
+	// }
 
 	/**
 	 * Player status in the current game and hand.
@@ -116,24 +119,23 @@ public class PlayerServiceWS {
 	 *         {"status":"ACTION_TO_CALL","chips":1000,"card1":"Xx"
 	 *         ,"card2":"Xx", "amountBetRound":xx,"amountToCall":100}
 	 */
-	
+
 	@GET
-	@Path("/getPlayerStatus")
+	@Path("/GetPlayerStatus")
 	@Produces("application/json")
-	public String getPlayerStatus(long gameId, String playerId) {
+	public String getPlayerStatus(@QueryParam("gameId") long gameId,
+			@QueryParam("playerId") String playerId) {
 		ObjectMapper mapper = new ObjectMapper();
-		String json ="";
+		String json = "";
 		playerService = new PlayerServiceManagerImpl();
 		try {
-			json = mapper.writeValueAsString(playerService.buildPlayerStatus(gameId, playerId));
+			json = mapper.writeValueAsString(playerService.buildPlayerStatus(
+					gameId, playerId));
 		} catch (JsonGenerationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return json;
@@ -151,11 +153,12 @@ public class PlayerServiceWS {
 	 *         this players turn to act, success will be false. Example:
 	 *         {"success":true}
 	 */
-	
+
 	@GET
 	@Path("/fold")
 	@Produces("application/json")
-	public String fold(long gameId, String playerId) {
+	public String fold(@QueryParam("gameId") long gameId,
+			@QueryParam("playerId") String playerId) {
 		gameService = new GameServiceImpl();
 		playerActionService = new PlayerActionServiceImpl();
 		Game game = gameService.getGameById(gameId, false);
@@ -163,9 +166,10 @@ public class PlayerServiceWS {
 		boolean folded = playerActionService
 				.fold(player, game.getCurrentHand());
 		ObjectMapper mapper = new ObjectMapper();
-		String json ="";
+		String json = "";
 		try {
-			json = mapper.writeValueAsString(Collections.singletonMap("success", folded));
+			json = mapper.writeValueAsString(Collections.singletonMap(
+					"success", folded));
 		} catch (JsonGenerationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -192,22 +196,23 @@ public class PlayerServiceWS {
 	 *         the current amount of chips the player has left after taking this
 	 *         action. Example: {"success":true,"chips":xxx}
 	 */
-	
+
 	@GET
 	@Path("/call")
 	@Produces("application/json")
-	public String call(long gameId, String playerId) {
+	public String call(@QueryParam("gameId") long gameId,
+			@QueryParam("playerId") String playerId) {
 		gameService = new GameServiceImpl();
 		Game game = gameService.getGameById(gameId, false);
 		playerActionService = new PlayerActionServiceImpl();
 		Player player = playerActionService.getPlayerById(playerId);
 		boolean called = playerActionService
-				.call(player, game.getCurrentHand());
+				.call(player, game);
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("success", called);
 		resultMap.put("chips", player.getChips());
 		ObjectMapper mapper = new ObjectMapper();
-		String json ="";
+		String json = "";
 		try {
 			json = mapper.writeValueAsString(resultMap);
 		} catch (JsonGenerationException e) {
@@ -234,21 +239,22 @@ public class PlayerServiceWS {
 	 *         checking is not a legal action, or it is not this player's turn,
 	 *         success will be false. Example: {"success":false}
 	 */
-	
+
 	@GET
 	@Path("/check")
 	@Produces("application/json")
-	public String check(long gameId, String playerId) {
+	public String check(@QueryParam("gameId") long gameId,
+			@QueryParam("playerId") String playerId) {
 		gameService = new GameServiceImpl();
 		Game game = gameService.getGameById(gameId, false);
 		playerActionService = new PlayerActionServiceImpl();
 		Player player = playerActionService.getPlayerById(playerId);
-		boolean checked = playerActionService.check(player,
-				game.getCurrentHand());
+		boolean checked = playerActionService.check(player, game);
 		ObjectMapper mapper = new ObjectMapper();
-		String json ="";
+		String json = "";
 		try {
-			json = mapper.writeValueAsString(Collections.singletonMap("success", checked));
+			json = mapper.writeValueAsString(Collections.singletonMap(
+					"success", checked));
 		} catch (JsonGenerationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -285,12 +291,13 @@ public class PlayerServiceWS {
 	 *         the amount of chips the player has after completing this action.
 	 *         Example: {"success":true,"chips":xxx}
 	 */
-	
+
 	@GET
 	@Path("/bet")
 	@Produces("application/json")
-	public String bet(long gameId, String playerId,
-			int betAmount) {
+	public String bet(@QueryParam("gameId") long gameId,
+			@QueryParam("playerId") String playerId,
+			@QueryParam("betAmount") int betAmount) {
 		gameService = new GameServiceImpl();
 		playerActionService = new PlayerActionServiceImpl();
 		Game game = gameService.getGameById(gameId, false);
@@ -301,7 +308,7 @@ public class PlayerServiceWS {
 		resultMap.put("success", bet);
 		resultMap.put("chips", player.getChips());
 		ObjectMapper mapper = new ObjectMapper();
-		String json ="";
+		String json = "";
 		try {
 			json = mapper.writeValueAsString(resultMap);
 		} catch (JsonGenerationException e) {
@@ -327,14 +334,15 @@ public class PlayerServiceWS {
 	@GET
 	@Path("/sitIn")
 	@Produces("application/json")
-	public String sitIn(String playerId) {
+	public String sitIn(@QueryParam("playerId") String playerId) {
 		playerActionService = new PlayerActionServiceImpl();
 		Player player = playerActionService.getPlayerById(playerId);
 		playerActionService.sitIn(player);
 		ObjectMapper mapper = new ObjectMapper();
-		String json ="";
+		String json = "";
 		try {
-			json = mapper.writeValueAsString(Collections.singletonMap("success", true));
+			json = mapper.writeValueAsString(Collections.singletonMap(
+					"success", true));
 		} catch (JsonGenerationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

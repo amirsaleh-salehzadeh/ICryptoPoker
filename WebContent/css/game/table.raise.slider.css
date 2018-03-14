@@ -1,0 +1,29 @@
+#rightSideToolBar {
+	width: 10%;
+	height: 100%;
+	position: relative;
+}
+
+.colorful-slider {
+	width: 13%;
+	height: 100%;
+	position: absolute;
+	-moz-border-radius: 12px;
+	-webkit-border-radius: 12px;
+	border-radius: 12px;
+}
+
+.colorful-slider.blue {
+	background-color: #b00000;
+}
+
+.slider-handle {
+	position: absolute;
+	left: -30%;
+	width: 200%;
+	height: 7%;
+	background-color: #b00000;
+	border-color: 1px solid black;
+	cursor: n-resize;
+	top: 44%;
+}

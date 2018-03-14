@@ -143,8 +143,8 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 				}
 
 			String query = "";
-			query = "UPDATE `hand`  SET ``board_id` = ?, `game_id` =?, `player_to_act_id`  =?, `blind_level`  =?, `pot`  =?,"
-					+ " `bet_amount` =?, `total_bet_amount' =? where hand_id = ?";
+			query = "UPDATE `hand` SET `board_id` = ?, `game_id` = ?, `player_to_act_id` = ?, `blind_level` = ?, `pot` = ?,"
+					+ " `bet_amount` = ?, `total_bet_amount` = ? where hand_id = ?";
 			PreparedStatement ps = conn.prepareStatement(query);
 
 			ps.setLong(1, hand.getBoard().getId());
@@ -191,11 +191,26 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 			String query = "";
 			query = "UPDATE `board` SET `flop1` = ?, `flop2` = ?, `flop3` = ?, `turn` = ?, `river` = ? WHERE `board_id` = ?";
 			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setString(1, board.getFlop1().toString());
-			ps.setString(2, board.getFlop1().toString());
-			ps.setString(3, board.getFlop1().toString());
-			ps.setString(4, board.getFlop1().toString());
-			ps.setString(5, board.getFlop1().toString());
+			if (board.getFlop1() == null)
+				ps.setString(1, null);
+			else
+				ps.setString(1, board.getFlop1().toString());
+			if (board.getFlop2() == null)
+				ps.setString(2, null);
+			else
+				ps.setString(2, board.getFlop2().toString());
+			if (board.getFlop3() == null)
+				ps.setString(3, null);
+			else
+				ps.setString(3, board.getFlop3().toString());
+			if (board.getTurn() == null)
+				ps.setString(4, null);
+			else
+				ps.setString(4, board.getTurn().toString());
+			if (board.getRiver() == null)
+				ps.setString(5, null);
+			else
+				ps.setString(5, board.getRiver().toString());
 			ps.setLong(6, board.getId());
 			ps.executeUpdate();
 			ps.close();
@@ -242,15 +257,17 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 				hand.setCurrentToAct(pdao.findById(
 						rs.getString("player_to_act_id"), conn));
 				GameDaoImpl gdao = new GameDaoImpl();
-//				Game g = gdao.findById(rs.getLong("game_id"), null);
-//				hand.setGame(g);
+				// Game g = gdao.findById(rs.getLong("game_id"), null);
+				// hand.setGame(g);
 				Set<PlayerHand> phs = new HashSet<PlayerHand>();
-				for (Player p : gdao.getAllPlayersInGame(rs.getLong("game_id"), conn)) {
+				for (Player p : gdao.getAllPlayersInGame(rs.getLong("game_id"),
+						conn)) {
 					phs.add(getPlayerHand(id, p.getId(), conn));
 				}
 				hand.setPlayers(phs);
 				hand.setId(id);
 				hand.setLastBetAmount(rs.getInt("bet_amount"));
+				hand.setPot(rs.getInt("pot"));
 				hand.setTotalBetAmount(rs.getInt("total_bet_amount"));
 				Deck d = new Deck(true);
 				hand.setCards(d.getRemainingCardsInDeck(phs, hand.getBoard()));
@@ -300,7 +317,7 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 				board.setFlop3(Card.valueOf(rs.getString("flop3")));
 				board.setRiver(Card.valueOf(rs.getString("river")));
 				board.setTurn(Card.valueOf(rs.getString("turn")));
-				
+
 			}
 			rs.close();
 			ps.close();
@@ -344,7 +361,7 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 			HandDaoImpl hdao = new HandDaoImpl();
 			while (rs.next()) {
 				ph.setPlayer(pdao.findById(rs.getString("player_id"), conn));
-//				ph.setHandEntity(hdao.findById(rs.getLong("hand_id"), conn));
+				// ph.setHandEntity(hdao.findById(rs.getLong("hand_id"), conn));
 				ph.setCard1(Card.valueOf(rs.getString("card1")));
 				ph.setCard2(Card.valueOf(rs.getString("card2")));
 				ph.setBetAmount(rs.getInt("bet_amount"));

@@ -30,32 +30,34 @@ public class GameAction extends Action {
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response) {
 		String reqCode = request.getParameter("reqCode");
-//		try {
-//			request.login("admin", "111");
-//			System.out.println(request.getRemoteUser());
-//		} catch (ServletException e) {
-//			return new ActionRedirect("/login.html");
-////			e.printStackTrace();
-//		}
-//		
-		if(reqCode==null||reqCode.equalsIgnoreCase(""))
+		// try {
+		// request.login("admin", "111");
+		// System.out.println(request.getRemoteUser());
+		// } catch (ServletException e) {
+		// return new ActionRedirect("/login.html");
+		// // e.printStackTrace();
+		// }
+		//
+		if (reqCode == null || reqCode.equalsIgnoreCase(""))
 			reqCode = "goToLobby";
-		if(reqCode.equalsIgnoreCase("joinAGame")){
+		if (reqCode.equalsIgnoreCase("joinAGame")) {
 			GameDaoImpl gamedao = new GameDaoImpl();
 			long gameId = Long.parseLong(request.getParameter("gameId"));
 			Game game = gamedao.findById(gameId, null);
 			PlayerDaoImpl playerDaoImpl = new PlayerDaoImpl();
-//			TODO: AMS>> FIX Username
-//			Player player = playerDaoImpl.findById(request.getRemoteUser(), null);
-			Player player = playerDaoImpl.findById(request.getParameter("playerName"), null);
+			// TODO: AMS>> FIX Username
+			// Player player = playerDaoImpl.findById(request.getRemoteUser(),
+			// null);
+			Player player = playerDaoImpl.findById(
+					request.getParameter("playerName"), null);
 			player.setChips(100);
 			GameServiceImpl gameService = new GameServiceImpl();
 			player = gameService.addNewPlayerToGame(game, player);
 			request.setAttribute("player", player);
-			
+			request.setAttribute("game", game);
 		}
-		
-		//startNewHand
+
+		// startNewHand
 		return mapping.findForward(reqCode);
 	}
 }

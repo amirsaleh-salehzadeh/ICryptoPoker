@@ -107,7 +107,7 @@ public class PlayerDaoImpl extends BaseHibernateDAO implements
 				}
 			String query = "";
 			query = "UPDATE `player`  SET `game_id` = ?,`chips` = ?, `game_position` = ?, `finished_place`= ?, "
-					+ " `sitting_out` = ?, name= ? where username = ?";
+					+ " `sitting_out` = ?, name= ?, total_chips = ? where username = ?";
 			PreparedStatement ps = conn.prepareStatement(query);
 			ps.setLong(1, player.getGameId());
 			ps.setInt(2, player.getChips());
@@ -118,7 +118,8 @@ public class PlayerDaoImpl extends BaseHibernateDAO implements
 			} else
 				ps.setInt(5, 0);
 			ps.setString(6, player.getName());
-			ps.setString(7, player.getId());
+			ps.setInt(7, player.getTotalChips());
+			ps.setString(8, player.getId());
 			ps.executeUpdate();
 			ps.close();
 			if (isNewConn) {
@@ -134,8 +135,6 @@ public class PlayerDaoImpl extends BaseHibernateDAO implements
 
 	@Override
 	public Player findById(String playerId, Connection conn) {
-		// TODO Auto-generated method stub
-
 		try {
 			boolean isNewConn = false;
 			if (conn == null)
@@ -165,6 +164,7 @@ public class PlayerDaoImpl extends BaseHibernateDAO implements
 				else
 					p.setSittingOut(false);
 				p.setChips(rs.getInt("chips"));
+				p.setTotalChips(rs.getInt("total_chips"));
 				p.setGameId(rs.getLong("game_id"));
 //				p.setDob(rs.getDate("dob"));
 //				p.setSurname(rs.getString("surname"));

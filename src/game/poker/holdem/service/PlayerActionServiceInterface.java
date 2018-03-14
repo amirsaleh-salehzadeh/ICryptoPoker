@@ -82,7 +82,7 @@ public interface PlayerActionServiceInterface {
 	 * @return true if the bet is successfully called. False if a call is not permitted 
 	 * (there is not bet, it is not the players turn, etc.)
 	 */
-	public boolean call(Player player, HandEntity hand);
+	public boolean call(Player player, Game game);
 	
 	/**
 	 * Get the status in the game or hand of the player

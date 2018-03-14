@@ -232,7 +232,7 @@
 	float: right;
 }
 
-.sbchipcontainer {
+.playerstatuscontainer {
 	background-color: transparent;
 	position: absolute;
 	float: right;
@@ -242,4 +242,5 @@
 	height: 25px;
 	border: 1px solid #b00000;
 	border-radius: 50%;
+	z-index: 10;
 }

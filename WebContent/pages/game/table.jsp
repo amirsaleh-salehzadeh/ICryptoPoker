@@ -70,7 +70,7 @@
 		<div class="ui-block-a" onclick="leaveTable()"
 			style="cursor: pointer;">Back to Lobby</div>
 		<div class="ui-block-b" id="playerChipsDiv">
-			<img alt="" src="images/game/money.png" width="33px" height="33px"><%=player.getChips()%>
+			<img alt="" src="images/game/money.png" width="33px" height="33px"><%=player.getTotalChips()%> $
 		</div>
 		<div class="ui-block-c" id="playerNameDiv"><%=request.getParameter("playerName")%></div>
 		<div class="ui-block-d"><%=game.getName()%>
@@ -120,8 +120,8 @@
 						style="height: 100% !important;"></div>
 				</div>
 				<div class="ui-block-solo" style="height: 60%;" id="mainTable">
-					<div class="ui-block-solo" id="handPotContainer" style="height: 20%; width: 100%;">
-					</div>
+					<div class="ui-block-solo" id="handPotContainer"
+						style="height: 20%; width: 100%;"></div>
 					<div class="ui-block-solo ui-grid-d"
 						style="height: 60%; width: 100%;" id="flopsContainer">
 						<div class="ui-block-a" id="flop1">

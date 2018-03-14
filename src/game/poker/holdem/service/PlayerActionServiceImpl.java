@@ -133,8 +133,9 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 		return true;
 	}
 
-	public boolean call(Player player, HandEntity hand) {
-		hand = handDao.merge(hand, null);
+	public boolean call(Player player, Game game) {
+		HandEntity hand = game.getCurrentHand();
+//		hand = handDao.merge(hand, null);
 		// Cannot call out of turn
 		if (!player.equals(hand.getCurrentToAct())) {
 			return false;
@@ -160,7 +161,9 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 
 		Player next = PlayerUtil.getNextPlayerToAct(hand, player);
 		hand.setCurrentToAct(next);
+		hand.setGame(game);
 		handDao.merge(hand, null);
+		player.setGameId(game.getId());
 		playerDao.merge(player, null);
 		return true;
 	}
@@ -246,4 +249,5 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 		}
 
 	}
+
 }

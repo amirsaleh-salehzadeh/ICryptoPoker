@@ -39,6 +39,21 @@ public class PlayerHand implements Comparable<PlayerHand> {
 	private String card2S;
 	private int betAmount;
 	private int roundBetAmount;
+	private PlayerStatus playerStatus;
+
+	/**
+	 * @return the playerStatus
+	 */
+	public PlayerStatus getPlayerStatus() {
+		return playerStatus;
+	}
+
+	/**
+	 * @param playerStatus the playerStatus to set
+	 */
+	public void setPlayerStatus(PlayerStatus playerStatus) {
+		this.playerStatus = playerStatus;
+	}
 
 	public String getCard1S() {
 		return card1S;

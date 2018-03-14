@@ -44,11 +44,11 @@ public class GameServiceImpl implements GameServiceInterface {
 		GameDaoImpl gameDao = new GameDaoImpl();
 		Game game = gameDao.findById(id, null);
 		// Player list is lazy fetched. force fetch for players if necessary
-		if (fetchPlayers) {
-			for (Player p : game.getPlayers()) {
-				p.getId();
-			}
-		}
+//		if (fetchPlayers) {
+//			for (Player p : game.getPlayers()) {
+//				p.getId();
+//			}
+//		}
 //		else
 //			game.setPlayers(new HashSet<Player>());
 		return game;
@@ -66,7 +66,6 @@ public class GameServiceImpl implements GameServiceInterface {
 		if (game.isStarted()) {
 			throw new AMSException("Game already started");
 		}
-
 		// Set started flag
 		game.setStarted(true);
 		// Start at the first blind level for the game
@@ -76,7 +75,6 @@ public class GameServiceImpl implements GameServiceInterface {
 			Collections.sort(blinds);
 			gs.setCurrentBlindLevel(blinds.get(0));
 		}
-
 		// Get all players associated with the game.
 		// Assign random position. Save the player.
 		List<Player> players = new ArrayList<Player>();

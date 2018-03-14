@@ -280,11 +280,8 @@ public class GameServiceWS {
 			Game game = gameService.getGameById(gameId, false);
 			if (!game.isStarted()) {
 				game = gameService.startGame(game);
-				mapper.writeValueAsString(Collections.singletonMap("success",
-						true));
 			}
-			json = mapper.writeValueAsString(Collections.singletonMap(
-					"success", false));
+			json = mapper.writeValueAsString(game);
 		} catch (JsonGenerationException e) {
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
@@ -293,7 +290,7 @@ public class GameServiceWS {
 			e.printStackTrace();
 		} catch (AMSException e) {
 			return Response.serverError().entity(e.getMessage()).build();
-		} 
+		}
 		return Response.ok(json, MediaType.APPLICATION_JSON).build();
 	}
 

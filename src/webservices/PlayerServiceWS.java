@@ -121,7 +121,7 @@ public class PlayerServiceWS {
 	 */
 
 	@GET
-	@Path("/getPlayerStatus")
+	@Path("/GetPlayerStatus")
 	@Produces("application/json")
 	public String getPlayerStatus(@QueryParam("gameId") long gameId,
 			@QueryParam("playerId") String playerId) {
@@ -132,13 +132,10 @@ public class PlayerServiceWS {
 			json = mapper.writeValueAsString(playerService.buildPlayerStatus(
 					gameId, playerId));
 		} catch (JsonGenerationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return json;
@@ -210,7 +207,7 @@ public class PlayerServiceWS {
 		playerActionService = new PlayerActionServiceImpl();
 		Player player = playerActionService.getPlayerById(playerId);
 		boolean called = playerActionService
-				.call(player, game.getCurrentHand());
+				.call(player, game);
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("success", called);
 		resultMap.put("chips", player.getChips());

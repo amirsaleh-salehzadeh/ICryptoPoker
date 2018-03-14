@@ -2,6 +2,7 @@ $(window)
 		.on(
 				"load",
 				function() {
+					// var playerCounter = 0;
 					$(".jqm-header").css("display", "none");
 					$(window).on("resize", fitElementsWithinScreen());
 					$(".sitPlaceContainer")
@@ -36,14 +37,12 @@ function addAPlyerToTable(playerName, chips) {
 			+ "<div class='ui-grid-a playerCardsContainer' id='cards"
 			+ playerName
 			+ "'><div class='ui-block-a card1'>a</div><div class='ui-block-b card2'>b</div>"
-			+ "</div><div class='sbchipcontainer'></div>";
+			+ "</div><div class='playerstatuscontainer' id='playerstatuscontainer"
+			+ playerName + "'></div>";
 	return content;
 }
 
 function fitElementsWithinScreen() {
-//	var mainBoardHeight = $(window).height() - 88;// Bottom and
-//	$("#mainTable").css("height", $("mainTableParentDIV").height());
-//	$("#mainTable").css("width", $("mainTableParentDIV").width());
 	$(".sitPlaceThumbnail").each(function() {
 		$(this).width($("#userSitPlace").height() / 2);
 		$(this).height($("#userSitPlace").height() / 2);
@@ -83,7 +82,7 @@ function generateACard(cardVal, divID, cardNumber) {
 	else
 		text = cardVal.charAt(0);
 	img = cardVal.charAt(1);
-	//	img = cardVal.split("_")[2].charAt(1).toLowerCase;
+	// img = cardVal.split("_")[2].charAt(1).toLowerCase;
 	var color = "black";
 	if (img == "c")
 		img = "&clubs;";
@@ -96,14 +95,13 @@ function generateACard(cardVal, divID, cardNumber) {
 		img = "&hearts;";
 		color = "red";
 	}
-
 	var res = "<div class='card-small'><span class='card-text " + color + "'>"
 			+ text + "</span><span class='card-img " + color + "'>" + img
 			+ "</span></div>";
-	if (divID=="flopsContainer"){
-	$("#flop" + cardNumber).html(res).trigger("create");// i only show this for ids starting with flop u shud make a small change here...
-	}else{
-		$("#" + divID).find(".card"+ cardNumber).html(res).trigger("create");
-		
+	if (divID == "flopsContainer") {
+		$("#flop" + cardNumber).html(res).trigger("create");
+	} else {
+		$("#" + divID).find(".card" + cardNumber).html(res).trigger("create");
+
 	}
 }

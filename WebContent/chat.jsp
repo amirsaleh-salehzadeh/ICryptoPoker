@@ -15,6 +15,7 @@ function start() {
     websocket = new WebSocket(uri);
     // override Methode: when recive msg from server.
     websocket.onmessage = function (msg) {
+    	
       console.log("msg recived from server: " + msg.data);
       
     }
@@ -32,7 +33,7 @@ function start() {
     websocket.onopen = function () {
       // send a msg to server
       websocket.send("getID");
-      $("#sID").val(websocket.toString());
+   //   $("#sID").val(websocket.toString());
     }
     
   }

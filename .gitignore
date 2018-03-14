@@ -43,3 +43,15 @@ out/artifacts/ICryptoPoker_Web_exploded/js/bootstrap/.editorconfig
 *.psd
 out/artifacts/ICryptoPoker_Web_exploded/.DS_Store
 *.class
+*.java
+*.properties
+nbbuild/web/WEB-INF/classes/.netbeans_update_resources
+nbbuild/web/WEB-INF/classes/.netbeans_automatic_build
+nbbuild/web/js/bootstrap/LICENSE
+nbbuild/web/js/bootstrap/less/.csslintrc
+nbbuild/web/js/bootstrap/js/.jshintrc
+nbbuild/web/js/bootstrap/docs/LICENSE
+*.pem
+nbbuild/web/js/bootstrap/CNAME
+nbbuild/web/js/bootstrap/.editorconfig
+lib/lib/build.gradle

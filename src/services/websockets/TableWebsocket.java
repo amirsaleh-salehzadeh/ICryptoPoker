@@ -1,9 +1,14 @@
 package services.websockets;
 
+import game.poker.holdem.domain.ChatRoom;
+
+import java.io.StringWriter;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+
+import javax.json.Json;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
 import javax.websocket.OnMessage;
@@ -20,32 +25,53 @@ import org.codehaus.jettison.json.JSONObject;
 
 
 
-@ServerEndpoint("/chat/{uid}")
+@ServerEndpoint("/chat/{uid}&{gameid}")
 public class TableWebsocket {
-<<<<<<< HEAD
-	private static Set<Session> sessions = Collections.synchronizedSet(new HashSet<Session>());
+//<<<<<<< HEAD
+	private static Set<ChatRoom> chatrooms = Collections.synchronizedSet(new HashSet<ChatRoom>());
+	
 
 	  @OnOpen
-	  public void onOpen(Session session) {
-	    sessions.add(session);
-	    System.out.println("on open");
-	  }
+	  public void onOpen(@PathParam("gameid")Long gid,Session session) {
+	    
+		  for(ChatRoom chat:chatrooms){
+			  if(chat.getGameId().equals(gid)){
+				  chat.addPlayer(session) ;
+				  System.out.println("open and new player added");
+				  return ;
+			  }
+			 
+		  }
+		       ChatRoom newroom = new ChatRoom(gid) ;
+		       newroom.addPlayer(session) ;
+		  }
 
 	  @OnClose
-	  public void onClose(Session session) {
-	    sessions.remove(session);
+	  public void onClose(@PathParam("gameid")Long gid,Session session) {
+		  for(ChatRoom chat:chatrooms){
+			  if(chat.getGameId().equals(gid)){
+				  chat.addPlayer(session) ;
+				  System.out.println("player left");
+				  return ;
+			  }
+			 
+		  }
+	      
 	    System.out.println("on close");
 	  }
 
 	  @OnMessage
-	  public void onReciveMsg(Session clientSession, String msg, @PathParam("uid") String uid) throws InterruptedException {
+	  public void onReciveMsg(Session clientSession, String msg, @PathParam("gameid") String gid,@PathParam("uid") String uid) throws InterruptedException {
 	    System.out.println("on recive msg." +msg);
-	    for (Session session : sessions) {
-	      session.getAsyncRemote().sendText("msg for all clients: " + msg);
-	    }
+	    for (ChatRoom chat:chatrooms ) {
+	    	 if(chat.getGameId().equals(gid))
+	      chat.sendAll( msg, uid)	 ;    
+	      }
 
-    Thread.sleep(5000);
-	    clientSession.getAsyncRemote().sendText("your personal message from server");
+//        Thread.sleep(5000);
+//	    clientSession.getAsyncRemote().sendText("your personal message from server");
+	  }
+	  }
 //    Thread.sleep(5000);
 //	    clientSession.getAsyncRemote().sendText("your msg was: " + msg);
 //	  }
@@ -69,7 +95,7 @@ public class TableWebsocket {
 //		
 //		
 //	}
-=======
+/*=======
 	static Set<Session> users = Collections.synchronizedSet(new HashSet<Session>()) ;
 	
 	
@@ -120,6 +146,6 @@ public class TableWebsocket {
 		
 	}
 >>>>>>> origin/NeilV0
-	
-	  }
-}
+	*/
+/*	  }
+}*/

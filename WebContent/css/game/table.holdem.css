@@ -233,11 +233,13 @@
 }
 
 .sbchipcontainer {
-	background-color: red;
+	background-color: transparent;
 	position: absolute;
 	float: right;
 	top: 0;
 	right: 0;
 	width: 25px;
 	height: 25px;
+	border: 1px solid #b00000;
+	border-radius: 50%;
 }

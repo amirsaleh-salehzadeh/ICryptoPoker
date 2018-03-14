@@ -36,6 +36,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
+import tools.AMSException;
+
 public class GameServiceImpl implements GameServiceInterface {
 
 	public Game getGameById(long id, boolean fetchPlayers) {
@@ -52,17 +54,17 @@ public class GameServiceImpl implements GameServiceInterface {
 		return game;
 	}
 
-	public Game startGame(Game game) {
+	public Game startGame(Game game) throws AMSException {
 		GameDaoImpl gameDao = new GameDaoImpl();
 		// game = gameDao.findById(game.getId(), null);
 		if (game.getPlayers().size() < 2) {
-			throw new IllegalStateException("Not Enough Players");
+			throw new AMSException("Not Enough Players");
 		}
 		if (game.getPlayers().size() > 10) {
-			throw new IllegalStateException("Too Many Players");
+			throw new AMSException("Too Many Players");
 		}
 		if (game.isStarted()) {
-			throw new IllegalStateException("Game already started");
+			throw new AMSException("Game already started");
 		}
 
 		// Set started flag

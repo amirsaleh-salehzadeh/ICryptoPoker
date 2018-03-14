@@ -77,8 +77,6 @@ public class PlayerHand implements Comparable<PlayerHand> {
 	}
 
 	public void setHandEntity(HandEntity hand) {
-//		if(hand.getPlayers()!=null&&hand.getPlayers().size()>0)
-//			hand.setPlayers(new HashSet<PlayerHand>());
 		this.handEntity = hand;
 	}
 
@@ -92,12 +90,11 @@ public class PlayerHand implements Comparable<PlayerHand> {
 	}
 
 	public Card getCard2() {
-		this.card2S = card2.toString();
-		System.out.println(this.card2S);
 		return card2;
 	}
 
 	public void setCard2(Card card2) {
+		this.card2S = card2.toString();
 		this.card2 = card2;
 	}
 

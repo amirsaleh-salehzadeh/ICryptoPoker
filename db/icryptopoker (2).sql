@@ -18,7 +18,10 @@ CREATE TABLE IF NOT EXISTS `board` (
   `turn` varchar(25) DEFAULT NULL,
   `river` varchar(25) DEFAULT NULL,
   PRIMARY KEY (`board_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+INSERT INTO `board` (`board_id`, `flop1`, `flop2`, `flop3`, `turn`, `river`) VALUES
+(1, NULL, NULL, NULL, NULL, NULL);
 
 DROP TABLE IF EXISTS `game`;
 CREATE TABLE IF NOT EXISTS `game` (
@@ -34,10 +37,10 @@ CREATE TABLE IF NOT EXISTS `game` (
 ) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=latin1;
 
 INSERT INTO `game` (`game_id`, `players_left`, `game_type`, `name`, `is_started`, `current_hand_id`, `game_structure_id`, `btn_player_id`) VALUES
-(1, 0, 'TOURNAMENT', 'name', 1, NULL, 5, NULL),
+(1, 1, 'CASH', 'name', 1, 0, 5, NULL),
 (2, 0, 'TOURNAMENT', 'naaame', 0, 0, 4, NULL),
 (12, 0, 'CASH', 'naaameTest', 0, 0, 3, NULL),
-(13, 2, 'CASH', 'asdf', 0, 15, 6, 'amir'),
+(13, 3, 'CASH', 'asdf', 1, 1, 6, ''),
 (14, 0, 'CASH', 'hellllo', 0, 0, 7, NULL),
 (15, 0, 'CASH', 'amir', 0, 0, 8, NULL),
 (16, 0, 'CASH', 'test', 0, NULL, 9, NULL),
@@ -90,7 +93,10 @@ CREATE TABLE IF NOT EXISTS `hand` (
   `bet_amount` int(11) DEFAULT NULL,
   `total_bet_amount` int(11) DEFAULT NULL,
   PRIMARY KEY (`hand_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+INSERT INTO `hand` (`hand_id`, `board_id`, `game_id`, `player_to_act_id`, `blind_level`, `pot`, `bet_amount`, `total_bet_amount`) VALUES
+(1, 1, 13, 'amir', 'BLIND_10_20', 30, 20, 20);
 
 DROP TABLE IF EXISTS `hand_deck`;
 CREATE TABLE IF NOT EXISTS `hand_deck` (
@@ -116,12 +122,14 @@ CREATE TABLE IF NOT EXISTS `player` (
   `sitting_out` tinyint(1) NOT NULL DEFAULT '0',
   `password` varchar(255) NOT NULL,
   `registeration_date` varchar(33) NOT NULL,
+  `total_chips` int(255) NOT NULL DEFAULT '0',
   PRIMARY KEY (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-INSERT INTO `player` (`username`, `game_id`, `name`, `chips`, `game_position`, `finished_place`, `sitting_out`, `password`, `registeration_date`) VALUES
-('amir', 13, 'amir', 100, 1, 0, 0, 'asd', 'now'),
-('amirS', 13, NULL, 100, 2, 0, 0, '1', 'Thu Mar 08 05:36:02 CAT 2018');
+INSERT INTO `player` (`username`, `game_id`, `name`, `chips`, `game_position`, `finished_place`, `sitting_out`, `password`, `registeration_date`, `total_chips`) VALUES
+('amir', 13, 'amir', 100, 3, 0, 0, 'asd', 'now', 0),
+('amirS', 13, 'ssss', 100, 2, 0, 0, '1', 'Thu Mar 08 05:36:02 CAT 2018', 0),
+('neil', 13, 'neil', 2000, 1, 0, 0, '1', '', 0);
 
 DROP TABLE IF EXISTS `player_hand`;
 CREATE TABLE IF NOT EXISTS `player_hand` (
@@ -133,13 +141,12 @@ CREATE TABLE IF NOT EXISTS `player_hand` (
   `bet_amount` int(11) DEFAULT NULL,
   `round_bet_amount` int(11) DEFAULT NULL,
   PRIMARY KEY (`player_hand_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 
 INSERT INTO `player_hand` (`player_hand_id`, `player_id`, `hand_id`, `card1`, `card2`, `bet_amount`, `round_bet_amount`) VALUES
-(9, 'amirS', 14, 'THREE_OF_CLUBS', 'SIX_OF_HEARTS', 20, 20),
-(10, 'amir', 14, 'JACK_OF_CLUBS', 'SIX_OF_CLUBS', 10, 10),
-(11, 'amirS', 15, 'SIX_OF_SPADES', 'EIGHT_OF_SPADES', 20, 20),
-(12, 'amir', 15, 'QUEEN_OF_SPADES', 'FOUR_OF_DIAMONDS', 10, 10);
+(12, 'neil', 1, 'QUEEN_OF_SPADES', 'FOUR_OF_DIAMONDS', 10, 10),
+(13, 'amir', 1, 'THREE_OF_CLUBS', 'JACK_OF_CLUBS', 10, 10),
+(14, 'amirS', 1, 'NINE_OF_CLUBS', 'EIGHT_OF_SPADES', 20, 20);
 
 DROP TABLE IF EXISTS `player_roles`;
 CREATE TABLE IF NOT EXISTS `player_roles` (

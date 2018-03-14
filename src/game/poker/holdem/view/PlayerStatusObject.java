@@ -34,10 +34,8 @@ import game.poker.holdem.domain.PlayerStatus;
  * 
  * @author jacobhyphenated
  */
-public class PlayerStatusObject implements Serializable {
+public class PlayerStatusObject  {
 
-	private static final long serialVersionUID = -3374032023771451021L;
-	
 	private PlayerStatus status;
 	private int chips;
 	private int smallBlind;

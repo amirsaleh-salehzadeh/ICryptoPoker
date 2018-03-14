@@ -23,6 +23,7 @@ THE SOFTWARE.
 */
 package game.poker.holdem.service;
 
+import tools.AMSException;
 import game.poker.holdem.domain.Game;
 import game.poker.holdem.domain.Player;
 
@@ -52,7 +53,7 @@ public interface GameServiceInterface {
 	 * @param game
 	 * @return
 	 */
-	public Game startGame(Game game);
+	public Game startGame(Game game) throws AMSException;
 	
 	/**
 	 * Add a new player to an existing game

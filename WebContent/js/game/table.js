@@ -27,17 +27,15 @@ $(window)
 					startTheGame();
 				});
 function addAPlyerToTable(playerName, chips) {
-	var content = "<div class='sitPlaceThumbnail'>"
-			+ "<img alt='' src='images/game/user.png' height='100%' /></div>"
-			+ "<div class='playerNamePlace'> "
+	var content = "<div class='ui-grid-a'><div class='ui-block-a'><div class='playerNamePlace'> "
 			+ playerName
 			+ "</div><div class='playerTotalChipsPlace'>$"
 			+ chips
-			+ "</div>"
-			+ "<div class='ui-grid-a playerCardsContainer' id='cards"
+			+ "</div></div>"
+			+ "<div class='ui-block-b'><div class='ui-grid-a playerCardsContainer' id='cards"
 			+ playerName
 			+ "'><div class='ui-block-a card1'>a</div><div class='ui-block-b card2'>b</div>"
-			+ "</div><div class='playerstatuscontainer' id='playerstatuscontainer"
+			+ "</div></div><div class='pscontainer' id='pscontainer"
 			+ playerName + "'></div>";
 	return content;
 }
@@ -53,11 +51,15 @@ function fitElementsWithinScreen() {
 		$(this).height($("#userSitPlace").height() / 2);
 		$(this).trigger("create");
 	});
-	$(".playerCardsContainer").each(function() {
-		$(this).width($(this).parent().parent().width() / 2);
-		$(this).height($(this).parent().parent().height() / 2);
-		$(this).trigger("create");
-	});
+	$(".playerCardsContainer").each(
+			function() {
+				$(this).width($("#userSitPlace").width() / 2);
+				$(this).height($("#userSitPlace").height());
+//				($(this).find(".card2")).find(".card-img").css("left",
+//						$(this).find(".card2").css("left"));
+				$(this).trigger("create");
+
+			});
 	// $("#mainBoardContainerDIV").width();
 }
 

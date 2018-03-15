@@ -45,4 +45,66 @@
 		<servlet-name>Jersey Web Application</servlet-name>
 		<url-pattern>/REST/*</url-pattern>
 	</servlet-mapping>
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name></web-resource-name>
+			<url-pattern>/user.do/*</url-pattern>
+			<http-method>GET</http-method>
+			<http-method>POST</http-method>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>SuperAdmin</role-name>
+		</auth-constraint>
+	</security-constraint>
+<!-- 	<security-constraint> -->
+<!-- 		<web-resource-collection> -->
+<!-- 			<web-resource-name></web-resource-name> -->
+<!-- 			<url-pattern>/game.do/*</url-pattern> -->
+<!-- 			<http-method>GET</http-method> -->
+<!-- 			<http-method>POST</http-method> -->
+<!-- 		</web-resource-collection> -->
+<!-- 		<auth-constraint> -->
+<!-- 			<role-name>Player</role-name> -->
+<!-- 		</auth-constraint> -->
+<!-- 	</security-constraint> -->
+<!-- 	<security-constraint> -->
+<!-- 		<web-resource-collection> -->
+<!-- 			<web-resource-name></web-resource-name> -->
+<!-- 			<url-pattern>/t_game.do/*</url-pattern> -->
+<!-- 			<http-method>GET</http-method> -->
+<!-- 			<http-method>POST</http-method> -->
+<!-- 		</web-resource-collection> -->
+<!-- 		<auth-constraint> -->
+<!-- 			<role-name>Player</role-name> -->
+<!-- 		</auth-constraint> -->
+<!-- 	</security-constraint> -->
+	<security-role>
+		<role-name>SuperAdmin</role-name>
+	</security-role>
+	<security-role>
+		<role-name>AddUser</role-name>
+	</security-role>
+	<security-role>
+		<role-name>RoleManagement</role-name>
+	</security-role>
+	<security-role>
+		<role-name>RemoveUser</role-name>
+	</security-role>
+	<security-role>
+		<role-name>EditUser</role-name>
+	</security-role>
+	<security-role>
+		<role-name>Player</role-name>
+	</security-role>
+<!-- 	<login-config> -->
+<!-- 		<auth-method>FORM</auth-method> -->
+<!-- 		<realm-name>JDBCRealm</realm-name> -->
+<!-- 		<form-login-config> -->
+<!-- 			<form-login-page>/login.html</form-login-page> -->
+<!-- 			<form-error-page>/login.html</form-error-page> -->
+<!-- 		</form-login-config> -->
+<!-- 	</login-config> -->
+<!-- 	<session-config> -->
+<!-- 		<session-timeout>60</session-timeout> -->
+<!-- 	</session-config> -->
 </web-app>

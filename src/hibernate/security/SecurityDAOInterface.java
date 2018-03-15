@@ -9,7 +9,6 @@ import common.user.UserPassword;
 import tools.AMSException;
 
 public interface SecurityDAOInterface {
-	public boolean checkUsernameValidity(String userName) throws AMSException;
 
 	public RoleLST getRolesList(RoleLST roleLST) throws AMSException;
 
@@ -23,12 +22,5 @@ public interface SecurityDAOInterface {
 	public boolean deleteRoles(ArrayList<RoleENT> roles) throws AMSException;
 
 	public ArrayList<RoleENT> getAllRolesForAGroup(int gid);
-
-	public void changePassword(String oldPass, String newPass, String username)
-			throws AMSException;
-
-	public boolean changePassword(UserPassword ent) throws AMSException;
-
-	public UserPassword register(UserPassword userPassword) throws AMSException;
 
 }

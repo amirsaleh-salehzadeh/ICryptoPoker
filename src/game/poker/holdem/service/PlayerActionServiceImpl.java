@@ -50,9 +50,10 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 		return playerDao.findById(playerId, null);
 	}
 
-	public boolean fold(Player player, HandEntity hand) {
+	public boolean fold(Player player, Game game) {
+		HandEntity hand = game.getCurrentHand();
+		hand.setGame(game);
 		hand = handDao.merge(hand, null);
-
 		// Cannot fold out of turn
 		if (!player.equals(hand.getCurrentToAct())) {
 			return false;
@@ -64,7 +65,7 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 		}
 		hand.setCurrentToAct(next);
 
-		handDao.save(hand, null);
+		handDao.merge(hand, null);
 		return true;
 	}
 
@@ -89,7 +90,9 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 		return true;
 	}
 
-	public boolean bet(Player player, HandEntity hand, int betAmount) {
+	public boolean bet(Player player, Game game, int betAmount) {
+		HandEntity hand = game.getCurrentHand();
+		hand.setGame(game);
 		hand = handDao.merge(hand, null);
 		if (!player.equals(hand.getCurrentToAct())) {
 			return false;
@@ -135,7 +138,8 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 
 	public boolean call(Player player, Game game) {
 		HandEntity hand = game.getCurrentHand();
-//		hand = handDao.merge(hand, null);
+		hand.setGame(game);
+		hand = handDao.merge(hand, null);
 		// Cannot call out of turn
 		if (!player.equals(hand.getCurrentToAct())) {
 			return false;
@@ -170,11 +174,11 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 
 	public void sitIn(Player player) {
 		player.setSittingOut(false);
-		playerDao.save(player, null);
+		playerDao.merge(player, null);
 	}
 
 	public PlayerStatus getPlayerStatus(Player player) {
-		player = playerDao.merge(player, null);
+		player = playerDao.findById(player.getId(), null);
 		if (player == null) {
 			return PlayerStatus.ELIMINATED;
 		}

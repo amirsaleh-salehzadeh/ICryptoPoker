@@ -164,7 +164,7 @@ public class PlayerServiceWS {
 		Game game = gameService.getGameById(gameId, false);
 		Player player = playerActionService.getPlayerById(playerId);
 		boolean folded = playerActionService
-				.fold(player, game.getCurrentHand());
+				.fold(player, game);
 		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
 		try {
@@ -302,7 +302,7 @@ public class PlayerServiceWS {
 		playerActionService = new PlayerActionServiceImpl();
 		Game game = gameService.getGameById(gameId, false);
 		Player player = playerActionService.getPlayerById(playerId);
-		boolean bet = playerActionService.bet(player, game.getCurrentHand(),
+		boolean bet = playerActionService.bet(player, game,
 				betAmount);
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("success", bet);

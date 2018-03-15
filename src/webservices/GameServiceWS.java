@@ -214,7 +214,7 @@ public class GameServiceWS {
 	@GET
 	@Path("/GetGameStatus")
 	@Produces("application/json")
-	public String getGameStatus(long gameId) {
+	public String getGameStatus(@QueryParam("gameId") long gameId) {
 		gameService = new GameServiceImpl();
 		Game game = gameService.getGameById(gameId, true);
 		GameStatus gs = GameUtil.getGameStatus(game);

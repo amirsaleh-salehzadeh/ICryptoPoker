@@ -38,9 +38,9 @@ public class GameAction extends Action {
 		// // e.printStackTrace();
 		// }
 		//
-		if (reqCode == null || reqCode.equalsIgnoreCase(""))
+		if (reqCode == null || reqCode.equalsIgnoreCase("")){
 			reqCode = "goToLobby";
-		if (reqCode.equalsIgnoreCase("joinAGame")) {
+		}if (reqCode.equalsIgnoreCase("joinAGame")) {
 			GameDaoImpl gamedao = new GameDaoImpl();
 			long gameId = Long.parseLong(request.getParameter("gameId"));
 			Game game = gamedao.findById(gameId, null);

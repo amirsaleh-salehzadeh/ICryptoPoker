@@ -1,16 +1,21 @@
+<%@page import="game.poker.holdem.domain.Player"%>
+<%@page import="common.user.UserENT"%>
 <%@page import="game.poker.holdem.domain.BlindLevel"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <link rel="stylesheet" href="css/game/lobby.holdem.css" />
 <script src="js/game/lobby.js"></script>
+<%
+	Player p = (Player) request.getAttribute("player");
+%>
+
 <div class="ui-grid-b">
-
-
 	<div class="ui-block-a">
 		<img alt="chips" title="Total Chips" src="images/game/user.png"
 			width="33px" height="33px">&nbsp;<span id="name"
-			class="spanTopBannerInfo"><input type="text" value="amir" id="playerName" placeholder="Player Name"></span>
+			class="spanTopBannerInfo"><%=p.getId()%><input type="hidden"
+			value="<%=p.getId()%>" id="playerName" placeholder="Player Name"></span>
 	</div>
 
 
@@ -20,7 +25,7 @@
 	<div class="ui-block-b">
 		<img alt="chips" title="Total Chips" src="images/game/money.png"
 			width="33px" height="33px">&nbsp;<span id="chips"
-			class="spanTopBannerInfo">25,000</span>
+			class="spanTopBannerInfo">&nbsp;<%=p.getTotalChips() %></span>
 	</div>
 
 
@@ -56,8 +61,8 @@
 						<option value="1">Tournament</option>
 					</select>   
 					<h3 class="ui-title">
-						<label for="name">Game Name</label> <input type="text" name="gameName"
-							placeholder="Game Name" data-mini="true">
+						<label for="name">Game Name</label> <input type="text"
+							name="gameName" placeholder="Game Name" data-mini="true">
 					</h3>
 					<label for="select-SB-CreateNew">Small / Blind</label> <select
 						name="blindLevel" id="select-SB-CreateNew" data-mini="true"
@@ -102,5 +107,5 @@
 		</thead>
 		<tbody id="lobbyTableTBody"></tbody>
 	</table>
-	
+
 </div>

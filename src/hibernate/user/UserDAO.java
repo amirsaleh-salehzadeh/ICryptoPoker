@@ -94,9 +94,15 @@ public class UserDAO extends BaseHibernateDAO implements UserDAOInterface {
 			query = "insert into player (password, username, game_id,game_position,registeration_date) values (?,?,0,0,?)";
 			ps = conn.prepareStatement(query);
 			ps.setString(2, ent.getUserName());
-			// ps.setString(1, MD5Encryptor.encode(ent.getUserPassword()));
-			ps.setString(1, ent.getUserPassword());
+			ps.setString(1, MD5Encryptor.encode(ent.getUserPassword()));
+			// ps.setString(1, ent.getUserPassword());
 			ps.setString(3, new Date().toString());
+			ps.execute();
+			ps.clearBatch();
+			query = "insert into player_roles (username, role_name) values (?,?)";
+			ps = conn.prepareStatement(query);
+			ps.setString(1, ent.getUserName());
+			ps.setString(2, "Player");
 			ps.execute();
 			ps.close();
 			conn.commit();

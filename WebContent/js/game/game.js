@@ -10,6 +10,7 @@ function startTheGame() {
 		success : function(data) {
 			if (data.started) {
 				$("#isStarted").val(data.isStarted);
+				$("#playerID").val(data.playerInBTN.id);
 				startAHand();
 			}
 		},
@@ -33,7 +34,7 @@ function startAHand() {
 			$(data.players).each(function(k, l) {
 				dealCards2Players(l);
 			});
-
+			getGameStatus();
 		},
 		error : function(xhr, ajaxOptions, thrownError) {
 			alert(xhr.responseText);
@@ -42,44 +43,12 @@ function startAHand() {
 }
 
 function dealCards2Players(l) {
-	var url = "/ICryptoPoker/REST/GetPlayerServiceWS/GetPlayerStatus?gameId="
-			+ $("#gameID").val() + "&playerId=" + l.player.id;
-	$.ajax({
-		url : url,
-		cache : false,
-		async : true,
-		success : function(data) {
-			if (data.status == "ACTION_TO_CALL") {
-				$("#playerID").val(l.player.id);
-				$("#checkBTN").html("Call");
-				$("#checkBTN").attr("onclick","call()");
-			} 
-			
-//			else {
-//				$("#checkBTN").html("Check");
-//				$("#checkBTN").attr("onclick", "check()");
-//			}
-			$('.playerCardsContainer').each(function(i, obj) {
-				if (this.id != null && "cards" + l.player.id == this.id) {
-					generateACard(l.card1S, this.id, 1);
-					generateACard(l.card2S, this.id, 2);
-				}
-			});
-			$('.playerstatuscontainer')
-					.each(
-							function(i, obj) {
-								if (this.id != null
-										&& "playerstatuscontainer"
-												+ l.player.id == this.id) {
-									$(this).html(data.status);
-								}
-							});
-		},
-		error : function(xhr, ajaxOptions, thrownError) {
-			alert(xhr.responseText);
+	$('.playerCardsContainer').each(function() {
+		if (this.id != null && "cards" + l.player.id == this.id) {
+			generateACard(l.card1S, this.id, 1);
+			generateACard(l.card2S, this.id, 2);
 		}
 	});
-
 }
 
 function check() {
@@ -91,7 +60,7 @@ function check() {
 		async : true,
 		success : function(data) {
 			if (data.success == true)
-				goToNexPlayer();
+				getGameStatus();
 			else
 				alert("check failed");
 		},
@@ -110,7 +79,7 @@ function call() {
 		async : true,
 		success : function(data) {
 			if (data.success == true)
-				goToNexPlayer();
+				getGameStatus();
 			else
 				alert("check failed");
 		},
@@ -129,7 +98,7 @@ function fold() {
 		async : true,
 		success : function(data) {
 			if (data.success == true)
-				goToNexPlayer();
+				getGameStatus();
 			else
 				alert("fold failed");
 		},
@@ -148,7 +117,7 @@ function raise() {
 		async : true,
 		success : function(data) {
 			if (data.success == true)
-				goToNexPlayer();
+				getGameStatus();
 			else
 				alert("fold failed");
 		},
@@ -166,6 +135,80 @@ function leaveTable() {
 	window.location.replace('t_game.do');
 }
 
-function goToNexPlayer() {
-	alert("goToNexPlayer");
+function getPlayerStatus(playerId) {
+	var url = "/ICryptoPoker/REST/GetPlayerServiceWS/GetPlayerStatus?gameId="
+			+ $("#gameID").val() + "&playerId=" + playerId;
+	$.ajax({
+		url : url,
+		cache : false,
+		async : true,
+		success : function(data) {
+			if (data.status == "WAITING") {
+				$('.pscontainer').each(function() {
+					if ("pscontainer" + playerId == this.id) {
+						$(this).html("W");
+						$(this).addClass("waitingChip");
+					}
+				});
+			} else if (data.status == "POST_SB") {
+				$('.pscontainer').each(function() {
+					if ("pscontainer" + playerId == this.id) {
+						$(this).html("S");
+						$(this).addClass("smallBlindChip");
+					}
+				});
+			} else if (data.status == "POST_BB") {
+				$('.pscontainer').each(function() {
+					if ("pscontainer" + playerId == this.id) {
+						$(this).html("B");
+						$(this).addClass("bigBlindChip");
+					}
+				});
+			} else if (data.status == "ACTION_TO_CALL") {
+				$("#playerID").val(playerId);
+				$("#checkBTN").html("Call");
+				$("#checkBTN").attr("onclick", "call()");
+				$('.pscontainer').each(function() {
+					if ("pscontainer" + playerId == this.id) {
+						$(this).html("D");
+						$(this).addClass("dealerChip");
+					}
+				});
+			} else if (data.status == "ACTION_TO_CHECK") {
+				$("#playerID").val(playerId);
+				$("#checkBTN").html("Check");
+				$("#checkBTN").attr("onclick", "check()");
+				$('.pscontainer').each(function() {
+					if ("pscontainer" + playerId == this.id) {
+						$(this).html("D");
+						$(this).addClass("dealerChip");
+					}
+				});
+			}
+		},
+		error : function(xhr, ajaxOptions, thrownError) {
+			alert(xhr.responseText);
+		}
+	});
+}
+
+function getGameStatus() {
+	var url = "/ICryptoPoker/REST/GetGameServiceWS/GetGameStatus?gameId="
+			+ $("#gameID").val();
+	$.ajax({
+		url : url,
+		cache : false,
+		async : true,
+		success : function(data) {
+			$('.pscontainer').each(function() {
+				$(this).attr("class", "pscontainer");
+			});
+			$(data.players).each(function(k, l) {
+				getPlayerStatus(l.id);
+			});
+		},
+		error : function(xhr, ajaxOptions, thrownError) {
+			alert(xhr.responseText);
+		}
+	});
 }

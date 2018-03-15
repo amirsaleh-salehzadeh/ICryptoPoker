@@ -3,6 +3,7 @@ package services.websockets;
 import game.poker.holdem.domain.ChatRoom;
 
 import java.io.StringWriter;
+import java.sql.Date;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -25,48 +26,36 @@ import org.codehaus.jettison.json.JSONObject;
 
 
 
-@ServerEndpoint("/chat/{uid}&{gameid}")
+@ServerEndpoint("/game/{uid}")
 public class TableWebsocket {
 //<<<<<<< HEAD
-	private static Set<ChatRoom> chatrooms = Collections.synchronizedSet(new HashSet<ChatRoom>());
+	private static Set<Session> sessions= Collections.synchronizedSet(new HashSet<Session>());
 	
 
 	  @OnOpen
-	  public void onOpen(@PathParam("gameid")Long gid,Session session) {
+	  public void onOpen(Session session) {
 	    
-		  for(ChatRoom chat:chatrooms){
-			  if(chat.getGameId().equals(gid)){
-				  chat.addPlayer(session) ;
-				  System.out.println("open and new player added");
-				  return ;
-			  }
-			 
-		  }
-		       ChatRoom newroom = new ChatRoom(gid) ;
-		       newroom.addPlayer(session) ;
+		  sessions.add(session) ;
+		  System.out.print("player added") ;
+		      
 		  }
 
 	  @OnClose
-	  public void onClose(@PathParam("gameid")Long gid,Session session) {
-		  for(ChatRoom chat:chatrooms){
-			  if(chat.getGameId().equals(gid)){
-				  chat.addPlayer(session) ;
+	  public void onClose(Session session) {
+		
+		          sessions.remove(session) ;
 				  System.out.println("player left");
 				  return ;
-			  }
+			  
 			 
 		  }
 	      
-	    System.out.println("on close");
-	  }
-
-	  @OnMessage
-	  public void onReciveMsg(Session clientSession, String msg, @PathParam("gameid") String gid,@PathParam("uid") String uid) throws InterruptedException {
+	   @OnMessage
+	  public void onReciveMsg(Session clientSession, String msg ,String gid,@PathParam("uid") String uid) throws InterruptedException {
 	    System.out.println("on recive msg." +msg);
-	    for (ChatRoom chat:chatrooms ) {
-	    	 if(chat.getGameId().equals(gid))
-	      chat.sendAll( msg, uid)	 ;    
-	      }
+	      
+	      for(Session session :sessions){
+	    	  session.getAsyncRemote().sendText(String.valueOf(java.time.LocalTime.now().getSecond())) ;	      }
 
 //        Thread.sleep(5000);
 //	    clientSession.getAsyncRemote().sendText("your personal message from server");

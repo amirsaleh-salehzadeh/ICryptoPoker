@@ -37,14 +37,18 @@ public class GameAction extends Action {
 		// return new ActionRedirect("/login.html");
 		// // e.printStackTrace();
 		// }
-		//
-		if (reqCode == null || reqCode.equalsIgnoreCase("")){
+		PlayerDaoImpl playerDaoImpl = new PlayerDaoImpl();
+		if (reqCode == null || reqCode.equalsIgnoreCase("")) {
+			Player player = playerDaoImpl.findById(
+					request.getParameter("username"), null);
+			// player.setChips(100);
+			request.setAttribute("player", player);
 			reqCode = "goToLobby";
-		}if (reqCode.equalsIgnoreCase("joinAGame")) {
+		}
+		if (reqCode.equalsIgnoreCase("joinAGame")) {
 			GameDaoImpl gamedao = new GameDaoImpl();
 			long gameId = Long.parseLong(request.getParameter("gameId"));
 			Game game = gamedao.findById(gameId, null);
-			PlayerDaoImpl playerDaoImpl = new PlayerDaoImpl();
 			// TODO: AMS>> FIX Username
 			// Player player = playerDaoImpl.findById(request.getRemoteUser(),
 			// null);

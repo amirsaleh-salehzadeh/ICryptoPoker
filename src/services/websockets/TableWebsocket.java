@@ -53,15 +53,6 @@ public class TableWebsocket {
 		
 	}
 	
-	@OnClose
-	public void handleClose(Session user,@PathParam("uid") String uid,@PathParam("guid")){
-		for(Table table: users) {
-			  if(table.getGame().equals(guid)) {
-				  table.removePlayer(user);
-			  }
-		  }
-		System.out.println("player has lefted");
-	}
 	
 	@OnError
 	public void handleError(Throwable t){

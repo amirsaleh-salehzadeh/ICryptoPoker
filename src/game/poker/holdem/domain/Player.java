@@ -31,7 +31,7 @@ public class Player implements Comparable<Player> {
 	private int chips;
 	private int gamePosition;
 	private int finishPosition;
-	private int totalChips;
+	private int totalChips = 0;
 	private boolean sittingOut;
 	private String registrationDate;
 	private String password;

@@ -85,11 +85,11 @@
 				<div class="ui-block-solo" style="height: 25%;"></div>
 				<div class="ui-block-solo sitPlaceContainer leftSideSits"
 					style="height: 25%;">
-					<div class='sitPlaceThumbnailEmpty'>SIT</div>
+					<div class='sitPlaceThumbnailEmpty'>Waiting</div>
 				</div>
 				<div class="ui-block-solo sitPlaceContainer leftSideSits"
 					style="height: 25%;">
-					<div class='sitPlaceThumbnailEmpty'>SIT</div>
+					<div class='sitPlaceThumbnailEmpty'>Waiting</div>
 				</div>
 				<div class="ui-block-solo" style="height: 25%; position: relative;">
 					<div class="timerCircle"></div>
@@ -103,15 +103,15 @@
 				<div class="ui-block-solo ui-grid-b" style="height: 20%;">
 					<div class="ui-block-a sitPlaceContainer topSideSits"
 						style="height: 100% !important;">
-						<div class='sitPlaceThumbnailEmpty'>SIT</div>
+						<div class='sitPlaceThumbnailEmpty'>Waiting</div>
 					</div>
 					<div class="ui-block-b sitPlaceContainer topSideSits"
 						style="height: 100% !important;">
-						<div class='sitPlaceThumbnailEmpty'>SIT</div>
+						<div class='sitPlaceThumbnailEmpty'>Waiting</div>
 					</div>
 					<div class="ui-block-c sitPlaceContainer topSideSits"
 						style="height: 100% !important;">
-						<div class='sitPlaceThumbnailEmpty'>SIT</div>
+						<div class='sitPlaceThumbnailEmpty'>Waiting</div>
 					</div>
 				</div>
 				<div class="ui-block-solo" style="height: 60%;" id="mainTable">
@@ -147,13 +147,13 @@
 				<div class="ui-block-solo ui-grid-b" style="height: 20%;">
 					<div class="ui-block-a sitPlaceContainer bottomSideSits"
 						style="height: 100% !important;">
-						<div class='sitPlaceThumbnailEmpty'>SIT</div>
+						<div class='sitPlaceThumbnailEmpty'>Waiting</div>
 					</div>
 					<div class="ui-block-b sitPlaceContainer bottomSideSits"
 						style="height: 100% !important;" id="userSitPlace"></div>
 					<div class="ui-block-c sitPlaceContainer bottomSideSits"
 						style="height: 100% !important;">
-						<div class='sitPlaceThumbnailEmpty'>SIT</div>
+						<div class='sitPlaceThumbnailEmpty'>Waiting</div>
 					</div>
 				</div>
 			</div>
@@ -167,13 +167,16 @@
 				</div>
 				<div class="ui-block-solo sitPlaceContainer rightSideSits"
 					style="height: 25%;">
-					<div class='sitPlaceThumbnailEmpty'>SIT</div>
+					<div class='sitPlaceThumbnailEmpty'>Waiting</div>
 				</div>
 				<div class="ui-block-solo sitPlaceContainer rightSideSits"
 					style="height: 25%;">
-					<div class='sitPlaceThumbnailEmpty'>SIT</div>
+					<div class='sitPlaceThumbnailEmpty'>Waiting</div>
 				</div>
-				<div class="ui-block-solo" style="height: 25%;"></div>
+				<div class="ui-block-solo" style="height: 25%;">
+				<input type="number" id="betAmount"
+				value="0">
+				</div>
 			</div>
 		</div>
 		<div class="ui-block-b" id="rightSideToolBar">
@@ -200,8 +203,7 @@
 		</div>
 		<div class="ui-block-d" style="width: 30%">
 			<a href="#" data-role="button" data-mini="true" onclick="raise()"
-				id="raiseBTN">Raise</a> <input type="hidden" id="betAmount"
-				value="0">
+				id="raiseBTN">Raise</a> 
 		</div>
 	</div>
 </div>

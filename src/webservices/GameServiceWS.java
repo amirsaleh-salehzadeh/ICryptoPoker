@@ -314,7 +314,7 @@ public class GameServiceWS {
 		Game game = gameService.getGameById(gameId, false);
 		HandEntity hand = new HandEntity();
 		HandDaoImpl hdao = new HandDaoImpl();
-		if (game.getCurrentHand().getId() > 0)
+		if (game.getCurrentHand() != null && game.getCurrentHand().getId() > 0)
 			hand = hdao.findById(game.getCurrentHand().getId(), null);
 		else
 			hand = handService.startNewHand(game);

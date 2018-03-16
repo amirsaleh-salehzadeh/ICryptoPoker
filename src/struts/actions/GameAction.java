@@ -39,7 +39,7 @@ public class GameAction extends Action {
 			// player.setChips(100);
 			request.setAttribute("player", player);
 			reqCode = "goToLobby";
-		}
+		} 
 		if (reqCode.equalsIgnoreCase("joinAGame")) {
 			GameDaoImpl gamedao = new GameDaoImpl();
 			long gameId = Long.parseLong(request.getParameter("gameId"));

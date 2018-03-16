@@ -9,6 +9,7 @@ import javax.websocket.OnError;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
+import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.JsonNode;
@@ -17,38 +18,48 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 import org.codehaus.jettison.json.JSONObject;
 
+import game.poker.holdem.domain.Table;
 
 
-@ServerEndpoint("/TableWebsocket")
+
+@ServerEndpoint("/game/{guid}/{uid}")
 public class TableWebsocket {
-	static Set<Session> users = Collections.synchronizedSet(new HashSet<Session>()) ;
+	static Set<Table> users = Collections.synchronizedSet(new HashSet<Table>()) ;
 	
 	
 	@OnOpen
-	public void handleOpen(Session user){
-		
-		users.add(user) ;
+	public void handleOpen(Session user,@PathParam("uid") String uid,@PathParam("guid") Long guid){
+		for(Table table: users) {
+			  if(table.getGame().equals(guid)) {
+				  table.addPlayer(uid, user);
+				  System.out.println("player has joined");
+				  return ;
+			  }
+		  }
+		Table table = new Table() ;
+		table.setGame(guid);
+		table.addPlayer(uid, user);
 		System.out.println("player has joined");
+		
 	}
 	
 	@OnMessage
-	public void handleMessage(String message , Session userSession){
-		String username = (String)userSession.getUserProperties().get("username") ;
-		if(username==null){
-			userSession.getUserProperties().put("username",message) ;
-//			userSession.getBasicRemote().sendText(buildJsonData("System", message)) ;
-		}else{
-			Iterator<Session> iterator = users.iterator() ;
-//			while(iterator.hasNext()){
-//				iterator.next().getBasicRemote().sendText(buildJsonData(username,message)) ;
-//			}
-		}
+	public void handleMessage(String message , Session userSession,@PathParam("uid") String uid,@PathParam("guid") Long guid){
+	  for(Table table: users) {
+		  if(table.getGame().equals(guid)) {
+			  table.sendToAll(uid, message);
+		  }
+	  }
 		
 	}
 	
 	@OnClose
-	public void handleClose(Session user){
-		users.remove(user);
+	public void handleClose(Session user,@PathParam("uid") String uid,@PathParam("guid")){
+		for(Table table: users) {
+			  if(table.getGame().equals(guid)) {
+				  table.removePlayer(user);
+			  }
+		  }
 		System.out.println("player has lefted");
 	}
 	
@@ -59,17 +70,7 @@ public class TableWebsocket {
 		
 	}
 	
-	private String buildJsonData(String username,String message){
-		 
-		
-		ObjectMapper mapper = new ObjectMapper() ;
-		
-		String[] temp = {"message",username +":" +message};
-//		 String json = mapper.writeValueAsString(temp) ;
-		
-		return "" ;
-		
-	}
+	
 	
 
 }

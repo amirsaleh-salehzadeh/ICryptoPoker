@@ -35,7 +35,7 @@ public class Player implements Comparable<Player> {
 	private boolean sittingOut;
 	private String registrationDate;
 	private String password;
-
+    private String sessionId ;
 	// private int gender ;
 	// private Date dob ;
 	// private String surname ;
@@ -189,5 +189,13 @@ public class Player implements Comparable<Player> {
 	@Override
 	public int compareTo(Player p) {
 		return this.getGamePosition() - p.getGamePosition();
+	}
+
+	public String getSessionId() {
+		return sessionId;
+	}
+
+	public void setSessionId(String sessionId) {
+		this.sessionId = sessionId;
 	}
 }

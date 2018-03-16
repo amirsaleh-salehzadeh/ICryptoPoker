@@ -34,7 +34,7 @@ function getAllGames() {
 				tableRows += smallBig[1] + " / " + smallBig[2] + "</td><td>";
 				tableRows += parseInt(smallBig[2]) * 40 + " / "
 				+ parseInt(smallBig[2]) * 200  + "</td><td>"
-						+ l.players.length + " / 10</td></tr>";
+						+ l.playersRemaining + " / 10</td></tr>";
 			});
 			$("#lobbyTableTBody").html(tableRows);
 			$("#table-lobby").trigger("create");
@@ -74,7 +74,7 @@ function createNewGame() {
 			tableRows += smallBig[1] + " / " + smallBig[2] + "</td><td>";
 			tableRows += parseInt(smallBig[2]) * 40 + "/"
 					+ parseInt(smallBig[2]) * 200 +
-			"</td><td>" + result.players.length + " / 10</td></tr>";
+			"</td><td>" + result.playersRemaining + " / 10</td></tr>";
 			$("#lobbyTableTBody")
 					.html(tableRows + $("#lobbyTableTBody").html());
 			$("#table-lobby").trigger("create");

@@ -4,15 +4,12 @@
  */
 package struts.actions;
 
-import java.util.Set;
-
 import game.poker.holdem.dao.GameDaoImpl;
 import game.poker.holdem.dao.PlayerDaoImpl;
 import game.poker.holdem.domain.Game;
 import game.poker.holdem.domain.Player;
 import game.poker.holdem.service.GameServiceImpl;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -20,8 +17,6 @@ import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-
-import com.sun.xml.internal.bind.v2.TODO;
 
 public class GameAction extends Action {
 	private String success = "";

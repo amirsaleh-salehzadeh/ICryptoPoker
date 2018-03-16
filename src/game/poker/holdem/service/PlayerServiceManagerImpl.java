@@ -53,9 +53,12 @@ public class PlayerServiceManagerImpl implements PlayerServiceManager {
 		// HandDaoImpl hdao = new HandDaoImpl();
 
 		// ADDED THESE THREE LINES THERE WAS AN ERROR
-		HandEntity handtmp = game.getCurrentHand();
-		handtmp.setGame(game);
-		game.setCurrentHand(handtmp);
+		if (game.getCurrentHand() != null) {
+			HandEntity handtmp = game.getCurrentHand();
+			handtmp.setGame(game);
+			game.setCurrentHand(handtmp);
+		}
+
 		// UNTIL HERE
 
 		// Get the player status.
@@ -90,8 +93,8 @@ public class PlayerServiceManagerImpl implements PlayerServiceManager {
 				}
 			}
 			if (playerHand != null) {
-				results.setCard1(playerHand.getHand().getCard(0));
-				results.setCard2(playerHand.getHand().getCard(1));
+				results.setCard1(playerHand.getHand().getCard(0).toString());
+				results.setCard2(playerHand.getHand().getCard(1).toString());
 				results.setAmountBetRound(playerHand.getRoundBetAmount());
 
 				int toCall = hand.getTotalBetAmount()

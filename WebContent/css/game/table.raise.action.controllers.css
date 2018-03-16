@@ -1,0 +1,78 @@
+#rightSideToolBar {
+	width: 7%;
+	height: 100%;
+	position: relative;
+}
+
+.colorful-slider {
+	width: 50%;
+	height: 100%;
+	position: absolute;
+	-moz-border-radius: 12px;
+	-webkit-border-radius: 12px;
+	border-radius: 12px;
+	right: 33%;
+}
+
+.colorful-slider.blue {
+	box-shadow: inset 1px 1px 2px rgba(255, 66, 66, 0.3), inset 3px 15px
+		45px rgba(255, 33, 33, 0.1), inset -1px -1px 2px rgba(222, 0, 0, 0.5),
+		inset -3px -15px 45px rgba(222, 0, 0, 0.8), 1px 5px 30px -4px
+		rgba(188, 11, 33, 1);
+}
+
+.slider-handle {
+	position: absolute;
+	left: -60%;
+	width: 200%;
+	height: 7%;
+	background-color: rgba(0, 0, 0, .77);
+	border: 2px solid #b00000;
+	cursor: n-resize;
+	bottom: 0;
+}
+
+#foldBTN {
+	box-shadow: inset 1px 1px 2px rgba(255, 66, 66, 0.3), inset 3px 15px
+		45px rgba(255, 33, 33, 0.1), inset -1px -1px 2px rgba(222, 0, 0, 0.5),
+		inset -3px -15px 45px rgba(222, 0, 0, 0.8), 1px 5px 30px -4px
+		rgba(188, 11, 33, 1);
+	color: #fff !important;
+	border-color: rgb(244, 66, 66) !important;
+}
+
+#checkBTN {
+	box-shadow: inset 1px 1px 2px rgba(255, 215, 97, 0.3), inset 3px 15px
+		45px rgba(255, 255, 44, 0.5), inset -1px -1px 2px
+		rgba(255, 235, 77, 0.5), inset -3px -15px 45px rgba(215, 255, 77, 0.8),
+		1px 5px 30px -4px rgba(255, 255, 93, 1);
+	color: #fff !important;
+	border-color: rgb(255, 255, 66) !important;
+}
+
+#allInBTN {
+	box-shadow: inset 1px 1px 2px rgba(40, 166, 255, 0.3), inset 3px 15px
+		45px rgba(40, 166, 255, 0.1), inset -1px -1px 2px
+		rgba(70, 146, 255, 0.5), inset -3px -15px 45px rgba(80, 136, 245, 0.8),
+		1px 5px 30px -4px rgba(40, 166, 255, 1);
+	color: #fff !important;
+	border-color: rgb(164, 214, 255) !important;
+	width: 50%;
+}
+
+#raiseBTN {
+	box-shadow: inset 1px 1px 2px rgba(66, 255, 66, 0.3), inset 3px 15px
+		45px rgba(33, 255, 33, 0.1), inset -1px -1px 2px rgba(0, 255, 0, 0.5),
+		inset -3px -15px 45px rgba(0, 222, 0, 0.8), 1px 5px 30px -4px
+		rgba(11, 199, 33, 1);
+	color: #fff !important;
+	border-color: rgb(66, 244, 66) !important;
+}
+
+#buttonsContainerDIV {
+	bottom: 0;
+}
+
+#buttonsContainerDIV>div>a {
+	bottom: 0;
+}

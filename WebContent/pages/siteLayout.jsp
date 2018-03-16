@@ -19,7 +19,7 @@
 <link rel="stylesheet"
 	href="css/jquery-mobile/jquery.dataTables.min.css">
 <link rel="stylesheet" href="css/icryptopokermaincss.css">
-<script src="js/nmmu.main.scripts.js"></script>
+<script src="js/icryptopokermainscripts.js"></script>
 <script src="js/jquery.min.js"></script>
 <script src="js/jquery.form.js"></script>
 <script src="js/index.js"></script>

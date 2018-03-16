@@ -40,8 +40,10 @@ public class PlayerStatusObject  {
 	private int chips;
 	private int smallBlind;
 	private int bigBlind;
-	private Card card1;
-	private Card card2;
+//	private Card card1;
+//	private Card card2;
+	private String card1;
+	private String card2;
 	private int amountBetRound;
 	private int amountToCall;
 	
@@ -84,16 +86,16 @@ public class PlayerStatusObject  {
 	public void setBigBlind(int bigBlind) {
 		this.bigBlind = bigBlind;
 	}
-	public Card getCard1() {
+	public String getCard1() {
 		return card1;
 	}
-	public void setCard1(Card card1) {
+	public void setCard1(String card1) {
 		this.card1 = card1;
 	}
-	public Card getCard2() {
+	public String getCard2() {
 		return card2;
 	}
-	public void setCard2(Card card2) {
+	public void setCard2(String card2) {
 		this.card2 = card2;
 	}
 	public int getAmountBetRound() {

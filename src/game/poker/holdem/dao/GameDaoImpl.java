@@ -211,7 +211,10 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDaoInterface {
 				ps.setInt(4, 1);
 			} else
 				ps.setInt(4, 0);
-			ps.setLong(5, game.getCurrentHand().getId());
+			if (game.getCurrentHand() == null)
+				ps.setString(5, null);
+			else
+				ps.setLong(5, game.getCurrentHand().getId());
 			ps.setLong(6, game.getGameStructure().getId());
 			ps.setString(7, game.getPlayerInBTN().getId());
 			ps.setLong(8, game.getId());

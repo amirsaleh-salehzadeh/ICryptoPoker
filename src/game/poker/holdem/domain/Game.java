@@ -91,9 +91,6 @@ public class Game {
 	}
 	
 	public HandEntity getCurrentHand() {
-		if (currentHand == null) {
-			currentHand = new HandEntity();
-		}
 		return currentHand;
 	}
 	public void setCurrentHand(HandEntity currentHand) {

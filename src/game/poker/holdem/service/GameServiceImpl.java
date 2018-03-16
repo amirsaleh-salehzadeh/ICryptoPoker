@@ -70,11 +70,11 @@ public class GameServiceImpl implements GameServiceInterface {
 		game.setStarted(true);
 		// Start at the first blind level for the game
 		GameStructure gs = game.getGameStructure();
-		// if (game.getGameType() == GameType.TOURNAMENT) {
-		List<BlindLevel> blinds = gs.getBlindLevels();
-		Collections.sort(blinds);
-		gs.setCurrentBlindLevel(blinds.get(0));
-		// }
+		if (game.getGameType() == GameType.TOURNAMENT) {
+			List<BlindLevel> blinds = gs.getBlindLevels();
+			Collections.sort(blinds);
+			gs.setCurrentBlindLevel(blinds.get(0));
+		}
 		// Get all players associated with the game.
 		// Assign random position. Save the player.
 		List<Player> players = new ArrayList<Player>();

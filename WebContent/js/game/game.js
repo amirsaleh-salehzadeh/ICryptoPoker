@@ -1,6 +1,6 @@
 function startTheGame() {
-	// if ($("#isStarted").val() == true)
-	// return;
+	 if ($("#isStarted").val() == true)
+		return;
 	var url = "/ICryptoPoker/REST/GetGameServiceWS/StartGame?gameId="
 			+ $("#gameID").val();
 	$.ajax({
@@ -31,9 +31,9 @@ function startAHand() {
 			$("#handPotContainer").html(
 					'<img alt="" src="images/game/stack.png" height="100%"><span>&nbsp;'
 							+ data.pot + '&nbsp;$</span>');
-			$(data.players).each(function(k, l) {
-				dealCards2Players(l);
-			});
+//			$(data.players).each(function(k, l) {
+//				dealCards2Players(l);
+//			});
 			getGameStatus();
 		},
 		error : function(xhr, ajaxOptions, thrownError) {
@@ -110,7 +110,8 @@ function fold() {
 
 function raise() {
 	var url = "/ICryptoPoker/REST/GetPlayerServiceWS/bet?gameId="
-			+ $("#gameID").val() + "&playerId=" + $("#playerID").val();
+			+ $("#gameID").val() + "&playerId=" + $("#playerID").val()
+			+ "&betAmount=" + $("#betAmount").val();
 	$.ajax({
 		url : url,
 		cache : false,
@@ -145,8 +146,9 @@ function getPlayerStatus(playerId, playerName) {
 		success : function(data) {
 			addAPlyerToTable(playerId, playerName, parseInt(data.chips)
 					- parseInt(data.amountBetRound), data.amountToCall);
-			if (data.status != "NOT_STARTED")
+			if (data.status != "NOT_STARTED" && data.status != "SEATING")
 				dealCards2Players(data, playerId);
+
 			if (data.status == "WAITING" || data.status == "NOT_STARTED") {
 				$('.pscontainer').each(function() {
 					if ("pscontainer" + playerId == this.id) {
@@ -209,10 +211,17 @@ function getGameStatus() {
 			});
 			if (data.gameStatus == "NOT_STARTED") {
 				$("#handPotContainer").html('Game is not started');
+				if (data.players.length >= 2)
+					startTheGame();
 			} else
 				$("#handPotContainer").html(
 						'<img alt="" src="images/game/stack.png" height="100%"><span>&nbsp;'
 								+ data.pot + '&nbsp;$</span>');
+			if (data.cards != null)
+				$(data.cards).each(function(k, l) {
+					generateACard(l, "flopContainer", k+1);
+				});
+
 			$(data.players).each(function(k, l) {
 				getPlayerStatus(l.id, l.name);
 			});

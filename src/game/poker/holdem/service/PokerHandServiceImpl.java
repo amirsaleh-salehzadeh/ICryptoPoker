@@ -47,6 +47,7 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 	private PlayerDaoImpl playerDao;
 
 	public HandEntity startNewHand(Game game) {
+		System.out.println("1 "+System.currentTimeMillis());
 		gameDao = new GameDaoImpl();
 		handDao = new HandDaoImpl();
 		HandEntity hand = new HandEntity();
@@ -70,17 +71,18 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 			}
 		}
 		hand.setPlayers(participatingPlayers);
-
+		System.out.println("2 "+System.currentTimeMillis());
 		// Sort and get the next player to act (immediately after the big blind)
 		List<PlayerHand> players = new ArrayList<PlayerHand>();
 		players.addAll(participatingPlayers);
 		Player nextToAct = PlayerUtil.getNextPlayerToAct(hand,
 				this.getPlayerInBB(hand));
 		hand.setCurrentToAct(nextToAct);
-
+		System.out.println("3 "+System.currentTimeMillis());
 		// Register the Forced Small and Big Blind bets as part of the hand
 		Player smallBlind = getPlayerInSB(hand);
 		Player bigBlind = getPlayerInBB(hand);
+		System.out.println("4 "+System.currentTimeMillis());
 		int sbBet = 0;
 		int bbBet = 0;
 		for (PlayerHand ph : hand.getPlayers()) {
@@ -98,6 +100,7 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 				bigBlind.setChips(bigBlind.getChips() - bbBet);
 			}
 		}
+		System.out.println("5 "+System.currentTimeMillis());
 		hand.setTotalBetAmount(hand.getBlindLevel().getBigBlind());
 		hand.setLastBetAmount(hand.getBlindLevel().getBigBlind());
 		hand.setPot(sbBet + bbBet);
@@ -105,7 +108,7 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		hand.setBoard(b);
 		hand.setCards(d.exportDeck());
 		hand = handDao.save(hand, null);
-
+		System.out.println("6 "+System.currentTimeMillis());
 		game.setCurrentHand(hand);
 		gameDao.merge(game, null);
 		hand.setGame(null);

@@ -49,6 +49,7 @@ public class PlayerServiceManagerImpl implements PlayerServiceManager {
 		playerActionService = new PlayerActionServiceImpl();
 		Player player = playerActionService.getPlayerById(playerId);
 		PlayerStatusObject results = new PlayerStatusObject();
+		results.setName(player.getName());
 		handService = new PokerHandServiceImpl();
 		// HandDaoImpl hdao = new HandDaoImpl();
 
@@ -105,6 +106,7 @@ public class PlayerServiceManagerImpl implements PlayerServiceManager {
 				}
 			}
 		}
+		results.setId(playerId);
 		return results;
 	}
 

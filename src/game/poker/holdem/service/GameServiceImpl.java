@@ -27,14 +27,26 @@ import game.poker.holdem.dao.GameDaoImpl;
 import game.poker.holdem.dao.PlayerDaoImpl;
 import game.poker.holdem.domain.BlindLevel;
 import game.poker.holdem.domain.Game;
+import game.poker.holdem.domain.GameStatus;
 import game.poker.holdem.domain.GameStructure;
 import game.poker.holdem.domain.GameType;
 import game.poker.holdem.domain.Player;
+import game.poker.holdem.util.GameUtil;
+import game.poker.holdem.view.PlayerStatusObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 
 import tools.AMSException;
 
@@ -43,14 +55,6 @@ public class GameServiceImpl implements GameServiceInterface {
 	public Game getGameById(long id, boolean fetchPlayers) {
 		GameDaoImpl gameDao = new GameDaoImpl();
 		Game game = gameDao.findById(id, null);
-		// Player list is lazy fetched. force fetch for players if necessary
-		// if (fetchPlayers) {
-		// for (Player p : game.getPlayers()) {
-		// p.getId();
-		// }
-		// }
-		// else
-		// game.setPlayers(new HashSet<Player>());
 		return game;
 	}
 
@@ -124,6 +128,58 @@ public class GameServiceImpl implements GameServiceInterface {
 		game = gameDao.merge(game, null);
 		player.setGameId(game.getId());
 		return player;
+	}
+	
+	public String getGameStatusJSON(long gameId){
+		GameServiceImpl gameService = new GameServiceImpl();
+		Game game = gameService.getGameById(gameId, true);
+		GameStatus gs = GameUtil.getGameStatus(game);
+		Set<PlayerStatusObject> players = new HashSet<PlayerStatusObject>();
+		PlayerServiceManagerImpl playerService = new PlayerServiceManagerImpl();
+		for (Player p : game.getPlayers()) {
+			playerService.buildPlayerStatus(gameId, p.getId());
+		}
+		Map<String, Object> results = new HashMap<String, Object>();
+		results.put("gameStatus", gs);
+		results.put("players", players);
+		if (game.getCurrentHand() != null)
+			results.put("handId", game.getCurrentHand().getId());
+		else
+			results.put("handId", 0);
+		// Before the game is started, there is no current blind level set.
+		if (game.getGameStructure().getCurrentBlindLevel() != null) {
+			results.put("smallBlind", game.getGameStructure()
+					.getCurrentBlindLevel().getSmallBlind());
+			results.put("bigBlind", game.getGameStructure()
+					.getCurrentBlindLevel().getBigBlind());
+		}
+		if (game.getGameStructure().getCurrentBlindEndTime() != null) {
+			long timeLeft = game.getGameStructure().getCurrentBlindEndTime()
+					.getTime()
+					- new Date().getTime();
+			timeLeft = Math.max(0, timeLeft);
+			results.put("blindTime", timeLeft);
+		}
+		if (game.getCurrentHand() != null) {
+			results.put("pot", game.getCurrentHand().getPot());
+			results.put("cards", game.getCurrentHand().getBoard()
+					.getBoardCards());
+		}
+		ObjectMapper mapper = new ObjectMapper();
+		String json = "";
+		try {
+			json = mapper.writeValueAsString(results);
+		} catch (JsonGenerationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return json;
 	}
 
 }

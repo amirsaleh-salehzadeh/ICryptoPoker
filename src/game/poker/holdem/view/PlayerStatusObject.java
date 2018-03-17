@@ -23,9 +23,6 @@ THE SOFTWARE.
 */
 package game.poker.holdem.view;
 
-import java.io.Serializable;
-
-import game.poker.holdem.Card;
 import game.poker.holdem.domain.PlayerStatus;
 
 /**
@@ -40,13 +37,29 @@ public class PlayerStatusObject  {
 	private int chips;
 	private int smallBlind;
 	private int bigBlind;
-//	private Card card1;
-//	private Card card2;
 	private String card1;
 	private String card2;
 	private int amountBetRound;
 	private int amountToCall;
-	
+	private String id;
+	private String name;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
 	@Override
 	public boolean equals(Object o){
 		if(o == null || !(o instanceof PlayerStatusObject)){

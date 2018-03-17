@@ -20,7 +20,7 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
-*/
+ */
 package game.poker.holdem.service;
 
 import tools.AMSException;
@@ -36,43 +36,60 @@ public interface GameServiceInterface {
 
 	/**
 	 * Get the game from the persistent context based on the unique identifier
-	 * @param id unique id for the game
-	 * @param fetchPlayers true to eagerly fetch the Player List for the game.
-	 * if this parameter is false, the {@link Game} return object will not have eagerly fetched
-	 * the player list, and there is no guarantee of the list accuracy or existence
+	 * 
+	 * @param id
+	 *            unique id for the game
+	 * @param fetchPlayers
+	 *            true to eagerly fetch the Player List for the game. if this
+	 *            parameter is false, the {@link Game} return object will not
+	 *            have eagerly fetched the player list, and there is no
+	 *            guarantee of the list accuracy or existence
 	 * @return {@link Game} from the persistent context
 	 */
 	public Game getGameById(long id, boolean fetchPlayers);
-	
+
 	/**
-	 * Start a game. This begins the current game tracking.  Setup of the game is completed.  If it
-	 * is a tournament, all players should be registered at this time.<br /><br />
+	 * Start a game. This begins the current game tracking. Setup of the game is
+	 * completed. If it is a tournament, all players should be registered at
+	 * this time.<br />
+	 * <br />
 	 * 
-	 * This will assign starting positions to all of the players.  This will not start the blind level,
-	 * that will happen at the start of the first hand.
+	 * This will assign starting positions to all of the players. This will not
+	 * start the blind level, that will happen at the start of the first hand.
+	 * 
 	 * @param game
 	 * @return
 	 */
 	public Game startGame(Game game) throws AMSException;
-	
+
 	/**
 	 * Add a new player to an existing game
-	 * @param game game to add the player to
-	 * @param player {@link Player} to add to the game
-	 * @return Player with persisted context.  Null if the game is not accepting new players.
+	 * 
+	 * @param game
+	 *            game to add the player to
+	 * @param player
+	 *            {@link Player} to add to the game
+	 * @return Player with persisted context. Null if the game is not accepting
+	 *         new players.
 	 */
 	public Player addNewPlayerToGame(Game game, Player player);
-	
+
 	/**
-	 * Persist any changes to a {@link Player} domain object.  Or create a new one.
-	 * @param player Player to be saved
+	 * Persist any changes to a {@link Player} domain object. Or create a new
+	 * one.
+	 * 
+	 * @param player
+	 *            Player to be saved
 	 * @return Player attached to the persistent context
 	 */
-	//TODO List active games
-	//Games that are not started, games that are cash games and still in progress
-	//Need a way to weed out old/expired/inactive games
-	
-	//TODO Player add Chips method - for cash games and rebuy tournaments
-	//Do this in service layer to enforce tournament logic.
-	//Cash games could theoretically be done in the controller and call save
+	// TODO List active games
+	// Games that are not started, games that are cash games and still in
+	// progress
+	// Need a way to weed out old/expired/inactive games
+
+	// TODO Player add Chips method - for cash games and rebuy tournaments
+	// Do this in service layer to enforce tournament logic.
+	// Cash games could theoretically be done in the controller and call save
+
+	public String getGameStatusJSON(long gameId);
 }

@@ -1,5 +1,7 @@
 package game.poker.holdem.domain;
 
+import game.poker.holdem.service.GameServiceImpl;
+
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
@@ -43,8 +45,10 @@ public class Table {
 	}
 
 	public void sendToAll(String user, String message) {
+		GameServiceImpl gservice = new GameServiceImpl();
+		String json = gservice.getGameStatusJSON(game);
 		for (String cur : players.keySet()) {
-			players.get(cur).getAsyncRemote().sendText(message);
+			players.get(cur).getAsyncRemote().sendText(json);
 		}
 	}
 

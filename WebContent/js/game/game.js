@@ -260,7 +260,8 @@ function getGameStatus() {
 					generateACard(l, "flopContainer", k + 1);
 				});
 			$(data.players).each(function(k, l) {
-				updatePlayerStatus(l.id, l.name);
+//				updatePlayerStatus(l.id, l.name);
+				getPlayerStatus(l.id, l.name);
 			});
 		},
 		error : function(xhr, ajaxOptions, thrownError) {
@@ -298,7 +299,7 @@ function updateGameInfo(data) {
 	});
 }
 
-function updatePlayerInfo(playerId, playerName, data) {
+function updatePlayerInfo(data) {
 	var playerId = data.id;
 	var playerName = data.name;
 	if ((data.status == "ACTION_TO_CALL" || data.status == "ACTION_TO_CHECK")
@@ -369,46 +370,33 @@ function addAPlyerToTable(id, name, chips, amountToCall) {
 							content = "<div class='ui-block-solo playerInfo'>"
 									+ "<div class='ui-block-solo w3-light-grey w3-round w3-tiny'>"
 									+ "<div class='w3-container w3-round w3-green' style='width:50%; height:7px;'></div></div>"
-									+"<div class='ui-block-solo playerInfoContent playerTimer'></div>"
-									+ "<div class='ui-grid-a playerInfoContent'>" 
-									+"<div class='ui-block-a playerInfoContent pscontainer' id='pscontainer"
+									+ "<div class='ui-block-solo playerInfoContent playerTimer'></div>"
+									+ "<div class='ui-grid-a playerInfoContent'>"
+									+ "<div class='ui-block-a playerInfoContent pscontainer' id='pscontainer"
 									+ id
 									+ "'></div>"
 									+ "<div class='ui-block-b playerInfoContent playerNamePlace'> "
 									+ name
 									+ "</div></div>"
-<<<<<<< HEAD
+									+ "<div class='ui-block-solo playerInfoContent playerTotalChipsPlace'>$"
+									+ chips
+									+ "</div>"
 									// username, chip and timer div END
+									// PLAYER STATUS AND ACTION CONTAINER START
+									+ "<div class='ui-block-solo playerInfoContent amountToCallcontainer' id='amountToCallcontainer"
+									+ id
+									+ "'> $"
+									+ amountToCall
+									+ "</div></div>"
+
+									// PLAYER STATUS AND ACTION CONTAINER END
 									// CARD CONTAINER START
 									+ "<div class='ui-grid-a playerCardsContainer' id='cards"
 									+ id
 									+ "'><div class='ui-block-a card1'></div><div class='ui-block-b card2'></div>"
-									+ "</div>"
-									// CARD CONTAINER END
-									// PLAYER STATUS AND ACTION CONTAINER START
-									+ "<div style='position: relative'><div class='pscontainer' id='pscontainer"
-									+ id
-									+ "'></div><div class='amountToCallcontainer' id='amountToCallcontainer"
-									+ id + "'> $" + amountToCall
-=======
-									+"<div class='ui-block-solo playerInfoContent playerTotalChipsPlace'>$"
-									+ chips
-									+ "</div>"
-									//username, chip and timer div END
-									//PLAYER STATUS AND ACTION CONTAINER START
-									+ "<div class='ui-block-solo playerInfoContent amountToCallcontainer' id='amountToCallcontainer"
-									+ id + "'> $" + amountToCall
-									+ "</div></div>"
-									
-							//PLAYER STATUS AND ACTION CONTAINER END
-									//CARD CONTAINER START
-									+ "<div class='ui-grid-a playerCardsContainer' id='cards"
-									+ id
-									+ "'><div class='ui-block-a card1'></div><div class='ui-block-b card2'></div>"
->>>>>>> origin/NeilV0
 									+ "</div></div>";
-									//CARD CONTAINER END
-							
+							// CARD CONTAINER END
+
 						} else {
 							content = "<div class='ui-block-a'><div class='playerTotalChipsPlace'>$"
 									+ chips

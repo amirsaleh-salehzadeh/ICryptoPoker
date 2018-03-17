@@ -23,8 +23,6 @@ THE SOFTWARE.
  */
 package game.poker.holdem.domain;
 
-import java.util.HashSet;
-
 import game.poker.holdem.Card;
 import game.poker.holdem.holder.Hand;
 
@@ -32,28 +30,14 @@ public class PlayerHand implements Comparable<PlayerHand> {
 
 	private long id;
 	private Player player;
-	private HandEntity handEntity;
+	private long handId;
 	private Card card1;
 	private Card card2;
 	private String card1S;
 	private String card2S;
 	private int betAmount;
 	private int roundBetAmount;
-	private PlayerStatus playerStatus;
 
-	/**
-	 * @return the playerStatus
-	 */
-	public PlayerStatus getPlayerStatus() {
-		return playerStatus;
-	}
-
-	/**
-	 * @param playerStatus the playerStatus to set
-	 */
-	public void setPlayerStatus(PlayerStatus playerStatus) {
-		this.playerStatus = playerStatus;
-	}
 
 	public String getCard1S() {
 		return card1S;
@@ -87,12 +71,18 @@ public class PlayerHand implements Comparable<PlayerHand> {
 		this.player = player;
 	}
 
-	public HandEntity getHandEntity() {
-		return handEntity;
+	/**
+	 * @return the handId
+	 */
+	public long getHandId() {
+		return handId;
 	}
 
-	public void setHandEntity(HandEntity hand) {
-		this.handEntity = hand;
+	/**
+	 * @param handId the handId to set
+	 */
+	public void setHandId(long handId) {
+		this.handId = handId;
 	}
 
 	public Card getCard1() {

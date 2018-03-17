@@ -358,7 +358,6 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 			PreparedStatement ps = conn.prepareStatement(query);
 			ResultSet rs = ps.executeQuery();
 			PlayerDaoImpl pdao = new PlayerDaoImpl();
-			HandDaoImpl hdao = new HandDaoImpl();
 			while (rs.next()) {
 				ph.setPlayer(pdao.findById(rs.getString("player_id"), conn));
 				// ph.setHandEntity(hdao.findById(rs.getLong("hand_id"), conn));
@@ -411,7 +410,7 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 				p.setId(rs.getLong("player_hand_id"));
 				p.setPlayer(new PlayerDaoImpl().findById(
 						(rs.getString("player_id")), null));
-				p.setHandEntity(findById((rs.getLong("password")), null));
+				p.setHandId(rs.getLong("hand_id"));
 				p.setCard1((Card) Card.class.getField(rs.getString("card1"))
 						.get(null));
 				p.setCard2((Card) Card.class.getField(rs.getString("card2"))

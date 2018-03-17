@@ -13,14 +13,22 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 public class Table {
 
-	private Long game;
+	private long game;
 	private Map<String, Session> players = Collections.synchronizedMap(new HashMap<String, Session>());
 
-	public Long getGame() {
+	public Map<String, Session> getPlayers() {
+		return players;
+	}
+
+	public void setPlayers(Map<String, Session> players) {
+		this.players = players;
+	}
+
+	public long getGame() {
 		return game;
 	}
 
-	public void setGame(Long game) {
+	public void setGame(long game) {
 		this.game = game;
 	};
 
@@ -29,9 +37,8 @@ public class Table {
 
 	}
 
-	public void removePlayer(String user) {
-		players.remove(user, players.get(user)) ;
-
+	public void removePlayer(String uid) {
+		players.remove(uid, players.get(uid)) ;
 	}
 
 	public void sendToAll(String user, String message) {
@@ -40,12 +47,11 @@ public class Table {
 		try {
 			temp = mapper.readValue(message, Message.class);
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		String json = "" ;
 		for (String cur : players.keySet()) {
-			if (!(cur.equals(user))) {
+//			if (!(cur.equals(user))) {
 				try {
 					json = mapper.writeValueAsString(temp) ;
 				} catch (IOException e) {
@@ -53,7 +59,7 @@ public class Table {
 					e.printStackTrace();
 				}
 				players.get(cur).getAsyncRemote().sendText(json) ;
-			}
+//			}
 		}
 	}
 

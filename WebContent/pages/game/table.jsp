@@ -42,6 +42,7 @@
 <input type="hidden" id="playerPot" value="<%=player.getChips()%>">
 <input type="hidden" id="gameID" value="<%=game.getId()%>">
 <input type="hidden" id="boardID" value="<%=game.getId()%>">
+<input type="hidden" id="handID" value="">
 <input type="hidden" id="playerID"
 	value="<%=request.getParameter("playerName")%>">
 <div id="gamePlayScreen">
@@ -92,8 +93,6 @@
 					<div class='sitPlaceThumbnailEmpty'>Waiting</div>
 				</div>
 				<div class="ui-block-solo" style="height: 25%; position: relative;">
-					<div class="timerCircle"></div>
-					<div class="timerText">20</div>
 				</div>
 			</div>
 
@@ -141,7 +140,6 @@
 						<div class="ui-block-c" style="height: 100%; width: 20%;"></div>
 					</div>
 					<div class="ui-block-solo" style="height: 20%; width: 100%;">
-
 					</div>
 				</div>
 				<div class="ui-block-solo ui-grid-b" style="height: 20%;">
@@ -163,7 +161,7 @@
 			<div class="ui-block-c" style="width: 20%; height: 100%;">
 				<div class="ui-block-solo" style="height: 25%;">
 					<a href="#" data-role="button" data-mini="true" onclick="allIn()"
-						id="allInBTN">All-In</a>
+						id="allInBTN" class="actionButtons">All-In</a>
 				</div>
 				<div class="ui-block-solo sitPlaceContainer rightSideSits"
 					style="height: 25%;">
@@ -194,15 +192,15 @@
 		id="buttonsContainerDIV">
 		<div class="ui-block-a" style="width: 40%"></div>
 		<div class="ui-block-b" style="width: 15%">
-			<a href="#" data-role="button" data-mini="true" onclick="fold()"
+			<a href="#" data-role="button" data-mini="true" class="actionButtons" onclick="fold()"
 				id="foldBTN">Fold</a>
 		</div>
 		<div class="ui-block-c" style="width: 15%">
-			<a href="#" data-role="button" data-mini="true" onclick="check()"
+			<a href="#" data-role="button" data-mini="true" class="actionButtons" onclick="check()"
 				id="checkBTN">Check</a>
 		</div>
 		<div class="ui-block-d" style="width: 30%">
-			<a href="#" data-role="button" data-mini="true" onclick="raise()"
+			<a href="#" data-role="button" data-mini="true" class="actionButtons" onclick="raise()"
 				id="raiseBTN">Raise</a> 
 		</div>
 	</div>

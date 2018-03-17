@@ -73,15 +73,16 @@ public class UserDAO extends BaseHibernateDAO implements UserDAOInterface {
 	}
 
 	public UserPassword registerNewUser(UserPassword ent) throws AMSException {
+		Connection conn = null;
 		try {
-			Connection conn = null;
-			try {
-				conn = getConnection();
-				conn.setAutoCommit(false);
-			} catch (AMSException e) {
-				e.printStackTrace();
-			}
-
+			conn = getConnection();
+			conn.setAutoCommit(false);
+		} catch (AMSException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try {
 			String query = "";
 			query = "select * from player where username = ?";
 			PreparedStatement ps = conn.prepareStatement(query);
@@ -91,7 +92,7 @@ public class UserDAO extends BaseHibernateDAO implements UserDAOInterface {
 				throw new AMSException("The username already exist");
 			rs.close();
 			ps.clearBatch();
-			query = "insert into player (password, username, game_id,game_position,registeration_date) values (?,?,0,0,?)";
+			query = "insert into player (password, username, game_id,game_position,registeration_date, total_chips) values (?,?,0,0,?,0)";
 			ps = conn.prepareStatement(query);
 			ps.setString(2, ent.getUserName());
 			ps.setString(1, MD5Encryptor.encode(ent.getUserPassword()));
@@ -108,6 +109,14 @@ public class UserDAO extends BaseHibernateDAO implements UserDAOInterface {
 			conn.commit();
 			conn.close();
 		} catch (SQLException e) {
+			try {
+				if (!conn.isClosed()) {
+					conn.rollback();
+					conn.close();
+				}
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
 			e.printStackTrace();
 			throw getAMSException("", e);
 		}

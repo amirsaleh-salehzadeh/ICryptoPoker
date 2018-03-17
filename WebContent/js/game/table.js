@@ -1,11 +1,61 @@
-$(window).on("load", function() {
-	// var playerCounter = 0;
-	$(".jqm-header").css("display", "none");
-	$(window).on("resize", fitElementsWithinScreen());
-	fitElementsWithinScreen();
-	getGameStatus();
-});
+var webSocket;
 
+$(window).on(
+		"load",
+		function() {
+			// var playerCounter = 0;
+			$(".jqm-header").css("display", "none");
+			$(window).on("resize", fitElementsWithinScreen());
+			fitElementsWithinScreen();
+			var wsUri = "ws://" + document.location.host
+					+ "/ICryptoPoker/game/" + $("#gameID").val() + "/"
+					+ $("#playerID").val();
+			webSocket = new WebSocket(wsUri);
+			webSocket.onmessage = function(evt) {
+				onMessage(evt);
+			};
+			webSocket.onerror = function(evt) {
+				onError(evt);
+			};
+			webSocket.onopen = function(evt) {
+				onOpen(evt);
+			};
+			getGameStatus();
+		});
+function onMessage(evt) {
+	console.log("received over websockets: " + evt.data);
+	console.log("looked for room index of: " + evt.data.indexOf("room"));
+	var index = evt.data.indexOf("room");
+	writeToScreen(evt.data);
+	if (index > 1) {
+		console.log("found room index of: " + evt.data.indexOf("room"));
+		updateRoomDetails(evt.data);
+	}
+}
+
+function onError(evt) {
+	writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
+}
+
+function onOpen() {
+	writeToScreen("Connected to " + wsUri);
+}
+
+// For testing purposes
+var output = document.getElementById("output");
+
+function writeToScreen(message) {
+	if (output == null) {
+		output = document.getElementById("output");
+	}
+	// output.innerHTML += message + "";
+	output.innerHTML = message + "";
+}
+
+function sendText(json) {
+	console.log("sending text: " + json);
+	websocket.send(json);
+}
 function fitElementsWithinScreen() {
 	$(".sitPlaceThumbnail").each(function() {
 		$(this).width($("#userSitPlace").height() / 2);

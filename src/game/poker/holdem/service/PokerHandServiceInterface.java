@@ -23,6 +23,7 @@ THE SOFTWARE.
 */
 package game.poker.holdem.service;
 
+import tools.AMSException;
 import game.poker.holdem.domain.*;
 
 
@@ -46,8 +47,9 @@ public interface PokerHandServiceInterface {
 	 * Be aware, once a hand has ended, it will no longer be tied directly to the game
 	 * and cannot be retrieved through game.getCurrentHand()
 	 * @param hand Hand to be finished.
+	 * @throws AMSException 
 	 */
-	public void endHand(HandEntity hand);
+	public void endHand(HandEntity hand) throws AMSException;
 	
 	/**
 	 * Get the hand from the persistence context based on the unique id

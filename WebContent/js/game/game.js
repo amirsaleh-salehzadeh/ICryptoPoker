@@ -169,13 +169,11 @@ function getPlayerStatus(playerId, playerName) {
 							$(this).button();
 							$(this).button('enable');
 						});
+					addAPlyerToTable(playerId, playerName, parseInt(data.chips)
+							- parseInt(data.amountBetRound), data.amountToCall);
 					if (data.status != "NOT_STARTED"
-							&& data.status != "SEATING"){
-						addAPlyerToTable(playerId, playerName, parseInt(data.chips)
-								- parseInt(data.amountBetRound), data.amountToCall);
+							&& data.status != "SEATING")
 						dealCards2Players(data, playerId);
-					}
-						
 
 					if (data.status == "WAITING"
 							|| data.status == "NOT_STARTED") {

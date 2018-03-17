@@ -1,5 +1,5 @@
 function startTheGame() {
-	 if ($("#isStarted").val() == true)
+	if ($("#isStarted").val() == true)
 		return;
 	var url = "/ICryptoPoker/REST/GetGameServiceWS/StartGame?gameId="
 			+ $("#gameID").val();
@@ -29,11 +29,11 @@ function startAHand() {
 		async : true,
 		success : function(data) {
 			$("#handPotContainer").html(
-					'<img alt="" src="images/game/stack.png" height="100%"><span>&nbsp;'
-							+ data.pot + '&nbsp;$</span>');
-//			$(data.players).each(function(k, l) {
-//				dealCards2Players(l);
-//			});
+					'<img alt="" src="images/game/stack.png" height="100%"><span>&nbsp;$&nbsp;'
+							+ data.pot + '</span>');
+			$(data.players).each(function(k, l) {
+				dealCards2Players(l, l.id);
+			});
 			getGameStatus();
 		},
 		error : function(xhr, ajaxOptions, thrownError) {
@@ -133,69 +133,96 @@ function allIn() {
 }
 
 function leaveTable() {
-	window.location.replace('t_game.do');
-}
-
-function getPlayerStatus(playerId, playerName) {
-	var url = "/ICryptoPoker/REST/GetPlayerServiceWS/GetPlayerStatus?gameId="
-			+ $("#gameID").val() + "&playerId=" + playerId;
+	var url = "/ICryptoPoker/REST/GetGameServiceWS/EndHand?handId="
+			+ $("#handID").val();
 	$.ajax({
 		url : url,
 		cache : false,
 		async : true,
 		success : function(data) {
-			addAPlyerToTable(playerId, playerName, parseInt(data.chips)
-					- parseInt(data.amountBetRound), data.amountToCall);
-			if (data.status != "NOT_STARTED" && data.status != "SEATING")
-				dealCards2Players(data, playerId);
-
-			if (data.status == "WAITING" || data.status == "NOT_STARTED") {
-				$('.pscontainer').each(function() {
-					if ("pscontainer" + playerId == this.id) {
-						$(this).html("W");
-						$(this).addClass("waitingChip");
-					}
-				});
-			} else if (data.status == "POST_SB") {
-				$('.pscontainer').each(function() {
-					if ("pscontainer" + playerId == this.id) {
-						$(this).html("S");
-						$(this).addClass("smallBlindChip");
-					}
-				});
-			} else if (data.status == "POST_BB") {
-				$('.pscontainer').each(function() {
-					if ("pscontainer" + playerId == this.id) {
-						$(this).html("B");
-						$(this).addClass("bigBlindChip");
-					}
-				});
-			} else if (data.status == "ACTION_TO_CALL") {
-				// $("#playerID").val(playerId);
-				$("#checkBTN").html("Call");
-				$("#checkBTN").attr("onclick", "call()");
-				$('.pscontainer').each(function() {
-					if ("pscontainer" + playerId == this.id) {
-						$(this).html("D");
-						$(this).addClass("dealerChip");
-					}
-				});
-			} else if (data.status == "ACTION_TO_CHECK") {
-				// $("#playerID").val(playerId);
-				$("#checkBTN").html("Check");
-				$("#checkBTN").attr("onclick", "check()").trigger("create");
-				$('.pscontainer').each(function() {
-					if ("pscontainer" + playerId == this.id) {
-						$(this).html("D");
-						$(this).addClass("dealerChip");
-					}
-				});
-			}
+			if (data.success == true)
+				window.location.replace('t_game.do');
 		},
 		error : function(xhr, ajaxOptions, thrownError) {
 			alert(xhr.responseText);
 		}
 	});
+}
+
+function getPlayerStatus(playerId, playerName) {
+	var url = "/ICryptoPoker/REST/GetPlayerServiceWS/GetPlayerStatus?gameId="
+			+ $("#gameID").val() + "&playerId=" + playerId;
+	$
+			.ajax({
+				url : url,
+				cache : false,
+				async : true,
+				success : function(data) {
+					
+					if ((data.status == "ACTION_TO_CALL" || data.status == "ACTION_TO_CHECK")
+							&& playerId == $("#playerID").val())
+						$(".actionButtons").each(function() {
+							$(this).button();
+							$(this).button('enable');
+						});
+					addAPlyerToTable(playerId, playerName, parseInt(data.chips)
+							- parseInt(data.amountBetRound), data.amountToCall);
+					if (data.status != "NOT_STARTED"
+							&& data.status != "SEATING")
+						dealCards2Players(data, playerId);
+
+					if (data.status == "WAITING"
+							|| data.status == "NOT_STARTED") {
+						$('.pscontainer').each(function() {
+							if ("pscontainer" + playerId == this.id) {
+								$(this).html("W");
+								$(this).addClass("waitingChip");
+							}
+						});
+					} else if (data.status == "POST_SB") {
+						$('.pscontainer').each(function() {
+							if ("pscontainer" + playerId == this.id) {
+								$(this).html("S");
+								$(this).addClass("smallBlindChip");
+							}
+						});
+					} else if (data.status == "POST_BB") {
+						$('.pscontainer').each(function() {
+							if ("pscontainer" + playerId == this.id) {
+								$(this).html("B");
+								$(this).addClass("bigBlindChip");
+							}
+						});
+					} else if (data.status == "ACTION_TO_CALL") {
+						// $("#playerID").val(playerId);
+						$("#checkBTN").html("Call");
+						$("#checkBTN").attr("onclick", "call()");
+						$(".actionButtons").each(function() {
+							$(this).button('enable');
+						});
+						$('.pscontainer').each(function() {
+							if ("pscontainer" + playerId == this.id) {
+								$(this).html("D");
+								$(this).addClass("dealerChip");
+							}
+						});
+					} else if (data.status == "ACTION_TO_CHECK") {
+						// $("#playerID").val(playerId);
+						$("#checkBTN").html("Check");
+						$("#checkBTN").attr("onclick", "check()").trigger(
+								"create");
+						$('.pscontainer').each(function() {
+							if ("pscontainer" + playerId == this.id) {
+								$(this).html("D");
+								$(this).addClass("dealerChip");
+							}
+						});
+					}
+				},
+				error : function(xhr, ajaxOptions, thrownError) {
+					alert(xhr.responseText);
+				}
+			});
 }
 
 function getGameStatus() {
@@ -206,20 +233,27 @@ function getGameStatus() {
 		cache : false,
 		async : true,
 		success : function(data) {
+			$(".actionButtons").each(function() {
+				$(this).button();
+				$(this).button('disable');
+			});
+			$("#handID").val(data.handId);
 			$('.pscontainer').each(function() {
 				$(this).attr("class", "pscontainer");
 			});
 			if (data.gameStatus == "NOT_STARTED") {
 				$("#handPotContainer").html('Game is not started');
-				if (data.players.length >= 2)
+				if (data.players.length >= 2) {
 					startTheGame();
+					return true;
+				}
 			} else
 				$("#handPotContainer").html(
 						'<img alt="" src="images/game/stack.png" height="100%"><span>&nbsp;'
 								+ data.pot + '&nbsp;$</span>');
 			if (data.cards != null)
 				$(data.cards).each(function(k, l) {
-					generateACard(l, "flopContainer", k+1);
+					generateACard(l, "flopContainer", k + 1);
 				});
 
 			$(data.players).each(function(k, l) {

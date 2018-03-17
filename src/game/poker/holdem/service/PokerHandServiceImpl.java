@@ -38,6 +38,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import tools.AMSException;
+
 public class PokerHandServiceImpl implements PokerHandServiceInterface {
 
 	private HandDaoImpl handDao;
@@ -62,7 +64,7 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		for (Player p : game.getPlayers()) {
 			if (p.getChips() > 0) {
 				PlayerHand ph = new PlayerHand();
-				ph.setHandEntity(hand);
+				ph.setHandId(hand.getId());
 				p.setGameId(game.getId());
 				ph.setPlayer(p);
 				ph.setCard1(d.dealCard());
@@ -115,12 +117,12 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		return hand;
 	}
 
-	public void endHand(HandEntity hand) {
+	public void endHand(HandEntity hand) throws AMSException {
 		gameDao = new GameDaoImpl();
 		handDao = new HandDaoImpl();
 		playerDao = new PlayerDaoImpl();
 		if (!isActionResolved(hand)) {
-			throw new IllegalStateException(
+			throw new AMSException(
 					"There are unresolved betting actions");
 		}
 

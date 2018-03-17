@@ -99,7 +99,7 @@ public class GameServiceWS {
 		String json = "";
 		try {
 			json = mapper.writeValueAsString(structures);
-			
+
 		} catch (JsonGenerationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -224,6 +224,10 @@ public class GameServiceWS {
 		Map<String, Object> results = new HashMap<String, Object>();
 		results.put("gameStatus", gs);
 		results.put("players", players);
+		if (game.getCurrentHand() != null)
+			results.put("handId", game.getCurrentHand().getId());
+		else
+			results.put("handId", 0);
 		// Before the game is started, there is no current blind level set.
 		if (game.getGameStructure().getCurrentBlindLevel() != null) {
 			results.put("smallBlind", game.getGameStructure()
@@ -354,7 +358,7 @@ public class GameServiceWS {
 	@GET
 	@Path("/Flop")
 	@Produces("application/json")
-	public String flop(long handId) {
+	public String flop(@QueryParam("handId") long handId) {
 		handService = new PokerHandServiceImpl();
 		HandEntity hand = handService.getHandById(handId);
 		hand = handService.flop(hand);
@@ -392,7 +396,7 @@ public class GameServiceWS {
 	@GET
 	@Path("/Turn")
 	@Produces("application/json")
-	public String turn(long handId) {
+	public String turn(@QueryParam("handId") long handId) {
 		HandEntity hand = handService.getHandById(handId);
 		hand = handService.turn(hand);
 		ObjectMapper mapper = new ObjectMapper();
@@ -427,7 +431,7 @@ public class GameServiceWS {
 	@GET
 	@Path("/River")
 	@Produces("application/json")
-	public String river(long handId) {
+	public String river(@QueryParam("handId") long handId) {
 		HandEntity hand = handService.getHandById(handId);
 		hand = handService.river(hand);
 		ObjectMapper mapper = new ObjectMapper();
@@ -462,26 +466,27 @@ public class GameServiceWS {
 	@GET
 	@Path("/EndHand")
 	@Produces("application/json")
-	public String endHand(long handId) {
-
+	public Response endHand(@QueryParam("handId") long handId) {
+		handService = new PokerHandServiceImpl();
 		HandEntity hand = handService.getHandById(handId);
-		handService.endHand(hand);
+		try {
+			handService.endHand(hand);
+		} catch (AMSException e1) {
+			return Response.serverError().entity(e1.getMessage()).build();
+		}
 		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
 		try {
 			json = mapper.writeValueAsString(Collections.singletonMap(
 					"success", true));
 		} catch (JsonGenerationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return json;
+		return Response.ok(json, MediaType.APPLICATION_JSON).build();
 	}
 
 	/**
@@ -497,7 +502,7 @@ public class GameServiceWS {
 	@GET
 	@Path("/SitOutCurrentPlayer")
 	@Produces("application/json")
-	public String sitOutCurrentPlayer(long handId) {
+	public String sitOutCurrentPlayer(@QueryParam("handId") long handId) {
 		HandEntity hand = handService.getHandById(handId);
 		boolean result = handService.sitOutCurrentPlayer(hand);
 		ObjectMapper mapper = new ObjectMapper();

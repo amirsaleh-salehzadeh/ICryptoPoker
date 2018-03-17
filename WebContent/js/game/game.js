@@ -158,7 +158,7 @@ function getPlayerStatus(playerId, playerName) {
 				cache : false,
 				async : true,
 				success : function(data) {
-					
+
 					if ((data.status == "ACTION_TO_CALL" || data.status == "ACTION_TO_CHECK")
 							&& playerId == $("#playerID").val())
 						$(".actionButtons").each(function() {
@@ -272,20 +272,27 @@ function addAPlyerToTable(id, name, chips, amountToCall) {
 					function() {
 						var content = "";
 						if (id != $("#playerID").val()) {
-							content = "<div class='ui-block-a'><div class='playerNamePlace'> "
+							//username, chip and timer div START
+							content = "<div class='ui-block-solo playerInfo'>"
+									+ "<div class='ui-block-solo w3-light-grey w3-round w3-tiny'>"
+									+ "<div class='w3-container w3-round w3-green' style='width:50%; height:7px;'></div></div>"
+									+ "<div class='ui-block-solo playerNamePlace'> "
 									+ name
-									+ "</div><div class='playerTotalChipsPlace'>$"
+									+ "</div><div class='ui-block-solo playerTotalChipsPlace'>$"
 									+ chips
 									+ "</div></div>"
-									+ "<div class='ui-block-b'><div class='ui-grid-a playerCardsContainer' id='cards"
+									//username, chip and timer div END
+									//CARD CONTAINER START
+									+ "<div class='ui-grid-a playerCardsContainer' id='cards"
 									+ id
 									+ "'><div class='ui-block-a card1'></div><div class='ui-block-b card2'></div>"
-									+ "</div></div><div class='ui-block-c' style='position: relative'><div class='pscontainer' id='pscontainer"
+									+ "</div>"
+									//CARD CONTAINER END
+									//PLAYER STATUS AND ACTION CONTAINER START
+									+ "<div style='position: relative'><div class='pscontainer' id='pscontainer"
 									+ id
 									+ "'></div><div class='amountToCallcontainer' id='amountToCallcontainer"
-									+ id
-									+ "'> $"
-									+ amountToCall
+									+ id + "'> $" + amountToCall
 									+ "</div></div>";
 						} else {
 							content = "<div class='ui-block-a'><div class='playerTotalChipsPlace'>$"

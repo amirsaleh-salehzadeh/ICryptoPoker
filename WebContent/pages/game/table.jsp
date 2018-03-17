@@ -93,8 +93,6 @@
 					<div class='sitPlaceThumbnailEmpty'>Waiting</div>
 				</div>
 				<div class="ui-block-solo" style="height: 25%; position: relative;">
-					<div class="timerCircle"></div>
-					<div class="timerText">20</div>
 				</div>
 			</div>
 
@@ -142,7 +140,6 @@
 						<div class="ui-block-c" style="height: 100%; width: 20%;"></div>
 					</div>
 					<div class="ui-block-solo" style="height: 20%; width: 100%;">
-
 					</div>
 				</div>
 				<div class="ui-block-solo ui-grid-b" style="height: 20%;">

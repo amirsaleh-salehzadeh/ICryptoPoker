@@ -99,7 +99,6 @@ public class GameServiceWS {
 		String json = "";
 		try {
 			json = mapper.writeValueAsString(structures);
-
 		} catch (JsonGenerationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

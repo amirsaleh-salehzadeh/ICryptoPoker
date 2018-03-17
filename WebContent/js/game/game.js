@@ -34,7 +34,8 @@ function startAHand() {
 			$(data.players).each(function(k, l) {
 				dealCards2Players(l, l.id);
 			});
-			getGameStatus();
+//			getGameStatus();
+			sendText("");
 		},
 		error : function(xhr, ajaxOptions, thrownError) {
 			alert(xhr.responseText);
@@ -60,7 +61,8 @@ function check() {
 		async : true,
 		success : function(data) {
 			if (data.success == true)
-				getGameStatus();
+//				getGameStatus();
+				sendText("");
 			else
 				alert("check failed");
 		},
@@ -79,7 +81,8 @@ function call() {
 		async : true,
 		success : function(data) {
 			if (data.success == true)
-				getGameStatus();
+//				getGameStatus();
+				sendText("");
 			else
 				alert("check failed");
 		},
@@ -98,7 +101,8 @@ function fold() {
 		async : true,
 		success : function(data) {
 			if (data.success == true)
-				getGameStatus();
+//				getGameStatus();
+				sendText("");
 			else
 				alert("fold failed");
 		},
@@ -118,7 +122,8 @@ function raise() {
 		async : true,
 		success : function(data) {
 			if (data.success == true)
-				getGameStatus();
+//				getGameStatus();
+				sendText("");
 			else
 				alert("fold failed");
 		},
@@ -158,7 +163,6 @@ function getPlayerStatus(playerId, playerName) {
 				cache : false,
 				async : true,
 				success : function(data) {
-
 					if ((data.status == "ACTION_TO_CALL" || data.status == "ACTION_TO_CHECK")
 							&& playerId == $("#playerID").val())
 						$(".actionButtons").each(function() {

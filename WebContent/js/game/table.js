@@ -1,11 +1,47 @@
-$(window).on("load", function() {
-	// var playerCounter = 0;
-	$(".jqm-header").css("display", "none");
-	$(window).on("resize", fitElementsWithinScreen());
-	fitElementsWithinScreen();
-	getGameStatus();
-});
+var webSocket;
+var wsUri = "";
+$(window).on(
+		"load",
+		function() {
+			// var playerCounter = 0;
+			$(".jqm-header").css("display", "none");
+			$(window).on("resize", fitElementsWithinScreen());
+			fitElementsWithinScreen();
+			var wsUri = "ws://" + document.location.host
+					+ "/ICryptoPoker/game/" + $("#gameID").val() + "/"
+					+ $("#playerID").val();
+			webSocket = new WebSocket(wsUri);
+			webSocket.onmessage = function(evt) {
+				onMessage(evt);
+			};
+			webSocket.onerror = function(evt) {
+				onError(evt);
+			};
+			webSocket.onopen = function(evt) {
+				onOpen(evt);
+			};
+		});
 
+function onMessage(evt) {
+	console.log("received over websockets: " + evt.data);
+	getGameStatus();
+}
+
+function onError(evt) {
+	console.log('' + evt.data);
+}
+
+function onOpen() {
+	console.log("Connected to " + wsUri);
+}
+
+// For testing purposes
+var output = document.getElementById("output");
+
+function sendText(json) {
+	console.log("sending text: " + json);
+	webSocket.send(json);
+}
 function fitElementsWithinScreen() {
 	$(".sitPlaceThumbnail").each(function() {
 		$(this).width($("#userSitPlace").height() / 2);

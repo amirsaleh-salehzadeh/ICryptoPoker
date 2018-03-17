@@ -58,10 +58,10 @@ function joinGame(gameID, min, max) {
 	}else{
 	var playerChips = ($('#chips').html().split(";"))[1];
 		// player does not have enough chips to enter the game
-//		if(playerChips< min){
-//			alert("not enough chips");
-//			
-//		}else
+		if(playerChips< min){
+			alert("not enough chips");
+			
+		}else
 		if(playerChips<max){
 //			players chips are less than the max
 			$('#buyIn').attr("max", playerChips);

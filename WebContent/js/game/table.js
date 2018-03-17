@@ -1,5 +1,5 @@
 var webSocket;
-
+var wsUri = "";
 $(window).on(
 		"load",
 		function() {
@@ -20,41 +20,27 @@ $(window).on(
 			webSocket.onopen = function(evt) {
 				onOpen(evt);
 			};
-			getGameStatus();
 		});
+
 function onMessage(evt) {
 	console.log("received over websockets: " + evt.data);
-	console.log("looked for room index of: " + evt.data.indexOf("room"));
-	var index = evt.data.indexOf("room");
-	writeToScreen(evt.data);
-	if (index > 1) {
-		console.log("found room index of: " + evt.data.indexOf("room"));
-		updateRoomDetails(evt.data);
-	}
+	getGameStatus();
 }
 
 function onError(evt) {
-	writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
+	console.log('' + evt.data);
 }
 
 function onOpen() {
-	writeToScreen("Connected to " + wsUri);
+	console.log("Connected to " + wsUri);
 }
 
 // For testing purposes
 var output = document.getElementById("output");
 
-function writeToScreen(message) {
-	if (output == null) {
-		output = document.getElementById("output");
-	}
-	// output.innerHTML += message + "";
-	output.innerHTML = message + "";
-}
-
 function sendText(json) {
 	console.log("sending text: " + json);
-	websocket.send(json);
+	webSocket.send(json);
 }
 function fitElementsWithinScreen() {
 	$(".sitPlaceThumbnail").each(function() {

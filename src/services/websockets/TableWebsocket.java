@@ -28,8 +28,16 @@ public class TableWebsocket {
 		}
 		table.setGame(guid);
 		table.addPlayer(uid, user);
+		if (table.getPlayers().size() >= 2) {
+			for (Table t : games) {
+				if (t.getGame() == guid) {
+					t.sendToAll(uid, "hi");
+				}
+			}
+		}
 		games.add(table);
-		System.out.println("player has joined");
+
+		System.out.println(uid + " has joined");
 
 	}
 
@@ -38,7 +46,7 @@ public class TableWebsocket {
 			@PathParam("uid") String uid, @PathParam("guid") long guid) {
 		for (Table table : games) {
 			if (table.getGame() == guid) {
-				table.sendToAll(uid, message);
+				table.sendToAll(uid, message + "hi");
 			}
 		}
 	}
@@ -49,12 +57,15 @@ public class TableWebsocket {
 		for (Table table : games) {
 			if (table.getGame() == guid) {
 				table.removePlayer(uid);
+				System.out.println(uid + " has left");
 				if (table.getPlayers() == null
-						|| table.getPlayers().size() == 0)
+						|| table.getPlayers().size() == 0) {
 					games.remove(table);
+					System.out.println("game removed");
+				}
 			}
 		}
-		System.out.println("player has left");
+
 	}
 
 	@OnError

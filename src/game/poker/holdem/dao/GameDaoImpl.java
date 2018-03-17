@@ -202,7 +202,6 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDaoInterface {
 			String query = "";
 			query = "UPDATE `game` SET `players_left` = ?, `game_type` = ?, `name` =?, `is_started` = ?, "
 					+ "`current_hand_id` = ?, `game_structure_id` =?, `btn_player_id` = ? WHERE `game_id` = ? ";
-			// + "VALUES (?, ?, ?, ?, ?, ?, ?);";
 			PreparedStatement ps = conn.prepareStatement(query);
 			ps.setInt(1, game.getPlayers().size());
 			ps.setString(2, game.getGameType().name());

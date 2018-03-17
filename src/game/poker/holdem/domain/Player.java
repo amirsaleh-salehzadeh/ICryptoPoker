@@ -190,12 +190,4 @@ public class Player implements Comparable<Player> {
 	public int compareTo(Player p) {
 		return this.getGamePosition() - p.getGamePosition();
 	}
-
-	public String getSessionId() {
-		return sessionId;
-	}
-
-	public void setSessionId(String sessionId) {
-		this.sessionId = sessionId;
-	}
 }

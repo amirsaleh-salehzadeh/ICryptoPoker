@@ -38,7 +38,6 @@ function getAllGames() {
 			});
 			$("#lobbyTableTBody").html(tableRows);
 			$("#table-lobby").trigger("create");
-
 		},
 		complete : function() {
 			HideLoadingScreen();

@@ -43,13 +43,14 @@ public class GameAction extends Action {
 		if (reqCode.equalsIgnoreCase("joinAGame")) {
 			GameDaoImpl gamedao = new GameDaoImpl();
 			long gameId = Long.parseLong(request.getParameter("gameId"));
+			int chips = Integer.parseInt(request.getParameter("chips"));
 			Game game = gamedao.findById(gameId, null);
 			// TODO: AMS>> FIX Username
 			// Player player = playerDaoImpl.findById(request.getRemoteUser(),
 			// null);
 			Player player = playerDaoImpl.findById(
 					request.getParameter("playerName"), null);
-			player.setChips(100);
+			player.setChips(chips);
 			GameServiceImpl gameService = new GameServiceImpl();
 			player = gameService.addNewPlayerToGame(game, player);
 			request.setAttribute("player", player);

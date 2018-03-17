@@ -109,3 +109,30 @@
 	</table>
 
 </div>
+
+		<!-- 	POPUP DIV JOIN GAME -->
+
+
+		<div data-role="popup" id="popupJoinGame" data-overlay-theme="b"
+			data-theme="b" data-dismissible="false" style="max-width: 400px;">
+			<form action="#" id="createNewGameForm" method="post">
+			<input type="hidden" name="joinGameID" id="joinGameID" value="1">
+				<div data-role="header" data-theme="a">
+					<h1>Join Game</h1>
+				</div>
+				<div role="main" class="ui-content" data-overlay-theme="b"
+					data-theme="b" data-dismissible="false">
+					<h2>Enter how many chips you want to buy in with.</h2>
+					<div class="ui-block-solo" style="height: 25%;">
+				<input type="number" id="buyIn"	value="0">
+				</div>
+				</div>
+			</form>
+			            <a href="#"
+				class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b"
+				data-rel="back">Cancel</a>         <a href="#" id="joinGameBTN"
+				class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b"
+				 >Join</a>     
+		</div>
+	</div>
+</div>

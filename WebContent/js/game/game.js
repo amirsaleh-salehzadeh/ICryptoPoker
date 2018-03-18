@@ -157,6 +157,12 @@ function leaveTable() {
 }
 
 function updateGameInfo(data) {
+	$(".sitPlaceContainer")
+	.each(
+			function() {
+				$(this).html("<div class='sitPlaceThumbnailEmpty'>Waiting</div>")
+				var content = "";
+});
 	$("#handPotContainer").html(
 			'<img alt="" src="images/game/stack.png" height="100%"><span>&nbsp;$&nbsp;'
 					+ data.pot + '</span>');
@@ -191,6 +197,7 @@ function updateGameInfo(data) {
 function updatePlayerInfo(data) {
 	var playerId = data.id;
 	var playerName = data.name;
+	
 	if ((data.status == "ACTION_TO_CALL" || data.status == "ACTION_TO_CHECK")
 			&& playerId == $("#playerID").val())
 		$(".actionButtons").each(function() {

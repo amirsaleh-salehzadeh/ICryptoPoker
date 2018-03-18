@@ -39,11 +39,13 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 
 	private PlayerDaoImpl playerDao;
 	private HandDaoImpl handDao;
+	private GameDaoImpl gameDao;
 
 	public PlayerActionServiceImpl() {
 		super();
 		playerDao = new PlayerDaoImpl();
 		handDao = new HandDaoImpl();
+		gameDao = new GameDaoImpl();
 	}
 
 	public Player getPlayerById(String playerId) {
@@ -53,7 +55,7 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 	public boolean fold(Player player, Game game) {
 		HandEntity hand = game.getCurrentHand();
 		hand.setGame(game);
-		hand = handDao.merge(hand, null);
+//		hand = handDao.merge(hand, null);
 		// Cannot fold out of turn
 		if (!player.equals(hand.getCurrentToAct())) {
 			return false;
@@ -63,8 +65,14 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 		if (!PlayerUtil.removePlayerFromHand(player, hand)) {
 			return false;
 		}
+		handDao = new HandDaoImpl();
+		for (PlayerHand ph : hand.getPlayers()) {
+			if (ph.getPlayer().equals(player)) {
+				handDao.updatePlayerHand(ph, null);
+				break;
+			}
+		}
 		hand.setCurrentToAct(next);
-
 		handDao.merge(hand, null);
 		return true;
 	}
@@ -72,7 +80,7 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 	public boolean check(Player player, Game game) {
 		HandEntity hand = game.getCurrentHand();
 		hand.setGame(game);
-		hand = handDao.merge(hand, null);
+//		hand = handDao.merge(hand, null);
 
 		// Cannot check out of turn
 		if (!player.equals(hand.getCurrentToAct())) {

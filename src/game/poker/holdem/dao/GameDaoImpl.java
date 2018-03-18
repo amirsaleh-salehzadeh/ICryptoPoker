@@ -200,8 +200,8 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDaoInterface {
 					e.printStackTrace();
 				}
 			String query = "";
-			query = "UPDATE `game` SET `players_left` = ?, `game_type` = ?, `name` =?, `is_started` = ?, "
-					+ "`current_hand_id` = ?, `game_structure_id` =?, `btn_player_id` = ? WHERE `game_id` = ? ";
+			query = "UPDATE `game` SET `players_left` = ?, `game_type` = ?, `name` = ?, `is_started` = ?, "
+					+ "`current_hand_id` = ?, `game_structure_id` = ?, `btn_player_id` = ? WHERE `game_id` = ? ";
 			PreparedStatement ps = conn.prepareStatement(query);
 			ps.setInt(1, game.getPlayers().size());
 			ps.setString(2, game.getGameType().name());
@@ -215,7 +215,10 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDaoInterface {
 			else
 				ps.setLong(5, game.getCurrentHand().getId());
 			ps.setLong(6, game.getGameStructure().getId());
-			ps.setString(7, game.getPlayerInBTN().getId());
+			if (game.getPlayerInBTN() == null)
+				ps.setString(7, null);
+			else
+				ps.setString(7, game.getPlayerInBTN().getId());
 			ps.setLong(8, game.getId());
 			ps.executeUpdate();
 			ps.close();

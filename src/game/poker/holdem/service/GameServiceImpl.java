@@ -52,12 +52,6 @@ import tools.AMSException;
 
 public class GameServiceImpl implements GameServiceInterface {
 
-	public Game getGameById(long id, boolean fetchPlayers) {
-		GameDaoImpl gameDao = new GameDaoImpl();
-		Game game = gameDao.findById(id, null);
-		return game;
-	}
-
 	public Game startGame(Game game) throws AMSException {
 		GameDaoImpl gameDao = new GameDaoImpl();
 		// game = gameDao.findById(game.getId(), null);
@@ -115,6 +109,8 @@ public class GameServiceImpl implements GameServiceInterface {
 		// Set up player according to game logic.
 		if (game.getGameType() == GameType.TOURNAMENT) {
 			player.setChips(game.getGameStructure().getStartingChips());
+			player.setTotalChips(player.getTotalChips()
+					- game.getGameStructure().getStartingChips());
 		}
 		PlayerDaoImpl playerDao = new PlayerDaoImpl();
 
@@ -126,22 +122,19 @@ public class GameServiceImpl implements GameServiceInterface {
 		GameDaoImpl gameDao = new GameDaoImpl();
 		game.setPlayersRemaining(game.getPlayersRemaining() + 1);
 		game = gameDao.merge(game, null);
-		player.setGameId(game.getId());
 		return player;
 	}
 
-	public String getGameStatusJSON(long gameId, String playerId) {
-		GameServiceImpl gameService = new GameServiceImpl();
-		Game game = gameService.getGameById(gameId, true);
+	public String getGameStatusJSON(Game game, String playerId) {
 		GameStatus gs = GameUtil.getGameStatus(game);
 		Set<PlayerStatusObject> players = new HashSet<PlayerStatusObject>();
 		PlayerServiceManagerImpl playerService = new PlayerServiceManagerImpl();
 		// if (game.isStarted())
 		for (Player p : game.getPlayers()) {
-			PlayerStatusObject ptmp = playerService.buildPlayerStatus(gameId,
-					p.getId());
+			PlayerStatusObject ptmp = playerService.buildPlayerStatus(
+					game.getId(), p.getId());
 			if (!p.getId().equals(playerId) || !game.isStarted()) {
-				ptmp.setCard1("card1"+playerId);
+				ptmp.setCard1("card1" + playerId);
 				ptmp.setCard2("");
 			}
 			players.add(ptmp);

@@ -40,6 +40,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 import tools.AMSException;
 
+import game.poker.holdem.dao.GameDaoImpl;
 import game.poker.holdem.domain.Game;
 import game.poker.holdem.domain.GameStatus;
 import game.poker.holdem.domain.Player;
@@ -90,7 +91,8 @@ public class PlayerServiceWS {
 	@Path("/JoinGame")
 	@Produces("application/json")
 	public String joinGame(long gameId, String playerName) {
-		Game game = gameService.getGameById(gameId, false);
+		GameDaoImpl gameDao = new GameDaoImpl();
+		Game game = gameDao.findById(gameId, null);
 		Player player = new Player();
 		player.setName(playerName);
 		player = gameService.addNewPlayerToGame(game, player);
@@ -166,7 +168,8 @@ public class PlayerServiceWS {
 			@QueryParam("playerId") String playerId) {
 		gameService = new GameServiceImpl();
 		playerActionService = new PlayerActionServiceImpl();
-		Game game = gameService.getGameById(gameId, false);
+		GameDaoImpl gameDao = new GameDaoImpl();
+		Game game = gameDao.findById(gameId, null);
 		Player player = playerActionService.getPlayerById(playerId);
 		boolean folded = playerActionService.fold(player, game);
 		ObjectMapper mapper = new ObjectMapper();
@@ -213,7 +216,8 @@ public class PlayerServiceWS {
 	public String call(@QueryParam("gameId") long gameId,
 			@QueryParam("playerId") String playerId) {
 		gameService = new GameServiceImpl();
-		Game game = gameService.getGameById(gameId, false);
+		GameDaoImpl gameDao = new GameDaoImpl();
+		Game game = gameDao.findById(gameId, null);
 		playerActionService = new PlayerActionServiceImpl();
 		Player player = playerActionService.getPlayerById(playerId);
 		boolean called = playerActionService.call(player, game);
@@ -261,7 +265,8 @@ public class PlayerServiceWS {
 	public String check(@QueryParam("gameId") long gameId,
 			@QueryParam("playerId") String playerId) {
 		gameService = new GameServiceImpl();
-		Game game = gameService.getGameById(gameId, false);
+		GameDaoImpl gameDao = new GameDaoImpl();
+		Game game = gameDao.findById(gameId, null);
 		playerActionService = new PlayerActionServiceImpl();
 		Player player = playerActionService.getPlayerById(playerId);
 		boolean checked = playerActionService.check(player, game);
@@ -321,7 +326,8 @@ public class PlayerServiceWS {
 			@QueryParam("betAmount") int betAmount) {
 		gameService = new GameServiceImpl();
 		playerActionService = new PlayerActionServiceImpl();
-		Game game = gameService.getGameById(gameId, false);
+		GameDaoImpl gameDao = new GameDaoImpl();
+		Game game = gameDao.findById(gameId, null);
 		Player player = playerActionService.getPlayerById(playerId);
 		boolean bet = playerActionService.bet(player, game, betAmount);
 		Map<String, Object> resultMap = new HashMap<String, Object>();

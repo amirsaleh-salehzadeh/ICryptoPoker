@@ -149,7 +149,10 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 
 			ps.setLong(1, hand.getBoard().getId());
 			ps.setLong(2, hand.getGame().getId());
-			ps.setString(3, hand.getCurrentToAct().getId());
+			if (hand.getCurrentToAct() == null)
+				ps.setString(3, null);
+			else
+				ps.setString(3, hand.getCurrentToAct().getId());
 			ps.setString(4, hand.getBlindLevel().toString());
 			ps.setInt(5, hand.getPot());
 			ps.setInt(6, hand.getLastBetAmount());
@@ -468,12 +471,16 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 					e.printStackTrace();
 				}
 			String query = "update `player_hand` set `bet_amount` = ?, `round_bet_amount` = ? where `player_hand_id` = ?";
-				PreparedStatement ps2 = conn.prepareStatement(query);
-				ps2.setInt(1, ph.getBetAmount());
-				ps2.setInt(2, ph.getRoundBetAmount());
-				ps2.setLong(3, ph.getId());
-				ps2.executeUpdate();
-				ps2.close();
+			PreparedStatement ps2 = conn.prepareStatement(query);
+			ps2.setInt(1, ph.getBetAmount());
+			ps2.setInt(2, ph.getRoundBetAmount());
+			ps2.setLong(3, ph.getId());
+			ps2.executeUpdate();
+			ps2.close();
+			PlayerDaoImpl pdao = new PlayerDaoImpl();
+			Player p = pdao.findById(ph.getPlayer().getId(), conn);
+			p.setChips(p.getChips() - ph.getBetAmount());
+			pdao.merge(p, conn);
 			if (isNewConn) {
 				conn.commit();
 				conn.close();

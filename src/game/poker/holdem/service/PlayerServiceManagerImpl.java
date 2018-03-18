@@ -23,6 +23,7 @@ THE SOFTWARE.
  */
 package game.poker.holdem.service;
 
+import game.poker.holdem.dao.GameDaoImpl;
 import game.poker.holdem.dao.HandDaoImpl;
 import game.poker.holdem.domain.Game;
 import game.poker.holdem.domain.GameStatus;
@@ -44,7 +45,8 @@ public class PlayerServiceManagerImpl implements PlayerServiceManager {
 
 	public PlayerStatusObject buildPlayerStatus(long gameId, String playerId) {
 		gameService = new GameServiceImpl();
-		Game game = gameService.getGameById(gameId, false);
+		GameDaoImpl gameDao = new GameDaoImpl();
+		Game game = gameDao.findById(gameId, null);
 
 		playerActionService = new PlayerActionServiceImpl();
 		Player player = playerActionService.getPlayerById(playerId);

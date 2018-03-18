@@ -34,19 +34,6 @@ import game.poker.holdem.domain.Player;
  */
 public interface GameServiceInterface {
 
-	/**
-	 * Get the game from the persistent context based on the unique identifier
-	 * 
-	 * @param id
-	 *            unique id for the game
-	 * @param fetchPlayers
-	 *            true to eagerly fetch the Player List for the game. if this
-	 *            parameter is false, the {@link Game} return object will not
-	 *            have eagerly fetched the player list, and there is no
-	 *            guarantee of the list accuracy or existence
-	 * @return {@link Game} from the persistent context
-	 */
-	public Game getGameById(long id, boolean fetchPlayers);
 
 	/**
 	 * Start a game. This begins the current game tracking. Setup of the game is
@@ -91,5 +78,5 @@ public interface GameServiceInterface {
 	// Do this in service layer to enforce tournament logic.
 	// Cash games could theoretically be done in the controller and call save
 
-	public String getGameStatusJSON(long gameId, String playerId);
+	public String getGameStatusJSON(Game game, String playerId);
 }

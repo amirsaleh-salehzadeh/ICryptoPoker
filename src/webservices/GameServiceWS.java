@@ -211,57 +211,57 @@ public class GameServiceWS {
 	 *         players:[{name:xxx,chips:xxx,finishPosition:xxx,gamePosition:xxx,
 	 *         sittingOut:false},...],cards:[Xx,Xx...]}
 	 */
-	@GET
-	@Path("/GetGameStatus")
-	@Produces("application/json")
-	public String getGameStatus(@QueryParam("gameId") long gameId) {
-		gameService = new GameServiceImpl();
-		Game game = gameService.getGameById(gameId, true);
-		GameStatus gs = GameUtil.getGameStatus(game);
-		Collection<Player> players = game.getPlayers();
-
-		Map<String, Object> results = new HashMap<String, Object>();
-		results.put("gameStatus", gs);
-		results.put("players", players);
-		if (game.getCurrentHand() != null)
-			results.put("handId", game.getCurrentHand().getId());
-		else
-			results.put("handId", 0);
-		// Before the game is started, there is no current blind level set.
-		if (game.getGameStructure().getCurrentBlindLevel() != null) {
-			results.put("smallBlind", game.getGameStructure()
-					.getCurrentBlindLevel().getSmallBlind());
-			results.put("bigBlind", game.getGameStructure()
-					.getCurrentBlindLevel().getBigBlind());
-		}
-		if (game.getGameStructure().getCurrentBlindEndTime() != null) {
-			long timeLeft = game.getGameStructure().getCurrentBlindEndTime()
-					.getTime()
-					- new Date().getTime();
-			timeLeft = Math.max(0, timeLeft);
-			results.put("blindTime", timeLeft);
-		}
-		if (game.getCurrentHand() != null) {
-			results.put("pot", game.getCurrentHand().getPot());
-			results.put("cards", game.getCurrentHand().getBoard()
-					.getBoardCards());
-		}
-		ObjectMapper mapper = new ObjectMapper();
-		String json = "";
-		try {
-			json = mapper.writeValueAsString(results);
-		} catch (JsonGenerationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return json;
-	}
+//	@GET
+//	@Path("/GetGameStatus")
+//	@Produces("application/json")
+//	public String getGameStatus(@QueryParam("gameId") long gameId) {
+//		gameService = new GameServiceImpl();
+//		Game game = gameService.getGameById(gameId, true);
+//		GameStatus gs = GameUtil.getGameStatus(game);
+//		Collection<Player> players = game.getPlayers();
+//
+//		Map<String, Object> results = new HashMap<String, Object>();
+//		results.put("gameStatus", gs);
+//		results.put("players", players);
+//		if (game.getCurrentHand() != null)
+//			results.put("handId", game.getCurrentHand().getId());
+//		else
+//			results.put("handId", 0);
+//		// Before the game is started, there is no current blind level set.
+//		if (game.getGameStructure().getCurrentBlindLevel() != null) {
+//			results.put("smallBlind", game.getGameStructure()
+//					.getCurrentBlindLevel().getSmallBlind());
+//			results.put("bigBlind", game.getGameStructure()
+//					.getCurrentBlindLevel().getBigBlind());
+//		}
+//		if (game.getGameStructure().getCurrentBlindEndTime() != null) {
+//			long timeLeft = game.getGameStructure().getCurrentBlindEndTime()
+//					.getTime()
+//					- new Date().getTime();
+//			timeLeft = Math.max(0, timeLeft);
+//			results.put("blindTime", timeLeft);
+//		}
+//		if (game.getCurrentHand() != null) {
+//			results.put("pot", game.getCurrentHand().getPot());
+//			results.put("cards", game.getCurrentHand().getBoard()
+//					.getBoardCards());
+//		}
+//		ObjectMapper mapper = new ObjectMapper();
+//		String json = "";
+//		try {
+//			json = mapper.writeValueAsString(results);
+//		} catch (JsonGenerationException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (JsonMappingException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		return json;
+//	}
 
 	/**
 	 * Start the game. This should be called when the players have joined and
@@ -273,30 +273,30 @@ public class GameServiceWS {
 	 *         which is either true or false. example: {"success":true}
 	 */
 
-	@GET
-	@Path("/StartGame")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response startGame(@QueryParam("gameId") long gameId) {
-		gameService = new GameServiceImpl();
-		ObjectMapper mapper = new ObjectMapper();
-		String json = "";
-		try {
-			Game game = gameService.getGameById(gameId, false);
-			if (!game.isStarted()) {
-				game = gameService.startGame(game);
-			}
-			json = mapper.writeValueAsString(game);
-		} catch (JsonGenerationException e) {
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (AMSException e) {
-			return Response.serverError().entity(e.getMessage()).build();
-		}
-		return Response.ok(json, MediaType.APPLICATION_JSON).build();
-	}
+//	@GET
+//	@Path("/StartGame")
+//	@Produces(MediaType.APPLICATION_JSON)
+//	public Response startGame(@QueryParam("gameId") long gameId) {
+//		gameService = new GameServiceImpl();
+//		ObjectMapper mapper = new ObjectMapper();
+//		String json = "";
+//		try {
+//			Game game = gameService.getGameById(gameId, false);
+//			if (!game.isStarted()) {
+//				game = gameService.startGame(game);
+//			}
+//			json = mapper.writeValueAsString(game);
+//		} catch (JsonGenerationException e) {
+//			e.printStackTrace();
+//		} catch (JsonMappingException e) {
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		} catch (AMSException e) {
+//			return Response.serverError().entity(e.getMessage()).build();
+//		}
+//		return Response.ok(json, MediaType.APPLICATION_JSON).build();
+//	}
 
 	/**
 	 * Start a new hand. This method should be called at the start of the game,
@@ -308,35 +308,35 @@ public class GameServiceWS {
 	 *         the new hand. Example: {"handId":xxx}
 	 */
 
-	@GET
-	@Path("/StartHand")
-	@Produces("application/json")
-	public String startHand(@QueryParam("gameId") long gameId) {
-		gameService = new GameServiceImpl();
-		handService = new PokerHandServiceImpl();
-		Game game = gameService.getGameById(gameId, false);
-		HandEntity hand = new HandEntity();
-		HandDaoImpl hdao = new HandDaoImpl();
-		if (game.getCurrentHand() != null && game.getCurrentHand().getId() > 0)
-			hand = hdao.findById(game.getCurrentHand().getId(), null);
-		else
-			hand = handService.startNewHand(game);
-		ObjectMapper mapper = new ObjectMapper();
-		String json = "";
-		try {
-			json = mapper.writeValueAsString(hand);
-		} catch (JsonGenerationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return json;
-	}
+//	@GET
+//	@Path("/StartHand")
+//	@Produces("application/json")
+//	public String startHand(@QueryParam("gameId") long gameId) {
+//		gameService = new GameServiceImpl();
+//		handService = new PokerHandServiceImpl();
+//		Game game = gameService.getGameById(gameId, false);
+//		HandEntity hand = new HandEntity();
+//		HandDaoImpl hdao = new HandDaoImpl();
+//		if (game.getCurrentHand() != null && game.getCurrentHand().getId() > 0)
+//			hand = hdao.findById(game.getCurrentHand().getId(), null);
+//		else
+//			hand = handService.startNewHand(game);
+//		ObjectMapper mapper = new ObjectMapper();
+//		String json = "";
+//		try {
+//			json = mapper.writeValueAsString(hand);
+//		} catch (JsonGenerationException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (JsonMappingException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		return json;
+//	}
 
 	/**
 	 * Deal the flop for the hand. This should be called when preflop actions

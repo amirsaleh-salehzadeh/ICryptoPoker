@@ -21,8 +21,11 @@ $(window).on(
 			};
 			$(".actionButtons").each(function() {
 				$(this).button();
-				$(this).button('enable');
+				$(this).button('disable').trigger("create");
 			});
+			// $("#flopsContainer div").width($("#flop1").width());
+			$("#flopsContainer div").height(
+					$("#flop1").width() + ($("#flop1").width() * 0.7));
 		});
 
 function onMessage(evt) {
@@ -94,6 +97,12 @@ function generateACard(cardVal, divID, cardNumber) {
 		$("#flop" + cardNumber).html(res).trigger("create");
 	} else {
 		$("#" + divID).find(".card" + cardNumber).html(res).trigger("create");
-
+		if (cardNumber == 2) {
+			$("#" + divID).find(".card" + cardNumber).width(
+					$("#userSitPlace").height() * 0.7)
+					.trigger("create");
+//			$("#flopsContainer div").height(
+//					$("#flop1").width() + ($("#flop1").width() * 0.7));
+		}
 	}
 }

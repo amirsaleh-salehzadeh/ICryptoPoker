@@ -194,7 +194,6 @@ function updatePlayerInfo(data) {
 	if ((data.status == "ACTION_TO_CALL" || data.status == "ACTION_TO_CHECK")
 			&& playerId == $("#playerID").val())
 		$(".actionButtons").each(function() {
-			$(this).button();
 			$(this).button('enable');
 		});
 	addANewPlayerToTable(playerId, playerName, parseInt(data.chips),
@@ -212,14 +211,14 @@ function updatePlayerInfo(data) {
 	} else if (data.status == "POST_SB") {
 		$('.pscontainer').each(function() {
 			if ("pscontainer" + playerId == this.id) {
-				$(this).html("S");
+				$(this).html("Small");
 				$(this).addClass("smallBlindChip");
 			}
 		});
 	} else if (data.status == "POST_BB") {
 		$('.pscontainer').each(function() {
 			if ("pscontainer" + playerId == this.id) {
-				$(this).html("B");
+				$(this).html("Big");
 				$(this).addClass("bigBlindChip");
 			}
 		});
@@ -227,12 +226,9 @@ function updatePlayerInfo(data) {
 		// $("#playerID").val(playerId);
 		$("#checkBTN").html("Call");
 		$("#checkBTN").attr("onclick", "call()");
-		$(".actionButtons").each(function() {
-			$(this).button('enable');
-		});
 		$('.pscontainer').each(function() {
 			if ("pscontainer" + playerId == this.id) {
-				$(this).html("D");
+				$(this).html("Dealer");
 				$(this).addClass("dealerChip");
 			}
 		});
@@ -242,7 +238,7 @@ function updatePlayerInfo(data) {
 		$("#checkBTN").attr("onclick", "check()").trigger("create");
 		$('.pscontainer').each(function() {
 			if ("pscontainer" + playerId == this.id) {
-				$(this).html("D");
+				$(this).html("Dealer");
 				$(this).addClass("dealerChip");
 			}
 		});
@@ -287,18 +283,30 @@ function addANewPlayerToTable(id, name, chips, amountToCall) {
 							// CARD CONTAINER END
 
 						} else {
-							content = "<div class='ui-block-a'><div class='playerTotalChipsPlace'>$"
-									+ chips
+							content = "<div class='ui-block-a'><div class='ui-block-solo playerInfo'>"
+									+ "<div class='ui-block-solo w3-light-grey w3-round w3-tiny'>"
+									+ "<div class='w3-container w3-round w3-green' style='width:50%; height:7px;'></div></div>"
+									+ "<div class='ui-block-solo playerInfoContent playerTimer'></div>"
+									+ "<div class='ui-grid-a playerInfoContent'>"
+									+ "<div class='ui-block-a playerInfoContent pscontainer' id='pscontainer"
+									+ id
+									+ "'></div>"
+									+ "<div class='ui-block-b playerInfoContent playerNamePlace'> "
+									+ name
 									+ "</div></div>"
-									+ "<div class='ui-block-b'><div class='ui-grid-a playerCardsContainer' id='cards"
-									+ id
-									+ "'><div class='ui-block-a card1'></div><div class='ui-block-b card2'></div>"
-									+ "</div></div><div class='ui-block-c' style='position: relative'><div class='pscontainer' id='pscontainer"
-									+ id
-									+ "'></div><div class='amountToCallcontainer' id='amountToCallcontainer"
+									+ "<div class='ui-block-solo playerInfoContent playerTotalChipsPlace'>$"
+									+ chips
+									+ "</div>"
+									// username, chip and timer div END
+									// PLAYER STATUS AND ACTION CONTAINER START
+									+ "<div class='ui-block-solo playerInfoContent amountToCallcontainer' id='amountToCallcontainer"
 									+ id
 									+ "'> $"
 									+ amountToCall
+									+ "</div></div></div>"
+									+ "<div class='ui-block-b'><div class='ui-grid-a playerCardsContainer' id='cards"
+									+ id
+									+ "'><div class='ui-block-a card1'></div><div class='ui-block-b card2'></div>"
 									+ "</div></div>";
 							$("#userSitPlace").html(content);
 							return false;

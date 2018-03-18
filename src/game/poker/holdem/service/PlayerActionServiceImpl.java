@@ -124,6 +124,7 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 
 		playerHand.setRoundBetAmount(playerHand.getRoundBetAmount() + total);
 		playerHand.setBetAmount(playerHand.getBetAmount() + total);
+		handDao.updatePlayerHand(playerHand, null);
 		player.setChips(player.getChips() - total);
 		hand.setPot(hand.getPot() + total);
 		hand.setLastBetAmount(betAmount);
@@ -139,7 +140,7 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 	public boolean call(Player player, Game game) {
 		HandEntity hand = game.getCurrentHand();
 		hand.setGame(game);
-		hand = handDao.merge(hand, null);
+//		hand = handDao.merge(hand, null);
 		// Cannot call out of turn
 		if (!player.equals(hand.getCurrentToAct())) {
 			return false;
@@ -160,6 +161,7 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 
 		playerHand.setRoundBetAmount(playerHand.getRoundBetAmount() + toCall);
 		playerHand.setBetAmount(playerHand.getBetAmount() + toCall);
+		handDao.updatePlayerHand(playerHand, null);
 		player.setChips(player.getChips() - toCall);
 		hand.setPot(hand.getPot() + toCall);
 

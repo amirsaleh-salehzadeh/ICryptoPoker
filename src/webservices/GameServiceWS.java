@@ -354,33 +354,32 @@ public class GameServiceWS {
 	 *         {"card1":"Xx","card2":"Xx","card3":"Xx"}
 	 */
 
-	@GET
-	@Path("/Flop")
-	@Produces("application/json")
-	public String flop(@QueryParam("handId") long handId) {
-		handService = new PokerHandServiceImpl();
-		HandEntity hand = handService.getHandById(handId);
-		hand = handService.flop(hand);
-		Map<String, String> result = new HashMap<String, String>();
-		result.put("card1", hand.getBoard().getFlop1().toString());
-		result.put("card2", hand.getBoard().getFlop2().toString());
-		result.put("card3", hand.getBoard().getFlop3().toString());
-		ObjectMapper mapper = new ObjectMapper();
-		String json = "";
-		try {
-			json = mapper.writeValueAsString(result);
-		} catch (JsonGenerationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return json;
-	}
+//	@GET
+//	@Path("/Flop")
+//	@Produces("application/json")
+//	public String flop(@QueryParam("gameId") long gameId) {
+//		Game game = gameService.getGameById(gameId, false);
+////		hand = handService.flop(game);
+//		Map<String, String> result = new HashMap<String, String>();
+////		result.put("card1", hand.getBoard().getFlop1().toString());
+////		result.put("card2", hand.getBoard().getFlop2().toString());
+////		result.put("card3", hand.getBoard().getFlop3().toString());
+//		ObjectMapper mapper = new ObjectMapper();
+//		String json = "";
+//		try {
+//			json = mapper.writeValueAsString(result);
+//		} catch (JsonGenerationException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (JsonMappingException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		return json;
+//	}
 
 	/**
 	 * Deal the turn for the hand. This should be called when the flop actions
@@ -392,29 +391,29 @@ public class GameServiceWS {
 	 *         card4. Example: {"card4":"Xx"}
 	 */
 
-	@GET
-	@Path("/Turn")
-	@Produces("application/json")
-	public String turn(@QueryParam("handId") long handId) {
-		HandEntity hand = handService.getHandById(handId);
-		hand = handService.turn(hand);
-		ObjectMapper mapper = new ObjectMapper();
-		String json = "";
-		try {
-			json = mapper.writeValueAsString(Collections.singletonMap("card4",
-					hand.getBoard().getTurn().toString()));
-		} catch (JsonGenerationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return json;
-	}
+//	@GET
+//	@Path("/Turn")
+//	@Produces("application/json")
+//	public String turn(@QueryParam("handId") long handId) {
+//		HandEntity hand = handService.getHandById(handId);
+////		hand = handService.turn(hand);
+//		ObjectMapper mapper = new ObjectMapper();
+//		String json = "";
+//		try {
+//			json = mapper.writeValueAsString(Collections.singletonMap("card4",
+//					hand.getBoard().getTurn().toString()));
+//		} catch (JsonGenerationException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (JsonMappingException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		return json;
+//	}
 
 	/**
 	 * Deal the river card for the hand. This should be called when the turn
@@ -427,29 +426,29 @@ public class GameServiceWS {
 	 *         card5. Example: {"card5":"Xx"}
 	 */
 
-	@GET
-	@Path("/River")
-	@Produces("application/json")
-	public String river(@QueryParam("handId") long handId) {
-		HandEntity hand = handService.getHandById(handId);
-		hand = handService.river(hand);
-		ObjectMapper mapper = new ObjectMapper();
-		String json = "";
-		try {
-			json = mapper.writeValueAsString(Collections.singletonMap("card5",
-					hand.getBoard().getRiver().toString()));
-		} catch (JsonGenerationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return json;
-	}
+//	@GET
+//	@Path("/River")
+//	@Produces("application/json")
+//	public String river(@QueryParam("handId") long handId) {
+//		HandEntity hand = handService.getHandById(handId);
+////		hand = handService.river(hand);
+//		ObjectMapper mapper = new ObjectMapper();
+//		String json = "";
+//		try {
+//			json = mapper.writeValueAsString(Collections.singletonMap("card5",
+//					hand.getBoard().getRiver().toString()));
+//		} catch (JsonGenerationException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (JsonMappingException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		return json;
+//	}
 
 	/**
 	 * End the hand. This completes all actions that can be done on the hand.
@@ -462,31 +461,31 @@ public class GameServiceWS {
 	 * @return Map represented as a JSON String determining if the action was
 	 *         successful. Example: {"success":true}
 	 */
-	@GET
-	@Path("/EndHand")
-	@Produces("application/json")
-	public Response endHand(@QueryParam("handId") long handId) {
-		handService = new PokerHandServiceImpl();
-		HandEntity hand = handService.getHandById(handId);
-		try {
-			handService.endHand(hand);
-		} catch (AMSException e1) {
-			return Response.serverError().entity(e1.getMessage()).build();
-		}
-		ObjectMapper mapper = new ObjectMapper();
-		String json = "";
-		try {
-			json = mapper.writeValueAsString(Collections.singletonMap(
-					"success", true));
-		} catch (JsonGenerationException e) {
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return Response.ok(json, MediaType.APPLICATION_JSON).build();
-	}
+//	@GET
+//	@Path("/EndHand")
+//	@Produces("application/json")
+//	public Response endHand(@QueryParam("handId") long handId) {
+//		handService = new PokerHandServiceImpl();
+//		HandEntity hand = handService.getHandById(handId);
+//		try {
+//			handService.endHand(hand);
+//		} catch (AMSException e1) {
+//			return Response.serverError().entity(e1.getMessage()).build();
+//		}
+//		ObjectMapper mapper = new ObjectMapper();
+//		String json = "";
+//		try {
+//			json = mapper.writeValueAsString(Collections.singletonMap(
+//					"success", true));
+//		} catch (JsonGenerationException e) {
+//			e.printStackTrace();
+//		} catch (JsonMappingException e) {
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//		return Response.ok(json, MediaType.APPLICATION_JSON).build();
+//	}
 
 	/**
 	 * Puts the current player to act in a sit-out state. Action will move to

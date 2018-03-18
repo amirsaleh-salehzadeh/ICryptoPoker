@@ -3,7 +3,6 @@ var wsUri = "";
 $(window).on(
 		"load",
 		function() {
-			// var playerCounter = 0;
 			$(".jqm-header").css("display", "none");
 			$(window).on("resize", fitElementsWithinScreen());
 			fitElementsWithinScreen();
@@ -20,11 +19,15 @@ $(window).on(
 			webSocket.onopen = function(evt) {
 				onOpen(evt);
 			};
+			$(".actionButtons").each(function() {
+				$(this).button();
+				$(this).button('enable');
+			});
 		});
 
 function onMessage(evt) {
 	console.log("received over websockets: " + evt.data);
-	getGameStatus();
+	updateGameInfo(JSON.parse(evt.data));
 }
 
 function onError(evt) {
@@ -34,9 +37,6 @@ function onError(evt) {
 function onOpen() {
 	console.log("Connected to " + wsUri);
 }
-
-// For testing purposes
-var output = document.getElementById("output");
 
 function sendText(json) {
 	console.log("sending text: " + json);

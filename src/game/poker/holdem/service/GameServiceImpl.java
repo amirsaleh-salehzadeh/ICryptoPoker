@@ -129,15 +129,22 @@ public class GameServiceImpl implements GameServiceInterface {
 		player.setGameId(game.getId());
 		return player;
 	}
-	
-	public String getGameStatusJSON(long gameId){
+
+	public String getGameStatusJSON(long gameId, String playerId) {
 		GameServiceImpl gameService = new GameServiceImpl();
 		Game game = gameService.getGameById(gameId, true);
 		GameStatus gs = GameUtil.getGameStatus(game);
 		Set<PlayerStatusObject> players = new HashSet<PlayerStatusObject>();
 		PlayerServiceManagerImpl playerService = new PlayerServiceManagerImpl();
+		// if (game.isStarted())
 		for (Player p : game.getPlayers()) {
-			playerService.buildPlayerStatus(gameId, p.getId());
+			PlayerStatusObject ptmp = playerService.buildPlayerStatus(gameId,
+					p.getId());
+			if (!p.getId().equals(playerId) || !game.isStarted()) {
+				ptmp.setCard1("card1"+playerId);
+				ptmp.setCard2("");
+			}
+			players.add(ptmp);
 		}
 		Map<String, Object> results = new HashMap<String, Object>();
 		results.put("gameStatus", gs);
@@ -163,7 +170,7 @@ public class GameServiceImpl implements GameServiceInterface {
 		if (game.getCurrentHand() != null) {
 			results.put("pot", game.getCurrentHand().getPot());
 			results.put("cards", game.getCurrentHand().getBoard()
-					.getBoardCards());
+					.getBoardCardsString());
 		}
 		ObjectMapper mapper = new ObjectMapper();
 		String json = "";

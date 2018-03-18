@@ -11,7 +11,11 @@ import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
+import tools.AMSException;
+
+import game.poker.holdem.domain.Game;
 import game.poker.holdem.domain.Table;
+import game.poker.holdem.service.GameServiceImpl;
 
 @ServerEndpoint("/game/{guid}/{uid}")
 public class TableWebsocket {
@@ -28,17 +32,13 @@ public class TableWebsocket {
 		}
 		table.setGame(guid);
 		table.addPlayer(uid, user);
-		if (table.getPlayers().size() >= 2) {
-			for (Table t : games) {
-				if (t.getGame() == guid) {
-					t.sendToAll(uid, "hi");
-				}
+		games.add(table);
+		for (Table t : games) {
+			if (t.getGame() == guid) {
+				t.sendToAll(uid);
 			}
 		}
-		games.add(table);
-
 		System.out.println(uid + " has joined");
-
 	}
 
 	@OnMessage
@@ -46,7 +46,7 @@ public class TableWebsocket {
 			@PathParam("uid") String uid, @PathParam("guid") long guid) {
 		for (Table table : games) {
 			if (table.getGame() == guid) {
-				table.sendToAll(uid, message + "hi");
+				table.sendToAll(uid);
 			}
 		}
 	}

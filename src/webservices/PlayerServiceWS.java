@@ -38,13 +38,18 @@ import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
+import tools.AMSException;
+
 import game.poker.holdem.domain.Game;
+import game.poker.holdem.domain.GameStatus;
 import game.poker.holdem.domain.Player;
 import game.poker.holdem.domain.PlayerStatus;
 import game.poker.holdem.service.GameServiceImpl;
 import game.poker.holdem.service.PlayerActionServiceImpl;
 import game.poker.holdem.service.PlayerServiceManager;
 import game.poker.holdem.service.PlayerServiceManagerImpl;
+import game.poker.holdem.service.PokerHandServiceImpl;
+import game.poker.holdem.util.GameUtil;
 import game.poker.holdem.view.PlayerStatusObject;
 
 /**
@@ -81,29 +86,29 @@ public class PlayerServiceWS {
 	 *         requests. Example: {"playerId":xxx}
 	 */
 
-	// @GET
-	// @Path("/JoinGame")
-	// @Produces("application/json")
-	// public String joinGame(long gameId, String playerName) {
-	// Game game = gameService.getGameById(gameId, false);
-	// Player player = new Player();
-	// player.setName(playerName);
-	// player = gameService.addNewPlayerToGame(game, player);
-	// ObjectMapper mapper = new ObjectMapper();
-	// String json ="";
-	// try {
-	// json = mapper.writeValueAsString(Collections.singletonMap("playerId",
-	// player.getId()));
-	// } catch (JsonGenerationException e) {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
-	// } catch (JsonMappingException e) {
-	// e.printStackTrace();
-	// } catch (IOException e) {
-	// e.printStackTrace();
-	// }
-	// return json;
-	// }
+	@GET
+	@Path("/JoinGame")
+	@Produces("application/json")
+	public String joinGame(long gameId, String playerName) {
+		Game game = gameService.getGameById(gameId, false);
+		Player player = new Player();
+		player.setName(playerName);
+		player = gameService.addNewPlayerToGame(game, player);
+		ObjectMapper mapper = new ObjectMapper();
+		String json = "";
+		try {
+			json = mapper.writeValueAsString(Collections.singletonMap(
+					"playerId", player.getId()));
+		} catch (JsonGenerationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return json;
+	}
 
 	/**
 	 * Player status in the current game and hand.
@@ -163,10 +168,15 @@ public class PlayerServiceWS {
 		playerActionService = new PlayerActionServiceImpl();
 		Game game = gameService.getGameById(gameId, false);
 		Player player = playerActionService.getPlayerById(playerId);
-		boolean folded = playerActionService
-				.fold(player, game);
+		boolean folded = playerActionService.fold(player, game);
 		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
+		try {
+			GameUtil.goToNextStepOfTheGame(game, playerId);
+		} catch (AMSException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		try {
 			json = mapper.writeValueAsString(Collections.singletonMap(
 					"success", folded));
@@ -206,13 +216,18 @@ public class PlayerServiceWS {
 		Game game = gameService.getGameById(gameId, false);
 		playerActionService = new PlayerActionServiceImpl();
 		Player player = playerActionService.getPlayerById(playerId);
-		boolean called = playerActionService
-				.call(player, game);
+		boolean called = playerActionService.call(player, game);
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("success", called);
 		resultMap.put("chips", player.getChips());
 		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
+		try {
+			GameUtil.goToNextStepOfTheGame(game, playerId);
+		} catch (AMSException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		try {
 			json = mapper.writeValueAsString(resultMap);
 		} catch (JsonGenerationException e) {
@@ -252,6 +267,12 @@ public class PlayerServiceWS {
 		boolean checked = playerActionService.check(player, game);
 		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
+		try {
+			GameUtil.goToNextStepOfTheGame(game, playerId);
+		} catch (AMSException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		try {
 			json = mapper.writeValueAsString(Collections.singletonMap(
 					"success", checked));
@@ -302,13 +323,18 @@ public class PlayerServiceWS {
 		playerActionService = new PlayerActionServiceImpl();
 		Game game = gameService.getGameById(gameId, false);
 		Player player = playerActionService.getPlayerById(playerId);
-		boolean bet = playerActionService.bet(player, game,
-				betAmount);
+		boolean bet = playerActionService.bet(player, game, betAmount);
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("success", bet);
 		resultMap.put("chips", player.getChips());
 		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
+		try {
+			GameUtil.goToNextStepOfTheGame(game, playerId);
+		} catch (AMSException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		try {
 			json = mapper.writeValueAsString(resultMap);
 		} catch (JsonGenerationException e) {

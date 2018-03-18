@@ -91,5 +91,5 @@ public interface GameServiceInterface {
 	// Do this in service layer to enforce tournament logic.
 	// Cash games could theoretically be done in the controller and call save
 
-	public String getGameStatusJSON(long gameId);
+	public String getGameStatusJSON(long gameId, String playerId);
 }

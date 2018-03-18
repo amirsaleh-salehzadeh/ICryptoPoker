@@ -58,6 +58,22 @@ public class BoardEntity  {
 		return cards;
 	}
 	
+	public List<String> getBoardCardsString(){
+		List<String> cards = new ArrayList<String>();
+		if(flop1 != null){
+			cards.add(flop1.toString());
+			cards.add(flop2.toString());
+			cards.add(flop3.toString());
+		}
+		if(turn != null){
+			cards.add(turn.toString());
+		}
+		if(river != null){
+			cards.add(river.toString());
+		}
+		return cards;
+	}
+	
 	public long getId() {
 		return id;
 	}

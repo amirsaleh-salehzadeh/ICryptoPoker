@@ -45,53 +45,53 @@ import hibernate.config.BaseHibernateDAO;
 public class PlayerDaoImpl extends BaseHibernateDAO implements
 		PlayerDaoInterface {
 
-	@Override
-	public Player save(Player game, Connection conn) {
-		try {
-			boolean isNewConn = false;
-			if (conn == null)
-				try {
-					conn = getConnection();
-					conn.setAutoCommit(false);
-					isNewConn = true;
-				} catch (AMSException e) {
-					e.printStackTrace();
-				}
-			String query = "";
-			query = "INSERT INTO `player` (`username`, `game_id`,`chips`, `game_position`, `finished_place`,"
-					+ " `sitting_out`, `password`, 'registeration_date','name') "
-					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";//'gender','dob','surname',
-			PreparedStatement ps = conn.prepareStatement(query,
-					Statement.RETURN_GENERATED_KEYS);
-			ps.setString(1, game.getId());
-			ps.setLong(2, game.getGameId());
-			ps.setInt(3, game.getChips());
-			ps.setInt(4, game.getGamePosition());
-			ps.setLong(5, game.getFinishPosition());
-			if (game.isSittingOut()) {
-				ps.setInt(6, 1);
-			} else
-				ps.setInt(6, 0);
-			ps.setString(7, MD5Encryptor.encode(game.getPassword()));
-//			ps.setInt(8, game.getGender());
-//			ps.setDate(9, game.getDob());
-//			ps.setString(10, game.getSurname());
-			ps.setString(11, game.getRegistrationDate());
-			ps.setString(12, game.getName());
-			ps.executeUpdate();
-			ResultSet rs = ps.getGeneratedKeys();
-
-			rs.close();
-			ps.close();
-			if (isNewConn) {
-				conn.commit();
-				conn.close();
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return game;
-	}
+//	@Override
+//	public Player save(Player game, Connection conn) {
+//		try {
+//			boolean isNewConn = false;
+//			if (conn == null)
+//				try {
+//					conn = getConnection();
+//					conn.setAutoCommit(false);
+//					isNewConn = true;
+//				} catch (AMSException e) {
+//					e.printStackTrace();
+//				}
+//			String query = "";
+//			query = "INSERT INTO `player` (`username`, `game_id`,`chips`, `game_position`, `finished_place`,"
+//					+ " `sitting_out`, `password`, 'registeration_date','name') "
+//					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";//'gender','dob','surname',
+//			PreparedStatement ps = conn.prepareStatement(query,
+//					Statement.RETURN_GENERATED_KEYS);
+//			ps.setString(1, game.getId());
+//			ps.setLong(2, game.getGameId());
+//			ps.setInt(3, game.getChips());
+//			ps.setInt(4, game.getGamePosition());
+//			ps.setLong(5, game.getFinishPosition());
+//			if (game.isSittingOut()) {
+//				ps.setInt(6, 1);
+//			} else
+//				ps.setInt(6, 0);
+//			ps.setString(7, MD5Encryptor.encode(game.getPassword()));
+////			ps.setInt(8, game.getGender());
+////			ps.setDate(9, game.getDob());
+////			ps.setString(10, game.getSurname());
+//			ps.setString(11, game.getRegistrationDate());
+//			ps.setString(12, game.getName());
+//			ps.executeUpdate();
+//			ResultSet rs = ps.getGeneratedKeys();
+//
+//			rs.close();
+//			ps.close();
+//			if (isNewConn) {
+//				conn.commit();
+//				conn.close();
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//		return game;
+//	}
 
 	@Override
 	public Player merge(Player player, Connection conn) {

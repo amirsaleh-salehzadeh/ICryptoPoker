@@ -23,9 +23,11 @@ THE SOFTWARE.
 */
 package game.poker.holdem.util;
 
+import tools.AMSException;
 import game.poker.holdem.domain.Game;
 import game.poker.holdem.domain.GameStatus;
 import game.poker.holdem.domain.HandEntity;
+import game.poker.holdem.service.PokerHandServiceImpl;
 
 /**
  * Static helper methods for controlling game functions and information
@@ -66,5 +68,20 @@ public class GameUtil {
 		}
 		
 		return GameStatus.PREFLOP;
+	}
+	
+	public static void goToNextStepOfTheGame(Game game, String playerId) throws AMSException{
+		PokerHandServiceImpl phs = new PokerHandServiceImpl();
+		if (phs.getPlayerInBB(game.getCurrentHand()).getId().equals(playerId)) {
+			GameStatus gs = GameUtil.getGameStatus(game);
+			if(gs.equals(GameStatus.PREFLOP))
+				phs.flop(game);
+			else if(gs.equals(GameStatus.FLOP))
+				phs.turn(game);
+			else if(gs.equals(GameStatus.TURN))
+				phs.river(game);
+			else if(gs.equals(GameStatus.RIVER))
+				phs.endHand(game);
+		}
 	}
 }

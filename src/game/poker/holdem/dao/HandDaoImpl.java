@@ -194,23 +194,23 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 			if (board.getFlop1() == null)
 				ps.setString(1, null);
 			else
-				ps.setString(1, board.getFlop1().toString());
+				ps.setString(1, board.getFlop1().name());
 			if (board.getFlop2() == null)
 				ps.setString(2, null);
 			else
-				ps.setString(2, board.getFlop2().toString());
+				ps.setString(2, board.getFlop2().name());
 			if (board.getFlop3() == null)
 				ps.setString(3, null);
 			else
-				ps.setString(3, board.getFlop3().toString());
+				ps.setString(3, board.getFlop3().name());
 			if (board.getTurn() == null)
 				ps.setString(4, null);
 			else
-				ps.setString(4, board.getTurn().toString());
+				ps.setString(4, board.getTurn().name());
 			if (board.getRiver() == null)
 				ps.setString(5, null);
 			else
-				ps.setString(5, board.getRiver().toString());
+				ps.setString(5, board.getRiver().name());
 			ps.setLong(6, board.getId());
 			ps.executeUpdate();
 			ps.close();
@@ -249,7 +249,7 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 			PreparedStatement ps = conn.prepareStatement(query);
 			ps.execute();
 			ResultSet rs = ps.getResultSet();
-			while (rs.next()) {
+			if (rs.next()) {
 				hand.setBlindLevel(BlindLevel.valueOf(rs
 						.getString("blind_level")));
 				hand.setBoard(getBoard(rs.getLong("board_id"), conn));
@@ -315,8 +315,12 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 				board.setFlop1(Card.valueOf(rs.getString("flop1")));
 				board.setFlop2(Card.valueOf(rs.getString("flop2")));
 				board.setFlop3(Card.valueOf(rs.getString("flop3")));
-				board.setRiver(Card.valueOf(rs.getString("river")));
+				if (rs.getString("turn") == null)
+					continue;
 				board.setTurn(Card.valueOf(rs.getString("turn")));
+				if (rs.getString("river") == null)
+					continue;
+				board.setRiver(Card.valueOf(rs.getString("river")));
 
 			}
 			rs.close();
@@ -449,6 +453,44 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 			e.printStackTrace();
 		}
 		return players;
+	}
+
+	@Override
+	public PlayerHand updatePlayerHand(PlayerHand ph, Connection conn) {
+		try {
+			boolean isNewConn = false;
+			if (conn == null)
+				try {
+					conn = getConnection();
+					conn.setAutoCommit(false);
+					isNewConn = true;
+				} catch (AMSException e) {
+					e.printStackTrace();
+				}
+			String query = "update `player_hand` set `bet_amount` = ?, `round_bet_amount` = ? where `player_hand_id` = ?";
+				PreparedStatement ps2 = conn.prepareStatement(query);
+				ps2.setInt(1, ph.getBetAmount());
+				ps2.setInt(2, ph.getRoundBetAmount());
+				ps2.setLong(3, ph.getId());
+				ps2.executeUpdate();
+				ps2.close();
+			if (isNewConn) {
+				conn.commit();
+				conn.close();
+			}
+		} catch (SQLException e) {
+			try {
+				if (!conn.isClosed()) {
+					conn.rollback();
+					conn.close();
+				}
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+		}
+		return ph;
+
 	}
 
 }

@@ -1,5 +1,5 @@
-$(document).ready(getAllGames());
-
+//$(document).ready(getAllGames());
+$(window).load(getAllGames());
 $.fn.serializeObject = function() {
 	var o = {};
 	var a = this.serializeArray();
@@ -28,9 +28,10 @@ function getAllGames() {
 		success : function(data) {
 			var tableRows = "";
 			$.each(data, function(k, l) {
-				tableRows += "<tr onclick='joinGame(" + l.id + ")'><td>"
-						+ l.name + "</td><td>";
 				var smallBig = l.gameStructure.currentBlindLevel.split("_");
+				tableRows += "<tr onclick='joinGame(" + l.id + ","+smallBig[1]  +"," + smallBig[2] +")'><td>"
+						+ l.name + "</td><td>";
+				
 				tableRows += smallBig[1] + " / " + smallBig[2] + "</td><td>";
 				tableRows += parseInt(smallBig[2]) * 40 + " / "
 				+ parseInt(smallBig[2]) * 200  + "</td><td>"
@@ -49,14 +50,51 @@ function getAllGames() {
 	});
 }
 
-function joinGame(gameID) {
+function joinGame(gameID, min, max) {
 	if ($("#playerName").val() == "") {
 		alert("player name????");
 		return;
+	}else{
+	var playerChips = ($('#chips').html().split(";"))[1];
+		// player does not have enough chips to enter the game
+		if(playerChips< min){
+			alert("not enough chips");
+			
+		}else
+		if(playerChips<max){
+//			players chips are less than the max
+			$('#buyIn').attr("max", playerChips);
+			$('#buyIn').attr("min", min);
+			$( "#popupJoinGame" ).popup("open");
+			$('#joingGameID').attr("value", gameID);
+		}else{
+//			player has enough chips for min and max
+			$('#buyIn').attr("min", min);
+			$('#buyIn').attr("max", max);
+			$( "#popupJoinGame" ).popup("open");
+			$('#joingGameID').attr("value", gameID);
+
+			
+		}
+		//set the on click for the Join button.
+		$('#joinGameBTN').click(function () {
+			$( "#popupJoinGame" ).popup("close");
+			buyInGame(gameID, $('#buyIn').val());
+        });
+		
 	}
-	window.location.replace("t_game.do?reqCode=joinAGame&gameId=" + gameID
-			+ "&playerName=" + $("#playerName").val());
+
 }
+
+
+function buyInGame(gameID, chips){
+//	takes the game ID and chips player bought in with and joins the game
+	alert(chips);
+	window.location.replace("t_game.do?reqCode=joinAGame&gameId=" + gameID
+	+ "&playerName=" + $("#playerName").val()+ "&chips=" + chips);
+}
+
+
 
 function createNewGame() {
 	$.ajax({

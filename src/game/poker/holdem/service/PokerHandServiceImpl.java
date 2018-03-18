@@ -49,9 +49,9 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 	private PlayerDaoImpl playerDao;
 
 	public HandEntity startNewHand(Game game) {
-		System.out.println("1 "+System.currentTimeMillis());
 		gameDao = new GameDaoImpl();
 		handDao = new HandDaoImpl();
+		playerDao = new PlayerDaoImpl();
 		HandEntity hand = new HandEntity();
 		updateBlindLevel(game);
 		hand.setBlindLevel(game.getGameStructure().getCurrentBlindLevel());
@@ -73,18 +73,15 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 			}
 		}
 		hand.setPlayers(participatingPlayers);
-		System.out.println("2 "+System.currentTimeMillis());
 		// Sort and get the next player to act (immediately after the big blind)
 		List<PlayerHand> players = new ArrayList<PlayerHand>();
 		players.addAll(participatingPlayers);
 		Player nextToAct = PlayerUtil.getNextPlayerToAct(hand,
 				this.getPlayerInBB(hand));
 		hand.setCurrentToAct(nextToAct);
-		System.out.println("3 "+System.currentTimeMillis());
 		// Register the Forced Small and Big Blind bets as part of the hand
 		Player smallBlind = getPlayerInSB(hand);
 		Player bigBlind = getPlayerInBB(hand);
-		System.out.println("4 "+System.currentTimeMillis());
 		int sbBet = 0;
 		int bbBet = 0;
 		for (PlayerHand ph : hand.getPlayers()) {
@@ -102,7 +99,8 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 				bigBlind.setChips(bigBlind.getChips() - bbBet);
 			}
 		}
-		System.out.println("5 "+System.currentTimeMillis());
+		playerDao.merge(smallBlind, null);
+		playerDao.merge(bigBlind, null);
 		hand.setTotalBetAmount(hand.getBlindLevel().getBigBlind());
 		hand.setLastBetAmount(hand.getBlindLevel().getBigBlind());
 		hand.setPot(sbBet + bbBet);
@@ -110,17 +108,17 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		hand.setBoard(b);
 		hand.setCards(d.exportDeck());
 		hand = handDao.save(hand, null);
-		System.out.println("6 "+System.currentTimeMillis());
 		game.setCurrentHand(hand);
 		gameDao.merge(game, null);
 		hand.setGame(null);
 		return hand;
 	}
 
-	public void endHand(HandEntity hand) throws AMSException {
+	public void endHand(Game g) throws AMSException {
 		gameDao = new GameDaoImpl();
 		handDao = new HandDaoImpl();
 		playerDao = new PlayerDaoImpl();
+		HandEntity hand = g.getCurrentHand();
 		if (!isActionResolved(hand)) {
 			throw new AMSException(
 					"There are unresolved betting actions");
@@ -186,14 +184,16 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		return handDao.findById(id, null);
 	}
 
-	public HandEntity flop(HandEntity hand) throws IllegalStateException {
+	public HandEntity flop(Game game) throws IllegalStateException {
 		handDao = new HandDaoImpl();
+		HandEntity hand = game.getCurrentHand();
 		if (hand.getBoard().getFlop1() != null) {
 			throw new IllegalStateException("Unexpected Flop.");
 		}
 		// Re-attach to persistent context for this transaction (Lazy Loading
 		// stuff)
-		hand = handDao.merge(hand, null);
+		hand = handDao.findById(hand.getId(), null);
+		hand.setGame(game);
 		if (!isActionResolved(hand)) {
 			throw new IllegalStateException(
 					"There are unresolved preflop actions");
@@ -210,7 +210,8 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		return handDao.merge(hand, null);
 	}
 
-	public HandEntity turn(HandEntity hand) throws IllegalStateException {
+	public HandEntity turn(Game game) throws IllegalStateException {
+		HandEntity hand = game.getCurrentHand();
 		if (hand.getBoard().getFlop1() == null
 				|| hand.getBoard().getTurn() != null) {
 			throw new IllegalStateException("Unexpected Turn.");
@@ -218,7 +219,8 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		handDao = new HandDaoImpl();
 		// Re-attach to persistent context for this transaction (Lazy Loading
 		// stuff)
-		hand = handDao.merge(hand, null);
+		hand = handDao.findById(hand.getId(), null);
+		hand.setGame(game);
 		if (!isActionResolved(hand)) {
 			throw new IllegalStateException("There are unresolved flop actions");
 		}
@@ -232,7 +234,8 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		return handDao.merge(hand, null);
 	}
 
-	public HandEntity river(HandEntity hand) throws IllegalStateException {
+	public HandEntity river(Game game) throws IllegalStateException {
+		HandEntity hand = game.getCurrentHand();
 		if (hand.getBoard().getFlop1() == null
 				|| hand.getBoard().getTurn() == null
 				|| hand.getBoard().getRiver() != null) {
@@ -241,7 +244,8 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		handDao = new HandDaoImpl();
 		// Re-attach to persistent context for this transaction (Lazy Loading
 		// stuff)
-		hand = handDao.merge(hand, null);
+		hand = handDao.findById(hand.getId(), null);
+		hand.setGame(game);
 		if (!isActionResolved(hand)) {
 			throw new IllegalStateException("There are unresolved turn actions");
 		}
@@ -264,7 +268,7 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 			return false;
 		}
 		currentPlayer.setSittingOut(true);
-		playerDao.save(currentPlayer, null);
+		playerDao.merge(currentPlayer, null);
 		PlayerHand playerHand = null;
 		for (PlayerHand ph : hand.getPlayers()) {
 			if (ph.getPlayer().equals(currentPlayer)) {

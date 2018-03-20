@@ -159,9 +159,6 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 				players.add(p);
 			}
 		}
-		if (game.getPlayersRemaining() < 2) {
-			// TODO end game. Move to start hand?
-		}
 
 		// Rotate Button. Use Simplified Moving Button algorithm (for ease of
 		// coding)
@@ -170,7 +167,7 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		Player nextButton = PlayerUtil.getNextPlayerInGameOrder(players,
 				game.getPlayerInBTN());
 		game.setPlayerInBTN(nextButton);
-
+		game.setCurrentHand(null);
 		gameDao.merge(game, null);
 
 		// Remove Deck from database. No need to keep that around anymore
@@ -216,7 +213,8 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 				break;
 			}
 		}
-		Player next = PlayerUtil.getNextPlayerToAct(hand, hand.getCurrentToAct());
+		Player next = PlayerUtil.getNextPlayerToAct(hand,
+				hand.getCurrentToAct());
 		if (playerHand != null
 				&& hand.getTotalBetAmount() > playerHand.getRoundBetAmount()) {
 			PlayerUtil.removePlayerFromHand(hand.getCurrentToAct(), hand);
@@ -257,7 +255,8 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 				break;
 			}
 		}
-		Player next = PlayerUtil.getNextPlayerToAct(hand, hand.getCurrentToAct());
+		Player next = PlayerUtil.getNextPlayerToAct(hand,
+				hand.getCurrentToAct());
 		if (playerHand != null
 				&& hand.getTotalBetAmount() > playerHand.getRoundBetAmount()) {
 			PlayerUtil.removePlayerFromHand(hand.getCurrentToAct(), hand);
@@ -299,7 +298,8 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 				break;
 			}
 		}
-		Player next = PlayerUtil.getNextPlayerToAct(hand, hand.getCurrentToAct());
+		Player next = PlayerUtil.getNextPlayerToAct(hand,
+				hand.getCurrentToAct());
 		if (playerHand != null
 				&& hand.getTotalBetAmount() > playerHand.getRoundBetAmount()) {
 			PlayerUtil.removePlayerFromHand(hand.getCurrentToAct(), hand);

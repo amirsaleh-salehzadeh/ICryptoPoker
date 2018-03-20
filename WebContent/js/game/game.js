@@ -1,144 +1,3 @@
-function startTheGame() {
-	if ($("#isStarted").val() == true)
-		return;
-	var url = "/ICryptoPoker/REST/GetGameServiceWS/StartGame?gameId="
-			+ $("#gameID").val();
-	$.ajax({
-		url : url,
-		cache : false,
-		async : true,
-		success : function(data) {
-			if (data.started) {
-				$("#isStarted").val(data.isStarted);
-				// $("#playerID").val(data.playerInBTN.id);
-				startAHand();
-			}
-		},
-		error : function(xhr, ajaxOptions, thrownError) {
-			alert(xhr.responseText);
-		}
-	});
-}
-
-function startAHand() {
-	var url = "/ICryptoPoker/REST/GetGameServiceWS/StartHand?gameId="
-			+ $("#gameID").val();
-	$.ajax({
-		url : url,
-		cache : false,
-		async : false,
-		success : function(data) {
-			$("#handPotContainer").html(
-					'<img alt="" src="images/game/stack.png" height="100%"><span>&nbsp;$&nbsp;'
-							+ data.pot + '</span>');
-			$(data.players).each(function(k, l) {
-				dealCards2Players(l, l.id);
-			});
-			// getGameStatus();
-			sendText("");
-		},
-		error : function(xhr, ajaxOptions, thrownError) {
-			alert(xhr.responseText);
-		}
-	});
-}
-
-function dealCards2Players(l, id) {
-	if (l.card1 == "" || l.card2 == "")
-		return;
-	$('.playerCardsContainer').each(function() {
-		if (this.id != null && "cards" + id == this.id) {
-			generateACard(l.card1, this.id, 1);
-			generateACard(l.card2, this.id, 2);
-		}
-	});
-}
-
-function check() {
-	var url = "/ICryptoPoker/REST/GetPlayerServiceWS/check?gameId="
-			+ $("#gameID").val() + "&playerId=" + $("#playerID").val();
-	$.ajax({
-		url : url,
-		cache : false,
-		async : true,
-		success : function(data) {
-			if (data.success == true)
-				// getGameStatus();
-				sendText("");
-			else
-				alert("check failed");
-		},
-		error : function(xhr, ajaxOptions, thrownError) {
-			alert(xhr.responseText);
-		}
-	});
-}
-
-function call() {
-	var url = "/ICryptoPoker/REST/GetPlayerServiceWS/call?gameId="
-			+ $("#gameID").val() + "&playerId=" + $("#playerID").val();
-	$.ajax({
-		url : url,
-		cache : false,
-		async : true,
-		success : function(data) {
-			if (data.success == true)
-				// getGameStatus();
-				sendText("");
-			else
-				alert("check failed");
-		},
-		error : function(xhr, ajaxOptions, thrownError) {
-			alert(xhr.responseText);
-		}
-	});
-}
-
-function fold() {
-	var url = "/ICryptoPoker/REST/GetPlayerServiceWS/fold?gameId="
-			+ $("#gameID").val() + "&playerId=" + $("#playerID").val();
-	$.ajax({
-		url : url,
-		cache : false,
-		async : true,
-		success : function(data) {
-			if (data.success == true)
-				// getGameStatus();
-				sendText("");
-			else
-				alert("fold failed");
-		},
-		error : function(xhr, ajaxOptions, thrownError) {
-			alert(xhr.responseText);
-		}
-	});
-}
-
-function raise() {
-	var url = "/ICryptoPoker/REST/GetPlayerServiceWS/bet?gameId="
-			+ $("#gameID").val() + "&playerId=" + $("#playerID").val()
-			+ "&betAmount=" + $("#betAmount").val();
-	$.ajax({
-		url : url,
-		cache : false,
-		async : true,
-		success : function(data) {
-			if (data.success == true)
-				// getGameStatus();
-				sendText("");
-			else
-				alert("fold failed");
-		},
-		error : function(xhr, ajaxOptions, thrownError) {
-			alert(xhr.responseText);
-		}
-	});
-}
-
-function allIn() {
-
-}
-
 function leaveTable() {
 	var url = "/ICryptoPoker/REST/GetGameServiceWS/EndHand?handId="
 			+ $("#handID").val();
@@ -157,12 +16,10 @@ function leaveTable() {
 }
 
 function updateGameInfo(data) {
-	$(".sitPlaceContainer")
-	.each(
-			function() {
-				$(this).html("<div class='sitPlaceThumbnailEmpty'>Waiting</div>")
-				var content = "";
-});
+	$(".sitPlaceContainer").each(function() {
+		$(this).html("<div class='sitPlaceThumbnailEmpty'>Waiting</div>")
+		var content = "";
+	});
 	$("#handPotContainer").html(
 			'<img alt="" src="images/game/stack.png" height="100%"><span>&nbsp;$&nbsp;'
 					+ data.pot + '</span>');
@@ -197,7 +54,7 @@ function updateGameInfo(data) {
 function updatePlayerInfo(data) {
 	var playerId = data.id;
 	var playerName = data.name;
-	
+
 	if ((data.status == "ACTION_TO_CALL" || data.status == "ACTION_TO_CHECK")
 			&& playerId == $("#playerID").val())
 		$(".actionButtons").each(function() {
@@ -330,4 +187,109 @@ function addANewPlayerToTable(id, name, chips, amountToCall) {
 							return false;
 						}
 					});
+
+
+}
+
+
+
+
+
+
+
+
+function dealCards2Players(l, id) {
+	if (l.card1 == "" || l.card2 == "")
+		return;
+	$('.playerCardsContainer').each(function() {
+		if (this.id != null && "cards" + id == this.id) {
+			generateACard(l.card1, this.id, 1);
+			generateACard(l.card2, this.id, 2);
+		}
+	});
+}
+
+function check() {
+	var url = "/ICryptoPoker/REST/GetPlayerServiceWS/check?gameId="
+			+ $("#gameID").val() + "&playerId=" + $("#playerID").val();
+	$.ajax({
+		url : url,
+		cache : false,
+		async : true,
+		success : function(data) {
+			if (data.success == true)
+				// getGameStatus();
+				sendText("");
+			else
+				alert("check failed");
+		},
+		error : function(xhr, ajaxOptions, thrownError) {
+			alert(xhr.responseText);
+		}
+	});
+}
+
+function call() {
+	var url = "/ICryptoPoker/REST/GetPlayerServiceWS/call?gameId="
+			+ $("#gameID").val() + "&playerId=" + $("#playerID").val();
+	$.ajax({
+		url : url,
+		cache : false,
+		async : true,
+		success : function(data) {
+			if (data.success == true)
+				// getGameStatus();
+				sendText("");
+			else
+				alert("check failed");
+		},
+		error : function(xhr, ajaxOptions, thrownError) {
+			alert(xhr.responseText);
+		}
+	});
+}
+
+function fold() {
+	var url = "/ICryptoPoker/REST/GetPlayerServiceWS/fold?gameId="
+			+ $("#gameID").val() + "&playerId=" + $("#playerID").val();
+	$.ajax({
+		url : url,
+		cache : false,
+		async : true,
+		success : function(data) {
+			if (data.success == true)
+				// getGameStatus();
+				sendText("");
+			else
+				alert("fold failed");
+		},
+		error : function(xhr, ajaxOptions, thrownError) {
+			alert(xhr.responseText);
+		}
+	});
+}
+
+function raise() {
+	var url = "/ICryptoPoker/REST/GetPlayerServiceWS/bet?gameId="
+			+ $("#gameID").val() + "&playerId=" + $("#playerID").val()
+			+ "&betAmount=" + $("#betAmount").val();
+	$.ajax({
+		url : url,
+		cache : false,
+		async : true,
+		success : function(data) {
+			if (data.success == true)
+				// getGameStatus();
+				sendText("");
+			else
+				alert("fold failed");
+		},
+		error : function(xhr, ajaxOptions, thrownError) {
+			alert(xhr.responseText);
+		}
+	});
+}
+
+function allIn() {
+
 }

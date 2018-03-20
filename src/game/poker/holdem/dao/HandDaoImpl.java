@@ -257,8 +257,9 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 						.getString("blind_level")));
 				hand.setBoard(getBoard(rs.getLong("board_id"), conn));
 				PlayerDaoImpl pdao = new PlayerDaoImpl();
-				hand.setCurrentToAct(pdao.findById(
-						rs.getString("player_to_act_id"), conn));
+				if (rs.getString("player_to_act_id") != null)
+					hand.setCurrentToAct(pdao.findById(
+							rs.getString("player_to_act_id"), conn));
 				GameDaoImpl gdao = new GameDaoImpl();
 				// Game g = gdao.findById(rs.getLong("game_id"), null);
 				// hand.setGame(g);
@@ -477,10 +478,10 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 			ps2.setLong(3, ph.getId());
 			ps2.executeUpdate();
 			ps2.close();
-			PlayerDaoImpl pdao = new PlayerDaoImpl();
-			Player p = pdao.findById(ph.getPlayer().getId(), conn);
-			p.setChips(p.getChips() - ph.getBetAmount());
-			pdao.merge(p, conn);
+			// PlayerDaoImpl pdao = new PlayerDaoImpl();
+			// Player p = pdao.findById(ph.getPlayer().getId(), conn);
+			// p.setChips(p.getChips() - ph.getBetAmount());
+			// pdao.merge(p, conn);
 			if (isNewConn) {
 				conn.commit();
 				conn.close();

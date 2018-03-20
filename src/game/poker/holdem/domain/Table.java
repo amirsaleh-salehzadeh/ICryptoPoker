@@ -56,34 +56,36 @@ public class Table {
 					+ game.getCurrentHand().getTotalBetAmount());
 		}
 		p.setChips(0);
-		if(game.getPlayerInBTN().equals(p));
-		
+		if (game.getPlayerInBTN().equals(p))
+			;
+
 		pdao.merge(p, null);
 		GameDaoImpl gameDao = new GameDaoImpl();
-		game.setPlayersRemaining(game.getPlayersRemaining()-1);
-		
+		game.setPlayersRemaining(game.getPlayersRemaining() - 1);
+
 		players.remove(uid, players.get(uid));
 	}
 
 	public void sendToAll(String user) {
 		GameServiceImpl gameService = new GameServiceImpl();
-		if (players.size() == 2) {
-			GameDaoImpl gameDao = new GameDaoImpl();
+		GameDaoImpl gameDao = new GameDaoImpl();
+		if (players.size() >= 2 && !game.isStarted()) {
 			game = gameDao.findById(game.getId(), null);
-			if (!game.isStarted()) {
-				try {
-					if (!game.isStarted())
-						game = gameService.startGame(game);
-				} catch (AMSException e) {
-					e.printStackTrace();
-				}
+			try {
+				game = gameService.startGame(game);
+			} catch (AMSException e) {
+				e.printStackTrace();
 			}
 			PokerHandServiceImpl handService = new PokerHandServiceImpl();
 			if (game.getCurrentHand() == null)
-				handService.startNewHand(game);
+				game.setCurrentHand(handService.startNewHand(game));
 		}
 		GameServiceImpl gservice = new GameServiceImpl();
+		int counter = 0;
 		for (String cur : players.keySet()) {
+			if(counter == 0)
+				game = gameDao.findById(game.getId(), null);
+			counter++;
 			String json = gservice.getGameStatusJSON(game, cur);
 			players.get(cur).getAsyncRemote().sendText(json);
 		}

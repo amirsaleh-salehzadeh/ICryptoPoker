@@ -164,7 +164,8 @@ public class GameServiceImpl implements GameServiceInterface {
 			results.put("pot", game.getCurrentHand().getPot());
 			results.put("cards", game.getCurrentHand().getBoard()
 					.getBoardCardsString());
-		}
+		} else
+			System.out.println("empty");
 		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
 		try {

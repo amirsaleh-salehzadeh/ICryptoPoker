@@ -17,8 +17,7 @@ function leaveTable() {
 
 function updateGameInfo(data) {
 	$(".sitPlaceContainer").each(function() {
-		$(this).html("<div class='sitPlaceThumbnailEmpty'>Waiting</div>")
-		var content = "";
+		$(this).html("<div class='sitPlaceThumbnailEmpty'>Waiting</div>");
 	});
 	$("#handPotContainer").html(
 			'<img alt="" src="images/game/stack.png" height="100%"><span>&nbsp;$&nbsp;'
@@ -33,10 +32,6 @@ function updateGameInfo(data) {
 	});
 	if (data.gameStatus == "NOT_STARTED") {
 		$("#handPotContainer").html('Game is not started');
-		// if (data.players.length >= 2) {
-		// startTheGame();
-		// return true;
-		// }
 	} else
 		$("#handPotContainer").html(
 				'<img alt="" src="images/game/stack.png" height="100%"><span>&nbsp;'
@@ -50,16 +45,31 @@ function updateGameInfo(data) {
 		updatePlayerInfo(l);
 	});
 }
-
+var playerToActId;
+var timer;
+function SetTimer() {
+	if (timeLeft == 0)
+		timeLeft = countDownTotal - 1000;
+	else
+		timeLeft = timeLeft - 1000;
+	$("#timer" + playerToActId).css("width",
+			Math.round(timeLeft / countDownTotal * 100) + "%");
+	if (timeLeft == 0) {
+		clearInterval(timer);
+		if($("#checkBTN").hasClass("ui-state-disabled")){
+			if ($("#checkBTN").html() == "Check")
+				check();
+			else
+				fold();
+		}
+	}
+}
+var countDownTotal = 15000;
+var timeLeft = 0;
 function updatePlayerInfo(data) {
 	var playerId = data.id;
 	var playerName = data.name;
 
-	if ((data.status == "ACTION_TO_CALL" || data.status == "ACTION_TO_CHECK")
-			&& playerId == $("#playerID").val())
-		$(".actionButtons").each(function() {
-			$(this).button('enable');
-		});
 	addANewPlayerToTable(playerId, playerName, parseInt(data.chips),
 			data.amountToCall);
 	if (data.status != "NOT_STARTED" && data.status != "SEATING")
@@ -86,26 +96,31 @@ function updatePlayerInfo(data) {
 				$(this).addClass("bigBlindChip");
 			}
 		});
-	} else if (data.status == "ACTION_TO_CALL") {
-		// $("#playerID").val(playerId);
-		$("#checkBTN").html("Call");
-		$("#checkBTN").attr("onclick", "call()");
+	} else if (data.status == "ACTION_TO_CHECK"
+			|| data.status == "ACTION_TO_CALL") {
+		if (data.status == "ACTION_TO_CALL") {
+			$("#checkBTN").html("Call");
+			$("#checkBTN").attr("onclick", "call()");
+		} else {
+			$("#checkBTN").html("Check");
+			$("#checkBTN").attr("onclick", "check()").trigger("create");
+		}
+		if (playerId == $("#playerID").val()) {
+			$(".actionButtons").each(function() {
+				$(this).button('enable');
+			});
+		}
+
 		$('.pscontainer').each(function() {
 			if ("pscontainer" + playerId == this.id) {
 				$(this).html("Dealer");
 				$(this).addClass("dealerChip");
 			}
 		});
-	} else if (data.status == "ACTION_TO_CHECK") {
-		// $("#playerID").val(playerId);
-		$("#checkBTN").html("Check");
-		$("#checkBTN").attr("onclick", "check()").trigger("create");
-		$('.pscontainer').each(function() {
-			if ("pscontainer" + playerId == this.id) {
-				$(this).html("Dealer");
-				$(this).addClass("dealerChip");
-			}
-		});
+		playerToActId = playerId;
+		countDownTotal = 15000;
+		timeLeft = 0;
+		setInterval(SetTimer, 1000);
 	}
 }
 
@@ -118,7 +133,9 @@ function addANewPlayerToTable(id, name, chips, amountToCall) {
 							// username, chip and timer div START
 							content = "<div class='ui-block-solo playerInfo'>"
 									+ "<div class='ui-block-solo w3-light-grey w3-round w3-tiny'>"
-									+ "<div class='w3-container w3-round w3-green' style='width:50%; height:7px;'></div></div>"
+									+ "<div class='w3-container w3-round w3-green' style='width:100%; height:7px;' id='timer"
+									+ id
+									+ "'></div></div>"
 									+ "<div class='ui-block-solo playerInfoContent playerTimer'></div>"
 									+ "<div class='ui-grid-a playerInfoContent'>"
 									+ "<div class='ui-block-a playerInfoContent pscontainer' id='pscontainer"
@@ -149,7 +166,9 @@ function addANewPlayerToTable(id, name, chips, amountToCall) {
 						} else {
 							content = "<div class='ui-block-a'><div class='ui-block-solo playerInfo'>"
 									+ "<div class='ui-block-solo w3-light-grey w3-round w3-tiny'>"
-									+ "<div class='w3-container w3-round w3-green' style='width:50%; height:7px;'></div></div>"
+									+ "<div class='w3-container w3-round w3-green' style='width:100%; height:7px;' id='timer"
+									+ id
+									+ "'></div></div>"
 									+ "<div class='ui-block-solo playerInfoContent playerTimer'></div>"
 									+ "<div class='ui-grid-a playerInfoContent'>"
 									+ "<div class='ui-block-a playerInfoContent pscontainer' id='pscontainer"
@@ -188,15 +207,7 @@ function addANewPlayerToTable(id, name, chips, amountToCall) {
 						}
 					});
 
-
 }
-
-
-
-
-
-
-
 
 function dealCards2Players(l, id) {
 	if (l.card1 == "" || l.card2 == "")

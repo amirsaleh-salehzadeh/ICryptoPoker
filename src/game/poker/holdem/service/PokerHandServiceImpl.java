@@ -167,11 +167,12 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		Player nextButton = PlayerUtil.getNextPlayerInGameOrder(players,
 				game.getPlayerInBTN());
 		game.setPlayerInBTN(nextButton);
-		game.setCurrentHand(null);
+//		game.setCurrentHand(null);
 		gameDao.merge(game, null);
 
 		// Remove Deck from database. No need to keep that around anymore
 		hand.setCards(new ArrayList<Card>());
+		hand.setCurrentToAct(null);
 		handDao.merge(hand, null);
 		for (PlayerHand ph : hand.getPlayers()) {
 			handDao.updatePlayerHand(ph, null);

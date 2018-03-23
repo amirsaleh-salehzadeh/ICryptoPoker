@@ -87,8 +87,7 @@ function joinGame(gameID, min, max) {
 
 function buyInGame(gameID, chips) {
 	// takes the game ID and chips player bought in with and joins the game
-	alert(chips);
-	window.location.replace("t_game.do?reqCode=joinAGame&gameId=" + gameID
+	window.location.replace("game.do?reqCode=joinAGame&gameId=" + gameID
 			+ "&playerName=" + $("#playerName").val() + "&chips=" + chips
 			+ "&nickname=" + $("#nickname").val());
 }

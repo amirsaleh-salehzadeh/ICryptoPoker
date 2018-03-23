@@ -16,6 +16,7 @@ function leaveTable() {
 }
 
 function updateGameInfo(data) {
+	
 	$(".tableCards").each(function() {
 		$(this).html('<img alt="" src="images/game/card.jpg">');
 	});
@@ -33,6 +34,9 @@ function updateGameInfo(data) {
 	$('.pscontainer').each(function() {
 		$(this).attr("class", "pscontainer");
 	});
+	$("#betSlider").attr("min", data.bigBlind *2);
+	$("#betSlider").attr("max", (data.players[0]).chips);
+	$("#betSlider").attr("value", data.bigBlind *2);
 	if (data.gameStatus == "NOT_STARTED") {
 		$("#handPotContainer").html('Game is not started');
 	} else

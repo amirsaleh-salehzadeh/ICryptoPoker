@@ -879,7 +879,7 @@ table.dataTable,table.dataTable th,table.dataTable td {
 
 .ui-btn {
 	color: #b00000 !important;
-	background-color: black !important;
+	background-color: black;
 	text-shadow: none !important;
 	border-color: #b00000 !important;
 }
@@ -940,3 +940,24 @@ textarea.ui-input-text.ui-textinput-autogrow {
 	border-bottom: 2px !important;;
 	border-color: #b00000 !important;
 }
+.ui-slider-handle-vertical {
+	background-color:grey !important;
+	
+}
+div.ui-slider {
+	float: right !important;
+    height: 90% !important;
+    margin:  0 !important;
+    padding: 0 !important;
+    -ms-touch-action: pan-y pinch-zoom double-tap-zoom !important;
+    background-color: maroon !important;
+    width: 15px !important;
+    border-color:#383c40 !important;
+    border:2px !important;
+}
+input.ui-slider-input {	
+	float:left !important;
+}
+a.ui-btn{
+	margin:0;
+} 

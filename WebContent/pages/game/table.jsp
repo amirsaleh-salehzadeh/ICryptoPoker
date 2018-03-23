@@ -32,6 +32,7 @@
 	Game game = (Game) request.getAttribute("game");
 %>
 <script>
+screen.orientation.lock('landscape');
 	// 	$(document).ready(
 	// 			function() {
 	// 				$('.slider-handle').draggable(

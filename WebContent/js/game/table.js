@@ -1,10 +1,9 @@
 var webSocket;
 var wsUri = "";
-$(window).on(
-		"load",
+$(document).ready(
 		function() {
-			$(".jqm-header").css("display", "none");
-			$(window).on("resize", fitElementsWithinScreen());
+//			$(".jqm-header").css("display", "none");
+//			$(window).on("resize", fitElementsWithinScreen());
 			fitElementsWithinScreen();
 			var wsUri = "ws://" + document.location.host
 					+ "/ICryptoPoker/game/" + $("#gameID").val() + "/"
@@ -18,11 +17,10 @@ $(window).on(
 			};
 			webSocket.onopen = function(evt) {
 				onOpen(evt);
+				$(".actionButtons").each(function() {
+					$(this).addClass("ui-state-disabled");
+				});
 			};
-			$(".actionButtons").each(function() {
-				$(this).button();
-				$(this).button('disable').trigger("create");
-			});
 			// $("#flopsContainer div").width($("#flop1").width());
 			$("#flopsContainer div").height(
 					$("#flop1").width() + ($("#flop1").width() * 0.7));
@@ -61,10 +59,6 @@ function fitElementsWithinScreen() {
 		$(this).height($("#userSitPlace").height());
 		$(this).trigger("create");
 	});
-	$(".timerCircle").width($("#userSitPlace").height() * 3 / 4);
-	$(".timerCircle").height($("#userSitPlace").height() * 3 / 4);
-	$(".timerText").width($("#userSitPlace").height() * 3 / 4);
-	$(".timerText").height($("#userSitPlace").height() * 3 / 4);
 	// $(".tableCards").height($("#userSitPlace").height());
 	// $(".tableCards").width($("#userSitPlace").height() * 7 / 10);
 	// $("#mainBoardContainerDIV").width();

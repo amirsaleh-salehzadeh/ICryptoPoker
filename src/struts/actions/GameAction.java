@@ -33,6 +33,12 @@ public class GameAction extends Action {
 		// // e.printStackTrace();
 		// }
 		PlayerDaoImpl playerDaoImpl = new PlayerDaoImpl();
+		if (reqCode == null || reqCode.equalsIgnoreCase("")) {
+			Player player = playerDaoImpl.findById(
+					request.getParameter("username"), null);
+			request.setAttribute("player", player);
+			reqCode = "goToLobby";
+		}
 		if (reqCode.equalsIgnoreCase("joinAGame")) {
 			GameDaoImpl gamedao = new GameDaoImpl();
 			long gameId = Long.parseLong(request.getParameter("gameId"));
@@ -44,6 +50,7 @@ public class GameAction extends Action {
 			Player player = playerDaoImpl.findById(
 					request.getParameter("playerName"), null);
 			player.setChips(chips);
+			player.setName(request.getParameter("nickname"));
 			if (chips > player.getTotalChips()) {
 				error = "The selected chips is larger than authorised amount in your account";
 				reqCode = "goToLobby";
@@ -56,13 +63,6 @@ public class GameAction extends Action {
 			}
 			request.setAttribute("player", player);
 		}
-		if (reqCode == null || reqCode.equalsIgnoreCase("")) {
-			Player player = playerDaoImpl.findById(
-					request.getParameter("username"), null);
-			request.setAttribute("player", player);
-			reqCode = "goToLobby";
-		}
-
 		// startNewHand
 		return mapping.findForward(reqCode);
 	}

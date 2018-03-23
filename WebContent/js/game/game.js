@@ -1,18 +1,18 @@
 function leaveTable() {
-	var url = "/ICryptoPoker/REST/GetGameServiceWS/EndHand?handId="
-			+ $("#handID").val();
-	$.ajax({
-		url : url,
-		cache : false,
-		async : true,
-		success : function(data) {
-			if (data.success == true)
+//	var url = "/ICryptoPoker/REST/GetGameServiceWS/EndHand?handId="
+//			+ $("#handID").val();
+//	$.ajax({
+//		url : url,
+//		cache : false,
+//		async : true,
+//		success : function(data) {
+//			if (data.success == true)
 				window.location.replace('t_game.do');
-		},
-		error : function(xhr, ajaxOptions, thrownError) {
-			alert(xhr.responseText);
-		}
-	});
+//		},
+//		error : function(xhr, ajaxOptions, thrownError) {
+//			alert(xhr.responseText);
+//		}
+//	});
 }
 
 function updateGameInfo(data) {
@@ -27,8 +27,7 @@ function updateGameInfo(data) {
 					'<img alt="" src="images/game/stack.png" height="100%"><span>&nbsp;&cent;&nbsp;'
 							+ data.pot + '</span>');
 	$(".actionButtons").each(function() {
-		$(this).button();
-		$(this).button('disable');
+		$(this).addClass("ui-state-disabled");
 	});
 	$("#handID").val(data.handId);
 	$('.pscontainer').each(function() {
@@ -116,7 +115,7 @@ function updatePlayerInfo(data) {
 		}
 		if (playerId == $("#playerID").val()) {
 			$(".actionButtons").each(function() {
-				$(this).button('enable');
+				$(this).removeClass("ui-state-disabled");
 			});
 		}
 

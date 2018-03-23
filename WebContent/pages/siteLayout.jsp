@@ -20,10 +20,10 @@
 	href="css/jquery-mobile/jquery.dataTables.min.css">
 <link rel="stylesheet" href="css/icryptopokermaincss.css">
 <script src="js/icryptopokermainscripts.js"></script>
-<script src="js/jquery.min.js"></script>
+<script src="js/jquery/jquery.min.js"></script>
 <script src="js/jquery.form.js"></script>
 <script src="js/index.js"></script>
-<script src="js/jquery.mobile-1.4.5.min.js"></script>
+<script src="js/jquery/jquery.mobile-1.4.5.min.js"></script>
 <script src="js/jquery.dataTables.min.js"></script>
 <script src="js/dataTables.bootstrap.min.js"></script>
 <script src="js/dataTables.select.min.js"></script>

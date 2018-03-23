@@ -20,7 +20,7 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
-*/
+ */
 package game.poker.holdem;
 
 /**
@@ -28,19 +28,8 @@ package game.poker.holdem;
  */
 public enum Rank {
 
-	TWO("2"),
-	THREE("3"),
-	FOUR("4"),
-	FIVE("5"),
-	SIX("6"),
-	SEVEN("7"),
-	EIGHT("8"),
-	NINE("9"),
-	TEN("T"),
-	JACK("J"),
-	QUEEN("Q"),
-	KING("K"),
-	ACE("A");
+	TWO("2"), THREE("3"), FOUR("4"), FIVE("5"), SIX("6"), SEVEN("7"), EIGHT("8"), NINE(
+			"9"), TEN("T"), JACK("J"), QUEEN("Q"), KING("K"), ACE("A");
 
 	/**
 	 * Short string representation of the rank.
@@ -58,6 +47,8 @@ public enum Rank {
 	 */
 	@Override
 	public String toString() {
+		if (name == null)
+			return "";
 		return name;
 	}
 

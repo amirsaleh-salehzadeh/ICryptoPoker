@@ -30,8 +30,6 @@ import game.poker.holdem.Card;
  */
 public class Board extends CardHolder {
 
-	private static final long serialVersionUID = -4373461696894251713L;
-
 	/**
 	 * Creates new board with five community cards.
 	 * 

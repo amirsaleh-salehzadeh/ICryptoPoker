@@ -23,5 +23,14 @@
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jersey-archive-1.19.1/lib/jsr311-api-1.1.1.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/com.google.guava_1.6.0.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jersey-archive-1.19.1/contribs/jersey-apache-client-1.19.1.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jersey-archive-1.19.1/contribs/jersey-atom-abdera-1.19.1.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jersey-archive-1.19.1/contribs/jersey-guice-1.19.1.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jersey-archive-1.19.1/contribs/jersey-multipart-1.19.1.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jersey-archive-1.19.1/contribs/jersey-simple-server-1.19.1.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jersey-archive-1.19.1/contribs/jersey-spring-1.19.1.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jersey-archive-1.19.1/contribs/oauth-client-1.19.1.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jersey-archive-1.19.1/contribs/oauth-server-1.19.1.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jersey-archive-1.19.1/contribs/oauth-signature-1.19.1.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

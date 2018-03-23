@@ -20,81 +20,127 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
-*/
+ */
 package game.poker.holdem.domain;
-
-import java.io.Serializable;
 
 import game.poker.holdem.Card;
 import game.poker.holdem.holder.Hand;
 
-public class PlayerHand implements Comparable<PlayerHand>, Serializable{
+public class PlayerHand implements Comparable<PlayerHand> {
 
-	private static final long serialVersionUID = -5499451283824674842L;
 	private long id;
 	private Player player;
-	private HandEntity handEntity;
+	private long handId;
 	private Card card1;
 	private Card card2;
+	private String card1S;
+	private String card2S;
 	private int betAmount;
 	private int roundBetAmount;
-	
+	private boolean removed;
+
+
+	/**
+	 * @return the removed
+	 */
+	public boolean isRemoved() {
+		return removed;
+	}
+
+	/**
+	 * @param removed the removed to set
+	 */
+	public void setRemoved(boolean removed) {
+		this.removed = removed;
+	}
+
+	public String getCard1S() {
+		return card1S;
+	}
+
+	public void setCard1S(String card1s) {
+		card1S = card1s;
+	}
+
+	public String getCard2S() {
+		return card2S;
+	}
+
+	public void setCard2S(String card2s) {
+		card2S = card2s;
+	}
+
 	public long getId() {
 		return id;
 	}
+
 	public void setId(long id) {
 		this.id = id;
 	}
-	
+
 	public Player getPlayer() {
 		return player;
 	}
+
 	public void setPlayer(Player player) {
 		this.player = player;
 	}
-	
-	public HandEntity getHandEntity() {
-		return handEntity;
+
+	/**
+	 * @return the handId
+	 */
+	public long getHandId() {
+		return handId;
 	}
-	public void setHandEntity(HandEntity hand) {
-		this.handEntity = hand;
+
+	/**
+	 * @param handId the handId to set
+	 */
+	public void setHandId(long handId) {
+		this.handId = handId;
 	}
-	
-	protected Card getCard1() {
+
+	public Card getCard1() {
 		return card1;
 	}
+
 	public void setCard1(Card card1) {
+		this.card1S = card1.toString();
 		this.card1 = card1;
 	}
-	
-	protected Card getCard2() {
+
+	public Card getCard2() {
 		return card2;
 	}
+
 	public void setCard2(Card card2) {
+		this.card2S = card2.toString();
 		this.card2 = card2;
 	}
-	
+
 	public int getBetAmount() {
 		return betAmount;
 	}
+
 	public void setBetAmount(int betAmount) {
 		this.betAmount = betAmount;
 	}
-	
+
 	public int getRoundBetAmount() {
 		return roundBetAmount;
 	}
+
 	public void setRoundBetAmount(int roundBetAmount) {
 		this.roundBetAmount = roundBetAmount;
 	}
-	
-	public Hand getHand(){
-		if(card1 == null || card2 == null){
+
+	public Hand getHand() {
+		if (card1 == null || card2 == null) {
 			return null;
 		}
 		return new Hand(card1, card2);
 	}
-	
+
 	@Override
 	public int compareTo(PlayerHand o) {
 		return this.getPlayer().compareTo(o.getPlayer());

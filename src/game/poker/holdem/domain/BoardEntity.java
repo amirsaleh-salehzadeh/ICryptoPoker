@@ -23,15 +23,13 @@ THE SOFTWARE.
 */
 package game.poker.holdem.domain;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import game.poker.holdem.Card;
 
-public class BoardEntity implements Serializable {
+public class BoardEntity  {
 	
-	private static final long serialVersionUID = 7043793786047807514L;
 	private long id;
 	private Card flop1;
 	private Card flop2;
@@ -56,6 +54,22 @@ public class BoardEntity implements Serializable {
 		}
 		if(river != null){
 			cards.add(river);
+		}
+		return cards;
+	}
+	
+	public List<String> getBoardCardsString(){
+		List<String> cards = new ArrayList<String>();
+		if(flop1 != null){
+			cards.add(flop1.toString());
+			cards.add(flop2.toString());
+			cards.add(flop3.toString());
+		}
+		if(turn != null){
+			cards.add(turn.toString());
+		}
+		if(river != null){
+			cards.add(river.toString());
 		}
 		return cards;
 	}

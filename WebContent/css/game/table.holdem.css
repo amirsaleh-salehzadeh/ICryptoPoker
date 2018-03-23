@@ -1,0 +1,258 @@
+#mainTable {
+	background-color: #477148;
+	-moz-box-shadow: inset 0 0 10px #000000;
+	-webkit-box-shadow: inset 0 0 10px #000000;
+	box-shadow: inset 0 0 10px #000000;
+	border-radius: 50%;
+	background-image: url('../../images/icryptoLogo.png');
+	background-size: 44% 44%;
+	background-repeat: no-repeat;
+	background-position: center;
+	-webkit-box-shadow: inset 0 0 10px #000000;
+	box-shadow: inset 0 0 10px #000000;
+}
+
+#handPotContainer span {
+	height: 100%;
+	border: 1px solid black;
+	border-radius: 7px;
+	padding: 2px;
+	text-shadow: 0 1px 0 #b00000;
+	bottom: 7px;
+	position: relative;
+}
+
+.constantBannersTop,.constantBannersBottom {
+	height: 14%;
+	position: absolute;
+	right: 0;
+	left: 0;
+	background-color: rgba(108, 112, 120, .4);
+}
+
+.constantBannersTop {
+	height: 10%;
+}
+
+.constantBannersTop>div {
+	height: 100%;
+	border-bottom: 1px solid #bb0000;
+	padding-left: 5px;
+	padding-right: 5px;
+	box-shadow: inset 1px 1px 2px rgba(190, 191, 193, 0.7), inset 3px 15px
+		45px rgba(128, 135, 151, 0.1), inset -1px -1px 2px
+		rgba(81, 89, 106, 0.5), inset -3px -15px 45px rgba(108, 112, 120, 0.8),
+		1px 5px 30px -4px rgba(142, 145, 151, 0.1);
+}
+
+.sitPlaceContainer {
+	position: relative;
+	z-index: 1;
+}
+
+.playerNamePlace {
+	margin: 0 auto;
+	color: white;
+	background-color: black;
+	font-size: 80%;
+	font-weight: bold;
+	padding: 1px;
+}
+
+.playerTotalChipsPlace {
+	margin: 0 auto;
+	background-image: url("../../images/game/chips.png") !important;
+	background-position: 0 0 !important;
+	background-repeat: no-repeat !important;
+	background-size: contain !important;
+	padding: 1px;
+	padding-left: 13%;
+	color: white;
+	background-color: transparent;
+	/* 	position: absolute; */
+	font-size: 80%;
+	border: 1px solid #666;
+	border-radius: 3px;
+	/* 	top: 0; */
+	/* 	left: 0; */
+}
+
+#middleBlockContainerDIV {
+	top: 10%;
+	bottom: 14%;
+	position: absolute;
+	right: 0;
+	left: 0;
+	text-align: center !important;
+	height: 76%;
+}
+
+#mainBoardContainerDIV {
+	width: 93%;
+}
+
+#gamePlayScreen {
+	background-color: rgba(1, 1, 1, 1);
+	position: absolute;
+	display: block;
+	bottom: 0 !important;
+	right: 0;
+	left: 0;
+	top: 0;
+	overflow: hidden;
+	width: 100%;
+	height: 100%;
+}
+
+#flopsContainer {
+	/* 	margin: 10% auto; */
+	height: 44%;
+	width: 66%;
+}
+
+#flopsContainer div {
+	padding-left: 3px;
+	padding-right: 3px;
+	position: relative;
+}
+
+#flopsContainer img {
+	height: 100%;
+	width: 100%;
+}
+
+.card-small {
+	border: 1px inset #b00000;
+	border-radius: 5px;
+	height: 100%;
+	width: 100%; /*70% of height*/
+	background-color: white;
+	text-align: center !important;
+	position: relative;
+}
+
+.card-img {
+	text-align: left;
+	font-size: 133%;
+	position: absolute;
+	bottom: 2px;
+	left: 40%;
+}
+
+.card1 {
+	width: 35% !important;
+}
+
+.card1 .card-small{
+	border-top-right-radius: 0px !important;
+	border-bottom-right-radius: 0px !important;
+}
+
+.card2 {
+	width: 65% !important;
+}
+
+.card-text {
+	margin: 0 auto;
+	font-size: 133%;
+	font-weight: bold;
+	position: absolute;
+	top: 2px;
+	left: 40%;
+}
+
+.card1>.card-small>span {
+	left: 15%;
+}
+
+.red {
+	color: red;
+}
+
+.black {
+	color: black;
+}
+
+.playerInfo {
+	border: 2px solid #b00000;
+	border-radius: 5px;
+	background-color: rgba(64, 64, 64, 0.5);
+	
+}
+
+.playerCardsContainer {
+	float: right;
+	z-index: 0;
+	margin: 0 !important;
+	width: 100%;
+	height: 100%;
+	right: 0;
+	top: 0;
+}
+
+#userSitPlace {
+	display: block !important;
+}
+
+.pscontainer {
+	background-color: transparent;
+	/* 	width: 13px !important; */
+	border: 1px solid #b00000;
+	border-radius: 11px;
+	z-index: 10;
+	font-size: 120%;
+}
+
+
+.sitPlaceContainer>.ui-block-a {
+	width: 60%;
+	height: 100%;
+}
+
+.sitPlaceContainer>.ui-block-b {
+	width: 40%;
+	height: 100%;
+}
+
+.smallBlindChip {
+	background-color: yellow !important;
+	color: black !important;
+}
+
+.bigBlindChip {
+	background-color: blue !important;
+	color: black !important;
+}
+
+.dealerChip {
+	background-color: grey !important;
+	color: black !important;
+}
+
+.waitingChip {
+	background-color: transparent !important;
+	color: transparent !important;
+	border: none !important;
+}
+
+.amountToCallcontainer {
+	background-color: transparent;
+	/* 	position: absolute; */
+	/* 	bottom: 0; */
+	/* 	left: 0; */
+	border-radius: 50%;
+	color: white;
+	font-size: 100%;
+	z-index: 10;
+}
+
+.sitPlaceThumbnailEmpty {
+	height: 100%;
+	border: 1px solid rgba(0, 0, 0, .1);
+	border-radius: 50%;
+	font-size: 80%;
+	box-shadow: inset 1px 1px 2px rgba(255, 66, 66, 0.3), inset 3px 15px
+		45px rgba(255, 33, 33, 0.1), inset -1px -1px 2px rgba(55, 0, 0, 0.5),
+		inset -3px -15px 45px rgba(122, 0, 0, .3), 1px 5px 30px -4px
+		rgba(46, 11, 33, .6);
+}

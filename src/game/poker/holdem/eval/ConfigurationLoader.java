@@ -50,19 +50,25 @@ public class ConfigurationLoader {
 	 */
 	public int[] loadHandRankResource(String name) throws RuntimeException {
 		int handRankArray[] = new int[HAND_RANK_SIZE];
-		int tableSize = HAND_RANK_SIZE * 4;
-		byte[] b = new byte[tableSize];
-		InputStream br = null;
 		try {
+			int tableSize = HAND_RANK_SIZE * 4;
+			byte[] b = new byte[tableSize];
+			InputStream br = null;
+			// try {
 			br = new BufferedInputStream(
 					ConfigurationLoader.class.getResourceAsStream(name));
-		} finally {
-			Closeables.closeQuietly(br);
+			int bytesRead = br.read(b, 0, tableSize);
+			// } finally {
+			// Closeables.closeQuietly(br);
+			// }
+			for (int i = 0; i < HAND_RANK_SIZE; i++) {
+				handRankArray[i] = littleEndianByteArrayToInt(b, i * 4);
+			}
+			br.close();
+			return handRankArray;
+		} catch (IOException e) {
+			throw new RuntimeException("cannot read resource " + name, e);
 		}
-		for (int i = 0; i < HAND_RANK_SIZE; i++) {
-			handRankArray[i] = littleEndianByteArrayToInt(b, i * 4);
-		}
-		return handRankArray;
 	}
 
 	private static final int littleEndianByteArrayToInt(byte[] b, int offset) {

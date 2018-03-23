@@ -24,7 +24,7 @@ public class SecurityDAO extends BaseHibernateDAO implements
 			UserPassword test = new UserPassword();
 			test.setUserName("testersss");
 			test.setUserPassword("number");
-			udao.register(test);
+//			udao.register(test);
 
 			System.out.println(r.getComment());
 		} catch (AMSException e) {
@@ -134,37 +134,6 @@ public class SecurityDAO extends BaseHibernateDAO implements
 	}
 
 
-	public void changePassword(String oldPass, String newPass, String username)
-			throws AMSException {
-		try {
-			Connection conn = null;
-			try {
-				conn = getConnection();
-			} catch (AMSException e) {
-				throw getAMSException("", e);
-			}
-			String query = "select * from users where username = ? and password = ? ";
-			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setString(1, username);
-			ps.setString(2, AMSUtililies.encodeMD5(oldPass));
-			ResultSet rs = ps.executeQuery();
-			if (!rs.next()) {
-				throw getAMSException("The old password does not match", null);
-			}
-			query = "update users set password = ? where username = ?";
-			ps = conn.prepareStatement(query);
-			ps.setString(1, AMSUtililies.encodeMD5(newPass));
-			ps.setString(2, username);
-			ps.execute();
-			ps.close();
-			conn.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw getAMSException("", e);
-		}
-
-	}
-
 	public ArrayList<String> getAllRoleCategories(String filter) {
 		ArrayList<String> res = new ArrayList<String>();
 		try {
@@ -191,65 +160,6 @@ public class SecurityDAO extends BaseHibernateDAO implements
 		return res;
 	}
 
-	public UserPassword register(UserPassword userPassword) throws AMSException {
-		try {
-			Connection conn = null;
-			try {
-				conn = getConnection();
-			} catch (AMSException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			String query = "";
-			query = "select * from users where username = ?";
-			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setString(1, userPassword.getUserName());
-			ResultSet rs = ps.executeQuery();
-			if (rs.next())
-				throw new AMSException("The username already exist");
-			rs.close();
-			query = "insert into users(username, password) values (?, ?)";
-			ps.clearBatch();
-			ps = conn.prepareStatement(query);
-			ps.setString(1, userPassword.getUserName());
-			ps.setString(2, MD5Encryptor.encode(userPassword.getUserPassword()));
-			ps.execute();
-			ps.close();
-			conn.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw getAMSException(AMSEX_SAVE, e);
-		}
-		return userPassword;
-	}
-
-	public boolean checkUsernameValidity(String userName) throws AMSException {
-		Boolean ans = false;
-		Connection con = null;
-		try {
-			con = getConnection();
-			// checks if user in the database
-			String query = "SELECT * FROM player where username=?";
-			PreparedStatement ps = con.prepareStatement(query);
-			ps.setString(1, userName);
-			ResultSet rs = ps.executeQuery();
-			// if found then return true else return false
-			if (rs.next()) {
-				ans = true;
-			}
-
-			rs.close();
-			ps.close();
-			con.close();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw getAMSException("", e);
-		}
-
-		return ans;
-
-	}
 
 	public boolean deleteRoles(ArrayList<RoleENT> roles) throws AMSException {
 		Connection con = null;
@@ -338,97 +248,6 @@ public class SecurityDAO extends BaseHibernateDAO implements
 			e.printStackTrace();
 		}
 		return res;
-	}
-
-	
-	public boolean addLocationUser(String username, long[] locationIds)  throws AMSException{
-		try {
-			Connection conn = null;
-			try {
-				conn = getConnection();
-				conn.setAutoCommit(false);
-			} catch (AMSException e) {
-				e.printStackTrace();
-			}
-			String query = "delete from user_location where username = ?";
-			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setString(1,username);
-			ps.execute();
-			ps.close();
-			query = "insert into user_location (username,location_id) values (?,?)";
-			for (int i = 0; i < locationIds.length; i++) {
-				ps = conn.prepareStatement(query);
-				ps.setString(1,username);
-				ps.setLong(2,locationIds[i]);
-				ps.execute();
-			}
-			ps.close();
-			conn.commit();
-			conn.close();
-			return true ;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw getAMSException("", e);
-		}
-	}
-
-	public String getLocationUser(String username) throws AMSException {
-		try {
-			Class.forName(DBDRIVER);
-			Connection conn = DriverManager.getConnection(DBADDRESS, USERNAME,
-					PASSWORD);
-			String query = "SELECT * FROM user_location where username = ?";
-			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setString(1, username);
-			ResultSet rs = ps.executeQuery();
-			ArrayList<Long> ar = new ArrayList<Long>();
-			while (rs.next()) {
-				ar.add(rs.getLong("location_id"));
-			}
-			rs.close();
-			ps.close();
-			StringBuilder buil = new StringBuilder();
-			if (ar.size() > 0) {
-				for (long n : ar) {
-					buil.append(n + "").append(",");
-				}
-				buil.deleteCharAt(buil.length() - 1);
-			}
-			String res = buil.toString();
-			System.out.println(res);
-			return res;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		return "";
-	}
-	
-	public long getParentLocationUser(String username) throws AMSException {
-		try {
-			Class.forName(DBDRIVER);
-			Connection conn = DriverManager.getConnection(DBADDRESS, USERNAME,
-					PASSWORD);
-			String query = "SELECT * FROM location l " +
-					" left join users u on u.client_id = l.client_id " +
-					" where parent_id = 0 and username = ?";
-			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setString(1, username);
-			ResultSet rs = ps.executeQuery();
-			long res = 0;
-			if (rs.next()) {
-				res = rs.getLong("location_id");
-			}
-			rs.close();
-			ps.close();
-			return res;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		return 0;
 	}
 
 }

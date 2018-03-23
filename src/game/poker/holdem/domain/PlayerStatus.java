@@ -54,6 +54,8 @@ public enum PlayerStatus {
 	SIT_OUT,
 	/** The Player has been sat out of the game. The player still has a seat at the table, but is not in the seat. */
 	SIT_OUT_GAME,
+	/** In a cash game, when the player has joined after the hand start  */
+	WAITING_FOR_NEXT_HAND,
 	/** The Player is no longer in the game.  */
 	ELIMINATED;
 }

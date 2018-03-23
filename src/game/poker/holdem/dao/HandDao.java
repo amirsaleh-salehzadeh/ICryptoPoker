@@ -41,4 +41,6 @@ public interface HandDao {
 	
 	Set<PlayerHand> getAllPlayerHands (long handId, Connection conn);
 	
+	public PlayerHand updatePlayerHand(PlayerHand ph, Connection conn);
+	
 }

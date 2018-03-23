@@ -1,0 +1,43 @@
+body {
+	background-color: black;
+}
+
+#loginContents {
+	position: absolute;
+	top: 11%;
+	left: 0;
+	right: 0;
+	margin: auto;
+	display: inline;
+	border: 3px solid #b00000;
+	width: 33%;
+	padding: 11px;
+}
+
+.inptxt, #loginRePass {
+	margin: 15px;
+	padding: 5px;
+	color: #b00000 !important;
+	background-color: black !important;
+	text-shadow: none;
+	border-radius: 0;
+	min-height: 1.7em;
+	text-align: left;
+	background: transparent;
+	width: 77%;
+}
+
+#loginBtn, #registerBtn {
+	color: #b00000 !important;
+	background-color: rgba(66, 0, 0, .4) !important;
+	font-weight: 700;
+	border-color: #b00000 !important;
+	vertical-align: middle;
+	font-size: 16px;
+	margin: 15px;
+	padding: 5px;
+	text-align: center;
+	white-space: nowrap;
+	width: 77%;
+	cursor: pointer;
+}

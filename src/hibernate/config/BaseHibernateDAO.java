@@ -4,9 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-
 import tools.AMSException;
-
 
 public class BaseHibernateDAO {
 	public static final int AMSEX_UNKNOWN = AMSException.AMSEX_UNKNOWN;
@@ -17,7 +15,7 @@ public class BaseHibernateDAO {
 	protected static final String DBDRIVER = "com.mysql.jdbc.Driver";
 	protected static final String USERNAME = "root";
 	protected static final String PASSWORD = "";
-	
+
 	public Connection getConnection() throws AMSException {
 		try {
 			Class.forName(DBDRIVER);
@@ -28,11 +26,20 @@ public class BaseHibernateDAO {
 		try {
 			conn = DriverManager.getConnection(DBADDRESS, USERNAME, PASSWORD);
 		} catch (SQLException e) {
+			try {
+				if (conn != null && !conn.isClosed()) {
+					conn.rollback();
+					conn.close();
+				}
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			throw getAMSException(e.getMessage(), e);
 		}
 		return conn;
 	}
-	
+
 	public AMSException getAMSException(int operationType, Exception ex) {
 		String msg = ex.getMessage();
 		switch (operationType) {
@@ -44,15 +51,16 @@ public class BaseHibernateDAO {
 			break;
 		case AMSEX_SAVE_DUPLICATE:
 			msg = "The record has been currently saved";
-			
+
 		}
 		AMSException e = getAMSException(msg, ex);
 		e.setType(operationType);
 		return e;
 
 	}
+
 	public AMSException getAMSException(String defaultMessage, Exception ex) {
-//		getSession().close();
+		// getSession().close();
 
 		if (ex == null) {
 			return new AMSException(defaultMessage);

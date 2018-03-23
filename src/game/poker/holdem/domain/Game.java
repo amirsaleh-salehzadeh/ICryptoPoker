@@ -53,6 +53,9 @@ public class Game {
 	}
 	
 	public Player getPlayerInBTN(){
+		if (playerInBTN == null) {
+			playerInBTN = new Player();
+		}
 		return playerInBTN;
 	}
 	public void setPlayerInBTN(Player playerInBTN){

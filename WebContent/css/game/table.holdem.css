@@ -142,6 +142,7 @@
 
 .card1 {
 	width: 35% !important;
+	height: 100%;
 }
 
 .card1 .card-small{
@@ -151,6 +152,7 @@
 
 .card2 {
 	width: 65% !important;
+	height: 100%;
 }
 
 .card-text {

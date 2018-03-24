@@ -2,8 +2,8 @@ var webSocket;
 var wsUri = "";
 $(document).ready(
 		function() {
-//			$(".jqm-header").css("display", "none");
-//			$(window).on("resize", fitElementsWithinScreen());
+			// $(".jqm-header").css("display", "none");
+			// $(window).on("resize", fitElementsWithinScreen());
 			fitElementsWithinScreen();
 			var wsUri = "ws://" + document.location.host
 					+ "/ICryptoPoker/game/" + $("#gameID").val() + "/"
@@ -84,19 +84,20 @@ function generateACard(cardVal, divID, cardNumber) {
 		img = "&hearts;";
 		color = "red";
 	}
-	var res = "<div class='card-small'><span class='card-text " + color + "'>"
-			+ text + "</span><span class='card-img " + color + "'>" + img
-			+ "</span></div>";
+	// var res = "<div class='card-small'><span class='card-text " + color +
+	// "'>"
+	// + text + "</span><span class='card-img " + color + "'>" + img
+	// + "</span></div>";
+	var res = "<img src='images/game/cards/"+ cardVal+".png' height='100%' width='100%'/>";
 	if (divID == "flopsContainer") {
 		$("#flop" + cardNumber).html(res).trigger("create");
 	} else {
 		$("#" + divID).find(".card" + cardNumber).html(res).trigger("create");
 		if (cardNumber == 2) {
 			$("#" + divID).find(".card" + cardNumber).width(
-					$("#userSitPlace").height() * 0.7)
-					.trigger("create");
-//			$("#flopsContainer div").height(
-//					$("#flop1").width() + ($("#flop1").width() * 0.7));
+					$("#userSitPlace").height() * 0.7).trigger("create");
+			// $("#flopsContainer div").height(
+			// $("#flop1").width() + ($("#flop1").width() * 0.7));
 		}
 	}
 }

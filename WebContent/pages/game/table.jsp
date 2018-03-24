@@ -18,12 +18,12 @@
 <link rel="stylesheet" href="css/game/table.timer.css" />
 <link rel="stylesheet"
 	href="css/game/table.raise.action.controllers.css" />
-<link rel="stylesheet" href="css/icryptopokermaincss.css">
-<script src="js/jquery/jquery-1.6.4.min.js"></script>
-<script src="js/jquery/jquery.mobile-1.0.min.js"></script>
+<!-- <link rel="stylesheet" href="css/icryptopokermaincss.css"> -->
+<script src="js/jquery/jquery.min.js"></script>
+<script src="js/jquery/jquery.mobile-1.4.5.min.js"></script>
 <script src="js/game/table.js"></script>
 <script src="js/game/game.js"></script>
-<script src="js/game/vertical-slider.jquery.js"></script>
+<!-- <script src="js/game/vertical-slider.jquery.js"></script> -->
 <script src="js/icryptopokermainscripts.js"></script>
 
 <!-- <script src="js/jquery/jquery-ui.js"></script> -->
@@ -31,29 +31,6 @@
 	Player player = (Player) request.getAttribute("player");
 	Game game = (Game) request.getAttribute("game");
 %>
-<script>
-	// 	$(document).ready(
-	// 			function() {
-	// 				$('.slider-handle').draggable(
-	// 						{
-	// 							containment : 'parent',
-	// 							axis : 'y',
-	// 							drag : function(e, ui) {
-	// 								if (!this.par) {
-	// 									this.par = $(this).parent();
-	// 									this.parHeight = this.par.height();
-	// 									this.height = $(this).height();
-	// 									this.color = $.trim(this.par.attr('class')
-	// 											.replace('colorful-slider', ''));
-	// 								}
-
-	// 								var ratio = 1 - (ui.position.top + this.height)
-	// 										/ this.parHeight;
-	// 								console.log(ratio);
-	// 							}
-	// 						});
-	// 			});
-</script>
 </head>
 <body>
 	<div data-role="page">
@@ -78,10 +55,10 @@
 					<img alt="" src="images/game/user.png" height="80%">&nbsp;<%=request.getParameter("playerName")%></div>
 				<div class="ui-block-d"><%=game.getName()%>
 					&nbsp;(<%
-						String val = "&cent;"
+						String val = "Small: &cent;"
 								+ game.getGameStructure().getCurrentBlindLevel().toString()
 										.split("_")[1]
-								+ "/&cent;"
+								+ "/ Big: &cent;"
 								+ game.getGameStructure().getCurrentBlindLevel().toString()
 										.split("_")[2];
 						out.write(val);
@@ -93,123 +70,132 @@
 			<!-- MIDDLE PANEL  -->
 
 
-			<div class="ui-grid-b" id="middleBlockContainerDIV">
+			<div class="ui-block-solo" id="mainBoardContainerDIV">
 
-				<div class="ui-block-solo ui-block-a ui-grid-b"
-					id="mainBoardContainerDIV">
+				<!-- TOP GRID  -->
 
-					<!-- LEFT GRID  -->
+				<div class="ui-grid-c ui-block-solo"
+					style="width: 100%; height: 20%;">
+					<div class="ui-block-a sitPlaceContainer topSideSits"
+						style="width: 25%; height: 100%;">
+						<div class='sitPlaceThumbnailEmpty'>Waiting</div>
+					</div>
+					<div class="ui-block-b sitPlaceContainer topSideSits"
+						style="width: 25%; height: 100%;">
+						<div class='sitPlaceThumbnailEmpty'>Waiting</div>
+					</div>
+					<div class="ui-block-c sitPlaceContainer topSideSits"
+						style="width: 25%; height: 100%;">
+						<div class='sitPlaceThumbnailEmpty'>Waiting</div>
+					</div>
+					<div class="ui-block-d sitPlaceContainer topSideSits"
+						style="width: 25%; height: 100%;">
+						<div class='sitPlaceThumbnailEmpty'>Waiting</div>
+					</div>
+				</div>
+
+
+				<!-- MIDDLE GRID  -->
+
+
+				<div class="ui-grid-b ui-block-solo"
+					style="width: 100%; height: 60%;">
+
+					<!-- MIDDLE-LEFT GRID  -->
 
 					<div class="ui-block-a" style="width: 20%; height: 100%;">
 						<div class="ui-block-solo sitPlaceContainer leftSideSits"
-							style="height: 25%;">
+							style="height: 33% !important;">
 							<div class='sitPlaceThumbnailEmpty'>Waiting</div>
 						</div>
 						<div class="ui-block-solo sitPlaceContainer leftSideSits"
-							style="height: 25%;">
+							style="height: 33% !important;">
 							<div class='sitPlaceThumbnailEmpty'>Waiting</div>
 						</div>
 						<div class="ui-block-solo sitPlaceContainer leftSideSits"
-							style="height: 25%;">
+							style="height: 33% !important;">
 							<div class='sitPlaceThumbnailEmpty'>Waiting</div>
 						</div>
-						<div class="ui-block-solo" style="height: 25%;"></div>
 					</div>
 
-					<!-- CENTER GRID  -->
+					<!-- MIDDLE-CENTER GRID  -->
 
-					<div class="ui-block-b" style="width: 60%; height: 100%;">
-						<div class="ui-block-solo ui-grid-b" style="height: 20%;">
-							<div class="ui-block-a sitPlaceContainer topSideSits"
-								style="height: 100% !important;">
-								<div class='sitPlaceThumbnailEmpty'>Waiting</div>
-							</div>
-							<div class="ui-block-b sitPlaceContainer topSideSits"
-								style="height: 100% !important;">
-								<div class='sitPlaceThumbnailEmpty'>Waiting</div>
-							</div>
-							<div class="ui-block-c sitPlaceContainer topSideSits"
-								style="height: 100% !important;">
-								<div class='sitPlaceThumbnailEmpty'>Waiting</div>
-							</div>
-						</div>
-						<div class="ui-block-solo" style="height: 60%;" id="mainTable">
-							<div class="ui-block-solo" id="handPotContainer"
-								style="height: 20%; width: 100%;"></div>
-							<div class="ui-block-solo ui-grid-b"
-								style="height: 60%; width: 100%;">
-								<div class="ui-block-a" style="height: 100%; width: 20%;"></div>
-								<div class="ui-block-b ui-grid-d" id="flopsContainer"
-									style="height: 100%; width: 60%;">
-									<div class="ui-block-a tableCards" id="flop1">
-										<img alt="" src="images/game/card.jpg">
-									</div>
-									<div class="ui-block-b tableCards" id="flop2">
-										<img alt="" src="images/game/card.jpg">
-									</div>
-									<div class="ui-block-c tableCards" id="flop3">
-										<img alt="" src="images/game/card.jpg">
-									</div>
-									<div class="ui-block-d tableCards" id="flop4">
-										<img alt="" src="images/game/card.jpg">
-									</div>
-									<div class="ui-block-e tableCards" id="flop5">
-										<img alt="" src="images/game/card.jpg">
-									</div>
+					<div class="ui-block-b" style="width: 60%; height: 100%;"
+						id="mainTable">
+						<div class="ui-block-solo" id="handPotContainer"
+							style="height: 20%; width: 100%;"></div>
+						<div class="ui-block-solo ui-grid-b"
+							style="height: 60%; width: 100%;">
+							<div class="ui-block-a" style="height: 100%; width: 20%;"></div>
+							<div class="ui-block-b ui-grid-d" id="flopsContainer"
+								style="height: 100%; width: 60%;">
+								<div class="ui-block-a tableCards" id="flop1">
+									<img alt="" src="images/game/card.jpg">
 								</div>
-								<div class="ui-block-c" style="height: 100%; width: 20%;"></div>
+								<div class="ui-block-b tableCards" id="flop2">
+									<img alt="" src="images/game/card.jpg">
+								</div>
+								<div class="ui-block-c tableCards" id="flop3">
+									<img alt="" src="images/game/card.jpg">
+								</div>
+								<div class="ui-block-d tableCards" id="flop4">
+									<img alt="" src="images/game/card.jpg">
+								</div>
+								<div class="ui-block-e tableCards" id="flop5">
+									<img alt="" src="images/game/card.jpg">
+								</div>
 							</div>
-							<div class="ui-block-solo" style="height: 20%; width: 100%;">
-							</div>
+							<div class="ui-block-c" style="height: 100%; width: 20%;"></div>
 						</div>
-
-						<!--  BOTTOM GRID -->
-
-						<div class="ui-block-solo ui-grid-b" style="height: 20%;">
-							<div class="ui-block-a" style="width: 20%; height: 100% !important;"></div>
-							<div class="ui-block-b sitPlaceContainer bottomSideSits"
-								style="height: 100% !important; width: 60%;" id="userSitPlace"></div>
-							<div class="ui-block-c" style="width: 20%; height: 100% !important;"></div>
+						<div class="ui-block-solo" style="height: 20%; width: 100%;">
 						</div>
 					</div>
 
-					<!-- RIGHT GRID  -->
+					<!-- MIDDLE-RIGHT GRID  -->
 
 					<div class="ui-block-c" style="width: 20%; height: 100%;">
 						<div class="ui-block-solo sitPlaceContainer rightSideSits"
-							style="height: 25%;">
+							style="height: 33%;">
 							<div class='sitPlaceThumbnailEmpty'>Waiting</div>
 						</div>
 						<div class="ui-block-solo sitPlaceContainer rightSideSits"
-							style="height: 25%;">
+							style="height: 33%;">
 							<div class='sitPlaceThumbnailEmpty'>Waiting</div>
 						</div>
 						<div class="ui-block-solo sitPlaceContainer rightSideSits"
-							style="height: 25%;">
+							style="height: 33%;">
 							<div class='sitPlaceThumbnailEmpty'>Waiting</div>
 						</div>
-						<div class="ui-block-solo" style="height: 25%;">
-							<input type="number" id="betAmount" value="0">
-						</div>
+						<!-- 						<div class="ui-block-solo sitPlaceContainer rightSideSits" -->
+						<!-- 							style="height: 25%;"> -->
+						<!-- 							<input type="number" id="betAmount" value="0"> -->
+						<!-- 							<div class='sitPlaceThumbnailEmpty'>Waiting</div> -->
+						<!-- 						</div> -->
 					</div>
 				</div>
-				<div class="ui-block-b" id="rightSideToolBar">
-					<!-- 			<div class="colorful-slider blue"> -->
-					<!-- 				<div class="slider-handle"></div> -->
-					<!-- 			</div> -->
-					<!-- 			<input type="range" name="slider-mini" id="slider-mini" value="25" -->
-					<!-- 				min="0" max="100" data-highlight="true" data-mini="true"> -->
-					<input type="range" name="betSlider"  id="betSlider"  sliderOrientation="vertical" />
 
+				<!--  BOTTOM GRID -->
+
+				<div class="ui-block-solo ui-grid-b" style="height: 20%;">
+					<div class="ui-block-a"
+						style="width: 20%; height: 100% !important;"></div>
+					<div class="ui-block-b sitPlaceContainer bottomSideSits"
+						style="height: 100% !important; width: 40%;" id="userSitPlace"></div>
+					<div class="ui-block-c"
+						style="width: 40%; height: 100% !important;"
+						id="raiseSliderContainer">
+							<input type="range" name="sliderRaise"
+							id="sliderRaise" min="0" max="100" value="50" data-show-value="true"
+							data-popup-enabled="true">
+
+					</div>
 				</div>
 			</div>
 
-
 			<!-- bottom -->
 
-
-			<div class=" ui-block-solo ui-grid-d constantBannersBottom"
-				id="buttonsContainerDIV">
+			<div class="ui-block-solo ui-grid-d constantBannersBottom"
+				id="buttonsContainerDIV" style="width: 100%; height: 14%;">
 				<div class="ui-block-a" style="width: 40%"></div>
 				<div class="ui-block-b" style="width: 15%">
 					<a href="#" data-mini="true"

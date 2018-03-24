@@ -1,27 +1,27 @@
 function leaveTable() {
-//	var url = "/ICryptoPoker/REST/GetGameServiceWS/EndHand?handId="
-//			+ $("#handID").val();
-//	$.ajax({
-//		url : url,
-//		cache : false,
-//		async : true,
-//		success : function(data) {
-//			if (data.success == true)
-				window.location.replace('t_game.do');
-//		},
-//		error : function(xhr, ajaxOptions, thrownError) {
-//			alert(xhr.responseText);
-//		}
-//	});
+	// var url = "/ICryptoPoker/REST/GetGameServiceWS/EndHand?handId="
+	// + $("#handID").val();
+	// $.ajax({
+	// url : url,
+	// cache : false,
+	// async : true,
+	// success : function(data) {
+	// if (data.success == true)
+	window.location.replace('t_game.do');
+	// },
+	// error : function(xhr, ajaxOptions, thrownError) {
+	// alert(xhr.responseText);
+	// }
+	// });
 }
 
 function updateGameInfo(data) {
-	
+
 	$(".tableCards").each(function() {
 		$(this).html('<img alt="" src="images/game/card.jpg">');
 	});
 	$(".sitPlaceContainer").each(function() {
-		$(this).html("<div class='sitPlaceThumbnailEmpty'>Waiting</div>");
+		$(this).html("<div class='sitPlaceThumbnailEmpty'>Waiting</div>").trigger("create");
 	});
 	$("#handPotContainer")
 			.html(
@@ -34,9 +34,6 @@ function updateGameInfo(data) {
 	$('.pscontainer').each(function() {
 		$(this).attr("class", "pscontainer");
 	});
-	$("#betSlider").attr("min", data.bigBlind *2);
-	$("#betSlider").attr("max", (data.players[0]).chips);
-	$("#betSlider").attr("value", data.bigBlind *2);
 	if (data.gameStatus == "NOT_STARTED") {
 		$("#handPotContainer").html('Game is not started');
 	} else
@@ -55,6 +52,7 @@ function updateGameInfo(data) {
 	$(data.players).each(function(k, l) {
 		updatePlayerInfo(l);
 	});
+	fitElementsWithinScreen();
 }
 var playerToActId;
 var timer;
@@ -121,6 +119,9 @@ function updatePlayerInfo(data) {
 			$(".actionButtons").each(function() {
 				$(this).removeClass("ui-state-disabled");
 			});
+			$("#sliderRaise").attr("min", parseInt(data.bigBlind) * 2);
+			$("#sliderRaise").attr("max", parseInt(data.chips));
+			$("#sliderRaise").attr("value", parseInt(data.bigBlind) * 2);
 		}
 
 		$('.pscontainer').each(function() {

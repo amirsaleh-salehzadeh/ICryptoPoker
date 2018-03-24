@@ -24,6 +24,10 @@ $(document).ready(
 			// $("#flopsContainer div").width($("#flop1").width());
 			$("#flopsContainer div").height(
 					$("#flop1").width() + ($("#flop1").width() * 0.7));
+//			$("#sliderRaise").slider();
+//			$("#sliderRaise").change(function(){
+//		        $(this).val("&cent; " + $(this).val()).slider("refresh");
+//		    });   
 		});
 
 function onMessage(evt) {
@@ -59,9 +63,6 @@ function fitElementsWithinScreen() {
 		$(this).height($("#userSitPlace").height());
 		$(this).trigger("create");
 	});
-	// $(".tableCards").height($("#userSitPlace").height());
-	// $(".tableCards").width($("#userSitPlace").height() * 7 / 10);
-	// $("#mainBoardContainerDIV").width();
 }
 
 function generateACard(cardVal, divID, cardNumber) {

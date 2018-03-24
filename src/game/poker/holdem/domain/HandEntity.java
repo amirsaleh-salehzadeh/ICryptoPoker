@@ -36,7 +36,7 @@ public class HandEntity {
 	private Game game;
 	private BoardEntity board;
 	private Set<PlayerHand> players;
-	private Set<PlayerHand> allPlayers;
+//	private Set<PlayerHand> allPlayers;
 	private Player currentToAct;
 	private BlindLevel blindLevel;
 	private List<Card> cardList;
@@ -72,20 +72,30 @@ public class HandEntity {
 
 	// @OneToMany(fetch=FetchType.EAGER,
 	// mappedBy="handEntity",cascade={CascadeType.ALL},orphanRemoval=true)
-	public Set<PlayerHand> getPlayers(boolean includeRemovedPlayerHands) {
-		players = allPlayers;
-		if (!includeRemovedPlayerHands)
-			for (PlayerHand ph : allPlayers) {
-				if (ph.isRemoved())
-					players.remove(ph);
-			}
-			
+//	public Set<PlayerHand> getPlayers(boolean includeRemovedPlayerHands) {
+//		players = allPlayers;
+//		if (!includeRemovedPlayerHands)
+//			for (PlayerHand ph : allPlayers) {
+//				if (ph.isRemoved())
+//					players.remove(ph);
+//			}
+//			
+//		return players;
+//	}
+	public Set<PlayerHand> getPlayers() {
+//		players = allPlayers;
+//		if (!includeRemovedPlayerHands)
+//			for (PlayerHand ph : allPlayers) {
+//				if (ph.isRemoved())
+//					players.remove(ph);
+//			}
+//			
 		return players;
 	}
 
 	public void setPlayers(Set<PlayerHand> players) {
 		this.players = players;
-		this.allPlayers = players;
+//		this.allPlayers = players;
 	}
 
 	// @ManyToOne(fetch=FetchType.EAGER)

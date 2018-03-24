@@ -43,7 +43,7 @@ import game.poker.holdem.domain.Player;
 import game.poker.holdem.domain.PlayerHand;
 import hibernate.config.BaseHibernateDAO;
 
-public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
+public class HandDaoImpl extends BaseHibernateDAO implements HandDaoInterface {
 
 	@Override
 	public HandEntity save(HandEntity hand, Connection conn) {
@@ -86,9 +86,9 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 			Set<PlayerHand> newPHs = new HashSet<PlayerHand>();
 			if (rs.next()) {
 				hand.setId(rs.getLong(1));
-				query = "INSERT INTO `player_hand` (`player_hand_id`, `player_id`, `hand_id`, `card1`, `card2`, `bet_amount`, `round_bet_amount`, removed) "
-						+ "VALUES (?, ?, ?, ?, ?, ?, ?, 0)";
-				for (PlayerHand ph : hand.getPlayers(true)) {
+				query = "INSERT INTO `player_hand` (`player_hand_id`, `player_id`, `hand_id`, `card1`, `card2`, `bet_amount`, `round_bet_amount`, action_status) "
+						+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+				for (PlayerHand ph : hand.getPlayers()) {
 					PreparedStatement ps2 = conn.prepareStatement(query,
 							Statement.RETURN_GENERATED_KEYS);
 					ps2.setLong(1, ph.getId());
@@ -98,6 +98,7 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 					ps2.setString(5, ph.getCard2().name());
 					ps2.setInt(6, ph.getBetAmount());
 					ps2.setInt(7, ph.getRoundBetAmount());
+					ps2.setInt(8, ph.getStatus());
 					ps2.executeUpdate();
 					ResultSet rs2 = ps.getGeneratedKeys();
 					if (rs2.next())
@@ -376,7 +377,7 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 				ph.setBetAmount(rs.getInt("bet_amount"));
 				ph.setRoundBetAmount(rs.getInt("round_bet_amount"));
 				ph.setId(rs.getLong("player_hand_id"));
-				ph.setRemoved(rs.getBoolean("removed"));
+				ph.setStatus(rs.getInt("action_status"));
 			}
 			rs.close();
 			ps.close();
@@ -428,6 +429,7 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 						.get(null));
 				p.setBetAmount(rs.getInt("bet_amount"));
 				p.setRoundBetAmount(rs.getInt("round_bet_amount"));
+				p.setStatus(rs.getInt("action_status"));
 				players.add(p);
 			}
 			rs.close();
@@ -474,11 +476,12 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 				} catch (AMSException e) {
 					e.printStackTrace();
 				}
-			String query = "update `player_hand` set `bet_amount` = ?, `round_bet_amount` = ? where `player_hand_id` = ?";
+			String query = "update `player_hand` set `bet_amount` = ?, `round_bet_amount` = ?, action_status = ? where `player_hand_id` = ?";
 			PreparedStatement ps2 = conn.prepareStatement(query);
 			ps2.setInt(1, ph.getBetAmount());
 			ps2.setInt(2, ph.getRoundBetAmount());
-			ps2.setLong(3, ph.getId());
+			ps2.setInt(3, ph.getStatus());
+			ps2.setLong(4, ph.getId());
 			ps2.executeUpdate();
 			ps2.close();
 			// PlayerDaoImpl pdao = new PlayerDaoImpl();
@@ -504,39 +507,40 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 
 	}
 
-	public PlayerHand removePlayerHand(PlayerHand ph, Connection conn) {
-		try {
-			boolean isNewConn = false;
-			if (conn == null)
-				try {
-					conn = getConnection();
-					conn.setAutoCommit(false);
-					isNewConn = true;
-				} catch (AMSException e) {
-					e.printStackTrace();
-				}
-			String query = "update `player_hand` set removed = 1 where `player_hand_id` = ?";
-			PreparedStatement ps2 = conn.prepareStatement(query);
-			ps2.setLong(1, ph.getId());
-			ps2.executeUpdate();
-			ps2.close();
-			if (isNewConn) {
-				conn.commit();
-				conn.close();
-			}
-		} catch (SQLException e) {
-			try {
-				if (!conn.isClosed()) {
-					conn.rollback();
-					conn.close();
-				}
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
-			e.printStackTrace();
-		}
-		return ph;
-
-	}
+//	public PlayerHand removePlayerHand(PlayerHand ph, Connection conn) {
+//		try {
+//			boolean isNewConn = false;
+//			if (conn == null)
+//				try {
+//					conn = getConnection();
+//					conn.setAutoCommit(false);
+//					isNewConn = true;
+//				} catch (AMSException e) {
+//					e.printStackTrace();
+//				}
+//			String query = "update `player_hand` set action_status = ? where `player_hand_id` = ?";
+//			PreparedStatement ps2 = conn.prepareStatement(query);
+//			ps2.setInt(1, ph.getStatus());
+//			ps2.setLong(2, ph.getId());
+//			ps2.executeUpdate();
+//			ps2.close();
+//			if (isNewConn) {
+//				conn.commit();
+//				conn.close();
+//			}
+//		} catch (SQLException e) {
+//			try {
+//				if (!conn.isClosed()) {
+//					conn.rollback();
+//					conn.close();
+//				}
+//			} catch (SQLException e1) {
+//				e1.printStackTrace();
+//			}
+//			e.printStackTrace();
+//		}
+//		return ph;
+//
+//	}
 
 }

@@ -31,7 +31,7 @@ import game.poker.holdem.Card;
 import game.poker.holdem.domain.HandEntity;
 import game.poker.holdem.domain.PlayerHand;
 
-public interface HandDao {
+public interface HandDaoInterface {
 	
 	HandEntity save(HandEntity game, Connection conn);
 

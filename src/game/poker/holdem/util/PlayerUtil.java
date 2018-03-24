@@ -36,6 +36,7 @@ import game.poker.holdem.dao.HandDaoImpl;
 import game.poker.holdem.domain.HandEntity;
 import game.poker.holdem.domain.Player;
 import game.poker.holdem.domain.PlayerHand;
+import game.poker.holdem.domain.PlayerHandStatus;
 import game.poker.holdem.eval.HandRank;
 import game.poker.holdem.eval.HandRankEvaluator;
 import game.poker.holdem.eval.TwoPlusTwoHandEvaluator;
@@ -109,9 +110,9 @@ public class PlayerUtil {
 	 *            player in game over compared to this player.
 	 * @return Player who will be next to act
 	 */
-	public static Player getNextPlayerToAct(HandEntity hand, Player startPlayer) {
+	public static Player getNextPlayerToAct(HandEntity hand, Player startPlayer, int reason) {
 		List<PlayerHand> players = new ArrayList<PlayerHand>();
-		players.addAll(hand.getPlayers(false));
+		players.addAll(hand.getPlayers());// false
 		Player next = startPlayer;
 
 		// Skip all in players and sitting out players
@@ -128,7 +129,7 @@ public class PlayerUtil {
 
 				// Player is sitting out and needs to call, automatic fold
 				PlayerHand playerHand = null;
-				for (PlayerHand ph : hand.getPlayers(false)) {
+				for (PlayerHand ph : hand.getPlayers()) {// false
 					if (ph.getPlayer().equals(next)) {
 						playerHand = ph;
 						break;
@@ -164,7 +165,7 @@ public class PlayerUtil {
 	 */
 	public static boolean removePlayerFromHand(Player player, HandEntity hand) {
 		PlayerHand playerHand = null;
-		for (PlayerHand ph : hand.getPlayers(false)) {
+		for (PlayerHand ph : hand.getPlayers()) {// false
 			if (ph.getPlayer().equals(player)) {
 				playerHand = ph;
 				break;
@@ -173,9 +174,11 @@ public class PlayerUtil {
 		if (playerHand == null) {
 			return false;
 		}
-		Set<PlayerHand> players = hand.getPlayers(false);
+		Set<PlayerHand> players = hand.getPlayers();// false
 		HandDaoImpl hdi = new HandDaoImpl();
-		hdi.removePlayerHand(playerHand, null);
+		if (playerHand.getStatus() != PlayerHandStatus.FOLDED)
+			playerHand.setStatus(PlayerHandStatus.FOLDED);
+		hdi.updatePlayerHand(playerHand, null);
 		return players.remove(playerHand);
 	}
 
@@ -258,7 +261,7 @@ public class PlayerUtil {
 		// Make deep copy of players. We will manipulate this set in the
 		// following methods
 		Set<PlayerHand> currentPlayers = new HashSet<PlayerHand>();
-		currentPlayers.addAll(hand.getPlayers(false));
+		currentPlayers.addAll(hand.getPlayers());// false
 
 		winnersMap = resolveSidePot(winnersMap, hand, 0, currentPlayers);
 		winnersMap = resolveDeadMoney(winnersMap, hand);

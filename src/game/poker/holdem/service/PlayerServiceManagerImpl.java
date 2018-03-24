@@ -88,7 +88,7 @@ public class PlayerServiceManagerImpl implements PlayerServiceManager {
 		if (game.getCurrentHand() != null) {
 			HandEntity hand = game.getCurrentHand();
 			PlayerHand playerHand = null;
-			for (PlayerHand ph : hand.getPlayers(true)) {
+			for (PlayerHand ph : hand.getPlayers()) {//true
 				if (ph.getPlayer() != null && ph.getPlayer().equals(player)) {
 					playerHand = ph;
 					break;

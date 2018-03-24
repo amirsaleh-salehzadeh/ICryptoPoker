@@ -82,14 +82,14 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		List<PlayerHand> players = new ArrayList<PlayerHand>();
 		players.addAll(participatingPlayers);
 		Player nextToAct = PlayerUtil.getNextPlayerToAct(hand,
-				this.getPlayerInBB(hand));
+				this.getPlayerInBB(hand), PlayerHandStatus.NORMAL);
 		hand.setCurrentToAct(nextToAct);
 		// Register the Forced Small and Big Blind bets as part of the hand
 		Player smallBlind = getPlayerInSB(hand);
 		Player bigBlind = getPlayerInBB(hand);
 		int sbBet = 0;
 		int bbBet = 0;
-		for (PlayerHand ph : hand.getPlayers(false)) {
+		for (PlayerHand ph : hand.getPlayers()) {// false
 			if (ph.getPlayer().equals(smallBlind)) {
 				sbBet = Math.min(hand.getBlindLevel().getSmallBlind(),
 						smallBlind.getChips());
@@ -127,8 +127,8 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		HandEntity hand = g.getCurrentHand();
 		if (!isActionResolved(hand)) {
 			river(g);
-			return ;
-//			throw new AMSException("There are unresolved betting actions");
+			return;
+			// throw new AMSException("There are unresolved betting actions");
 		}
 
 		// Game game = hand.getGame();
@@ -139,7 +139,7 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 
 		// If players were eliminated this hand, set their finished position
 		List<PlayerHand> phs = new ArrayList<PlayerHand>();
-		phs.addAll(hand.getPlayers(true));
+		phs.addAll(hand.getPlayers());// true
 		// Sort the list of PlayerHands so the one with the smallest chips at
 		// risk is first.
 		// Use this to determine finish position if multiple players are
@@ -232,12 +232,12 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 			System.out.println("wroooong");
 		else
 			System.out.println("right");
-		
+
 		hand.setGame(game);
 		if (!isActionResolved(hand)) {
 			return hand;
-//			throw new IllegalStateException(
-//					"There are unresolved preflop actions");
+			// throw new IllegalStateException(
+			// "There are unresolved preflop actions");
 		}
 		Deck d = new Deck(hand.getCards());
 		d.shuffleDeck();
@@ -248,7 +248,7 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		hand.setCards(d.exportDeck());
 		resetRoundValues(hand);
 		PlayerHand playerHand = null;
-		for (PlayerHand ph : hand.getPlayers(false)) {
+		for (PlayerHand ph : hand.getPlayers()) {// false
 			if (ph.getPlayer() != null
 					&& ph.getPlayer().equals(hand.getCurrentToAct())) {
 				playerHand = ph;
@@ -256,9 +256,10 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 			}
 		}
 		Player next = PlayerUtil.getNextPlayerToAct(hand,
-				hand.getCurrentToAct());
+				hand.getCurrentToAct(), PlayerHandStatus.FLOPEND);
 		if (playerHand != null
-				&& hand.getTotalBetAmount() > playerHand.getRoundBetAmount()) {
+				&& hand.getTotalBetAmount() > playerHand.getRoundBetAmount()
+				&& playerHand.getStatus() != PlayerHandStatus.FOLDED) {
 			PlayerUtil.removePlayerFromHand(hand.getCurrentToAct(), hand);
 		}
 		hand.setCurrentToAct(next);
@@ -282,7 +283,8 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		hand.setGame(game);
 		if (!isActionResolved(hand)) {
 			return hand;
-//			throw new IllegalStateException("There are unresolved flop actions");
+			// throw new
+			// IllegalStateException("There are unresolved flop actions");
 		}
 
 		Deck d = new Deck(hand.getCards());
@@ -292,7 +294,7 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		hand.setCards(d.exportDeck());
 		resetRoundValues(hand);
 		PlayerHand playerHand = null;
-		for (PlayerHand ph : hand.getPlayers(false)) {
+		for (PlayerHand ph : hand.getPlayers()) {// false
 			if (ph.getPlayer() != null
 					&& ph.getPlayer().equals(hand.getCurrentToAct())) {
 				playerHand = ph;
@@ -300,9 +302,10 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 			}
 		}
 		Player next = PlayerUtil.getNextPlayerToAct(hand,
-				hand.getCurrentToAct());
+				hand.getCurrentToAct(), PlayerHandStatus.TURNEND);
 		if (playerHand != null
-				&& hand.getTotalBetAmount() > playerHand.getRoundBetAmount()) {
+				&& hand.getTotalBetAmount() > playerHand.getRoundBetAmount()
+				&& playerHand.getStatus() != PlayerHandStatus.FOLDED) {
 			PlayerUtil.removePlayerFromHand(hand.getCurrentToAct(), hand);
 		}
 		hand.setCurrentToAct(next);
@@ -327,7 +330,8 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		hand.setGame(game);
 		if (!isActionResolved(hand)) {
 			return hand;
-//			throw new IllegalStateException("There are unresolved turn actions");
+			// throw new
+			// IllegalStateException("There are unresolved turn actions");
 		}
 
 		Deck d = new Deck(hand.getCards());
@@ -337,7 +341,7 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		hand.setCards(d.exportDeck());
 		resetRoundValues(hand);
 		PlayerHand playerHand = null;
-		for (PlayerHand ph : hand.getPlayers(false)) {
+		for (PlayerHand ph : hand.getPlayers()) {// false
 			if (ph.getPlayer() != null
 					&& ph.getPlayer().equals(hand.getCurrentToAct())) {
 				playerHand = ph;
@@ -345,9 +349,10 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 			}
 		}
 		Player next = PlayerUtil.getNextPlayerToAct(hand,
-				hand.getCurrentToAct());
+				hand.getCurrentToAct(), PlayerHandStatus.RIVEREND);
 		if (playerHand != null
-				&& hand.getTotalBetAmount() > playerHand.getRoundBetAmount()) {
+				&& hand.getTotalBetAmount() > playerHand.getRoundBetAmount()
+				&& playerHand.getStatus() != PlayerHandStatus.FOLDED) {
 			PlayerUtil.removePlayerFromHand(hand.getCurrentToAct(), hand);
 		}
 		hand.setCurrentToAct(next);
@@ -368,15 +373,17 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		currentPlayer.setSittingOut(true);
 		playerDao.merge(currentPlayer, null);
 		PlayerHand playerHand = null;
-		for (PlayerHand ph : hand.getPlayers(false)) {
+		for (PlayerHand ph : hand.getPlayers()) {// false
 			if (ph.getPlayer().equals(currentPlayer)) {
 				playerHand = ph;
 				break;
 			}
 		}
-		Player next = PlayerUtil.getNextPlayerToAct(hand, currentPlayer);
+		Player next = PlayerUtil.getNextPlayerToAct(hand, currentPlayer,
+				PlayerHandStatus.SITOUT);
 		if (playerHand != null
-				&& hand.getTotalBetAmount() > playerHand.getRoundBetAmount()) {
+				&& hand.getTotalBetAmount() > playerHand.getRoundBetAmount()
+				&& playerHand.getStatus() != PlayerHandStatus.FOLDED) {
 			PlayerUtil.removePlayerFromHand(currentPlayer, hand);
 		}
 		hand.setCurrentToAct(next);
@@ -388,11 +395,11 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 	public Player getPlayerInSB(HandEntity hand) {
 		Player button = hand.getGame().getPlayerInBTN();
 		// Heads up the Button is the Small Blind
-		if (hand.getPlayers(false).size() == 2) {
+		if (hand.getPlayers().size() == 2) {// false
 			return button;
 		}
 		List<PlayerHand> players = new ArrayList<PlayerHand>();
-		players.addAll(hand.getPlayers(false));
+		players.addAll(hand.getPlayers());// false
 		return PlayerUtil.getNextPlayerInGameOrderPH(players, button);
 	}
 
@@ -400,14 +407,14 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 	public Player getPlayerInBB(HandEntity hand) {
 		Player button = hand.getGame().getPlayerInBTN();
 		List<PlayerHand> players = new ArrayList<PlayerHand>();
-		for (PlayerHand ph : hand.getPlayers(false)) {
+		for (PlayerHand ph : hand.getPlayers()) {// false
 			if (ph.getPlayer() != null)
 				players.add(ph);
 		}
 		Player leftOfButton = PlayerUtil.getNextPlayerInGameOrderPH(players,
 				button);
 		// Heads up, the player who is not the Button is the Big blind
-		if (hand.getPlayers(false).size() == 2) {
+		if (hand.getPlayers().size() == 2) {// false
 			return leftOfButton;
 		}
 		return PlayerUtil.getNextPlayerInGameOrderPH(players, leftOfButton);
@@ -447,7 +454,7 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		hand.setLastBetAmount(0);
 		handDao = new HandDaoImpl();
 		List<Player> playersInHand = new ArrayList<Player>();
-		for (PlayerHand ph : hand.getPlayers(false)) {
+		for (PlayerHand ph : hand.getPlayers()) {// false
 			ph.setRoundBetAmount(0);
 			if (ph.getPlayer() != null) {
 				playersInHand.add(ph.getPlayer());
@@ -480,8 +487,8 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 
 	private HandEntity determineWinner(HandEntity hand) {
 		// if only one PH left, everyone else folded
-		if (hand.getPlayers(false).size() == 1) {
-			Player winner = hand.getPlayers(false).iterator().next()
+		if (hand.getPlayers().size() == 1) {// false
+			Player winner = hand.getPlayers().iterator().next()// false
 					.getPlayer();
 			winner.setChips(winner.getChips() + hand.getPot());
 			playerDao.merge(winner, null);
@@ -504,7 +511,7 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 
 	private HandEntity refundOverbet(HandEntity hand) {
 		List<PlayerHand> phs = new ArrayList<PlayerHand>();
-		phs.addAll(hand.getPlayers(false));
+		phs.addAll(hand.getPlayers());// false
 		// Sort from most money contributed, to the least
 		Collections.sort(phs, new PlayerHandBetAmountComparator());
 		Collections.reverse(phs);
@@ -531,7 +538,7 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 	// betting round
 	private boolean isActionResolved(HandEntity hand) {
 		int roundBetAmount = hand.getTotalBetAmount();
-		for (PlayerHand ph : hand.getPlayers(true)) {
+		for (PlayerHand ph : hand.getPlayers()) {// true
 			// All players should have paid the roundBetAmount or should be all
 			// in
 			if (ph.getPlayer() != null

@@ -19,8 +19,8 @@
 <link rel="stylesheet"
 	href="css/game/table.raise.action.controllers.css" />
 <link rel="stylesheet" href="css/icryptopokermaincss.css">
-<script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
-<script src="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.js"></script>
+<script src="js/jquery/jquery-1.6.4.min.js"></script>
+<script src="js/jquery/jquery.mobile-1.0.min.js"></script>
 <script src="js/game/table.js"></script>
 <script src="js/game/game.js"></script>
 <script src="js/game/vertical-slider.jquery.js"></script>

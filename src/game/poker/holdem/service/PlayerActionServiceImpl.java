@@ -30,6 +30,7 @@ import game.poker.holdem.domain.Game;
 import game.poker.holdem.domain.HandEntity;
 import game.poker.holdem.domain.Player;
 import game.poker.holdem.domain.PlayerHand;
+import game.poker.holdem.domain.PlayerHandStatus;
 import game.poker.holdem.domain.PlayerStatus;
 import game.poker.holdem.util.GameUtil;
 import game.poker.holdem.util.PlayerUtil;
@@ -63,7 +64,7 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 			return false;
 		}
 
-		Player next = PlayerUtil.getNextPlayerToAct(hand, player);
+		Player next = PlayerUtil.getNextPlayerToAct(hand, player, PlayerHandStatus.FOLDED);
 		if (!PlayerUtil.removePlayerFromHand(player, hand)) {
 			return false;
 		}
@@ -79,7 +80,7 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 		hand.setCurrentToAct(next);
 		hand = handDao.merge(hand, null);
 		PokerHandServiceImpl phs = new PokerHandServiceImpl();
-		if (hand.getPlayers(true).size() <= 1)
+		if (hand.getPlayers().size() <= 1)//true
 			try {
 				phs.endHand(game);
 			} catch (AMSException e) {
@@ -104,7 +105,7 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 			return false;
 		}
 
-		Player next = PlayerUtil.getNextPlayerToAct(hand, player);
+		Player next = PlayerUtil.getNextPlayerToAct(hand, player, PlayerHandStatus.CHECKED);
 		hand.setCurrentToAct(next);
 		handDao.merge(hand, null);
 		return true;
@@ -128,7 +129,7 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 		}
 
 		PlayerHand playerHand = null;
-		for (PlayerHand ph : hand.getPlayers(false)) {
+		for (PlayerHand ph : hand.getPlayers()) {//false
 			if (ph.getPlayer() != null && ph.getPlayer().equals(player)) {
 				playerHand = ph;
 				break;
@@ -150,7 +151,7 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 		hand.setLastBetAmount(betAmount);
 		hand.setTotalBetAmount(hand.getTotalBetAmount() + betAmount);
 
-		Player next = PlayerUtil.getNextPlayerToAct(hand, player);
+		Player next = PlayerUtil.getNextPlayerToAct(hand, player, PlayerHandStatus.BET);
 		hand.setCurrentToAct(next);
 		handDao.merge(hand, null);
 		playerDao.merge(player, null);
@@ -166,7 +167,7 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 			return false;
 		}
 		PlayerHand playerHand = null;
-		for (PlayerHand ph : hand.getPlayers(false)) {
+		for (PlayerHand ph : hand.getPlayers()) {//false
 			if (ph.getPlayer().equals(player)) {
 				playerHand = ph;
 				break;
@@ -185,7 +186,7 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 		player.setChips(player.getChips() - toCall);
 		hand.setPot(hand.getPot() + toCall);
 
-		Player next = PlayerUtil.getNextPlayerToAct(hand, player);
+		Player next = PlayerUtil.getNextPlayerToAct(hand, player, PlayerHandStatus.CALLED);
 		hand.setCurrentToAct(next);
 		hand.setGame(game);
 		handDao.merge(hand, null);
@@ -222,7 +223,7 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 		// hand.getPlayers(false).size() > 2)
 		// return PlayerStatus.SEATING;
 		PlayerHand playerHand = null;
-		for (PlayerHand ph : hand.getPlayers(true)) {
+		for (PlayerHand ph : hand.getPlayers()) {//true
 			if (ph.getPlayer() != null && ph.getPlayer().equals(player)) {
 				playerHand = ph;
 				break;
@@ -231,7 +232,7 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 		if (playerHand == null)
 			return PlayerStatus.WAITING_FOR_NEXT_HAND;
 
-		if (!hand.getPlayers(true).contains(playerHand)) {
+		if (!hand.getPlayers().contains(playerHand)) {//true
 			if (player.getChips() <= 0) {
 				return PlayerStatus.ELIMINATED;
 			}
@@ -240,7 +241,7 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 
 		if (hand.getCurrentToAct() == null) {
 			// Only one player, everyone else folded, player is the winner
-			if (hand.getPlayers(true).size() == 1) {
+			if (hand.getPlayers().size() == 1) {//true
 				return PlayerStatus.WON_HAND;
 			}
 			// Get the list of players who won at least some amount of chips at

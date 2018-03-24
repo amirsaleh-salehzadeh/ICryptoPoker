@@ -37,21 +37,21 @@ public class PlayerHand implements Comparable<PlayerHand> {
 	private String card2S;
 	private int betAmount;
 	private int roundBetAmount;
-	private boolean removed;
+	private int status;
 
 
 	/**
 	 * @return the removed
 	 */
-	public boolean isRemoved() {
-		return removed;
+	public int getStatus() {
+		return status;
 	}
 
 	/**
 	 * @param removed the removed to set
 	 */
-	public void setRemoved(boolean removed) {
-		this.removed = removed;
+	public void setStatus(int status) {
+		this.status = status;
 	}
 
 	public String getCard1S() {

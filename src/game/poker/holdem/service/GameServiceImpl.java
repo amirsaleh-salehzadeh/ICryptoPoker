@@ -24,12 +24,14 @@ THE SOFTWARE.
 package game.poker.holdem.service;
 
 import game.poker.holdem.dao.GameDaoImpl;
+import game.poker.holdem.dao.HandDaoImpl;
 import game.poker.holdem.dao.PlayerDaoImpl;
 import game.poker.holdem.domain.BlindLevel;
 import game.poker.holdem.domain.Game;
 import game.poker.holdem.domain.GameStatus;
 import game.poker.holdem.domain.GameStructure;
 import game.poker.holdem.domain.GameType;
+import game.poker.holdem.domain.HandEntity;
 import game.poker.holdem.domain.Player;
 import game.poker.holdem.util.GameUtil;
 import game.poker.holdem.view.PlayerStatusObject;
@@ -128,8 +130,19 @@ public class GameServiceImpl implements GameServiceInterface {
 		Set<PlayerStatusObject> players = new HashSet<PlayerStatusObject>();
 		PlayerServiceManagerImpl playerService = new PlayerServiceManagerImpl();
 		Map<String, Object> results = new HashMap<String, Object>();
+		PokerHandServiceImpl handService = new PokerHandServiceImpl();
 		results.put("gameStatus", gs);
 		results.put("players", players);
+		HandDaoImpl hdao = new HandDaoImpl();
+		if (game.isStarted() && game.getCurrentHand() != null && gs.equals(GameStatus.PREFLOP)) {
+			HandEntity h = hdao.findById(game.getCurrentHand().getId(), null);
+			h.setGame(game);
+			results.put("POST_SB",
+					handService.getPlayerInSB(h).getId());
+			results.put("POST_BB",
+					handService.getPlayerInBB(h).getId());
+			results.put("DEALER", game.getPlayerInBTN().getId());
+		}
 		for (Player p : game.getPlayers()) {
 			PlayerStatusObject ptmp = playerService.buildPlayerStatus(
 					game.getId(), p.getId());
@@ -161,8 +174,7 @@ public class GameServiceImpl implements GameServiceInterface {
 			results.put("pot", game.getCurrentHand().getPot());
 			results.put("cards", game.getCurrentHand().getBoard()
 					.getBoardCardsString());
-		} else
-			System.out.println("empty");
+		}
 		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
 		try {

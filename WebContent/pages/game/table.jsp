@@ -101,17 +101,19 @@
 					<!-- LEFT GRID  -->
 
 					<div class="ui-block-a" style="width: 20%; height: 100%;">
+						<div class="ui-block-solo sitPlaceContainer leftSideSits"
+							style="height: 25%;">
+							<div class='sitPlaceThumbnailEmpty'>Waiting</div>
+						</div>
+						<div class="ui-block-solo sitPlaceContainer leftSideSits"
+							style="height: 25%;">
+							<div class='sitPlaceThumbnailEmpty'>Waiting</div>
+						</div>
+						<div class="ui-block-solo sitPlaceContainer leftSideSits"
+							style="height: 25%;">
+							<div class='sitPlaceThumbnailEmpty'>Waiting</div>
+						</div>
 						<div class="ui-block-solo" style="height: 25%;"></div>
-						<div class="ui-block-solo sitPlaceContainer leftSideSits"
-							style="height: 25%;">
-							<div class='sitPlaceThumbnailEmpty'>Waiting</div>
-						</div>
-						<div class="ui-block-solo sitPlaceContainer leftSideSits"
-							style="height: 25%;">
-							<div class='sitPlaceThumbnailEmpty'>Waiting</div>
-						</div>
-						<div class="ui-block-solo"
-							style="height: 25%; position: relative;"></div>
 					</div>
 
 					<!-- CENTER GRID  -->
@@ -160,26 +162,23 @@
 							<div class="ui-block-solo" style="height: 20%; width: 100%;">
 							</div>
 						</div>
+
+						<!--  BOTTOM GRID -->
+
 						<div class="ui-block-solo ui-grid-b" style="height: 20%;">
-							<div class="ui-block-a sitPlaceContainer bottomSideSits"
-								style="height: 100% !important;">
-								<div class='sitPlaceThumbnailEmpty'>Waiting</div>
-							</div>
+							<div class="ui-block-a" style="width: 20%; height: 100% !important;"></div>
 							<div class="ui-block-b sitPlaceContainer bottomSideSits"
-								style="height: 100% !important;" id="userSitPlace"></div>
-							<div class="ui-block-c sitPlaceContainer bottomSideSits"
-								style="height: 100% !important;">
-								<div class='sitPlaceThumbnailEmpty'>Waiting</div>
-							</div>
+								style="height: 100% !important; width: 60%;" id="userSitPlace"></div>
+							<div class="ui-block-c" style="width: 20%; height: 100% !important;"></div>
 						</div>
 					</div>
 
 					<!-- RIGHT GRID  -->
 
 					<div class="ui-block-c" style="width: 20%; height: 100%;">
-						<div class="ui-block-solo" style="height: 25%;">
-							<a href="#" data-mini="true" onclick="allIn()"
-								id="allInBTN" class="actionButtons ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b">All-In</a>
+						<div class="ui-block-solo sitPlaceContainer rightSideSits"
+							style="height: 25%;">
+							<div class='sitPlaceThumbnailEmpty'>Waiting</div>
 						</div>
 						<div class="ui-block-solo sitPlaceContainer rightSideSits"
 							style="height: 25%;">
@@ -210,23 +209,27 @@
 			<!-- bottom -->
 
 
-			<div class=" ui-block-solo ui-grid-c constantBannersBottom"
+			<div class=" ui-block-solo ui-grid-d constantBannersBottom"
 				id="buttonsContainerDIV">
 				<div class="ui-block-a" style="width: 40%"></div>
 				<div class="ui-block-b" style="width: 15%">
 					<a href="#" data-mini="true"
-						class="actionButtons ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" onclick="fold()"
-						id="foldBTN">Fold</a>
+						class="actionButtons ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b"
+						onclick="fold()" id="foldBTN">Fold</a>
 				</div>
 				<div class="ui-block-c" style="width: 15%">
 					<a href="#" data-mini="true"
-						class="actionButtons ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" onclick="check()"
-						id="checkBTN">Check</a>
+						class="actionButtons ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b"
+						onclick="check()" id="checkBTN">Check</a>
 				</div>
-				<div class="ui-block-d" style="width: 30%">
+				<div class="ui-block-d" style="width: 15%">
 					<a href="#" data-mini="true"
-						class="actionButtons ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" onclick="raise()"
-						id="raiseBTN">Raise</a>
+						class="actionButtons ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b"
+						onclick="raise()" id="raiseBTN">Raise</a>
+				</div>
+				<div class="ui-block-e" style="width: 15%">
+					<a href="#" data-mini="true" onclick="allIn()" id="allInBTN"
+						class="actionButtons ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b">All-In</a>
 				</div>
 			</div>
 		</div>

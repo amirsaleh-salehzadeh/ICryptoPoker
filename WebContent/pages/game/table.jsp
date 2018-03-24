@@ -199,8 +199,7 @@
 					<!-- 			</div> -->
 					<!-- 			<input type="range" name="slider-mini" id="slider-mini" value="25" -->
 					<!-- 				min="0" max="100" data-highlight="true" data-mini="true"> -->
-					<input type="range" name="slider" id="slider-0" value="50" step="5"
-						min="0" max="100" sliderOrientation="vertical" />
+					<input type="range" name="betSlider"  id="betSlider"  sliderOrientation="vertical" />
 
 				</div>
 			</div>

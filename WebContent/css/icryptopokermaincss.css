@@ -966,16 +966,16 @@ a.ui-btn{
    transform: rotate(90deg);
     transform-origin:bottom left;
     
-    position:absolute;
-    top:-100vw;
+    position: relative;
+      top: -178vw;
     
-    height:100vw;
-    width:100vh;
+    height:100vh !important;
+      max-width: 100vh;
+    width: 100vh;
+    background-color:#333333;
     
-    background-color:#000;
-    color:#fff;
 
-    overflow:auto;
+    overflow:none;
 
   }
 

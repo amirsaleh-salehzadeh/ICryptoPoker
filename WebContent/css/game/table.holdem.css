@@ -252,7 +252,33 @@
 -moz-box-shadow: -28px 2px 135px 0px rgba(255,255,255,1);
 box-shadow: -28px 2px 135px 0px rgba(255,255,255,1);
 /*  */
-/* gold styling */
 
+/* gold styling */
+color:black !important;
+background: rgba(252,234,187,1);
+background: -moz-linear-gradient(left, rgba(252,234,187,1) 0%, rgba(252,205,77,1) 21%, rgba(248,181,0,1) 38%, rgba(251,223,147,1) 100%) !important;
+background: -webkit-gradient(left top, right top, color-stop(0%, rgba(252,234,187,1)), color-stop(21%, rgba(252,205,77,1)), color-stop(38%, rgba(248,181,0,1)), color-stop(100%, rgba(251,223,147,1))) !important;
+background: -webkit-linear-gradient(left, rgba(252,234,187,1) 0%, rgba(252,205,77,1) 21%, rgba(248,181,0,1) 38%, rgba(251,223,147,1) 100%) !important;
+background: -o-linear-gradient(left, rgba(252,234,187,1) 0%, rgba(252,205,77,1) 21%, rgba(248,181,0,1) 38%, rgba(251,223,147,1) 100%) !important;
+background: -ms-linear-gradient(left, rgba(252,234,187,1) 0%, rgba(252,205,77,1) 21%, rgba(248,181,0,1) 38%, rgba(251,223,147,1) 100%) !important;
+background: linear-gradient(to right, rgba(252,234,187,1) 0%, rgba(252,205,77,1) 21%, rgba(248,181,0,1) 38%, rgba(251,223,147,1) 100%);
 /*  */
+}
+.loser{
+	/* 	the shadow for the loser box */
+	-webkit-box-shadow: -28px 2px 135px 0px rgba(255,255,255,1);
+-moz-box-shadow: -28px 2px 135px 0px rgba(255,255,255,1);
+box-shadow: -28px 2px 135px 0px rgba(255,255,255,1);
+/*  */
+/* red styling */
+	color:black !important;
+background: rgba(248,80,50,1) !important;
+background: -moz-linear-gradient(left, rgba(248,80,50,1) 0%, rgba(246,41,12,1) 46%, rgba(241,111,92,1) 61%, rgba(240,47,23,1) 71%, rgba(231,56,39,1) 100%) !important;
+background: -webkit-gradient(left top, right top, color-stop(0%, rgba(248,80,50,1)), color-stop(46%, rgba(246,41,12,1)), color-stop(61%, rgba(241,111,92,1)), color-stop(71%, rgba(240,47,23,1)), color-stop(100%, rgba(231,56,39,1))) !important;
+background: -webkit-linear-gradient(left, rgba(248,80,50,1) 0%, rgba(246,41,12,1) 46%, rgba(241,111,92,1) 61%, rgba(240,47,23,1) 71%, rgba(231,56,39,1) 100%) !important;
+background: -o-linear-gradient(left, rgba(248,80,50,1) 0%, rgba(246,41,12,1) 46%, rgba(241,111,92,1) 61%, rgba(240,47,23,1) 71%, rgba(231,56,39,1) 100%) !important;
+background: -ms-linear-gradient(left, rgba(248,80,50,1) 0%, rgba(246,41,12,1) 46%, rgba(241,111,92,1) 61%, rgba(240,47,23,1) 71%, rgba(231,56,39,1) 100%) !important;
+background: linear-gradient(to right, rgba(248,80,50,1) 0%, rgba(246,41,12,1) 46%, rgba(241,111,92,1) 61%, rgba(240,47,23,1) 71%, rgba(231,56,39,1) 100%) !important;	
+/* 	 */
+	
 }

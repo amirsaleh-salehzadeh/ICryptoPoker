@@ -32,6 +32,8 @@
 	height: 10%;
 	width: 100%;
 	background-color: rgba(108, 112, 120, .4);
+	width: 100%;
+	float: none;
 }
 
 .constantBannersTop>div {
@@ -189,7 +191,8 @@
 	top: 0;
 	/* 	left: 0; */
 	/* 	bottom: 0; */
-	/* 	position: absolute; */
+	position: absolute;
+	/* 	display: none; */
 }
 
 #userSitPlace {
@@ -207,8 +210,8 @@
 
 .pscontainer img {
 	/* 	position: absolute; */
-	max-width: 100%;
-	max-height: 100%;
+	max-width: 1em;
+	max-height: 1em;
 }
 
 .sitPlaceContainer>.ui-block-a {

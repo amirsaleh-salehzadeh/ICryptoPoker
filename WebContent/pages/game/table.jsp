@@ -53,23 +53,27 @@
 				</div>
 				<div class="ui-block-c" id="playerNameDiv">
 					<img alt="" src="images/game/user.png" height="80%">&nbsp;<%=request.getParameter("playerName")%></div>
-				<div class="ui-block-d">
-					<div class="ui-block-solo">
-						<%=game.getName()%>
-					</div>
-					<div class="ui-block-solo ui-grid-a ">
+				<div class="ui-block-d" style="max-height: 100%;">
+					<!-- 					<div class="ui-block-solo"> -->
+					<%-- 						<%=game.getName()%> --%>
+					<!-- 					</div> -->
+					<div class="ui-block-solo ui-grid-b" style="font-size: 10pt; white-space: nowrap;">
 						<div class="ui-block-a">
-						<img alt="" src="images/game/sb.png" height="100%">
-							&cent;<%
-								out.write(game.getGameStructure().getCurrentBlindLevel().toString().split("_")[1]);
-							%>
+							<img alt="" src="images/game/sb.png"
+								style="height: auto; width: 17px;"> &cent;<%
+ 	out.write(game.getGameStructure().getCurrentBlindLevel().toString()
+ 			.split("_")[1]);
+ %>
 						</div>
 						<div class="ui-block-b">
-							<img alt="" src="images/game/bb.png">
-							&cent;<%
-								out.write(game.getGameStructure().getCurrentBlindLevel().toString()
-										.split("_")[2]);
-							%>
+							<img alt="" src="images/game/bb.png"
+								style="height: auto; width: 17px;"> &cent;<%
+ 	out.write(game.getGameStructure().getCurrentBlindLevel().toString()
+ 			.split("_")[2]);
+ %>
+						</div>
+						<div class="ui-block-c">
+							<%=game.getName()%>
 						</div>
 					</div>
 				</div>
@@ -228,6 +232,5 @@
 			</div>
 		</div>
 	</div>
-
 </body>
 </html>

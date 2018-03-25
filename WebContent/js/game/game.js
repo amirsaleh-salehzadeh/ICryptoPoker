@@ -256,7 +256,7 @@ function check() {
 		success : function(data) {
 			if (data.success == true)
 				// getGameStatus();
-				sendText("");
+				sendText("Checked");
 			else
 				alert("check failed");
 		},
@@ -276,7 +276,7 @@ function call() {
 		success : function(data) {
 			if (data.success == true)
 				// getGameStatus();
-				sendText("");
+				sendText("Called");
 			else
 				alert("check failed");
 		},
@@ -296,7 +296,7 @@ function fold() {
 		success : function(data) {
 			if (data.success == true)
 				// getGameStatus();
-				sendText("");
+				sendText("Folded");
 			else
 				alert("fold failed");
 		},

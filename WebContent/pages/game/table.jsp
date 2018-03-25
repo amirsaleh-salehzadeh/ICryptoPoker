@@ -53,16 +53,25 @@
 				</div>
 				<div class="ui-block-c" id="playerNameDiv">
 					<img alt="" src="images/game/user.png" height="80%">&nbsp;<%=request.getParameter("playerName")%></div>
-				<div class="ui-block-d"><%=game.getName()%>
-					&nbsp;(<%
-						String val = "Small: &cent;"
-								+ game.getGameStructure().getCurrentBlindLevel().toString()
-										.split("_")[1]
-								+ "/ Big: &cent;"
-								+ game.getGameStructure().getCurrentBlindLevel().toString()
-										.split("_")[2];
-						out.write(val);
-					%>)
+				<div class="ui-block-d">
+					<div class="ui-block-solo">
+						<%=game.getName()%>
+					</div>
+					<div class="ui-block-solo ui-grid-a ">
+						<div class="ui-block-a">
+						<img alt="" src="images/game/sb.png" height="100%">
+							&cent;<%
+								out.write(game.getGameStructure().getCurrentBlindLevel().toString().split("_")[1]);
+							%>
+						</div>
+						<div class="ui-block-b">
+							<img alt="" src="images/game/bb.png">
+							&cent;<%
+								out.write(game.getGameStructure().getCurrentBlindLevel().toString()
+										.split("_")[2]);
+							%>
+						</div>
+					</div>
 				</div>
 			</div>
 
@@ -184,8 +193,8 @@
 					<div class="ui-block-c"
 						style="width: 40%; height: 100% !important;"
 						id="raiseSliderContainer">
-							<input type="range" name="sliderRaise"
-							id="sliderRaise" min="0" max="100" value="50" data-show-value="true"
+						<input type="range" name="sliderRaise" id="sliderRaise" min="0"
+							max="100" value="50" data-show-value="true"
 							data-popup-enabled="true">
 
 					</div>

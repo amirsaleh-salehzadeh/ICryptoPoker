@@ -20,9 +20,12 @@ function updateGameInfo(data) {
 	$(".tableCards").each(function() {
 		$(this).html('<img alt="" src="images/game/card.jpg">');
 	});
-	$(".sitPlaceContainer").each(function() {
-		$(this).html("<div class='sitPlaceThumbnailEmpty'>Waiting</div>").trigger("create");
-	});
+	$(".sitPlaceContainer").each(
+			function() {
+				$(this).html(
+						"<div class='sitPlaceThumbnailEmpty'>Waiting</div>")
+						.trigger("create");
+			});
 	$("#handPotContainer")
 			.html(
 					'<img alt="" src="images/game/stack.png" height="100%"><span>&nbsp;&cent;&nbsp;'
@@ -52,6 +55,9 @@ function updateGameInfo(data) {
 	$(data.players).each(function(k, l) {
 		updatePlayerInfo(l);
 	});
+	$("#pscontainer" + data.POST_SB).html('<img src="images/game/sb.png" height="100%" />');
+	$("#pscontainer" + data.POST_BB).html('<img src="images/game/bb.png" height="100%" />');
+	$("#pscontainer" + data.DEALER).html('<img src="images/game/d.png" height="100%" />');
 	fitElementsWithinScreen();
 }
 var playerToActId;
@@ -92,20 +98,6 @@ function updatePlayerInfo(data) {
 				$(this).addClass("waitingChip");
 			}
 		});
-	} else if (data.status == "POST_SB") {
-		$('.pscontainer').each(function() {
-			if ("pscontainer" + playerId == this.id) {
-				$(this).html("Small");
-				$(this).addClass("smallBlindChip");
-			}
-		});
-	} else if (data.status == "POST_BB") {
-		$('.pscontainer').each(function() {
-			if ("pscontainer" + playerId == this.id) {
-				$(this).html("Big");
-				$(this).addClass("bigBlindChip");
-			}
-		});
 	} else if (data.status == "ACTION_TO_CHECK"
 			|| data.status == "ACTION_TO_CALL") {
 		if (data.status == "ACTION_TO_CALL") {
@@ -124,12 +116,6 @@ function updatePlayerInfo(data) {
 			$("#sliderRaise").attr("value", parseInt(data.bigBlind) * 2);
 		}
 
-		$('.pscontainer').each(function() {
-			if ("pscontainer" + playerId == this.id) {
-				$(this).html("Dealer");
-				$(this).addClass("dealerChip");
-			}
-		});
 		playerToActId = playerId;
 		countDownTotal = 15000;
 		timeLeft = 0;
@@ -170,8 +156,7 @@ function addANewPlayerToTable(id, name, chips, amountToCall) {
 										+ "<div class='w3-container w3-round w3-green' style='width:100%; height:7px;' id='timer"
 										+ id
 										+ "'></div></div>"
-										+ "<div class='ui-block-solo playerTimer'></div>"
-										+ "<div class='ui-grid-a'>"
+										+ "<div class='ui-grid-a' style='position: relative;'>"
 										+ "<div class='ui-block-a pscontainer' id='pscontainer"
 										+ id
 										+ "'></div>"
@@ -205,9 +190,8 @@ function addANewPlayerToTable(id, name, chips, amountToCall) {
 										+ "<div class='w3-container w3-round w3-green' style='width:100%; height:7px;' id='timer"
 										+ id
 										+ "'></div></div>"
-										+ "<div class='ui-block-solo playerTimer'></div>"
 										+ "<div class='ui-grid-a'>"
-										+ "<div class='ui-block-a pscontainer' id='pscontainer"
+										+ "<div class='ui-block-a pscontainer' style='position: relative;' id='pscontainer"
 										+ id
 										+ "'></div>"
 										+ "<div class='ui-block-b'> "

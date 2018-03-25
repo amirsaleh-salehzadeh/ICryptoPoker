@@ -194,11 +194,12 @@
 
 .pscontainer {
 	background-color: transparent;
-	/* 	width: 13px !important; */
+	width: 50% !important;
 	border: 1px solid #b00000;
 	border-radius: 11px;
 	z-index: 10;
-	font-size: 120%;
+	position: absolute;
+	height: 100%;
 }
 
 .sitPlaceContainer>.ui-block-a {
@@ -209,27 +210,6 @@
 .sitPlaceContainer>.ui-block-b {
 	width: 40%;
 	height: 100%;
-}
-
-.smallBlindChip {
-	background-color: yellow !important;
-	color: black !important;
-}
-
-.bigBlindChip {
-	background-color: blue !important;
-	color: black !important;
-}
-
-.dealerChip {
-	background-color: grey !important;
-	color: black !important;
-}
-
-.waitingChip {
-	background-color: transparent !important;
-	color: transparent !important;
-	border: none !important;
 }
 
 .amountToCallcontainer {

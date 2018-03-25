@@ -59,7 +59,7 @@ function fitElementsWithinScreen() {
 		$(this).trigger("create");
 	});
 	$(".playerCardsContainer").each(function() {
-		$(this).width($("#userSitPlace").width() * 7 / 10);
+		$(this).width($("#userSitPlace").height() * 1.4);
 		$(this).height($("#userSitPlace").height());
 		$(this).trigger("create");
 	});

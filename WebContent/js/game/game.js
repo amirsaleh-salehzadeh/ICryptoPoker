@@ -144,19 +144,25 @@ function updatePlayerInfo(data) {
 				$(this).html("LOST");
 				$(this).addClass("loser");
 				$(this).addClass("waitingChip");
+				$("#amountToCallcontainer"+playerToActId).html(data.handRank);
 			}
 		});
+		
 	} else if (data.status == "WON_HAND") {
 		$('.pscontainer').each(function() {
 			if ("pscontainer" + playerId == this.id) {
 				$(this).html("WIN");
 				$(this).addClass("winner");
 				$(this).addClass("waitingChip");
+				$("#amountToCallcontainer"+playerToActId).html(data.handRank);
 			}
 		});
 	}
 }
-
+//received over websockets: {"cards":["8c","3d","4d","5h","3c"],"pot":40,"gameStatus":"END_HAND",
+//	"players":[{"status":"WON_HAND","chips":140,"smallBlind":10,"bigBlind":20,"card1":"7d","card2":"4s","amountBetRound":0,"amountToCall":0,"id":"neil","name":null,"handRank":"TWO_PAIR"},
+//	           {"status":"LOST_HAND","chips":60,"smallBlind":10,"bigBlind":20,"card1":"As","card2":"6h","amountBetRound":0,"amountToCall":0,"id":"amir","name":null,"handRank":"PAIR"}]
+//  ,"handId":21,"smallBlind":10,"bigBlind":20}
 function endHand() {
 	console.log("GAME DONE");
 	// sendText("");

@@ -165,31 +165,24 @@ function addANewPlayerToTable(id, name, chips, amountToCall) {
 								// username, chip and timer div START
 								content = "<div class='ui-block-solo playerInfo'>"
 										+ "<div class='ui-block-solo w3-light-grey w3-round w3-tiny'>"
-										+ "<div class='w3-container w3-round w3-green' style='width:100%; height:7px;' id='timer"
+										+ "<div class='w3-container w3-round w3-green' style='width:100%; height:5px;' id='timer"
 										+ id
 										+ "'></div></div>"
-										+ "<div class='ui-grid-a'>"
-										+ "<div class='ui-block-a pscontainer' id='pscontainer"
-										+ id
-										+ "'></div>"
+										+ "<div class='ui-grid-a ui-block-solo'>"
+										+ "<div class='ui-block-a playerTotalChipsPlace'> &cent;"
+										+ chips
+										+ "</div>"
 										+ "<div class='ui-block-b'> "
 										+ name
 										+ "</div></div>"
-										+ "<div class='ui-block-solo playerTotalChipsPlace'> &cent;"
-										+ chips
-										+ "</div>"
-										// username, chip and timer div END
-										// PLAYER STATUS AND ACTION CONTAINER
-										// START
-										+ "<div class='ui-block-solo amountToCallcontainer' id='amountToCallcontainer"
+										+ "<div class='ui-grid-a ui-block-solo'>"
+										+ "<div class='ui-block-a pscontainer' id='pscontainer"
+										+ id + "'></div>"
+										+ "<div class='ui-block-b amountToCallcontainer' id='amountToCallcontainer"
 										+ id
 										+ "'> &cent;"
 										+ amountToCall
 										+ "</div></div>"
-
-										// PLAYER STATUS AND ACTION CONTAINER
-										// END
-										// CARD CONTAINER START
 										+ "<div class='ui-grid-a playerCardsContainer' id='cards"
 										+ id
 										+ "'><div class='ui-block-a card1'></div><div class='ui-block-b card2'></div>"
@@ -199,7 +192,7 @@ function addANewPlayerToTable(id, name, chips, amountToCall) {
 							} else {
 								content = "<div class='ui-block-a'><div class='ui-block-solo playerInfo'>"
 										+ "<div class='ui-block-solo w3-light-grey w3-round w3-tiny'>"
-										+ "<div class='w3-container w3-round w3-green' style='width:100%; height:7px;' id='timer"
+										+ "<div class='w3-container w3-round w3-green' style='width:100%; height:11px;' id='timer"
 										+ id
 										+ "'></div></div>"
 										+ "<div class='ui-grid-a'>"

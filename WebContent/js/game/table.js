@@ -1,36 +1,5 @@
 var webSocket;
 var wsUri = "";
-$(document).ready(
-		function() {
-			// $(".jqm-header").css("display", "none");
-			// $(window).on("resize", fitElementsWithinScreen());
-			fitElementsWithinScreen();
-			var wsUri = "ws://" + document.location.host
-					+ "/ICryptoPoker/game/" + $("#gameID").val() + "/"
-					+ $("#playerID").val();
-			webSocket = new WebSocket(wsUri);
-			webSocket.onmessage = function(evt) {
-				onMessage(evt);
-			};
-			webSocket.onerror = function(evt) {
-				onError(evt);
-			};
-			webSocket.onopen = function(evt) {
-				onOpen(evt);
-				$(".actionButtons").each(function() {
-					$(this).addClass("ui-state-disabled");
-				});
-			};
-			// $("#flopsContainer div").width($("#flop1").width());
-			$("#flopsContainer div").height(
-					$("#flop1").width() + ($("#flop1").width() * 0.7));
-//			$("#sliderRaise").slider();
-//			$("#sliderRaise").change(function(){
-//		        $(this).val("&cent; " + $(this).val()).slider("refresh");
-//		    });   
-			resetplayerInfo();
-		});
-
 function onMessage(evt) {
 	console.log("received over websockets: " + evt.data);
 	updateGameInfo(JSON.parse(evt.data));
@@ -90,7 +59,8 @@ function generateACard(cardVal, divID, cardNumber) {
 	// "'>"
 	// + text + "</span><span class='card-img " + color + "'>" + img
 	// + "</span></div>";
-	var res = "<img src='images/game/cards/"+ cardVal+".png' height='100%' width='100%'/>";
+	var res = "<img src='images/game/cards/" + cardVal
+			+ ".png' height='100%' width='100%'/>";
 	if (divID == "flopsContainer") {
 		$("#flop" + cardNumber).html(res).trigger("create");
 	} else {
@@ -104,16 +74,39 @@ function generateACard(cardVal, divID, cardNumber) {
 	}
 }
 
-function resetPlayerInfo(){
-	$(".playerInfo").each(function (i) { 
-		if (this.hasClass("winner")) 
-		{ 
-	this.removeClass("winner");
-		}else
-			if(this.hasClass("loser"))
-		{
-			this.removeClass("loser");
-		}
-	    
+function resetPlayerInfo() {
+	if ($(".playerInfo").length > 0)
+		$(".playerInfo").each(function(i) {
+			if (this.hasClass("winner")) {
+				this.removeClass("winner");
+			} else if (this.hasClass("loser")) {
+				this.removeClass("loser");
+			}
 		});
-	}
+	else
+		return;
+}
+
+$(document).ready(
+		function() {
+			fitElementsWithinScreen();
+			var wsUri = "ws://" + document.location.host
+					+ "/ICryptoPoker/game/" + $("#gameID").val() + "/"
+					+ $("#playerID").val();
+			webSocket = new WebSocket(wsUri);
+			webSocket.onmessage = function(evt) {
+				onMessage(evt);
+			};
+			webSocket.onerror = function(evt) {
+				onError(evt);
+			};
+			webSocket.onopen = function(evt) {
+				onOpen(evt);
+				$(".actionButtons").each(function() {
+					$(this).addClass("ui-state-disabled");
+				});
+			};
+			$("#flopsContainer div").height(
+					$("#flop1").width() + ($("#flop1").width() * 0.7));
+			resetplayerInfo();
+		});

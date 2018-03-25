@@ -104,17 +104,18 @@ function updatePlayerInfo(data) {
 
 	addANewPlayerToTable(playerId, playerName, parseInt(data.chips),
 			data.amountToCall);
-	if (data.status != "NOT_STARTED" && data.status != "SEATING")
-		dealCards2Players(data, playerId);
-
-	if (data.status == "WAITING" || data.status == "NOT_STARTED") {
-		$('.pscontainer').each(function() {
-			if ("pscontainer" + playerId == this.id) {
-				$(this).html("W");
-				$(this).addClass("waitingChip");
-			}
-		});
-	} else if (data.status == "ACTION_TO_CHECK"
+//	if (data.status != "NOT_STARTED" && data.status != "SEATING")
+//		dealCards2Players(data, playerId);
+//
+//	if (data.status == "WAITING" || data.status == "NOT_STARTED") {
+//		$('.pscontainer').each(function() {
+//			if ("pscontainer" + playerId == this.id) {
+//				$(this).html("W");
+//				$(this).addClass("waitingChip");
+//			}
+//		});
+//	} else 
+		if (data.status == "ACTION_TO_CHECK"
 			|| data.status == "ACTION_TO_CALL") {
 		if (data.status == "ACTION_TO_CALL") {
 			$("#checkBTN").html("Call &cent;" + data.amountToCall);

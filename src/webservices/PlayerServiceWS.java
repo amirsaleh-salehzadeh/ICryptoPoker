@@ -43,6 +43,7 @@ import tools.AMSException;
 import game.poker.holdem.dao.GameDaoImpl;
 import game.poker.holdem.domain.Game;
 import game.poker.holdem.domain.GameStatus;
+import game.poker.holdem.domain.HandEntity;
 import game.poker.holdem.domain.Player;
 import game.poker.holdem.domain.PlayerStatus;
 import game.poker.holdem.service.GameServiceImpl;
@@ -171,19 +172,25 @@ public class PlayerServiceWS {
 		GameDaoImpl gameDao = new GameDaoImpl();
 		Game game = gameDao.findById(gameId, null);
 		Player player = playerActionService.getPlayerById(playerId);
-		boolean folded = playerActionService.fold(player, game);
+		HandEntity hand = playerActionService.fold(player, game);
 		ObjectMapper mapper = new ObjectMapper();
-//		game = gameDao.findById(gameId, null);
+		// game = gameDao.findById(gameId, null);
 		String json = "";
-//		try {
-//			GameUtil.goToNextStepOfTheGame(game, playerId);
-//		} catch (AMSException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		}
 		try {
-			json = mapper.writeValueAsString(Collections.singletonMap(
-					"success", folded));
+//			if (hand != null
+//					&& player.getGamePosition() == game
+//							.getPlayersRemaining())
+				GameUtil.goToNextStepOfTheGame(game, playerId);
+		} catch (AMSException e1) {
+			e1.printStackTrace();
+		}
+		try {
+			if (hand == null)
+				json = mapper.writeValueAsString(Collections.singletonMap(
+						"success", false));
+			else
+				json = mapper.writeValueAsString(Collections.singletonMap(
+						"success", true));
 		} catch (JsonGenerationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -221,14 +228,20 @@ public class PlayerServiceWS {
 		Game game = gameDao.findById(gameId, null);
 		playerActionService = new PlayerActionServiceImpl();
 		Player player = playerActionService.getPlayerById(playerId);
-		boolean called = playerActionService.call(player, game);
+		HandEntity hand = playerActionService.call(player, game);
 		Map<String, Object> resultMap = new HashMap<String, Object>();
-		resultMap.put("success", called);
+		if (hand == null)
+			resultMap.put("success", false);
+		else
+			resultMap.put("success", true);
 		resultMap.put("chips", player.getChips());
 		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
 		try {
-			GameUtil.goToNextStepOfTheGame(game, playerId);
+//			if (hand != null
+//					&& player.getGamePosition() == game
+//							.getPlayersRemaining())
+				GameUtil.goToNextStepOfTheGame(game, playerId);
 		} catch (AMSException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -270,18 +283,24 @@ public class PlayerServiceWS {
 		Game game = gameDao.findById(gameId, null);
 		playerActionService = new PlayerActionServiceImpl();
 		Player player = playerActionService.getPlayerById(playerId);
-		boolean checked = playerActionService.check(player, game);
+		HandEntity hand = playerActionService.check(player, game);
 		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
 		try {
-			GameUtil.goToNextStepOfTheGame(game, playerId);
+//			if (hand != null
+//					&& player.getGamePosition() == game.getPlayersRemaining())
+				GameUtil.goToNextStepOfTheGame(game, playerId);
 		} catch (AMSException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		try {
-			json = mapper.writeValueAsString(Collections.singletonMap(
-					"success", checked));
+			if (hand == null)
+				json = mapper.writeValueAsString(Collections.singletonMap(
+						"success", false));
+			else
+				json = mapper.writeValueAsString(Collections.singletonMap(
+						"success", true));
 		} catch (JsonGenerationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -330,14 +349,19 @@ public class PlayerServiceWS {
 		GameDaoImpl gameDao = new GameDaoImpl();
 		Game game = gameDao.findById(gameId, null);
 		Player player = playerActionService.getPlayerById(playerId);
-		boolean bet = playerActionService.bet(player, game, betAmount);
+		HandEntity hand = playerActionService.bet(player, game, betAmount);
 		Map<String, Object> resultMap = new HashMap<String, Object>();
-		resultMap.put("success", bet);
+		if (hand == null)
+			resultMap.put("success", false);
+		else
+			resultMap.put("success", true);
 		resultMap.put("chips", player.getChips());
 		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
 		try {
-			GameUtil.goToNextStepOfTheGame(game, playerId);
+//			if (hand != null
+//					&& player.getGamePosition() == game.getPlayersRemaining())
+				GameUtil.goToNextStepOfTheGame(game, playerId);
 		} catch (AMSException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

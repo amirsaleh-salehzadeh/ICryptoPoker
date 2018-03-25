@@ -261,14 +261,7 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDaoInterface {
 				if (rs.getString("player_to_act_id") != null)
 					hand.setCurrentToAct(pdao.findById(
 							rs.getString("player_to_act_id"), conn));
-				GameDaoImpl gdao = new GameDaoImpl();
-				// Game g = gdao.findById(rs.getLong("game_id"), null);
-				// hand.setGame(g);
 				Set<PlayerHand> phs = getAllPlayerHands(id, conn);
-//				for (Player p : gdao.getAllPlayersInGame(rs.getLong("game_id"),
-//						conn)) {
-//					phs.add(getPlayerHand(id, p.getId(), conn));
-//				}
 				hand.setPlayers(phs);
 				hand.setId(id);
 				hand.setLastBetAmount(rs.getInt("bet_amount"));
@@ -348,57 +341,6 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDaoInterface {
 		return board;
 	}
 
-	private PlayerHand getPlayerHand(long handId, String playerId,
-			Connection conn) {
-		PlayerHand ph = new PlayerHand();
-		try {
-			boolean isNewConn = false;
-			if (conn == null)
-				try {
-					conn = getConnection();
-					conn.setAutoCommit(false);
-					isNewConn = true;
-				} catch (AMSException e) {
-					e.printStackTrace();
-				}
-			String query = "";
-			query = "select * from player_hand where hand_id = " + handId
-					+ " and player_id = '" + playerId + "'";
-			PreparedStatement ps = conn.prepareStatement(query);
-			ResultSet rs = ps.executeQuery();
-			PlayerDaoImpl pdao = new PlayerDaoImpl();
-			if (rs.next()) {
-				if (rs.getString("player_id") == null)
-					return null;
-				ph.setPlayer(pdao.findById(rs.getString("player_id"), conn));
-				// ph.setHandEntity(hdao.findById(rs.getLong("hand_id"), conn));
-				ph.setCard1(Card.valueOf(rs.getString("card1")));
-				ph.setCard2(Card.valueOf(rs.getString("card2")));
-				ph.setBetAmount(rs.getInt("bet_amount"));
-				ph.setRoundBetAmount(rs.getInt("round_bet_amount"));
-				ph.setId(rs.getLong("player_hand_id"));
-				ph.setStatus(rs.getInt("action_status"));
-			}
-			rs.close();
-			ps.close();
-			if (isNewConn) {
-				conn.commit();
-				conn.close();
-			}
-		} catch (SQLException e) {
-			try {
-				if (!conn.isClosed()) {
-					conn.rollback();
-					conn.close();
-				}
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
-			e.printStackTrace();
-		}
-		return ph;
-	}
-
 	@Override
 	public Set<PlayerHand> getAllPlayerHands(long handId, Connection conn) {
 		Set<PlayerHand> players = new HashSet<PlayerHand>();
@@ -413,7 +355,8 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDaoInterface {
 					e.printStackTrace();
 				}
 			String query = "";
-			query = "select * from player_hand where hand_id = " + handId;
+			query = "select * from player_hand ph left join player p on p.username = ph.player_id where hand_id = "
+					+ handId + " order by p.game_position asc";
 			PreparedStatement ps = conn.prepareStatement(query);
 			ps.execute();
 			ResultSet rs = ps.getResultSet();
@@ -484,10 +427,6 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDaoInterface {
 			ps2.setLong(4, ph.getId());
 			ps2.executeUpdate();
 			ps2.close();
-			// PlayerDaoImpl pdao = new PlayerDaoImpl();
-			// Player p = pdao.findById(ph.getPlayer().getId(), conn);
-			// p.setChips(p.getChips() - ph.getBetAmount());
-			// pdao.merge(p, conn);
 			if (isNewConn) {
 				conn.commit();
 				conn.close();
@@ -506,41 +445,5 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDaoInterface {
 		return ph;
 
 	}
-
-//	public PlayerHand removePlayerHand(PlayerHand ph, Connection conn) {
-//		try {
-//			boolean isNewConn = false;
-//			if (conn == null)
-//				try {
-//					conn = getConnection();
-//					conn.setAutoCommit(false);
-//					isNewConn = true;
-//				} catch (AMSException e) {
-//					e.printStackTrace();
-//				}
-//			String query = "update `player_hand` set action_status = ? where `player_hand_id` = ?";
-//			PreparedStatement ps2 = conn.prepareStatement(query);
-//			ps2.setInt(1, ph.getStatus());
-//			ps2.setLong(2, ph.getId());
-//			ps2.executeUpdate();
-//			ps2.close();
-//			if (isNewConn) {
-//				conn.commit();
-//				conn.close();
-//			}
-//		} catch (SQLException e) {
-//			try {
-//				if (!conn.isClosed()) {
-//					conn.rollback();
-//					conn.close();
-//				}
-//			} catch (SQLException e1) {
-//				e1.printStackTrace();
-//			}
-//			e.printStackTrace();
-//		}
-//		return ph;
-//
-//	}
 
 }

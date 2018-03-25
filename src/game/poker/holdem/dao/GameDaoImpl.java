@@ -254,7 +254,8 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDaoInterface {
 					e.printStackTrace();
 				}
 			String query = "";
-			query = "select * from player where game_id = " + id;
+			query = "select * from player where game_id = " + id
+					+ " order by game_position asc";
 			PreparedStatement ps = conn.prepareStatement(query);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
@@ -418,7 +419,7 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDaoInterface {
 
 			String query = "";
 			query = "UPDATE `game_structure`  SET `current_blind_level` = ?, `blind_level` = ?, `current_blind_ends` =?, `pause_start_time` = ?, "
-					+ "`starting chips` = ?" + "VALUES (?, ?, ?, ?, ?);";
+					+ "`starting chips` = ? ";
 
 			PreparedStatement ps = conn.prepareStatement(query,
 					Statement.RETURN_GENERATED_KEYS);

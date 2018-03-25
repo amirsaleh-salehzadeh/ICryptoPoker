@@ -50,7 +50,7 @@ public interface PlayerActionServiceInterface {
 	 * @return true if the player folds, false if the fold is not permitted
 	 * (the player is out of position, the player is not in the hand).
 	 */
-	public boolean fold(Player player, Game game);
+	public HandEntity fold(Player player, Game game);
 	
 	/**
 	 * The Player checks back their action
@@ -59,7 +59,7 @@ public interface PlayerActionServiceInterface {
 	 * @return true if the player checks. False if a check is not permitted 
 	 * (The player is out of turn, there is a bet and a check is not allowed).
 	 */
-	public boolean check(Player player, Game game);
+	public HandEntity check(Player player, Game game);
 	
 	/**
 	 * The Player places a bet
@@ -73,7 +73,7 @@ public interface PlayerActionServiceInterface {
 	 * @return true if the bet is placed.  False if the bet is not permitted
 	 * (The bet is too small, the player is out of turn).
 	 */
-	public boolean bet(Player player, Game game, int betAmount);
+	public HandEntity bet(Player player, Game game, int betAmount);
 	
 	/**
 	 * Call the bet
@@ -82,7 +82,7 @@ public interface PlayerActionServiceInterface {
 	 * @return true if the bet is successfully called. False if a call is not permitted 
 	 * (there is not bet, it is not the players turn, etc.)
 	 */
-	public boolean call(Player player, Game game);
+	public HandEntity call(Player player, Game game);
 	
 	/**
 	 * Get the status in the game or hand of the player

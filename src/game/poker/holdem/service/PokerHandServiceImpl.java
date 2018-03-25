@@ -227,11 +227,11 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		// Re-attach to persistent context for this transaction (Lazy Loading
 		// stuff)
 		// hand = handDao.findById(hand.getId(), null);
-		if (hand.getCurrentToAct().equals(game.getPlayerInBTN())
-				&& !isActionResolved(hand))
-			System.out.println("wroooong");
-		else
-			System.out.println("right");
+//		if (hand.getCurrentToAct().equals(game.getPlayerInBTN())
+//				&& !isActionResolved(hand))
+//			System.out.println("wroooong");
+//		else
+//			System.out.println("right");
 
 		hand.setGame(game);
 		if (!isActionResolved(hand)) {

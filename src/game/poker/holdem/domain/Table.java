@@ -63,9 +63,6 @@ public class Table {
 					+ game.getCurrentHand().getTotalBetAmount());
 		}
 		p.setChips(0);
-		// PlayerActionServiceImpl pasi = new PlayerActionServiceImpl();
-		// if (game.getPlayerInBTN().equals(p))
-		// pasi.f;
 		pdao.merge(p, null);
 		game.setPlayersRemaining(game.getPlayersRemaining() - 1);
 		players.remove(uid, players.get(uid));

@@ -33,7 +33,11 @@ import game.poker.holdem.domain.GameStructure;
 import game.poker.holdem.domain.GameType;
 import game.poker.holdem.domain.HandEntity;
 import game.poker.holdem.domain.Player;
+import game.poker.holdem.domain.PlayerHand;
+import game.poker.holdem.eval.HandRank;
+import game.poker.holdem.holder.Board;
 import game.poker.holdem.util.GameUtil;
+import game.poker.holdem.util.PlayerUtil;
 import game.poker.holdem.view.PlayerStatusObject;
 
 import java.io.IOException;
@@ -42,6 +46,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -134,15 +139,23 @@ public class GameServiceImpl implements GameServiceInterface {
 		results.put("gameStatus", gs);
 		results.put("players", players);
 		HandDaoImpl hdao = new HandDaoImpl();
-		if (game.isStarted() && game.getCurrentHand() != null && gs.equals(GameStatus.PREFLOP)) {
-			HandEntity h = hdao.findById(game.getCurrentHand().getId(), null);
-			h.setGame(game);
-			results.put("POST_SB",
-					handService.getPlayerInSB(h).getId());
-			results.put("POST_BB",
-					handService.getPlayerInBB(h).getId());
+		HandEntity h = new HandEntity();
+		if (game.getCurrentHand() != null)
+			h = hdao.findById(game.getCurrentHand().getId(), null);
+		h.setGame(game);
+		if (game.isStarted() && game.getCurrentHand() != null
+				&& gs.equals(GameStatus.PREFLOP)) {
+			results.put("POST_SB", handService.getPlayerInSB(h).getId());
+			results.put("POST_BB", handService.getPlayerInBB(h).getId());
 			results.put("DEALER", game.getPlayerInBTN().getId());
 		}
+		Board board = null;
+		if (gs.equals(GameStatus.END_HAND)) {
+			board = new Board(h.getBoard().getFlop1(), h.getBoard().getFlop2(),
+					h.getBoard().getFlop3(), h.getBoard().getTurn(), h
+							.getBoard().getRiver());
+		}
+
 		for (Player p : game.getPlayers()) {
 			PlayerStatusObject ptmp = playerService.buildPlayerStatus(
 					game.getId(), p.getId());
@@ -150,6 +163,14 @@ public class GameServiceImpl implements GameServiceInterface {
 					&& !gs.equals(GameStatus.END_HAND)) {
 				ptmp.setCard1("card1" + playerId);
 				ptmp.setCard2("");
+			} else if(gs.equals(GameStatus.END_HAND)) {
+				for (PlayerHand ph : h.getPlayers()) {
+					if (ph.getPlayer().equals(p)) {
+						HandRank rank = PlayerUtil.evaluator.evaluate(board,
+								ph.getHand());
+						ptmp.setHandRank(rank.getHandType().toString());
+					}
+				}
 			}
 			players.add(ptmp);
 		}

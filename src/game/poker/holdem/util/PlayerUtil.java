@@ -49,7 +49,7 @@ import game.poker.holdem.holder.Board;
  */
 public class PlayerUtil {
 
-	private static TwoPlusTwoHandEvaluator evaluator = TwoPlusTwoHandEvaluator
+	public static TwoPlusTwoHandEvaluator evaluator = TwoPlusTwoHandEvaluator
 			.getInstance();
 
 	/**

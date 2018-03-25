@@ -43,6 +43,21 @@ public class PlayerStatusObject {
 	private int amountToCall;
 	private String id;
 	private String name;
+	private String handRank;
+
+	/**
+	 * @return the handRank
+	 */
+	public String getHandRank() {
+		return handRank;
+	}
+
+	/**
+	 * @param handRank the handRank to set
+	 */
+	public void setHandRank(String handRank) {
+		this.handRank = handRank;
+	}
 
 	public String getName() {
 		return name;

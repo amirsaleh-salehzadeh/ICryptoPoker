@@ -55,16 +55,21 @@ function updateGameInfo(data) {
 	$(data.players).each(function(k, l) {
 		updatePlayerInfo(l);
 	});
-	$("#pscontainer" + data.POST_SB).html(
-			'<img src="images/game/sb.png" height="100%" />');
-	$("#pscontainer" + data.POST_BB).html(
-			'<img src="images/game/bb.png" height="100%" />');
-	if ($("#pscontainer" + data.DEALER).html().length > 1)
-		$("#pscontainer" + data.DEALER).html($("#pscontainer" + data.DEALER).html()+
-				'<img src="images/game/d.png" height="100%" />');
-	else
-		$("#pscontainer" + data.DEALER).html(
-				'<img src="images/game/d.png" height="100%" />');
+	if ($("#pscontainer" + data.POST_SB).length > 0)
+		$("#pscontainer" + data.POST_SB).html(
+				'<img src="images/game/sb.png" height="100%" />');
+	if ($("#pscontainer" + data.POST_BB).length > 0)
+		$("#pscontainer" + data.POST_BB).html(
+				'<img src="images/game/bb.png" height="100%" />');
+	if ($("#pscontainer" + data.DEALER).length > 0) {
+		if ($("#pscontainer" + data.DEALER).html().length > 1)
+			$("#pscontainer" + data.DEALER).html(
+					$("#pscontainer" + data.DEALER).html()
+							+ '<img src="images/game/d.png" height="100%" />');
+		else
+			$("#pscontainer" + data.DEALER).html(
+					'<img src="images/game/d.png" height="100%" />');
+	}
 	fitElementsWithinScreen();
 }
 var playerToActId;

@@ -46,6 +46,7 @@ function updateGameInfo(data) {
 								+ data.pot + '&nbsp;</span>');
 	if (data.gameStatus == "END_HAND") {
 		endHand();
+		
 	}
 	if (data.cards != null)
 		$(data.cards).each(function(k, l) {
@@ -70,9 +71,9 @@ function updateGameInfo(data) {
 			$("#pscontainer" + data.DEALER).html(
 					'<img src="images/game/d.png" height="100%" />');
 	}
-	$("#sliderRaise").attr("min", data.bigBlind *2);
-	$("#sliderRaise").attr("max", (data.players[0]).chips);
-	$("#sliderRaise").attr("value", data.bigBlind *2);
+	$("#sliderRaise").attr("min", data.bigBlind *2);               //
+	$("#sliderRaise").attr("max", (data.players[0]).chips);        //Sets min, max and value for bet slider (sliderRaise) in table.jsp
+	$("#sliderRaise").attr("value", data.bigBlind *2);             //
 	fitElementsWithinScreen();
 }
 var playerToActId;
@@ -140,6 +141,7 @@ function updatePlayerInfo(data) {
 		$('.pscontainer').each(function() {
 			if ("pscontainer" + playerId == this.id) {
 				$(this).html("LOST");
+				$(this).addClass("loser");
 				$(this).addClass("waitingChip");
 			}
 		});
@@ -147,6 +149,7 @@ function updatePlayerInfo(data) {
 		$('.pscontainer').each(function() {
 			if ("pscontainer" + playerId == this.id) {
 				$(this).html("WIN");
+				$(this).addClass("winner");
 				$(this).addClass("waitingChip");
 			}
 		});

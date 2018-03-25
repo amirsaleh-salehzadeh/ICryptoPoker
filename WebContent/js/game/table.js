@@ -28,6 +28,7 @@ $(document).ready(
 //			$("#sliderRaise").change(function(){
 //		        $(this).val("&cent; " + $(this).val()).slider("refresh");
 //		    });   
+			resetplayerInfo();
 		});
 
 function onMessage(evt) {
@@ -102,3 +103,17 @@ function generateACard(cardVal, divID, cardNumber) {
 		}
 	}
 }
+
+function resetPlayerInfo(){
+	$(".playerInfo").each(function (i) { 
+		if (this.hasClass("winner")) 
+		{ 
+	this.removeClass("winner");
+		}else
+			if(this.hasClass("loser"))
+		{
+			this.removeClass("loser");
+		}
+	    
+		});
+	}

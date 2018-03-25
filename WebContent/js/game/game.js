@@ -55,9 +55,16 @@ function updateGameInfo(data) {
 	$(data.players).each(function(k, l) {
 		updatePlayerInfo(l);
 	});
-	$("#pscontainer" + data.POST_SB).html('<img src="images/game/sb.png" height="100%" />');
-	$("#pscontainer" + data.POST_BB).html('<img src="images/game/bb.png" height="100%" />');
-	$("#pscontainer" + data.DEALER).html('<img src="images/game/d.png" height="100%" />');
+	$("#pscontainer" + data.POST_SB).html(
+			'<img src="images/game/sb.png" height="100%" />');
+	$("#pscontainer" + data.POST_BB).html(
+			'<img src="images/game/bb.png" height="100%" />');
+	if ($("#pscontainer" + data.DEALER).html().length > 1)
+		$("#pscontainer" + data.DEALER).html($("#pscontainer" + data.DEALER).html()+
+				'<img src="images/game/d.png" height="100%" />');
+	else
+		$("#pscontainer" + data.DEALER).html(
+				'<img src="images/game/d.png" height="100%" />');
 	fitElementsWithinScreen();
 }
 var playerToActId;
@@ -156,7 +163,7 @@ function addANewPlayerToTable(id, name, chips, amountToCall) {
 										+ "<div class='w3-container w3-round w3-green' style='width:100%; height:7px;' id='timer"
 										+ id
 										+ "'></div></div>"
-										+ "<div class='ui-grid-a' style='position: relative;'>"
+										+ "<div class='ui-grid-a'>"
 										+ "<div class='ui-block-a pscontainer' id='pscontainer"
 										+ id
 										+ "'></div>"
@@ -191,7 +198,7 @@ function addANewPlayerToTable(id, name, chips, amountToCall) {
 										+ id
 										+ "'></div></div>"
 										+ "<div class='ui-grid-a'>"
-										+ "<div class='ui-block-a pscontainer' style='position: relative;' id='pscontainer"
+										+ "<div class='ui-block-a pscontainer' id='pscontainer"
 										+ id
 										+ "'></div>"
 										+ "<div class='ui-block-b'> "

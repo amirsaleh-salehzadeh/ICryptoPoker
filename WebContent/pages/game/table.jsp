@@ -197,8 +197,8 @@
 					<div class="ui-block-c"
 						style="width: 40%; height: 100% !important;"
 						id="raiseSliderContainer">
-						<input type="range" name="sliderRaise" id="sliderRaise" min="0"
-							max="100" value="50" data-show-value="true"
+						<input type="range" name="sliderRaise" id="sliderRaise"
+							 data-show-value="true"
 							data-popup-enabled="true">
 
 					</div>

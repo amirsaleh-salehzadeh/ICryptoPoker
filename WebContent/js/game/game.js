@@ -70,6 +70,9 @@ function updateGameInfo(data) {
 			$("#pscontainer" + data.DEALER).html(
 					'<img src="images/game/d.png" height="100%" />');
 	}
+	$("#sliderRaise").attr("min", data.bigBlind *2);
+	$("#sliderRaise").attr("max", (data.players[0]).chips);
+	$("#sliderRaise").attr("value", data.bigBlind *2);
 	fitElementsWithinScreen();
 }
 var playerToActId;

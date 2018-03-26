@@ -23,6 +23,11 @@ THE SOFTWARE.
  */
 package game.poker.holdem.domain;
 
+<<<<<<< HEAD
+=======
+import java.util.HashSet;
+import java.util.Iterator;
+>>>>>>> origin/AmirV1
 import java.util.List;
 import java.util.Set;
 
@@ -34,6 +39,7 @@ public class HandEntity {
 	private Game game;
 	private BoardEntity board;
 	private Set<PlayerHand> players;
+//	private Set<PlayerHand> allPlayers;
 	private Player currentToAct;
 	private BlindLevel blindLevel;
 	private List<Card> cardList;
@@ -69,12 +75,33 @@ public class HandEntity {
 
 	// @OneToMany(fetch=FetchType.EAGER,
 	// mappedBy="handEntity",cascade={CascadeType.ALL},orphanRemoval=true)
+<<<<<<< HEAD
+=======
+//	public Set<PlayerHand> getPlayers(boolean includeRemovedPlayerHands) {
+//		players = allPlayers;
+//		if (!includeRemovedPlayerHands)
+//			for (PlayerHand ph : allPlayers) {
+//				if (ph.isRemoved())
+//					players.remove(ph);
+//			}
+//			
+//		return players;
+//	}
+>>>>>>> origin/AmirV1
 	public Set<PlayerHand> getPlayers() {
+//		players = allPlayers;
+//		if (!includeRemovedPlayerHands)
+//			for (PlayerHand ph : allPlayers) {
+//				if (ph.isRemoved())
+//					players.remove(ph);
+//			}
+//			
 		return players;
 	}
 
 	public void setPlayers(Set<PlayerHand> players) {
 		this.players = players;
+//		this.allPlayers = players;
 	}
 
 	// @ManyToOne(fetch=FetchType.EAGER)

@@ -80,7 +80,11 @@ public class Deck {
 		initDeck();
 		shuffleDeck();
 		List<Card> res = this.cards;
+<<<<<<< HEAD
 		for (Iterator iterator = ph.iterator(); iterator.hasNext();) {
+=======
+		for (Iterator<PlayerHand> iterator = ph.iterator(); iterator.hasNext();) {
+>>>>>>> origin/AmirV1
 			PlayerHand playerHand = (PlayerHand) iterator.next();
 			res.remove(playerHand.getCard1());
 			res.remove(playerHand.getCard2());

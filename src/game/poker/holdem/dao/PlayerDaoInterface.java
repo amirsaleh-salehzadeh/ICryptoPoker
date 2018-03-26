@@ -29,7 +29,7 @@ import game.poker.holdem.domain.Player;
 
 public interface PlayerDaoInterface {
 	
-	Player save(Player p, Connection conn);
+//	Player save(Player p, Connection conn);
 
 	Player merge(Player p, Connection conn);
 	

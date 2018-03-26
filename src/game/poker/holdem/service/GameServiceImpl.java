@@ -24,18 +24,41 @@ THE SOFTWARE.
 package game.poker.holdem.service;
 
 import game.poker.holdem.dao.GameDaoImpl;
+<<<<<<< HEAD
+=======
+import game.poker.holdem.dao.HandDaoImpl;
+>>>>>>> origin/AmirV1
 import game.poker.holdem.dao.PlayerDaoImpl;
 import game.poker.holdem.domain.BlindLevel;
 import game.poker.holdem.domain.Game;
+import game.poker.holdem.domain.GameStatus;
 import game.poker.holdem.domain.GameStructure;
 import game.poker.holdem.domain.GameType;
+import game.poker.holdem.domain.HandEntity;
 import game.poker.holdem.domain.Player;
+import game.poker.holdem.domain.PlayerHand;
+import game.poker.holdem.eval.HandRank;
+import game.poker.holdem.holder.Board;
+import game.poker.holdem.util.GameUtil;
+import game.poker.holdem.util.PlayerUtil;
+import game.poker.holdem.view.PlayerStatusObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+<<<<<<< HEAD
 import java.util.HashSet;
+=======
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+>>>>>>> origin/AmirV1
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
+<<<<<<< HEAD
 import tools.AMSException;
 
 public class GameServiceImpl implements GameServiceInterface {
@@ -53,6 +76,15 @@ public class GameServiceImpl implements GameServiceInterface {
 		// game.setPlayers(new HashSet<Player>());
 		return game;
 	}
+=======
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
+
+import tools.AMSException;
+
+public class GameServiceImpl implements GameServiceInterface {
+>>>>>>> origin/AmirV1
 
 	public Game startGame(Game game) throws AMSException {
 		GameDaoImpl gameDao = new GameDaoImpl();
@@ -108,22 +140,125 @@ public class GameServiceImpl implements GameServiceInterface {
 					"Cannot have more than 10 players in one game");
 		}
 		player.setGameId(game.getId());
+<<<<<<< HEAD
 		// Set up player according to game logic.
+=======
+>>>>>>> origin/AmirV1
 		if (game.getGameType() == GameType.TOURNAMENT) {
 			player.setChips(game.getGameStructure().getStartingChips());
+			player.setTotalChips(player.getTotalChips()
+					- game.getGameStructure().getStartingChips());
 		}
 		PlayerDaoImpl playerDao = new PlayerDaoImpl();
 
 		player = playerDao.merge(player, null);
+<<<<<<< HEAD
 		// player = playerDao.addGameToPlayer(player, null);
+=======
+>>>>>>> origin/AmirV1
 		if (player == null) {
 			return null;
 		}
 		GameDaoImpl gameDao = new GameDaoImpl();
 		game.setPlayersRemaining(game.getPlayersRemaining() + 1);
 		game = gameDao.merge(game, null);
+<<<<<<< HEAD
 		player.setGameId(game.getId());
 		return player;
 	}
 
+=======
+		return player;
+	}
+
+	public String getGameStatusJSON(Game game, Map<String, Object> results,
+			String playerId) {
+		PlayerServiceManagerImpl playerService = new PlayerServiceManagerImpl();
+		GameStatus gs = (GameStatus) results.get("gameStatus");
+		Set<PlayerStatusObject> players = new HashSet<PlayerStatusObject>();
+		Board board = null;
+		HandEntity h = new HandEntity();
+		if (game.getCurrentHand() != null)
+			h = game.getCurrentHand();
+		if (gs.equals(GameStatus.END_HAND)) {
+			board = new Board(h.getBoard().getFlop1(), h.getBoard().getFlop2(),
+					h.getBoard().getFlop3(), h.getBoard().getTurn(), h
+							.getBoard().getRiver());
+		}
+		for (Player p : game.getPlayers()) {
+			PlayerStatusObject ptmp = playerService.buildPlayerStatus(
+					game.getId(), p.getId());
+
+			h.setGame(game);
+			if ((!p.getId().equals(playerId) || !game.isStarted())
+					&& !gs.equals(GameStatus.END_HAND)) {
+				ptmp.setCard1("card1" + playerId);
+				ptmp.setCard2("");
+			} else if (gs.equals(GameStatus.END_HAND)) {
+				for (PlayerHand ph : h.getPlayers()) {
+					if (ph.getPlayer().equals(p)) {
+						HandRank rank = PlayerUtil.evaluator.evaluate(board,
+								ph.getHand());
+						ptmp.setHandRank(rank.getHandType().toString());
+					}
+				}
+			}
+			players.add(ptmp);
+		}
+		results.put("players", players);
+		ObjectMapper mapper = new ObjectMapper();
+		String json = "";
+		try {
+			json = mapper.writeValueAsString(results);
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return json;
+	}
+
+	public Map<String, Object> getGameStatusMap(Game game) {
+		GameStatus gs = GameUtil.getGameStatus(game);
+		Map<String, Object> results = new HashMap<String, Object>();
+		PokerHandServiceImpl handService = new PokerHandServiceImpl();
+		results.put("gameStatus", gs);
+		HandEntity h = new HandEntity();
+		if (game.getCurrentHand() != null)
+			h = game.getCurrentHand();
+		h.setGame(game);
+		if (game.isStarted() && game.getCurrentHand() != null
+				&& gs.equals(GameStatus.PREFLOP)) {
+			results.put("POST_SB", handService.getPlayerInSB(h).getId());
+			results.put("POST_BB", handService.getPlayerInBB(h).getId());
+			results.put("DEALER", game.getPlayerInBTN().getId());
+		}
+		if (game.getCurrentHand() != null)
+			results.put("handId", game.getCurrentHand().getId());
+		else
+			results.put("handId", 0);
+		if (game.getGameStructure().getCurrentBlindLevel() != null) {
+			results.put("smallBlind", game.getGameStructure()
+					.getCurrentBlindLevel().getSmallBlind());
+			results.put("bigBlind", game.getGameStructure()
+					.getCurrentBlindLevel().getBigBlind());
+		}
+		if (game.getGameStructure().getCurrentBlindEndTime() != null) {
+			long timeLeft = game.getGameStructure().getCurrentBlindEndTime()
+					.getTime()
+					- new Date().getTime();
+			timeLeft = Math.max(0, timeLeft);
+			results.put("blindTime", timeLeft);
+		}
+		if (game.getCurrentHand() != null) {
+			results.put("pot", game.getCurrentHand().getPot());
+			results.put("cards", game.getCurrentHand().getBoard()
+					.getBoardCardsString());
+		}
+		return results;
+	}
+
+>>>>>>> origin/AmirV1
 }

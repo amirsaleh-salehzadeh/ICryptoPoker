@@ -38,6 +38,7 @@ audio:not ([controls] ){
 	display: none
 }
 
+<<<<<<< HEAD
 a {
 	background-color: transparent;
 	-webkit-text-decoration-skip: objects
@@ -46,6 +47,16 @@ a {
 a:active,a:hover {
 	outline-width: 0
 }
+=======
+/* a { */
+/* 	background-color: transparent; */
+/* 	-webkit-text-decoration-skip: objects */
+/* } */
+
+/* a:active,a:hover { */
+/* 	outline-width: 0 */
+/* } */
+>>>>>>> origin/AmirV1
 
 abbr[title] {
 	border-bottom: none;
@@ -928,9 +939,15 @@ a {
 	padding: 0 8px
 }
 
+<<<<<<< HEAD
 .w3-container,.w3-panel {
 	padding: 0.01em 16px
 }
+=======
+/* .w3-container,.w3-panel { */
+/* 	padding: 0.01em 16px */
+/* } */
+>>>>>>> origin/AmirV1
 
 .w3-panel {
 	margin-top: 16px;

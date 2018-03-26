@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 $(document).ready(getAllGames());
 
+=======
+//$(document).ready(getAllGames());
+$(window).load(getAllGames());
+>>>>>>> origin/AmirV1
 $.fn.serializeObject = function() {
 	var o = {};
 	var a = this.serializeArray();
@@ -28,17 +33,31 @@ function getAllGames() {
 		success : function(data) {
 			var tableRows = "";
 			$.each(data, function(k, l) {
+<<<<<<< HEAD
 				tableRows += "<tr onclick='joinGame(" + l.id + ")'><td>"
 						+ l.name + "</td><td>";
 				var smallBig = l.gameStructure.currentBlindLevel.split("_");
 				tableRows += smallBig[1] + " / " + smallBig[2] + "</td><td>";
 				tableRows += parseInt(smallBig[2]) * 40 + " / "
 				+ parseInt(smallBig[2]) * 200  + "</td><td>"
+=======
+				var smallBig = l.gameStructure.currentBlindLevel.split("_");
+				tableRows += "<tr onclick='joinGame(" + l.id + ","
+						+ smallBig[1] + "," + smallBig[2] + ")'><td>" + l.name
+						+ "</td><td>";
+
+				tableRows += smallBig[1] + " / " + smallBig[2] + "</td><td>";
+				tableRows += parseInt(smallBig[2]) * 40 + " / "
+						+ parseInt(smallBig[2]) * 200 + "</td><td>"
+>>>>>>> origin/AmirV1
 						+ l.playersRemaining + " / 10</td></tr>";
 			});
 			$("#lobbyTableTBody").html(tableRows);
 			$("#table-lobby").trigger("create");
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/AmirV1
 		},
 		complete : function() {
 			HideLoadingScreen();
@@ -50,6 +69,7 @@ function getAllGames() {
 	});
 }
 
+<<<<<<< HEAD
 function joinGame(gameID) {
 	if ($("#playerName").val() == "") {
 		alert("player name????");
@@ -57,6 +77,47 @@ function joinGame(gameID) {
 	}
 	window.location.replace("t_game.do?reqCode=joinAGame&gameId=" + gameID
 			+ "&playerName=" + $("#playerName").val());
+=======
+function joinGame(gameID, min, max) {
+	if ($("#playerName").val() == "") {
+		alert("player name????");
+		return;
+	} else {
+		var playerChips = ($('#chips').html().split(";"))[1];
+		// player does not have enough chips to enter the game
+		if (playerChips < min) {
+			alert("not enough chips");
+
+		} else if (playerChips < max) {
+			// players chips are less than the max
+			$('#buyIn').attr("max", playerChips);
+			$('#buyIn').attr("min", min);
+			$("#popupJoinGame").popup("open");
+			$('#joingGameID').attr("value", gameID);
+		} else {
+			// player has enough chips for min and max
+			$('#buyIn').attr("min", min);
+			$('#buyIn').attr("max", max);
+			$("#popupJoinGame").popup("open");
+			$('#joingGameID').attr("value", gameID);
+
+		}
+		// set the on click for the Join button.
+		$('#joinGameBTN').click(function() {
+			$("#popupJoinGame").popup("close");
+			buyInGame(gameID, $('#buyIn').val());
+		});
+
+	}
+
+}
+
+function buyInGame(gameID, chips) {
+	// takes the game ID and chips player bought in with and joins the game
+	window.location.replace("game.do?reqCode=joinAGame&gameId=" + gameID
+			+ "&playerName=" + $("#playerName").val() + "&chips=" + chips
+			+ "&nickname=" + $("#nickname").val());
+>>>>>>> origin/AmirV1
 }
 
 function createNewGame() {
@@ -73,8 +134,13 @@ function createNewGame() {
 			var smallBig = result.gameStructure.currentBlindLevel.split("_");
 			tableRows += smallBig[1] + " / " + smallBig[2] + "</td><td>";
 			tableRows += parseInt(smallBig[2]) * 40 + "/"
+<<<<<<< HEAD
 					+ parseInt(smallBig[2]) * 200 +
 			"</td><td>" + result.playersRemaining + " / 10</td></tr>";
+=======
+					+ parseInt(smallBig[2]) * 200 + "</td><td>"
+					+ result.playersRemaining + " / 10</td></tr>";
+>>>>>>> origin/AmirV1
 			$("#lobbyTableTBody")
 					.html(tableRows + $("#lobbyTableTBody").html());
 			$("#table-lobby").trigger("create");

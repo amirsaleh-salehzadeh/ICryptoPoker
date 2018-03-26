@@ -1,5 +1,6 @@
 
 *.class
+<<<<<<< HEAD
 *.class
 *.class
 *.class
@@ -9,4 +10,7 @@
 *.class
 db/2018:03:17.sql
 *.class
+=======
+*.dat
+>>>>>>> origin/AmirV1
 *.class

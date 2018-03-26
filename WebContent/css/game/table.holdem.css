@@ -1,4 +1,5 @@
 #mainTable {
+<<<<<<< HEAD
 	background-color: #477148;
 	-moz-box-shadow: inset 0 0 10px #000000;
 	-webkit-box-shadow: inset 0 0 10px #000000;
@@ -10,6 +11,15 @@
 	background-position: center;
 	-webkit-box-shadow: inset 0 0 10px #000000;
 	box-shadow: inset 0 0 10px #000000;
+=======
+	background-color: #008000;
+	-moz-box-shadow: inset 0 0 22px #000000;
+	-webkit-box-shadow: inset 0 0 22px #000000;
+	box-shadow: inset 0 0 22px #000000;
+	border-radius: 44%;
+	-webkit-box-shadow: inset 0 0 22px #000000;
+	box-shadow: inset 0 0 22px #000000;
+>>>>>>> origin/AmirV1
 }
 
 #handPotContainer span {
@@ -22,16 +32,33 @@
 	position: relative;
 }
 
+<<<<<<< HEAD
 .constantBannersTop,.constantBannersBottom {
 	height: 14%;
 	position: absolute;
 	right: 0;
 	left: 0;
+=======
+#handPotContainer {
+	text-align: center;
+}
+
+.constantBannersBottom {
+	height: 14%;
+	width: 100%;
+>>>>>>> origin/AmirV1
 	background-color: rgba(108, 112, 120, .4);
 }
 
 .constantBannersTop {
 	height: 10%;
+<<<<<<< HEAD
+=======
+	width: 100%;
+	background-color: rgba(108, 112, 120, .4);
+	width: 100%;
+	float: none;
+>>>>>>> origin/AmirV1
 }
 
 .constantBannersTop>div {
@@ -43,6 +70,10 @@
 		45px rgba(128, 135, 151, 0.1), inset -1px -1px 2px
 		rgba(81, 89, 106, 0.5), inset -3px -15px 45px rgba(108, 112, 120, 0.8),
 		1px 5px 30px -4px rgba(142, 145, 151, 0.1);
+<<<<<<< HEAD
+=======
+	whitespace: nowrap;
+>>>>>>> origin/AmirV1
 }
 
 .sitPlaceContainer {
@@ -54,6 +85,7 @@
 	margin: 0 auto;
 	color: white;
 	background-color: black;
+<<<<<<< HEAD
 /* 	position: absolute; */
 	font-size: 70%;
 	padding: 1px;
@@ -61,10 +93,16 @@
 	border-radius: 3px;
 /* 	bottom: 0; */
 /* 	left: 0; */
+=======
+	font-size: 80%;
+	font-weight: bold;
+	padding: 1px;
+>>>>>>> origin/AmirV1
 }
 
 .playerTotalChipsPlace {
 	margin: 0 auto;
+<<<<<<< HEAD
 	background-image: url("../../images/game/chips.png");
 	background-position: 0 0;
 	background-repeat: no-repeat;
@@ -93,6 +131,24 @@
 
 #mainBoardContainerDIV {
 	width: 93%;
+=======
+	background-image: url("../../images/game/chips.png") !important;
+	background-position: 0 0 !important;
+	background-repeat: no-repeat !important;
+	background-size: contain !important;
+	padding: 1px;
+	padding-left: 13%;
+	color: white;
+	background-color: transparent;
+	font-size: 80%;
+	/* 	border: 1px solid #666; */
+	/* 	border-radius: 3px; */
+}
+
+#mainBoardContainerDIV {
+	width: 100%;
+	height: 76%;
+>>>>>>> origin/AmirV1
 }
 
 #gamePlayScreen {
@@ -106,6 +162,11 @@
 	overflow: hidden;
 	width: 100%;
 	height: 100%;
+<<<<<<< HEAD
+=======
+	text-shadow: none !important;
+	color: white;
+>>>>>>> origin/AmirV1
 }
 
 #flopsContainer {
@@ -137,25 +198,46 @@
 
 .card-img {
 	text-align: left;
+<<<<<<< HEAD
 	font-size: 70%;
+=======
+	font-size: 133%;
+>>>>>>> origin/AmirV1
 	position: absolute;
 	bottom: 2px;
 	left: 40%;
 }
 
 .card1 {
+<<<<<<< HEAD
 	width: 35% !important;
+=======
+	width: 50% !important;
+	height: 100%;
+}
+
+.card1 .card-small {
+>>>>>>> origin/AmirV1
 	border-top-right-radius: 0px !important;
 	border-bottom-right-radius: 0px !important;
 }
 
 .card2 {
+<<<<<<< HEAD
 	width: 65% !important;
+=======
+	width: 50% !important;
+	height: 100%;
+>>>>>>> origin/AmirV1
 }
 
 .card-text {
 	margin: 0 auto;
+<<<<<<< HEAD
 	font-size: 100%;
+=======
+	font-size: 133%;
+>>>>>>> origin/AmirV1
 	font-weight: bold;
 	position: absolute;
 	top: 2px;
@@ -174,6 +256,7 @@
 	color: black;
 }
 
+<<<<<<< HEAD
 .playerCardsContainer {
 	position: absolute;
 	float: right;
@@ -183,10 +266,42 @@
 	height: 100%;
 	right: 0;
 	top: 0;
+=======
+.playerInfo {
+	border: 2px solid #b00000;
+	border-radius: 5px;
+	background-color: rgba(64, 64, 64, 0.5);
+	max-height: 100%;
+}
+
+.playerInfo .ui-grid-a {
+	border-bottom: 2px solid gold;
+	background-color: rgba(64, 64, 64, 0.5);
+	max-height: 100%;
+}
+
+.playerCardsContainer {
+	float: right;
+	z-index: 0;
+	margin: 0 !important;
+	width: 100%;
+	height: 100%;
+	right: 0;
+	top: 0;
+	/* 	left: 0; */
+	/* 	bottom: 0; */
+	position: absolute;
+	/* 	display: none; */
+}
+
+#userSitPlace {
+	display: block !important;
+>>>>>>> origin/AmirV1
 }
 
 .pscontainer {
 	background-color: transparent;
+<<<<<<< HEAD
 	position: absolute;
 	top: 0;
 	right: 0;
@@ -232,10 +347,34 @@
 	background-color: transparent !important;
 	color: transparent !important;
 	border: none !important;
+=======
+	width: 50% !important;
+	/* 	border: 1px solid #b00000; */
+	/* 	border-radius: 11px; */
+	z-index: 10;
+	height: 100%;
+}
+
+.pscontainer img {
+	/* 	position: absolute; */
+	max-width: 1em;
+	max-height: 1em;
+}
+
+.sitPlaceContainer>.ui-block-a {
+	width: 60%;
+	height: 100%;
+}
+
+.sitPlaceContainer>.ui-block-b {
+	width: 40%;
+	height: 100%;
+>>>>>>> origin/AmirV1
 }
 
 .amountToCallcontainer {
 	background-color: transparent;
+<<<<<<< HEAD
 	position: absolute;
 	bottom: 0;
 	left: 0;
@@ -243,16 +382,97 @@
 	color: white;
 	z-index: 10;
 	font-size: 70%;
+=======
+	/* 	position: absolute; */
+	/* 	bottom: 0; */
+	/* 	left: 0; */
+	border-radius: 50%;
+	color: white;
+	font-size: 100%;
+>>>>>>> origin/AmirV1
 	z-index: 10;
 }
 
 .sitPlaceThumbnailEmpty {
 	height: 100%;
+<<<<<<< HEAD
 	border: 1px solid rgba(0, 0, 0, .1);
 	border-radius: 50%;
 	font-size: 70%;
+=======
+	margin: 0 auto;
+	border: 1px solid rgba(0, 0, 0, .1);
+	border-radius: 50%;
+	font-size: 80%;
+>>>>>>> origin/AmirV1
 	box-shadow: inset 1px 1px 2px rgba(255, 66, 66, 0.3), inset 3px 15px
 		45px rgba(255, 33, 33, 0.1), inset -1px -1px 2px rgba(55, 0, 0, 0.5),
 		inset -3px -15px 45px rgba(122, 0, 0, .3), 1px 5px 30px -4px
 		rgba(46, 11, 33, .6);
+<<<<<<< HEAD
+=======
+}
+
+.winner {
+	/* 	the shadow for the winner box */
+	-webkit-box-shadow: -28px 2px 135px 0px rgba(255, 255, 255, 1);
+	-moz-box-shadow: -28px 2px 135px 0px rgba(255, 255, 255, 1);
+	box-shadow: -28px 2px 135px 0px rgba(255, 255, 255, 1);
+	/*  */
+	/* gold styling */
+	color: black !important;
+	background: rgba(252, 234, 187, 1);
+	background: -moz-linear-gradient(left, rgba(252, 234, 187, 1) 0%,
+		rgba(252, 205, 77, 1) 21%, rgba(248, 181, 0, 1) 38%,
+		rgba(251, 223, 147, 1) 100%) !important;
+	background: -webkit-gradient(left top, right top, color-stop(0%, rgba(252, 234, 187,
+		1)), color-stop(21%, rgba(252, 205, 77, 1)),
+		color-stop(38%, rgba(248, 181, 0, 1)),
+		color-stop(100%, rgba(251, 223, 147, 1))) !important;
+	background: -webkit-linear-gradient(left, rgba(252, 234, 187, 1) 0%,
+		rgba(252, 205, 77, 1) 21%, rgba(248, 181, 0, 1) 38%,
+		rgba(251, 223, 147, 1) 100%) !important;
+	background: -o-linear-gradient(left, rgba(252, 234, 187, 1) 0%,
+		rgba(252, 205, 77, 1) 21%, rgba(248, 181, 0, 1) 38%,
+		rgba(251, 223, 147, 1) 100%) !important;
+	background: -ms-linear-gradient(left, rgba(252, 234, 187, 1) 0%,
+		rgba(252, 205, 77, 1) 21%, rgba(248, 181, 0, 1) 38%,
+		rgba(251, 223, 147, 1) 100%) !important;
+	background: linear-gradient(to right, rgba(252, 234, 187, 1) 0%,
+		rgba(252, 205, 77, 1) 21%, rgba(248, 181, 0, 1) 38%,
+		rgba(251, 223, 147, 1) 100%);
+	/*  */
+}
+
+.loser {
+	/* 	the shadow for the loser box */
+	-webkit-box-shadow: -28px 2px 135px 0px rgba(255, 255, 255, 1);
+	-moz-box-shadow: -28px 2px 135px 0px rgba(255, 255, 255, 1);
+	box-shadow: -28px 2px 135px 0px rgba(255, 255, 255, 1);
+	/*  */
+	/* red styling */
+	color: black !important;
+	background: rgba(248, 80, 50, 1) !important;
+	background: -moz-linear-gradient(left, rgba(248, 80, 50, 1) 0%,
+		rgba(246, 41, 12, 1) 46%, rgba(241, 111, 92, 1) 61%,
+		rgba(240, 47, 23, 1) 71%, rgba(231, 56, 39, 1) 100%) !important;
+	background: -webkit-gradient(left top, right top, color-stop(0%, rgba(248, 80, 50, 1
+		)), color-stop(46%, rgba(246, 41, 12, 1)),
+		color-stop(61%, rgba(241, 111, 92, 1)),
+		color-stop(71%, rgba(240, 47, 23, 1)),
+		color-stop(100%, rgba(231, 56, 39, 1))) !important;
+	background: -webkit-linear-gradient(left, rgba(248, 80, 50, 1) 0%,
+		rgba(246, 41, 12, 1) 46%, rgba(241, 111, 92, 1) 61%,
+		rgba(240, 47, 23, 1) 71%, rgba(231, 56, 39, 1) 100%) !important;
+	background: -o-linear-gradient(left, rgba(248, 80, 50, 1) 0%,
+		rgba(246, 41, 12, 1) 46%, rgba(241, 111, 92, 1) 61%,
+		rgba(240, 47, 23, 1) 71%, rgba(231, 56, 39, 1) 100%) !important;
+	background: -ms-linear-gradient(left, rgba(248, 80, 50, 1) 0%,
+		rgba(246, 41, 12, 1) 46%, rgba(241, 111, 92, 1) 61%,
+		rgba(240, 47, 23, 1) 71%, rgba(231, 56, 39, 1) 100%) !important;
+	background: linear-gradient(to right, rgba(248, 80, 50, 1) 0%,
+		rgba(246, 41, 12, 1) 46%, rgba(241, 111, 92, 1) 61%,
+		rgba(240, 47, 23, 1) 71%, rgba(231, 56, 39, 1) 100%) !important;
+	/* 	 */
+>>>>>>> origin/AmirV1
 }

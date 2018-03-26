@@ -23,6 +23,10 @@ THE SOFTWARE.
  */
 package game.poker.holdem.service;
 
+<<<<<<< HEAD
+=======
+import game.poker.holdem.dao.GameDaoImpl;
+>>>>>>> origin/AmirV1
 import game.poker.holdem.dao.HandDaoImpl;
 import game.poker.holdem.domain.Game;
 import game.poker.holdem.domain.GameStatus;
@@ -36,21 +40,36 @@ import game.poker.holdem.view.PlayerStatusObject;
 
 public class PlayerServiceManagerImpl implements PlayerServiceManager {
 
+<<<<<<< HEAD
 	private GameServiceImpl gameService;
+=======
+//	private GameServiceImpl gameService;
+>>>>>>> origin/AmirV1
 
 	private PlayerActionServiceImpl playerActionService;
 
 	private PokerHandServiceImpl handService;
 
 	public PlayerStatusObject buildPlayerStatus(long gameId, String playerId) {
+<<<<<<< HEAD
 		gameService = new GameServiceImpl();
 		Game game = gameService.getGameById(gameId, false);
+=======
+//		gameService = new GameServiceImpl();
+		GameDaoImpl gameDao = new GameDaoImpl();
+		Game game = gameDao.findById(gameId, null);
+>>>>>>> origin/AmirV1
 
 		playerActionService = new PlayerActionServiceImpl();
 		Player player = playerActionService.getPlayerById(playerId);
 		PlayerStatusObject results = new PlayerStatusObject();
+<<<<<<< HEAD
 		handService = new PokerHandServiceImpl();
 		// HandDaoImpl hdao = new HandDaoImpl();
+=======
+		results.setName(player.getName());
+		handService = new PokerHandServiceImpl();
+>>>>>>> origin/AmirV1
 
 		// ADDED THESE THREE LINES THERE WAS AN ERROR
 		if (game.getCurrentHand() != null) {
@@ -86,8 +105,13 @@ public class PlayerServiceManagerImpl implements PlayerServiceManager {
 		if (game.getCurrentHand() != null) {
 			HandEntity hand = game.getCurrentHand();
 			PlayerHand playerHand = null;
+<<<<<<< HEAD
 			for (PlayerHand ph : hand.getPlayers()) {
 				if (ph.getPlayer().equals(player)) {
+=======
+			for (PlayerHand ph : hand.getPlayers()) {//true
+				if (ph.getPlayer() != null && ph.getPlayer().equals(player)) {
+>>>>>>> origin/AmirV1
 					playerHand = ph;
 					break;
 				}
@@ -105,6 +129,7 @@ public class PlayerServiceManagerImpl implements PlayerServiceManager {
 				}
 			}
 		}
+		results.setId(playerId);
 		return results;
 	}
 

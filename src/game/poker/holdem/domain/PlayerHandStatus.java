@@ -20,25 +20,25 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
-*/
-package game.poker.holdem.dao;
+ */
+package game.poker.holdem.domain;
 
-import java.sql.Connection;
-import java.util.List;
-import java.util.Set;
-
-import game.poker.holdem.Card;
-import game.poker.holdem.domain.HandEntity;
-import game.poker.holdem.domain.PlayerHand;
-
-public interface HandDao {
-	
-	HandEntity save(HandEntity game, Connection conn);
-
-	HandEntity merge(HandEntity hand, Connection conn);
-
-	HandEntity findById(long id, Connection conn);
-	
-	Set<PlayerHand> getAllPlayerHands (long handId, Connection conn);
-	
+/**
+ * Enum type to track the player's current status in the game/hand
+ * 
+ * @author jacobhyphenated
+ */
+public class PlayerHandStatus {
+	public static final int NORMAL = 0;
+	public static final int CALLED = 1;
+	public static final int CHECKED = 2;
+	public static final int FOLDED = 3;
+	public static final int RAISED = 4;
+	public static final int BET = 5;
+	public static final int PREFLOPEND = 6;
+	public static final int FLOPEND = 7;
+	public static final int TURNEND = 8;
+	public static final int RIVEREND = 9;
+	public static final int HANDEND = 10;
+	public static final int SITOUT = 11;
 }

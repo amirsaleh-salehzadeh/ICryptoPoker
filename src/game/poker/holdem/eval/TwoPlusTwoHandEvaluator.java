@@ -47,11 +47,6 @@ public class TwoPlusTwoHandEvaluator implements HandRankEvaluator {
 		handRanks = reader.loadHandRankResource(HAND_RANKS);
 	}
 	
-	/**
-	 * The two plust two lookup table is very memory intensive.  You should only ever create
-	 * one instance of the class.  Use this method to keep the singleton pattern.
-	 * @return {@link TwoPlusTwoHandEvaluator} instance
-	 */
 	public static TwoPlusTwoHandEvaluator getInstance(){
 		if(instance == null){
 			instance = new TwoPlusTwoHandEvaluator();

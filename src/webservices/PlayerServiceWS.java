@@ -38,13 +38,23 @@ import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
+import tools.AMSException;
+
+import game.poker.holdem.dao.GameDaoImpl;
 import game.poker.holdem.domain.Game;
+import game.poker.holdem.domain.GameStatus;
+import game.poker.holdem.domain.HandEntity;
 import game.poker.holdem.domain.Player;
 import game.poker.holdem.domain.PlayerStatus;
 import game.poker.holdem.service.GameServiceImpl;
 import game.poker.holdem.service.PlayerActionServiceImpl;
 import game.poker.holdem.service.PlayerServiceManager;
 import game.poker.holdem.service.PlayerServiceManagerImpl;
+<<<<<<< HEAD:src/webservices/PlayerServiceWS.java
+=======
+import game.poker.holdem.service.PokerHandServiceImpl;
+import game.poker.holdem.util.GameUtil;
+>>>>>>> origin/AmirV1:src/webservices/PlayerServiceWS.java
 import game.poker.holdem.view.PlayerStatusObject;
 
 /**
@@ -81,6 +91,7 @@ public class PlayerServiceWS {
 	 *         requests. Example: {"playerId":xxx}
 	 */
 
+<<<<<<< HEAD:src/webservices/PlayerServiceWS.java
 	// @GET
 	// @Path("/JoinGame")
 	// @Produces("application/json")
@@ -104,6 +115,32 @@ public class PlayerServiceWS {
 	// }
 	// return json;
 	// }
+=======
+	@GET
+	@Path("/JoinGame")
+	@Produces("application/json")
+	public String joinGame(long gameId, String playerName) {
+		GameDaoImpl gameDao = new GameDaoImpl();
+		Game game = gameDao.findById(gameId, null);
+		Player player = new Player();
+		player.setName(playerName);
+		player = gameService.addNewPlayerToGame(game, player);
+		ObjectMapper mapper = new ObjectMapper();
+		String json = "";
+		try {
+			json = mapper.writeValueAsString(Collections.singletonMap(
+					"playerId", player.getId()));
+		} catch (JsonGenerationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return json;
+	}
+>>>>>>> origin/AmirV1:src/webservices/PlayerServiceWS.java
 
 	/**
 	 * Player status in the current game and hand.
@@ -161,6 +198,7 @@ public class PlayerServiceWS {
 			@QueryParam("playerId") String playerId) {
 		gameService = new GameServiceImpl();
 		playerActionService = new PlayerActionServiceImpl();
+<<<<<<< HEAD:src/webservices/PlayerServiceWS.java
 		Game game = gameService.getGameById(gameId, false);
 		Player player = playerActionService.getPlayerById(playerId);
 		boolean folded = playerActionService
@@ -170,6 +208,30 @@ public class PlayerServiceWS {
 		try {
 			json = mapper.writeValueAsString(Collections.singletonMap(
 					"success", folded));
+=======
+		GameDaoImpl gameDao = new GameDaoImpl();
+		Game game = gameDao.findById(gameId, null);
+		Player player = playerActionService.getPlayerById(playerId);
+		HandEntity hand = playerActionService.fold(player, game);
+		ObjectMapper mapper = new ObjectMapper();
+		// game = gameDao.findById(gameId, null);
+		String json = "";
+		try {
+//			if (hand != null
+//					&& player.getGamePosition() == game
+//							.getPlayersRemaining())
+				GameUtil.goToNextStepOfTheGame(game, playerId);
+		} catch (AMSException e1) {
+			e1.printStackTrace();
+		}
+		try {
+			if (hand == null)
+				json = mapper.writeValueAsString(Collections.singletonMap(
+						"success", false));
+			else
+				json = mapper.writeValueAsString(Collections.singletonMap(
+						"success", true));
+>>>>>>> origin/AmirV1:src/webservices/PlayerServiceWS.java
 		} catch (JsonGenerationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -203,16 +265,39 @@ public class PlayerServiceWS {
 	public String call(@QueryParam("gameId") long gameId,
 			@QueryParam("playerId") String playerId) {
 		gameService = new GameServiceImpl();
+<<<<<<< HEAD:src/webservices/PlayerServiceWS.java
 		Game game = gameService.getGameById(gameId, false);
 		playerActionService = new PlayerActionServiceImpl();
 		Player player = playerActionService.getPlayerById(playerId);
 		boolean called = playerActionService
 				.call(player, game);
+=======
+		GameDaoImpl gameDao = new GameDaoImpl();
+		Game game = gameDao.findById(gameId, null);
+		playerActionService = new PlayerActionServiceImpl();
+		Player player = playerActionService.getPlayerById(playerId);
+		HandEntity hand = playerActionService.call(player, game);
+>>>>>>> origin/AmirV1:src/webservices/PlayerServiceWS.java
 		Map<String, Object> resultMap = new HashMap<String, Object>();
-		resultMap.put("success", called);
+		if (hand == null)
+			resultMap.put("success", false);
+		else
+			resultMap.put("success", true);
 		resultMap.put("chips", player.getChips());
 		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
+<<<<<<< HEAD:src/webservices/PlayerServiceWS.java
+=======
+		try {
+//			if (hand != null
+//					&& player.getGamePosition() == game
+//							.getPlayersRemaining())
+				GameUtil.goToNextStepOfTheGame(game, playerId);
+		} catch (AMSException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+>>>>>>> origin/AmirV1:src/webservices/PlayerServiceWS.java
 		try {
 			json = mapper.writeValueAsString(resultMap);
 		} catch (JsonGenerationException e) {
@@ -246,6 +331,7 @@ public class PlayerServiceWS {
 	public String check(@QueryParam("gameId") long gameId,
 			@QueryParam("playerId") String playerId) {
 		gameService = new GameServiceImpl();
+<<<<<<< HEAD:src/webservices/PlayerServiceWS.java
 		Game game = gameService.getGameById(gameId, false);
 		playerActionService = new PlayerActionServiceImpl();
 		Player player = playerActionService.getPlayerById(playerId);
@@ -255,6 +341,30 @@ public class PlayerServiceWS {
 		try {
 			json = mapper.writeValueAsString(Collections.singletonMap(
 					"success", checked));
+=======
+		GameDaoImpl gameDao = new GameDaoImpl();
+		Game game = gameDao.findById(gameId, null);
+		playerActionService = new PlayerActionServiceImpl();
+		Player player = playerActionService.getPlayerById(playerId);
+		HandEntity hand = playerActionService.check(player, game);
+		ObjectMapper mapper = new ObjectMapper();
+		String json = "";
+		try {
+//			if (hand != null
+//					&& player.getGamePosition() == game.getPlayersRemaining())
+				GameUtil.goToNextStepOfTheGame(game, playerId);
+		} catch (AMSException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try {
+			if (hand == null)
+				json = mapper.writeValueAsString(Collections.singletonMap(
+						"success", false));
+			else
+				json = mapper.writeValueAsString(Collections.singletonMap(
+						"success", true));
+>>>>>>> origin/AmirV1:src/webservices/PlayerServiceWS.java
 		} catch (JsonGenerationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -300,15 +410,36 @@ public class PlayerServiceWS {
 			@QueryParam("betAmount") int betAmount) {
 		gameService = new GameServiceImpl();
 		playerActionService = new PlayerActionServiceImpl();
+<<<<<<< HEAD:src/webservices/PlayerServiceWS.java
 		Game game = gameService.getGameById(gameId, false);
 		Player player = playerActionService.getPlayerById(playerId);
 		boolean bet = playerActionService.bet(player, game,
 				betAmount);
+=======
+		GameDaoImpl gameDao = new GameDaoImpl();
+		Game game = gameDao.findById(gameId, null);
+		Player player = playerActionService.getPlayerById(playerId);
+		HandEntity hand = playerActionService.bet(player, game, betAmount);
+>>>>>>> origin/AmirV1:src/webservices/PlayerServiceWS.java
 		Map<String, Object> resultMap = new HashMap<String, Object>();
-		resultMap.put("success", bet);
+		if (hand == null)
+			resultMap.put("success", false);
+		else
+			resultMap.put("success", true);
 		resultMap.put("chips", player.getChips());
 		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
+<<<<<<< HEAD:src/webservices/PlayerServiceWS.java
+=======
+		try {
+//			if (hand != null
+//					&& player.getGamePosition() == game.getPlayersRemaining())
+				GameUtil.goToNextStepOfTheGame(game, playerId);
+		} catch (AMSException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+>>>>>>> origin/AmirV1:src/webservices/PlayerServiceWS.java
 		try {
 			json = mapper.writeValueAsString(resultMap);
 		} catch (JsonGenerationException e) {

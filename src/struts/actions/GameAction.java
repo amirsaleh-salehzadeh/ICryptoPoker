@@ -36,6 +36,7 @@ public class GameAction extends Action {
 		if (reqCode == null || reqCode.equalsIgnoreCase("")) {
 			Player player = playerDaoImpl.findById(
 					request.getParameter("username"), null);
+<<<<<<< HEAD
 			// player.setChips(100);
 			request.setAttribute("player", player);
 			reqCode = "goToLobby";
@@ -43,12 +44,22 @@ public class GameAction extends Action {
 		if (reqCode.equalsIgnoreCase("joinAGame")) {
 			GameDaoImpl gamedao = new GameDaoImpl();
 			long gameId = Long.parseLong(request.getParameter("gameId"));
+=======
+			request.setAttribute("player", player);
+			reqCode = "goToLobby";
+		}
+		if (reqCode.equalsIgnoreCase("joinAGame")) {
+			GameDaoImpl gamedao = new GameDaoImpl();
+			long gameId = Long.parseLong(request.getParameter("gameId"));
+			int chips = Integer.parseInt(request.getParameter("chips"));
+>>>>>>> origin/AmirV1
 			Game game = gamedao.findById(gameId, null);
 			// TODO: AMS>> FIX Username
 			// Player player = playerDaoImpl.findById(request.getRemoteUser(),
 			// null);
 			Player player = playerDaoImpl.findById(
 					request.getParameter("playerName"), null);
+<<<<<<< HEAD
 			player.setChips(100);
 			GameServiceImpl gameService = new GameServiceImpl();
 			player = gameService.addNewPlayerToGame(game, player);
@@ -56,6 +67,22 @@ public class GameAction extends Action {
 			request.setAttribute("game", game);
 		}
 
+=======
+			player.setChips(chips);
+			player.setName(request.getParameter("nickname"));
+			if (chips > player.getTotalChips()) {
+				error = "The selected chips is larger than authorised amount in your account";
+				reqCode = "goToLobby";
+			} else {
+				player.setTotalChips(player.getTotalChips() - chips);
+				player = playerDaoImpl.merge(player, null);
+				GameServiceImpl gameService = new GameServiceImpl();
+				player = gameService.addNewPlayerToGame(game, player);
+				request.setAttribute("game", game);
+			}
+			request.setAttribute("player", player);
+		}
+>>>>>>> origin/AmirV1
 		// startNewHand
 		return mapping.findForward(reqCode);
 	}

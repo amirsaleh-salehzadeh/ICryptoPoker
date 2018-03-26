@@ -200,8 +200,13 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDaoInterface {
 					e.printStackTrace();
 				}
 			String query = "";
+<<<<<<< HEAD
 			query = "UPDATE `game` SET `players_left` = ?, `game_type` = ?, `name` =?, `is_started` = ?, "
 					+ "`current_hand_id` = ?, `game_structure_id` =?, `btn_player_id` = ? WHERE `game_id` = ? ";
+=======
+			query = "UPDATE `game` SET `players_left` = ?, `game_type` = ?, `name` = ?, `is_started` = ?, "
+					+ "`current_hand_id` = ?, `game_structure_id` = ?, `btn_player_id` = ? WHERE `game_id` = ? ";
+>>>>>>> origin/AmirV1
 			PreparedStatement ps = conn.prepareStatement(query);
 			ps.setInt(1, game.getPlayers().size());
 			ps.setString(2, game.getGameType().name());
@@ -215,7 +220,10 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDaoInterface {
 			else
 				ps.setLong(5, game.getCurrentHand().getId());
 			ps.setLong(6, game.getGameStructure().getId());
-			ps.setString(7, game.getPlayerInBTN().getId());
+			if (game.getPlayerInBTN() == null)
+				ps.setString(7, null);
+			else
+				ps.setString(7, game.getPlayerInBTN().getId());
 			ps.setLong(8, game.getId());
 			ps.executeUpdate();
 			ps.close();
@@ -251,7 +259,8 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDaoInterface {
 					e.printStackTrace();
 				}
 			String query = "";
-			query = "select * from player where game_id = " + id;
+			query = "select * from player where game_id = " + id
+					+ " order by game_position asc";
 			PreparedStatement ps = conn.prepareStatement(query);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
@@ -267,6 +276,7 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDaoInterface {
 				else
 					p.setSittingOut(false);
 				p.setChips(rs.getInt("chips"));
+				p.setTotalChips(rs.getInt("total_chips"));
 				players.add(p);
 			}
 			rs.close();
@@ -414,7 +424,7 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDaoInterface {
 
 			String query = "";
 			query = "UPDATE `game_structure`  SET `current_blind_level` = ?, `blind_level` = ?, `current_blind_ends` =?, `pause_start_time` = ?, "
-					+ "`starting chips` = ?" + "VALUES (?, ?, ?, ?, ?);";
+					+ "`starting chips` = ? ";
 
 			PreparedStatement ps = conn.prepareStatement(query,
 					Statement.RETURN_GENERATED_KEYS);

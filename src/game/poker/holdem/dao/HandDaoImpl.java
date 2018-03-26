@@ -43,7 +43,7 @@ import game.poker.holdem.domain.Player;
 import game.poker.holdem.domain.PlayerHand;
 import hibernate.config.BaseHibernateDAO;
 
-public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
+public class HandDaoImpl extends BaseHibernateDAO implements HandDaoInterface {
 
 	@Override
 	public HandEntity save(HandEntity hand, Connection conn) {
@@ -86,8 +86,13 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 			Set<PlayerHand> newPHs = new HashSet<PlayerHand>();
 			if (rs.next()) {
 				hand.setId(rs.getLong(1));
+<<<<<<< HEAD
 				query = "INSERT INTO `player_hand` (`player_hand_id`, `player_id`, `hand_id`, `card1`, `card2`, `bet_amount`, `round_bet_amount`) "
 						+ "VALUES (?, ?, ?, ?, ?, ?, ?)";
+=======
+				query = "INSERT INTO `player_hand` (`player_hand_id`, `player_id`, `hand_id`, `card1`, `card2`, `bet_amount`, `round_bet_amount`, action_status) "
+						+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+>>>>>>> origin/AmirV1
 				for (PlayerHand ph : hand.getPlayers()) {
 					PreparedStatement ps2 = conn.prepareStatement(query,
 							Statement.RETURN_GENERATED_KEYS);
@@ -98,6 +103,10 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 					ps2.setString(5, ph.getCard2().name());
 					ps2.setInt(6, ph.getBetAmount());
 					ps2.setInt(7, ph.getRoundBetAmount());
+<<<<<<< HEAD
+=======
+					ps2.setInt(8, ph.getStatus());
+>>>>>>> origin/AmirV1
 					ps2.executeUpdate();
 					ResultSet rs2 = ps.getGeneratedKeys();
 					if (rs2.next())
@@ -149,7 +158,14 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 
 			ps.setLong(1, hand.getBoard().getId());
 			ps.setLong(2, hand.getGame().getId());
+<<<<<<< HEAD
 			ps.setString(3, hand.getCurrentToAct().getId());
+=======
+			if (hand.getCurrentToAct() == null)
+				ps.setString(3, null);
+			else
+				ps.setString(3, hand.getCurrentToAct().getId());
+>>>>>>> origin/AmirV1
 			ps.setString(4, hand.getBlindLevel().toString());
 			ps.setInt(5, hand.getPot());
 			ps.setInt(6, hand.getLastBetAmount());
@@ -194,6 +210,7 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 			if (board.getFlop1() == null)
 				ps.setString(1, null);
 			else
+<<<<<<< HEAD
 				ps.setString(1, board.getFlop1().toString());
 			if (board.getFlop2() == null)
 				ps.setString(2, null);
@@ -211,6 +228,25 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 				ps.setString(5, null);
 			else
 				ps.setString(5, board.getRiver().toString());
+=======
+				ps.setString(1, board.getFlop1().name());
+			if (board.getFlop2() == null)
+				ps.setString(2, null);
+			else
+				ps.setString(2, board.getFlop2().name());
+			if (board.getFlop3() == null)
+				ps.setString(3, null);
+			else
+				ps.setString(3, board.getFlop3().name());
+			if (board.getTurn() == null)
+				ps.setString(4, null);
+			else
+				ps.setString(4, board.getTurn().name());
+			if (board.getRiver() == null)
+				ps.setString(5, null);
+			else
+				ps.setString(5, board.getRiver().name());
+>>>>>>> origin/AmirV1
 			ps.setLong(6, board.getId());
 			ps.executeUpdate();
 			ps.close();
@@ -249,11 +285,16 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 			PreparedStatement ps = conn.prepareStatement(query);
 			ps.execute();
 			ResultSet rs = ps.getResultSet();
+<<<<<<< HEAD
 			while (rs.next()) {
+=======
+			if (rs.next()) {
+>>>>>>> origin/AmirV1
 				hand.setBlindLevel(BlindLevel.valueOf(rs
 						.getString("blind_level")));
 				hand.setBoard(getBoard(rs.getLong("board_id"), conn));
 				PlayerDaoImpl pdao = new PlayerDaoImpl();
+<<<<<<< HEAD
 				hand.setCurrentToAct(pdao.findById(
 						rs.getString("player_to_act_id"), conn));
 				GameDaoImpl gdao = new GameDaoImpl();
@@ -264,6 +305,12 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 						conn)) {
 					phs.add(getPlayerHand(id, p.getId(), conn));
 				}
+=======
+				if (rs.getString("player_to_act_id") != null)
+					hand.setCurrentToAct(pdao.findById(
+							rs.getString("player_to_act_id"), conn));
+				Set<PlayerHand> phs = getAllPlayerHands(id, conn);
+>>>>>>> origin/AmirV1
 				hand.setPlayers(phs);
 				hand.setId(id);
 				hand.setLastBetAmount(rs.getInt("bet_amount"));
@@ -315,8 +362,17 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 				board.setFlop1(Card.valueOf(rs.getString("flop1")));
 				board.setFlop2(Card.valueOf(rs.getString("flop2")));
 				board.setFlop3(Card.valueOf(rs.getString("flop3")));
+<<<<<<< HEAD
 				board.setRiver(Card.valueOf(rs.getString("river")));
 				board.setTurn(Card.valueOf(rs.getString("turn")));
+=======
+				if (rs.getString("turn") == null)
+					continue;
+				board.setTurn(Card.valueOf(rs.getString("turn")));
+				if (rs.getString("river") == null)
+					continue;
+				board.setRiver(Card.valueOf(rs.getString("river")));
+>>>>>>> origin/AmirV1
 
 			}
 			rs.close();
@@ -339,6 +395,7 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 		return board;
 	}
 
+<<<<<<< HEAD
 	private PlayerHand getPlayerHand(long handId, String playerId,
 			Connection conn) {
 		PlayerHand ph = new PlayerHand();
@@ -387,6 +444,8 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 		return ph;
 	}
 
+=======
+>>>>>>> origin/AmirV1
 	@Override
 	public Set<PlayerHand> getAllPlayerHands(long handId, Connection conn) {
 		Set<PlayerHand> players = new HashSet<PlayerHand>();
@@ -401,7 +460,8 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 					e.printStackTrace();
 				}
 			String query = "";
-			query = "select * from player_hand where hand_id = " + handId;
+			query = "select * from player_hand ph left join player p on p.username = ph.player_id where hand_id = "
+					+ handId + " order by p.game_position asc";
 			PreparedStatement ps = conn.prepareStatement(query);
 			ps.execute();
 			ResultSet rs = ps.getResultSet();
@@ -417,6 +477,10 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 						.get(null));
 				p.setBetAmount(rs.getInt("bet_amount"));
 				p.setRoundBetAmount(rs.getInt("round_bet_amount"));
+<<<<<<< HEAD
+=======
+				p.setStatus(rs.getInt("action_status"));
+>>>>>>> origin/AmirV1
 				players.add(p);
 			}
 			rs.close();
@@ -449,6 +513,45 @@ public class HandDaoImpl extends BaseHibernateDAO implements HandDao {
 			e.printStackTrace();
 		}
 		return players;
+	}
+
+	@Override
+	public PlayerHand updatePlayerHand(PlayerHand ph, Connection conn) {
+		try {
+			boolean isNewConn = false;
+			if (conn == null)
+				try {
+					conn = getConnection();
+					conn.setAutoCommit(false);
+					isNewConn = true;
+				} catch (AMSException e) {
+					e.printStackTrace();
+				}
+			String query = "update `player_hand` set `bet_amount` = ?, `round_bet_amount` = ?, action_status = ? where `player_hand_id` = ?";
+			PreparedStatement ps2 = conn.prepareStatement(query);
+			ps2.setInt(1, ph.getBetAmount());
+			ps2.setInt(2, ph.getRoundBetAmount());
+			ps2.setInt(3, ph.getStatus());
+			ps2.setLong(4, ph.getId());
+			ps2.executeUpdate();
+			ps2.close();
+			if (isNewConn) {
+				conn.commit();
+				conn.close();
+			}
+		} catch (SQLException e) {
+			try {
+				if (!conn.isClosed()) {
+					conn.rollback();
+					conn.close();
+				}
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+		}
+		return ph;
+
 	}
 
 }

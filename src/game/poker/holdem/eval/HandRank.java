@@ -30,9 +30,8 @@ import java.io.Serializable;
 /**
  * Representation of the poker hand strength.
  */
-public class HandRank implements Comparable<HandRank>, Serializable {
+public class HandRank implements Comparable<HandRank> {
 
-	private static final long serialVersionUID = 6897360347770643227L;
 
 	private final int rankValue;
 

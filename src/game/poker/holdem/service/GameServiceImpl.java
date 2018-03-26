@@ -130,40 +130,30 @@ public class GameServiceImpl implements GameServiceInterface {
 		return player;
 	}
 
-	public String getGameStatusJSON(Game game, String playerId) {
-		GameStatus gs = GameUtil.getGameStatus(game);
-		Set<PlayerStatusObject> players = new HashSet<PlayerStatusObject>();
+	public String getGameStatusJSON(Game game, Map<String, Object> results,
+			String playerId) {
 		PlayerServiceManagerImpl playerService = new PlayerServiceManagerImpl();
-		Map<String, Object> results = new HashMap<String, Object>();
-		PokerHandServiceImpl handService = new PokerHandServiceImpl();
-		results.put("gameStatus", gs);
-		results.put("players", players);
-		HandDaoImpl hdao = new HandDaoImpl();
+		GameStatus gs = (GameStatus) results.get("gameStatus");
+		Set<PlayerStatusObject> players = new HashSet<PlayerStatusObject>();
+		Board board = null;
 		HandEntity h = new HandEntity();
 		if (game.getCurrentHand() != null)
-			h = hdao.findById(game.getCurrentHand().getId(), null);
-		h.setGame(game);
-		if (game.isStarted() && game.getCurrentHand() != null
-				&& gs.equals(GameStatus.PREFLOP)) {
-			results.put("POST_SB", handService.getPlayerInSB(h).getId());
-			results.put("POST_BB", handService.getPlayerInBB(h).getId());
-			results.put("DEALER", game.getPlayerInBTN().getId());
-		}
-		Board board = null;
+			h = game.getCurrentHand();
 		if (gs.equals(GameStatus.END_HAND)) {
 			board = new Board(h.getBoard().getFlop1(), h.getBoard().getFlop2(),
 					h.getBoard().getFlop3(), h.getBoard().getTurn(), h
 							.getBoard().getRiver());
 		}
-
 		for (Player p : game.getPlayers()) {
 			PlayerStatusObject ptmp = playerService.buildPlayerStatus(
 					game.getId(), p.getId());
+
+			h.setGame(game);
 			if ((!p.getId().equals(playerId) || !game.isStarted())
 					&& !gs.equals(GameStatus.END_HAND)) {
 				ptmp.setCard1("card1" + playerId);
 				ptmp.setCard2("");
-			} else if(gs.equals(GameStatus.END_HAND)) {
+			} else if (gs.equals(GameStatus.END_HAND)) {
 				for (PlayerHand ph : h.getPlayers()) {
 					if (ph.getPlayer().equals(p)) {
 						HandRank rank = PlayerUtil.evaluator.evaluate(board,
@@ -173,6 +163,36 @@ public class GameServiceImpl implements GameServiceInterface {
 				}
 			}
 			players.add(ptmp);
+		}
+		results.put("players", players);
+		ObjectMapper mapper = new ObjectMapper();
+		String json = "";
+		try {
+			json = mapper.writeValueAsString(results);
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return json;
+	}
+
+	public Map<String, Object> getGameStatusMap(Game game) {
+		GameStatus gs = GameUtil.getGameStatus(game);
+		Map<String, Object> results = new HashMap<String, Object>();
+		PokerHandServiceImpl handService = new PokerHandServiceImpl();
+		results.put("gameStatus", gs);
+		HandEntity h = new HandEntity();
+		if (game.getCurrentHand() != null)
+			h = game.getCurrentHand();
+		h.setGame(game);
+		if (game.isStarted() && game.getCurrentHand() != null
+				&& gs.equals(GameStatus.PREFLOP)) {
+			results.put("POST_SB", handService.getPlayerInSB(h).getId());
+			results.put("POST_BB", handService.getPlayerInBB(h).getId());
+			results.put("DEALER", game.getPlayerInBTN().getId());
 		}
 		if (game.getCurrentHand() != null)
 			results.put("handId", game.getCurrentHand().getId());
@@ -196,18 +216,7 @@ public class GameServiceImpl implements GameServiceInterface {
 			results.put("cards", game.getCurrentHand().getBoard()
 					.getBoardCardsString());
 		}
-		ObjectMapper mapper = new ObjectMapper();
-		String json = "";
-		try {
-			json = mapper.writeValueAsString(results);
-		} catch (JsonGenerationException e) {
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return json;
+		return results;
 	}
 
 }

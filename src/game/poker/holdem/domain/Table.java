@@ -85,8 +85,10 @@ public class Table {
 				game.setCurrentHand(handService.startNewHand(game));
 		}
 		GameServiceImpl gservice = new GameServiceImpl();
+		Map<String, Object> results = gservice.getGameStatusMap(game);
 		for (String cur : players.keySet()) {
-			String json = gservice.getGameStatusJSON(game, cur);
+			Map<String, Object> resultsTMP = results;
+			String json = gservice.getGameStatusJSON(game, resultsTMP, cur);
 			players.get(cur).getAsyncRemote().sendText(json);
 		}
 	}

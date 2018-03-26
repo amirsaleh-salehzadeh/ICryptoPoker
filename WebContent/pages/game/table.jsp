@@ -49,7 +49,6 @@
 				</div>
 				<div class="ui-block-b" id="playerChipsDiv">
 					<img alt="" src="images/game/money.png" height="80%">&nbsp;&cent;&nbsp;<%=player.getTotalChips()%>
-
 				</div>
 				<div class="ui-block-c" id="playerNameDiv">
 					<img alt="" src="images/game/user.png" height="80%">&nbsp;<%=request.getParameter("playerName")%></div>
@@ -57,7 +56,8 @@
 					<!-- 					<div class="ui-block-solo"> -->
 					<%-- 						<%=game.getName()%> --%>
 					<!-- 					</div> -->
-					<div class="ui-block-solo ui-grid-b" style="font-size: 10pt; white-space: nowrap;">
+					<div class="ui-block-solo ui-grid-b"
+						style="font-size: 10pt; white-space: nowrap;">
 						<div class="ui-block-a">
 							<img alt="" src="images/game/sb.png"
 								style="height: auto; width: 17px;"> &cent;<%
@@ -177,11 +177,10 @@
 						</div>
 						<div class="ui-block-solo sitPlaceContainer rightSideSits"
 							style="height: 33%;">
-							<div class='sitPlaceThumbnailEmpty'>Waiting</div>
+							<div class='sitPlaceThumbnailEmpty'></div>
 						</div>
 						<!-- 						<div class="ui-block-solo sitPlaceContainer rightSideSits" -->
 						<!-- 							style="height: 25%;"> -->
-						<!-- 							<input type="number" id="betAmount" value="0"> -->
 						<!-- 							<div class='sitPlaceThumbnailEmpty'>Waiting</div> -->
 						<!-- 						</div> -->
 					</div>
@@ -198,9 +197,9 @@
 						style="width: 40%; height: 100% !important;"
 						id="raiseSliderContainer">
 						<input type="range" name="sliderRaise" id="sliderRaise"
-							 data-show-value="true"
-							data-popup-enabled="true">
-
+							data-show-value="true" data-popup-enabled="true"> 
+<!-- 							<input -->
+<!-- 							type="number" id="betAmount" value="0"> -->
 					</div>
 				</div>
 			</div>

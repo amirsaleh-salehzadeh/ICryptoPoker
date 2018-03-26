@@ -23,6 +23,8 @@ THE SOFTWARE.
  */
 package game.poker.holdem.service;
 
+import java.util.Map;
+
 import tools.AMSException;
 import game.poker.holdem.domain.Game;
 import game.poker.holdem.domain.Player;
@@ -78,5 +80,6 @@ public interface GameServiceInterface {
 	// Do this in service layer to enforce tournament logic.
 	// Cash games could theoretically be done in the controller and call save
 
-	public String getGameStatusJSON(Game game, String playerId);
+	public String getGameStatusJSON(Game game, Map<String, Object> results,
+			String playerId);
 }

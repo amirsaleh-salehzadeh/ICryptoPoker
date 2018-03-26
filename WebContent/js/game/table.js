@@ -108,5 +108,6 @@ $(document).ready(
 			};
 			$("#flopsContainer div").height(
 					$("#flop1").width() + ($("#flop1").width() * 0.7));
-			resetplayerInfo();
+//			resetplayerInfo();
+			$("#sliderRaise").slider();
 		});

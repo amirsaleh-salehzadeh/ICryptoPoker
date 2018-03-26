@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 02, 2018 at 05:23 PM
+-- Generation Time: Mar 26, 2018 at 08:17 PM
 -- Server version: 10.1.16-MariaDB
 -- PHP Version: 7.0.9
 
@@ -38,6 +38,40 @@ CREATE TABLE `board` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `finance_payments`
+--
+
+CREATE TABLE `finance_payments` (
+  `payment_id` bigint(20) NOT NULL,
+  `username` varchar(255) CHARACTER SET latin1 NOT NULL,
+  `date_time` datetime NOT NULL,
+  `status` int(5) NOT NULL,
+  `amount` double NOT NULL,
+  `payment_reason` varchar(25) NOT NULL,
+  `bank_response` longtext NOT NULL,
+  `currency` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `finance_sales`
+--
+
+CREATE TABLE `finance_sales` (
+  `sale_id` bigint(20) NOT NULL,
+  `username` varchar(255) CHARACTER SET latin1 NOT NULL,
+  `amount` double NOT NULL,
+  `date_time` datetime NOT NULL,
+  `payment_method` int(5) NOT NULL,
+  `currency` text NOT NULL,
+  `status` int(5) NOT NULL,
+  `bank_response` longtext NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `game`
 --
 
@@ -57,7 +91,7 @@ CREATE TABLE `game` (
 --
 
 INSERT INTO `game` (`game_id`, `players_left`, `game_type`, `name`, `is_started`, `current_hand_id`, `game_structure_id`, `btn_player_id`) VALUES
-(1, 3, 'TOURNAMENT', 'name', 1, NULL, NULL, NULL);
+(1, 0, 'CASH', 'Game 1', 0, NULL, 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -84,6 +118,13 @@ CREATE TABLE `game_structure` (
   `pause_start_time` datetime DEFAULT NULL,
   `starting_chips` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `game_structure`
+--
+
+INSERT INTO `game_structure` (`game_structure_id`, `current_blind_level`, `blind_length`, `current_blind_ends`, `pause_start_time`, `starting_chips`) VALUES
+(1, 'BLIND_10_20', 0, NULL, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -135,22 +176,25 @@ CREATE TABLE `player` (
   `game_id` int(11) NOT NULL,
   `name` varchar(50) DEFAULT NULL,
   `chips` int(11) DEFAULT NULL,
+  `total_chips` int(255) NOT NULL DEFAULT '2000',
   `game_position` int(11) NOT NULL,
   `finished_place` int(11) DEFAULT NULL,
   `sitting_out` tinyint(1) NOT NULL DEFAULT '0',
   `password` varchar(255) NOT NULL,
-  `gender` tinyint(4) NOT NULL,
-  `dob` date NOT NULL,
-  `surname` varchar(255) NOT NULL,
-  `registeration_date` varchar(33) NOT NULL
+  `registeration_date` varchar(33) NOT NULL,
+  `session_id` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `player`
 --
 
-INSERT INTO `player` (`username`, `game_id`, `name`, `chips`, `game_position`, `finished_place`, `sitting_out`, `password`, `gender`, `dob`, `surname`, `registeration_date`) VALUES
-('amir', 0, 'amir', NULL, 0, NULL, 0, 'asd', 1, '2018-02-28', 'saleh', 'now');
+INSERT INTO `player` (`username`, `game_id`, `name`, `chips`, `total_chips`, `game_position`, `finished_place`, `sitting_out`, `password`, `registeration_date`, `session_id`) VALUES
+('amir', 0, 'amir', 0, 2000, 0, 0, 0, '202cb962ac59075b964b07152d234b70', 'Sat Mar 17 01:37:11 CAT 2018', NULL),
+('neil', 0, 'neil', 0, 2000, 0, 0, 0, '202cb962ac59075b964b07152d234b70', 'Sat Mar 17 01:37:18 CAT 2018', NULL),
+('test', 0, 'tes', 0, 2000, 0, 0, 0, '202cb962ac59075b964b07152d234b70', 'Sat Mar 17 01:37:26 CAT 2018', NULL),
+('test2', 0, 'test2', 0, 2000, 0, 0, 0, '202cb962ac59075b964b07152d234b70', 'Sat Mar 17 01:37:36 CAT 2018', NULL),
+('test3', 0, 'someName', 0, 2000, 0, 0, 0, '202cb962ac59075b964b07152d234b70', 'Sat Mar 17 01:37:44 CAT 2018', NULL);
 
 -- --------------------------------------------------------
 
@@ -165,7 +209,8 @@ CREATE TABLE `player_hand` (
   `card1` varchar(25) DEFAULT NULL,
   `card2` varchar(25) DEFAULT NULL,
   `bet_amount` int(11) DEFAULT NULL,
-  `round_bet_amount` int(11) DEFAULT NULL
+  `round_bet_amount` int(11) DEFAULT NULL,
+  `action_status` int(4) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -179,6 +224,17 @@ CREATE TABLE `player_roles` (
   `role_name` varchar(22) NOT NULL,
   `player_role_id` bigint(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+
+--
+-- Dumping data for table `player_roles`
+--
+
+INSERT INTO `player_roles` (`username`, `role_name`, `player_role_id`) VALUES
+('amir', 'Player', 1),
+('neil', 'Player', 2),
+('test', 'Player', 3),
+('test2', 'Player', 4),
+('test3', 'Player', 5);
 
 -- --------------------------------------------------------
 
@@ -201,7 +257,8 @@ INSERT INTO `roles` (`role_name`, `comment`, `category_role`) VALUES
 ('EditUser', 'Can edit a user', 'User Management'),
 ('RemoveUser', 'Can remove a user', 'User Management'),
 ('RoleManagement', 'Super Admin role, to be able to add/remove/edit/view a high-level security management role.', 'TFC Administration'),
-('SuperAdmin', 'Determine all access levels for TFC admins. It should be included in all use-cases.', 'TFC Administration');
+('SuperAdmin', 'Determine all access levels for TFC admins. It should be included in all use-cases.', 'TFC Administration'),
+('Player', 'Normal Cash or Tournament Players', 'Players');
 
 --
 -- Indexes for dumped tables
@@ -212,6 +269,19 @@ INSERT INTO `roles` (`role_name`, `comment`, `category_role`) VALUES
 --
 ALTER TABLE `board`
   ADD PRIMARY KEY (`board_id`);
+
+--
+-- Indexes for table `finance_payments`
+--
+ALTER TABLE `finance_payments`
+  ADD KEY `username` (`username`);
+
+--
+-- Indexes for table `finance_sales`
+--
+ALTER TABLE `finance_sales`
+  ADD PRIMARY KEY (`sale_id`),
+  ADD KEY `username` (`username`);
 
 --
 -- Indexes for table `game`
@@ -256,6 +326,12 @@ ALTER TABLE `player_hand`
   ADD PRIMARY KEY (`player_hand_id`);
 
 --
+-- Indexes for table `player_roles`
+--
+ALTER TABLE `player_roles`
+  ADD PRIMARY KEY (`player_role_id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -263,7 +339,7 @@ ALTER TABLE `player_hand`
 -- AUTO_INCREMENT for table `board`
 --
 ALTER TABLE `board`
-  MODIFY `board_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `board_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=200;
 --
 -- AUTO_INCREMENT for table `game`
 --
@@ -273,17 +349,38 @@ ALTER TABLE `game`
 -- AUTO_INCREMENT for table `game_structure`
 --
 ALTER TABLE `game_structure`
-  MODIFY `game_structure_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `game_structure_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `hand`
 --
 ALTER TABLE `hand`
-  MODIFY `hand_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `hand_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=199;
 --
 -- AUTO_INCREMENT for table `player_hand`
 --
 ALTER TABLE `player_hand`
-  MODIFY `player_hand_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `player_hand_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=424;
+--
+-- AUTO_INCREMENT for table `player_roles`
+--
+ALTER TABLE `player_roles`
+  MODIFY `player_role_id` bigint(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `finance_payments`
+--
+ALTER TABLE `finance_payments`
+  ADD CONSTRAINT `finance_payments_ibfk_1` FOREIGN KEY (`username`) REFERENCES `player` (`username`);
+
+--
+-- Constraints for table `finance_sales`
+--
+ALTER TABLE `finance_sales`
+  ADD CONSTRAINT `finance_sales_ibfk_1` FOREIGN KEY (`username`) REFERENCES `player` (`username`);
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

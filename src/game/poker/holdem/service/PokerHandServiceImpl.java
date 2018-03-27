@@ -250,7 +250,6 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 				&& playerHand.getStatus() != PlayerHandStatus.FOLDED) {
 			PlayerUtil.removePlayerFromHand(hand.getCurrentToAct(), hand);
 		}
-//		hand.setCurrentToAct(next);
 		hand = handDao.merge(hand, null);
 		return hand;
 	}
@@ -262,9 +261,6 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 			throw new IllegalStateException("Unexpected Turn.");
 		}
 		handDao = new HandDaoImpl();
-		// Re-attach to persistent context for this transaction (Lazy Loading
-		// stuff)
-		// hand = handDao.findById(hand.getId(), null);
 		hand.setGame(game);
 		Player next = new Player();
 		if (!isActionResolved(hand)) {
@@ -310,9 +306,6 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 			throw new IllegalStateException("Unexpected River.");
 		}
 		handDao = new HandDaoImpl();
-		// Re-attach to persistent context for this transaction (Lazy Loading
-		// stuff)
-		// hand = handDao.findById(hand.getId(), null);
 		hand.setGame(game);
 		Player next = new Player();
 		if (!isActionResolved(hand)) {
@@ -354,12 +347,12 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		return hand;
 	}
 
-	public boolean sitOutCurrentPlayer(HandEntity hand) {
+	public HandEntity sitOutCurrentPlayer(HandEntity hand, Player p) {
 		handDao = new HandDaoImpl();
 		playerDao = new PlayerDaoImpl();
-		Player currentPlayer = hand.getCurrentToAct();
+		Player currentPlayer = p;
 		if (currentPlayer == null) {
-			return false;
+			return null;
 		}
 		currentPlayer.setSittingOut(true);
 		playerDao.merge(currentPlayer, null);
@@ -377,9 +370,9 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 				&& playerHand.getStatus() != PlayerHandStatus.FOLDED) {
 			PlayerUtil.removePlayerFromHand(currentPlayer, hand);
 		}
-//		hand.setCurrentToAct(next);
-		handDao.merge(hand, null);
-		return true;
+		hand.setCurrentToAct(next);
+		hand = handDao.merge(hand, null);
+		return hand;
 	}
 
 	@Override

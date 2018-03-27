@@ -110,7 +110,8 @@ public class PlayerUtil {
 	 *            player in game over compared to this player.
 	 * @return Player who will be next to act
 	 */
-	public static Player getNextPlayerToAct(HandEntity hand, Player startPlayer, int reason) {
+	public static Player getNextPlayerToAct(HandEntity hand,
+			Player startPlayer, int reason) {
 		List<PlayerHand> players = new ArrayList<PlayerHand>();
 		players.addAll(hand.getPlayers());// false
 		Player next = startPlayer;
@@ -151,6 +152,11 @@ public class PlayerUtil {
 		for (Player p : playersToRemove) {
 			removePlayerFromHand(p, hand);
 		}
+		if (next.getGamePosition() < startPlayer.getGamePosition()
+				&& players.size() > 1)
+			System.out.println(next.getGamePosition() + " rotation " + startPlayer.getGamePosition());
+		else 
+			System.out.println(next.getGamePosition() + " first hand " + startPlayer.getGamePosition());
 		return next;
 	}
 

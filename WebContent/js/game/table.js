@@ -29,9 +29,11 @@ function fitElementsWithinScreen() {
 		$(this).trigger("create");
 	});
 	$(".playerCardsContainer").each(function() {
-		$(this).width($("#userSitPlace").height() * 1.4);
-		$(this).height($("#userSitPlace").height());
-		$(this).trigger("create");
+		if ($(this).find(".card1").html().length > 0) {
+			$(this).width($("#userSitPlace").height() * 1.4);
+			$(this).height($("#userSitPlace").height());
+			$(this).trigger("create");
+		}
 	});
 }
 
@@ -60,7 +62,7 @@ function generateACard(cardVal, divID, cardNumber) {
 	// + text + "</span><span class='card-img " + color + "'>" + img
 	// + "</span></div>";
 	var res = "<img src='images/game/cards/" + cardVal
-			+ ".png' height='100%' width='100%'/>";
+			+ ".png' height='100%' />";
 	if (divID == "flopsContainer") {
 		$("#flop" + cardNumber).html(res).trigger("create");
 	} else {
@@ -68,6 +70,8 @@ function generateACard(cardVal, divID, cardNumber) {
 		if (cardNumber == 2) {
 			$("#" + divID).find(".card" + cardNumber).width(
 					$("#userSitPlace").height() * 0.7).trigger("create");
+			$("#" + divID).find(".card" + cardNumber).height(
+					$("#userSitPlace").height()).trigger("create");
 			// $("#flopsContainer div").height(
 			// $("#flop1").width() + ($("#flop1").width() * 0.7));
 		}
@@ -89,7 +93,6 @@ function resetPlayerInfo() {
 
 $(document).ready(
 		function() {
-			fitElementsWithinScreen();
 			var wsUri = "ws://" + document.location.host
 					+ "/ICryptoPoker/game/" + $("#gameID").val() + "/"
 					+ $("#playerID").val();
@@ -106,8 +109,11 @@ $(document).ready(
 					$(this).addClass("ui-state-disabled");
 				});
 			};
+			$(window).on("resize", function() {
+				fitElementsWithinScreen();
+			});
 			$("#flopsContainer div").height(
 					$("#flop1").width() + ($("#flop1").width() * 0.7));
-//			resetplayerInfo();
+			// resetplayerInfo();
 			$("#sliderRaise").slider();
 		});

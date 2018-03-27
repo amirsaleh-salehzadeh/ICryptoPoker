@@ -112,7 +112,7 @@
 
 
 				<div class="ui-grid-b ui-block-solo"
-					style="width: 100%; height: 60%;">
+					style="width: 100%; height: 55%;">
 
 					<!-- MIDDLE-LEFT GRID  -->
 
@@ -188,7 +188,7 @@
 
 				<!--  BOTTOM GRID -->
 
-				<div class="ui-block-solo ui-grid-b" style="height: 20%;">
+				<div class="ui-block-solo ui-grid-b" style="height: 25%;">
 					<div class="ui-block-a"
 						style="width: 20%; height: 100% !important;"></div>
 					<div class="ui-block-b sitPlaceContainer bottomSideSits"

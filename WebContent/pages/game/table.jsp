@@ -130,7 +130,8 @@
 							<div class='sitPlaceThumbnailEmpty'>Waiting</div>
 						</div>
 					</div>
-
+					
+					
 					<!-- MIDDLE-CENTER GRID  -->
 
 					<div class="ui-block-b" style="width: 60%; height: 100%;"
@@ -190,7 +191,7 @@
 
 				<div class="ui-block-solo ui-grid-b" style="height: 25%;">
 					<div class="ui-block-a"
-						style="width: 20%; height: 100% !important;"></div>
+						style="width: 20%; height: 100% !important;"><div  id="chatBoxContainer">This is the chat box</div></div>
 					<div class="ui-block-b sitPlaceContainer bottomSideSits"
 						style="height: 100% !important; width: 40%;" id="userSitPlace"></div>
 					<div class="ui-block-c"
@@ -202,8 +203,10 @@
 <!-- 							type="number" id="betAmount" value="0"> -->
 					</div>
 				</div>
+				
 			</div>
 
+<div id="btnChat"><a href="" onclick="toggleChat();"><img src=".../images/game/chatIcon.ico" alt="Chat"/></a></div>
 			<!-- bottom -->
 
 			<div class="ui-block-solo ui-grid-d constantBannersBottom"

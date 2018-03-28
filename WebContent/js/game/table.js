@@ -117,3 +117,13 @@ $(document).ready(
 			// resetplayerInfo();
 			$("#sliderRaise").slider();
 		});
+
+
+//Toggles the display of the chat to block or none to be visible when the icon is clicked
+function toggleChat(){
+	if($("#chatBoxContainer").css("display")=="block"){
+		
+		$("#chatBoxContainer").css("display","none");
+	}else
+		$("#chatBoxContainer").css("display","block");
+}

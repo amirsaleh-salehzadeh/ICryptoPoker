@@ -67,8 +67,7 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 			return null;
 		}
 
-		Player next = PlayerUtil.getNextPlayerToAct(hand, player,
-				PlayerHandStatus.FOLDED);
+		Player next = PlayerUtil.getNextPlayerToAct(hand, player);
 		if (!PlayerUtil.removePlayerFromHand(player, hand)) {
 			return null;
 		}
@@ -109,8 +108,7 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 			return null;
 		}
 
-		Player next = PlayerUtil.getNextPlayerToAct(hand, player,
-				PlayerHandStatus.CHECKED);
+		Player next = PlayerUtil.getNextPlayerToAct(hand, player);
 		hand.setCurrentToAct(next);
 		hand = handDao.merge(hand, null);
 //		if (next.getChips() == 0 || next.getId().equals(player.getId())) {
@@ -159,8 +157,7 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 		hand.setLastBetAmount(betAmount);
 		hand.setTotalBetAmount(hand.getTotalBetAmount() + betAmount);
 
-		Player next = PlayerUtil.getNextPlayerToAct(hand, player,
-				PlayerHandStatus.BET);
+		Player next = PlayerUtil.getNextPlayerToAct(hand, player);
 		hand.setCurrentToAct(next);
 		playerDao.merge(player, null);
 		hand = handDao.merge(hand, null);
@@ -204,8 +201,7 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 		player.setChips(player.getChips() - toCall);
 		hand.setPot(hand.getPot() + toCall);
 
-		Player next = PlayerUtil.getNextPlayerToAct(hand, player,
-				PlayerHandStatus.CALLED);
+		Player next = PlayerUtil.getNextPlayerToAct(hand, player);
 		hand.setCurrentToAct(next);
 		hand.setGame(game);
 		player.setGameId(game.getId());

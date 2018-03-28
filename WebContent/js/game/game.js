@@ -31,6 +31,7 @@ function updateGameInfo(data) {
 	$(".actionButtons").each(function() {
 		$(this).addClass("ui-state-disabled");
 	});
+	$("#raiseSliderContainer").addClass("ui-state-disabled");
 	$("#handID").val(data.handId);
 	$('.pscontainer').each(function() {
 		$(this).attr("class", "pscontainer");
@@ -129,6 +130,7 @@ function updatePlayerInfo(data) {
 			$(".actionButtons").each(function() {
 				$(this).removeClass("ui-state-disabled");
 			});
+			$("#raiseSliderContainer").removeClass("ui-state-disabled");
 			$("#sliderRaise").attr("min", parseInt(data.bigBlind) * 2);
 			$("#sliderRaise").attr("max", parseInt(data.chips));
 			$("#sliderRaise").attr("value", parseInt(data.bigBlind) * 2)
@@ -146,7 +148,7 @@ function updatePlayerInfo(data) {
 					if ("pscontainer" + playerId == this.id) {
 						$(this).html("LOST");
 						$(this).addClass("loser");
-						$("#amountToCallcontainer" + playerToActId).html(
+						$("#amountToCallcontainer" + playerId).html(
 								data.handRank);
 					}
 				});
@@ -156,7 +158,7 @@ function updatePlayerInfo(data) {
 				function() {
 					if ("playerInfo" + playerId == this.id) {
 						$(this).addClass("winner");
-						$("#amountToCallcontainer" + playerToActId).html(
+						$("#amountToCallcontainer" + playerId).html(
 								data.handRank);
 					}
 				});
@@ -178,7 +180,6 @@ function addANewPlayerToTable(id, name, chips, amountToCall) {
 					function() {
 						if (content == "")
 							if (id != $("#playerID").val()) {
-								// username, chip and timer div START
 								content = "<div class='ui-block-solo playerInfo' id='playerInfo"
 										+ id
 										+ "'>"
@@ -206,8 +207,6 @@ function addANewPlayerToTable(id, name, chips, amountToCall) {
 										+ id
 										+ "'><div class='ui-block-a card1 card'></div><div class='ui-block-b card2 card'></div>"
 										+ "</div></div>";
-								// CARD CONTAINER END
-
 							} else {
 								content = "<div class='ui-block-a'><div class='ui-block-solo playerInfo' id='playerInfo"
 										+ id

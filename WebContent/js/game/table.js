@@ -28,60 +28,34 @@ function fitElementsWithinScreen() {
 		$(this).height($("#userSitPlace").height() / 2);
 		$(this).trigger("create");
 	});
-	$(".playerCardsContainer").each(function() {
-		if ($(this).find(".card1").html().length > 0) {
-			$(this).width($("#userSitPlace").height() * 1.4);
-			$(this).height($("#userSitPlace").height());
-			$(this).trigger("create");
-		}
-	});
-	$(".card").each(function() {
-		if ($(this).html().length > 0) {
-			$(this).width($("#userSitPlace").height() * 0.7);
-			$(this).height($("#userSitPlace").height());
-			$(this).trigger("create");
-		}
-	});
+	// $(".playerCardsContainer").each(function() {
+	// if ($(this).find(".card1").html().length > 0) {
+	// $(this).width($("#userSitPlace").height() * 1.4);
+	// $(this).height($("#userSitPlace").height());
+	// $(this).trigger("create");
+	// }
+	// });
+	$(".card").each(
+			function() {
+				if ($(this).html().length > 0) {
+					$(".playerCardsContainer").width(
+							$("#userSitPlace").height() * 1.5);
+					$(".playerCardsContainer").height(
+							$("#userSitPlace").height());
+					$(this).width($("#userSitPlace").height() * 0.7);
+					$(this).height($("#userSitPlace").height());
+					$(this).trigger("create");
+				}
+			});
 }
 
 function generateACard(cardVal, divID, cardNumber) {
-	var text, img;
-	if (cardVal.charAt(0) == "T")
-		text = "10";
-	else
-		text = cardVal.charAt(0);
-	img = cardVal.charAt(1);
-	// img = cardVal.split("_")[2].charAt(1).toLowerCase;
-	var color = "black";
-	if (img == "c")
-		img = "&clubs;";
-	else if (img == "s")
-		img = "&spades;";
-	else if (img == "d") {
-		img = "&diams;";
-		color = "red";
-	} else if (img == "h") {
-		img = "&hearts;";
-		color = "red";
-	}
-	// var res = "<div class='card-small'><span class='card-text " + color +
-	// "'>"
-	// + text + "</span><span class='card-img " + color + "'>" + img
-	// + "</span></div>";
 	var res = "<img src='images/game/cards/" + cardVal
 			+ ".png' height='100%' />";
 	if (divID == "flopsContainer") {
 		$("#flop" + cardNumber).html(res).trigger("create");
 	} else {
 		$("#" + divID).find(".card" + cardNumber).html(res).trigger("create");
-		// if (cardNumber == 2) {
-		// $("#" + divID).find(".card" + cardNumber).width(
-		// $("#userSitPlace").height() * 0.7).trigger("create");
-		// $("#" + divID).find(".card" + cardNumber).height(
-		// $("#userSitPlace").height()).trigger("create");
-		// // $("#flopsContainer div").height(
-		// // $("#flop1").width() + ($("#flop1").width() * 0.7));
-		// }
 	}
 }
 

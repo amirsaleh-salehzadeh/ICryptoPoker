@@ -83,7 +83,7 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		List<PlayerHand> players = new ArrayList<PlayerHand>();
 		players.addAll(participatingPlayers);
 		Player nextToAct = PlayerUtil.getNextPlayerToAct(hand,
-				this.getPlayerInBB(hand), PlayerHandStatus.NORMAL);
+				this.getPlayerInBB(hand));
 		hand.setCurrentToAct(nextToAct);
 		// Register the Forced Small and Big Blind bets as part of the hand
 		Player smallBlind = getPlayerInSB(hand);
@@ -219,8 +219,7 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		hand.setGame(game);
 		Player next = new Player();
 		if (!isActionResolved(hand)) {
-			next = PlayerUtil.getNextPlayerToAct(hand, hand.getCurrentToAct(),
-					PlayerHandStatus.FLOPEND);
+			next = PlayerUtil.getNextPlayerToAct(hand, hand.getCurrentToAct());
 //			hand.setCurrentToAct(next);
 			hand = handDao.merge(hand, null);
 			return hand;
@@ -243,8 +242,7 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 				break;
 			}
 		}
-		next = PlayerUtil.getNextPlayerToAct(hand, hand.getCurrentToAct(),
-				PlayerHandStatus.FLOPEND);
+		next = PlayerUtil.getNextPlayerToAct(hand, hand.getCurrentToAct());
 		if (playerHand != null
 				&& hand.getTotalBetAmount() > playerHand.getRoundBetAmount()
 				&& playerHand.getStatus() != PlayerHandStatus.FOLDED) {
@@ -264,8 +262,7 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		hand.setGame(game);
 		Player next = new Player();
 		if (!isActionResolved(hand)) {
-			next = PlayerUtil.getNextPlayerToAct(hand, hand.getCurrentToAct(),
-					PlayerHandStatus.FLOPEND);
+			next = PlayerUtil.getNextPlayerToAct(hand, hand.getCurrentToAct());
 //			hand.setCurrentToAct(next);
 			hand = handDao.merge(hand, null);
 			return hand;
@@ -287,7 +284,7 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 			}
 		}
 		next = PlayerUtil.getNextPlayerToAct(hand,
-				hand.getCurrentToAct(), PlayerHandStatus.TURNEND);
+				hand.getCurrentToAct());
 		if (playerHand != null
 				&& hand.getTotalBetAmount() > playerHand.getRoundBetAmount()
 				&& playerHand.getStatus() != PlayerHandStatus.FOLDED) {
@@ -309,8 +306,7 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		hand.setGame(game);
 		Player next = new Player();
 		if (!isActionResolved(hand)) {
-			next = PlayerUtil.getNextPlayerToAct(hand, hand.getCurrentToAct(),
-					PlayerHandStatus.FLOPEND);
+			next = PlayerUtil.getNextPlayerToAct(hand, hand.getCurrentToAct());
 //			hand.setCurrentToAct(next);
 			hand = handDao.merge(hand, null);
 			return hand;
@@ -333,7 +329,7 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 			}
 		}
 		next = PlayerUtil.getNextPlayerToAct(hand,
-				hand.getCurrentToAct(), PlayerHandStatus.RIVEREND);
+				hand.getCurrentToAct());
 		if (playerHand != null
 				&& hand.getTotalBetAmount() > playerHand.getRoundBetAmount()
 				&& playerHand.getStatus() != PlayerHandStatus.FOLDED) {
@@ -363,8 +359,7 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 				break;
 			}
 		}
-		Player next = PlayerUtil.getNextPlayerToAct(hand, currentPlayer,
-				PlayerHandStatus.SITOUT);
+		Player next = PlayerUtil.getNextPlayerToAct(hand, currentPlayer);
 		if (playerHand != null
 				&& hand.getTotalBetAmount() > playerHand.getRoundBetAmount()
 				&& playerHand.getStatus() != PlayerHandStatus.FOLDED) {

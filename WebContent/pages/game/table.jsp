@@ -206,7 +206,7 @@
 				
 			</div>
 
-<div id="btnChat"><a href="" onclick="toggleChat();"><img src=".../images/game/chatIcon.ico" alt="Chat"/></a></div>
+<div id="btnChat"><a href="" onclick="toggleChat();"><img src="images/game/chatIcon.png" alt="Chat"/></a></div>
 			<!-- bottom -->
 
 			<div class="ui-block-solo ui-grid-d constantBannersBottom"

@@ -22,11 +22,12 @@ import javax.websocket.Session;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
+import common.game.poker.holdem.GameENT;
 import tools.AMSException;
 
 public class Table {
 
-	private Game game;
+	private GameENT game;
 	private Map<String, Session> players = Collections
 			.synchronizedMap(new HashMap<String, Session>());
 
@@ -38,11 +39,11 @@ public class Table {
 		this.players = players;
 	}
 
-	public Game getGame() {
+	public GameENT getGame() {
 		return game;
 	}
 
-	public void setGame(Game game) {
+	public void setGame(GameENT game) {
 		this.game = game;
 	};
 

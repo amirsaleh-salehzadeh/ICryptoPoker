@@ -1,23 +1,22 @@
 package game.poker.holdem.dao;
 
 import java.sql.Connection;
+import java.util.List;
 import java.util.Set;
 
-import game.poker.holdem.domain.Payment;
-import game.poker.holdem.domain.Sale;
+import org.hibernate.SessionFactory;
+
+import common.game.poker.holdem.PaymentENT;
+import common.game.poker.holdem.SaleEnt;
 
 public interface FinanceDaoInterface {
 	
-         Payment savePayment(Payment ent ,Connection conn) ;
-         Sale    saveSale(Sale ent ,Connection conn) ;
-         Payment mergePayment(Payment ent ,Connection conn) ;
-         Sale    mergeSale(Sale ent , Connection conn) ;
-         Set<Payment> getAllPayments(long id, Connection conn) ;
-         Set<Sale> getAllSale(long id , Connection conn) ;
-          Payment updatePayment(Payment ent ,Connection conn) ;
-          Sale    updateSale(Sale ent, Connection conn) ;
-          Set<Payment> getUserPayments(String id, Connection conn) ;
-          Set<Sale> getUserSales(String id , Connection conn) ;
+         PaymentENT savePayment(PaymentENT ent ,SessionFactory conn) ;
+         SaleEnt    saveSale(SaleEnt ent ,SessionFactory conn) ;
+          List<PaymentENT> getAllPayments(SessionFactory conn) ;
+          List<SaleEnt> getAllSale(SessionFactory conn) ;
+          List<PaymentENT> getUserPayments(String id, SessionFactory conn) ;
+          List<SaleEnt> getUserSales(String id , SessionFactory conn) ;
           
         
          

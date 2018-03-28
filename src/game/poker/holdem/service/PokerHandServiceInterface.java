@@ -24,6 +24,7 @@ THE SOFTWARE.
 package game.poker.holdem.service;
 
 import tools.AMSException;
+import common.game.poker.holdem.GameENT;
 import game.poker.holdem.domain.*;
 
 
@@ -36,10 +37,10 @@ public interface PokerHandServiceInterface {
 	
 	/**
 	 * Start a new hand on the given game
-	 * @param game {@link Game} to start the hand with
+	 * @param game {@link GameENT} to start the hand with
 	 * @return {@link HandEntity} for the hand
 	 */
-	public HandEntity startNewHand(Game game);
+	public HandEntity startNewHand(GameENT game);
 	
 	/**
 	 * End the hand. Update dependencies on Players, position, dealer, big blind, etc.
@@ -49,7 +50,7 @@ public interface PokerHandServiceInterface {
 	 * @param hand Hand to be finished.
 	 * @throws AMSException 
 	 */
-	public void endHand(Game game) throws AMSException;
+	public void endHand(GameENT game) throws AMSException;
 	
 	/**
 	 * Get the hand from the persistence context based on the unique id
@@ -64,7 +65,7 @@ public interface PokerHandServiceInterface {
 	 * @return updated hand with {@link BoardEntity} containing the flop
 	 * @throws IllegalStateException if the hand is not in a state to expect the flop.
 	 */
-	public HandEntity flop(Game game) throws IllegalStateException;
+	public HandEntity flop(GameENT game) throws IllegalStateException;
 	
 	/**
 	 * Handle the turn for the hand
@@ -73,7 +74,7 @@ public interface PokerHandServiceInterface {
 	 * @throws IllegalStateException if the hand is not in a state to expect a turn card.
 	 * This may be because there is already a turn card, or there is no flop yet.
 	 */
-	public HandEntity turn(Game game) throws IllegalStateException;
+	public HandEntity turn(GameENT game) throws IllegalStateException;
 	
 	/**
 	 * Handle the river card for the hand
@@ -81,7 +82,7 @@ public interface PokerHandServiceInterface {
 	 * @return updated hand with {@link BoardEntity} containing the river card
 	 * @throws IllegalStateException if the hand is not in a state to expect a river card.
 	 */
-	public HandEntity river(Game game) throws IllegalStateException;
+	public HandEntity river(GameENT game) throws IllegalStateException;
 	
 	/**
 	 * Has the current player to act for the hand sit out, then moves the action to the next player.

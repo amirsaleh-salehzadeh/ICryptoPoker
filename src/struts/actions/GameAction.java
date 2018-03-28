@@ -6,7 +6,6 @@ package struts.actions;
 
 import game.poker.holdem.dao.GameDaoImpl;
 import game.poker.holdem.dao.PlayerDaoImpl;
-import game.poker.holdem.domain.Game;
 import game.poker.holdem.domain.Player;
 import game.poker.holdem.service.GameServiceImpl;
 
@@ -17,6 +16,8 @@ import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+
+import common.game.poker.holdem.GameENT;
 
 public class GameAction extends Action {
 	private String success = "";
@@ -43,7 +44,7 @@ public class GameAction extends Action {
 			GameDaoImpl gamedao = new GameDaoImpl();
 			long gameId = Long.parseLong(request.getParameter("gameId"));
 			int chips = Integer.parseInt(request.getParameter("chips"));
-			Game game = gamedao.findById(gameId, null);
+			GameENT game = gamedao.findById(gameId, null);
 			// TODO: AMS>> FIX Username
 			// Player player = playerDaoImpl.findById(request.getRemoteUser(),
 			// null);

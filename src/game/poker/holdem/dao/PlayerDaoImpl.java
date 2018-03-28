@@ -34,10 +34,9 @@ import java.util.Set;
 
 import com.mysql.jdbc.Statement;
 
+import common.game.poker.holdem.GameENT;
 import tools.AMSException;
 import tools.MD5Encryptor;
-
-import game.poker.holdem.domain.Game;
 import game.poker.holdem.domain.HandEntity;
 import game.poker.holdem.domain.Player;
 import hibernate.config.BaseHibernateDAO;

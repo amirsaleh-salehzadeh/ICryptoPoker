@@ -47,14 +47,13 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import tools.AMSException;
-
+import common.game.poker.holdem.GameENT;
 import common.user.UserPassword;
 
 import game.poker.holdem.dao.GameDaoImpl;
 import game.poker.holdem.dao.HandDaoImpl;
 import game.poker.holdem.domain.BlindLevel;
 import game.poker.holdem.domain.CommonTournamentFormats;
-import game.poker.holdem.domain.Game;
 import game.poker.holdem.domain.GameStatus;
 import game.poker.holdem.domain.GameStructure;
 import game.poker.holdem.domain.GameType;
@@ -159,7 +158,7 @@ public class GameServiceWS {
 			@FormParam("blindLevel") String blindLevel) {
 		// CommonTournamentFormats gameStructure,
 		// http://localhost:8080/ICryptoPoker/REST/GetGameServiceWS/CreateGame?gameName=hshshs&description=hfhfhf&timeInMins=33&startingChips=400
-		Game game = new Game();
+		GameENT game = new GameENT();
 		GameDaoImpl gameDao = new GameDaoImpl();
 		game.setName(gameName);
 		GameStructure gs = new GameStructure();

@@ -35,6 +35,13 @@ function fitElementsWithinScreen() {
 			$(this).trigger("create");
 		}
 	});
+	$(".card").each(function() {
+		if ($(this).html().length > 0) {
+			$(this).width($("#userSitPlace").height() * 0.7);
+			$(this).height($("#userSitPlace").height());
+			$(this).trigger("create");
+		}
+	});
 }
 
 function generateACard(cardVal, divID, cardNumber) {
@@ -67,14 +74,14 @@ function generateACard(cardVal, divID, cardNumber) {
 		$("#flop" + cardNumber).html(res).trigger("create");
 	} else {
 		$("#" + divID).find(".card" + cardNumber).html(res).trigger("create");
-		if (cardNumber == 2) {
-			$("#" + divID).find(".card" + cardNumber).width(
-					$("#userSitPlace").height() * 0.7).trigger("create");
-			$("#" + divID).find(".card" + cardNumber).height(
-					$("#userSitPlace").height()).trigger("create");
-			// $("#flopsContainer div").height(
-			// $("#flop1").width() + ($("#flop1").width() * 0.7));
-		}
+		// if (cardNumber == 2) {
+		// $("#" + divID).find(".card" + cardNumber).width(
+		// $("#userSitPlace").height() * 0.7).trigger("create");
+		// $("#" + divID).find(".card" + cardNumber).height(
+		// $("#userSitPlace").height()).trigger("create");
+		// // $("#flopsContainer div").height(
+		// // $("#flop1").width() + ($("#flop1").width() * 0.7));
+		// }
 	}
 }
 
@@ -118,12 +125,12 @@ $(document).ready(
 			$("#sliderRaise").slider();
 		});
 
+// Toggles the display of the chat to block or none to be visible when the icon
+// is clicked
+function toggleChat() {
+	if ($("#chatBoxContainer").css("display") == "block") {
 
-//Toggles the display of the chat to block or none to be visible when the icon is clicked
-function toggleChat(){
-	if($("#chatBoxContainer").css("display")=="block"){
-		
-		$("#chatBoxContainer").css("display","none");
-	}else
-		$("#chatBoxContainer").css("display","block");
+		$("#chatBoxContainer").css("display", "none");
+	} else
+		$("#chatBoxContainer").css("display", "block");
 }

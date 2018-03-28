@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 27, 2018 7:37:47 PM by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="game.poker.holdem.domain.Table" table="TABLE">
+        <id name="game" type="game.poker.holdem.domain.Game">
+            <column name="GAME" />
+            <generator class="assigned" />
+        </id>
+        <map name="players" table="TABLE" lazy="true">
+            <key>
+                <column name="GAME" />
+            </key>
+            <map-key type="java.lang.String"></map-key>
+            <element type="java.lang.String">
+                <column name="PLAYERS" />
+            </element>
+        </map>
+    </class>
+</hibernate-mapping>

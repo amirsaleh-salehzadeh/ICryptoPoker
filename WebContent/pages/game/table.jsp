@@ -140,26 +140,26 @@
 							style="height: 20%; width: 100%;"></div>
 						<div class="ui-block-solo ui-grid-b"
 							style="height: 60%; width: 100%;">
-							<div class="ui-block-a" style="height: 100%; width: 20%;"></div>
+							<div class="ui-block-a" style="height: 100%; width: 10%;"></div>
 							<div class="ui-block-b ui-grid-d" id="flopsContainer"
-								style="height: 100%; width: 60%;">
-								<div class="ui-block-a tableCards" id="flop1">
+								style="height: 100%; width: 80%;">
+								<div class="ui-block-a tableCards card" id="flop1">
 									<img alt="" src="images/game/card.jpg">
 								</div>
-								<div class="ui-block-b tableCards" id="flop2">
+								<div class="ui-block-b tableCards card" id="flop2">
 									<img alt="" src="images/game/card.jpg">
 								</div>
-								<div class="ui-block-c tableCards" id="flop3">
+								<div class="ui-block-c tableCards card" id="flop3">
 									<img alt="" src="images/game/card.jpg">
 								</div>
-								<div class="ui-block-d tableCards" id="flop4">
+								<div class="ui-block-d tableCards card" id="flop4">
 									<img alt="" src="images/game/card.jpg">
 								</div>
-								<div class="ui-block-e tableCards" id="flop5">
+								<div class="ui-block-e tableCards card" id="flop5">
 									<img alt="" src="images/game/card.jpg">
 								</div>
 							</div>
-							<div class="ui-block-c" style="height: 100%; width: 20%;"></div>
+							<div class="ui-block-c" style="height: 100%; width: 10%;"></div>
 						</div>
 						<div class="ui-block-solo" style="height: 20%; width: 100%;">
 						</div>

@@ -3,10 +3,13 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated Mar 27, 2018 7:37:47 PM by Hibernate Tools 3.5.0.Final -->
 <hibernate-mapping>
-    <class name="game.poker.holdem.holder.CardHolder" table="CARDHOLDER">
-        <id name="id" type="java.lang.Long">
-            <column name="ID" />
+    <class name="game.poker.holdem.domain.Message" table="MESSAGE">
+        <id name="name" type="java.lang.String">
+            <column name="NAME" />
             <generator class="assigned" />
         </id>
+        <property name="value" type="java.lang.Object">
+            <column name="VALUE" />
+        </property>
     </class>
 </hibernate-mapping>

@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 27, 2018 7:37:47 PM by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="game.poker.holdem.domain.HandEntity" table="HANDENTITY">
+        <id name="id" type="long">
+            <column name="ID" />
+            <generator class="assigned" />
+        </id>
+        <one-to-one name="game" class="game.poker.holdem.domain.Game"></one-to-one>
+        <many-to-one name="board" class="game.poker.holdem.domain.BoardEntity" fetch="join">
+            <column name="BOARD" />
+        </many-to-one>
+        <set name="players" table="PLAYERHAND" inverse="false" lazy="true">
+            <key>
+                <column name="ID" />
+            </key>
+            <one-to-many class="game.poker.holdem.domain.PlayerHand" />
+        </set>
+        <many-to-one name="currentToAct" class="game.poker.holdem.domain.Player" fetch="join">
+            <column name="CURRENTTOACT" />
+        </many-to-one>
+        <property name="blindLevel">
+            <column name="BLINDLEVEL" />
+            <type name="org.hibernate.type.EnumType">
+                <param name="type">12</param>
+                <param name="enumClass">game.poker.holdem.domain.BlindLevel</param>
+            </type>
+        </property>
+        <list name="cardList" inverse="false" table="HANDENTITY" lazy="true" access="field">
+            <key>
+                <column name="ID" />
+            </key>
+            <list-index></list-index>
+            <element type="game.poker.holdem.Card">
+                <column name="CARDLIST" />
+            </element>
+        </list>
+        <property name="pot" type="int">
+            <column name="POT" />
+        </property>
+        <property name="totalBetAmount" type="int">
+            <column name="TOTALBETAMOUNT" />
+        </property>
+        <property name="lastBetAmount" type="int">
+            <column name="LASTBETAMOUNT" />
+        </property>
+    </class>
+</hibernate-mapping>

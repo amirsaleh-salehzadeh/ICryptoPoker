@@ -3,9 +3,6 @@ html {
 	box-sizing: border-box
 }
 
-*,*:before,*:after {
-	box-sizing: inherit
-}
 /* Extract from normalize.css by Nicolas Gallagher and Jonathan Neal git.io/normalize */
 html {
 	-ms-text-size-adjust: 100%;
@@ -186,7 +183,7 @@ textarea {
 html,body {
 	font-family: Verdana, sans-serif;
 	font-size: 15px;
-	line-height: 1.5
+	line-height: 1.1;
 }
 
 html {

@@ -130,8 +130,8 @@
 							<div class='sitPlaceThumbnailEmpty'>Waiting</div>
 						</div>
 					</div>
-					
-					
+
+
 					<!-- MIDDLE-CENTER GRID  -->
 
 					<div class="ui-block-b" style="width: 60%; height: 100%;"
@@ -191,27 +191,33 @@
 
 				<div class="ui-block-solo ui-grid-b" style="height: 25%;">
 					<div class="ui-block-a"
-						style="width: 20%; height: 100% !important;"><div  id="chatBoxContainer">This is the chat box</div></div>
+						style="width: 20%; height: 100% !important;">
+						<div id="chatBoxContainer">This is the chat box</div>
+					</div>
 					<div class="ui-block-b sitPlaceContainer bottomSideSits"
 						style="height: 100% !important; width: 40%;" id="userSitPlace"></div>
 					<div class="ui-block-c"
 						style="width: 40%; height: 100% !important;"
 						id="raiseSliderContainer">
 						<input type="range" name="sliderRaise" id="sliderRaise"
-							data-show-value="true" data-popup-enabled="true"> 
-<!-- 							<input -->
-<!-- 							type="number" id="betAmount" value="0"> -->
+							data-show-value="true" data-popup-enabled="true">
+						<!-- 							<input -->
+						<!-- 							type="number" id="betAmount" value="0"> -->
 					</div>
 				</div>
-				
+
 			</div>
 
-<div id="btnChat"><a href="" onclick="toggleChat();"><img src=".../images/game/chatIcon.ico" alt="Chat"/></a></div>
 			<!-- bottom -->
 
 			<div class="ui-block-solo ui-grid-d constantBannersBottom"
 				id="buttonsContainerDIV" style="width: 100%; height: 14%;">
-				<div class="ui-block-a" style="width: 40%"></div>
+				<div class="ui-block-a" style="width: 40%">
+					<div id="btnChat">
+						<a href="" onclick="toggleChat();"><img
+							src="images/game/chatBox.png" width="32" height="32" alt="Chat" /></a>
+					</div>
+				</div>
 				<div class="ui-block-b" style="width: 15%">
 					<a href="#" data-mini="true"
 						class="actionButtons ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b"

@@ -32,12 +32,12 @@ import java.util.Set;
 
 import com.mysql.jdbc.Statement;
 
+import common.game.poker.holdem.GameENT;
 import tools.AMSException;
 import game.poker.holdem.Card;
 import game.poker.holdem.Deck;
 import game.poker.holdem.domain.BlindLevel;
 import game.poker.holdem.domain.BoardEntity;
-import game.poker.holdem.domain.Game;
 import game.poker.holdem.domain.HandEntity;
 import game.poker.holdem.domain.Player;
 import game.poker.holdem.domain.PlayerHand;

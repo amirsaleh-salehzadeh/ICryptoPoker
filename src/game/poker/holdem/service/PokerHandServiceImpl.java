@@ -43,6 +43,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
+import common.game.poker.holdem.GameENT;
 import services.websockets.TableWebsocket;
 import tools.AMSException;
 
@@ -54,7 +55,7 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 
 	private PlayerDaoImpl playerDao;
 
-	public HandEntity startNewHand(Game game) {
+	public HandEntity startNewHand(GameENT game) {
 
 		gameDao = new GameDaoImpl();
 		handDao = new HandDaoImpl();
@@ -120,7 +121,7 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		return hand;
 	}
 
-	public void endHand(Game g) throws AMSException {
+	public void endHand(GameENT g) throws AMSException {
 		gameDao = new GameDaoImpl();
 		handDao = new HandDaoImpl();
 		playerDao = new PlayerDaoImpl();
@@ -133,7 +134,7 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		}
 
 		// Game game = hand.getGame();
-		Game game = g;
+		GameENT game = g;
 		hand.setCurrentToAct(null);
 
 		hand = determineWinner(hand);
@@ -190,7 +191,7 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 			@Override
 			public void run() {
 				GameDaoImpl gameDao = new GameDaoImpl();
-				Game game = gameDao.findById(gameId, null);
+				GameENT game = gameDao.findById(gameId, null);
 				game.setCurrentHand(null);
 				game.setStarted(false);
 				game = gameDao.merge(game, null);
@@ -210,7 +211,7 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		return handDao.findById(id, null);
 	}
 
-	public HandEntity flop(Game game) throws IllegalStateException {
+	public HandEntity flop(GameENT game) throws IllegalStateException {
 		handDao = new HandDaoImpl();
 		HandEntity hand = game.getCurrentHand();
 		if (hand.getBoard().getFlop1() != null) {
@@ -252,7 +253,7 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		return hand;
 	}
 
-	public HandEntity turn(Game game) throws IllegalStateException {
+	public HandEntity turn(GameENT game) throws IllegalStateException {
 		HandEntity hand = game.getCurrentHand();
 		if (hand.getBoard().getFlop1() == null
 				|| hand.getBoard().getTurn() != null) {
@@ -295,7 +296,7 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		return hand;
 	}
 
-	public HandEntity river(Game game) throws IllegalStateException {
+	public HandEntity river(GameENT game) throws IllegalStateException {
 		HandEntity hand = game.getCurrentHand();
 		if (hand.getBoard().getFlop1() == null
 				|| hand.getBoard().getTurn() == null
@@ -399,7 +400,7 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		return PlayerUtil.getNextPlayerInGameOrderPH(players, leftOfButton);
 	}
 
-	private void updateBlindLevel(Game game) {
+	private void updateBlindLevel(GameENT game) {
 		if (game.getGameStructure().getCurrentBlindEndTime() == null) {
 			// Start the blind
 			setNewBlindEndTime(game);
@@ -422,7 +423,7 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		}
 	}
 
-	private void setNewBlindEndTime(Game game) {
+	private void setNewBlindEndTime(GameENT game) {
 		Calendar c = Calendar.getInstance();
 		c.add(Calendar.MINUTE, game.getGameStructure().getBlindLength());
 		game.getGameStructure().setCurrentBlindEndTime(c.getTime());

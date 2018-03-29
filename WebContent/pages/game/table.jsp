@@ -1,5 +1,5 @@
 <%@page import="game.poker.holdem.domain.Player"%>
-<%@page import="game.poker.holdem.domain.Game"%>
+<%@page import="game.poker.holdem.domain.GameEnt"%>
 <%@page import="game.poker.holdem.domain.BlindLevel"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
@@ -29,7 +29,7 @@
 <!-- <script src="js/jquery/jquery-ui.js"></script> -->
 <%
 	Player player = (Player) request.getAttribute("player");
-	Game game = (Game) request.getAttribute("game");
+	GameEnt game = (GameEnt) request.getAttribute("game");
 %>
 </head>
 <body>

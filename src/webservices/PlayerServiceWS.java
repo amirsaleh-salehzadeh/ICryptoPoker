@@ -38,10 +38,10 @@ import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
+import common.game.poker.holdem.GameENT;
 import tools.AMSException;
 
 import game.poker.holdem.dao.GameDaoImpl;
-import game.poker.holdem.domain.Game;
 import game.poker.holdem.domain.GameStatus;
 import game.poker.holdem.domain.HandEntity;
 import game.poker.holdem.domain.Player;
@@ -93,7 +93,7 @@ public class PlayerServiceWS {
 	@Produces("application/json")
 	public String joinGame(long gameId, String playerName) {
 		GameDaoImpl gameDao = new GameDaoImpl();
-		Game game = gameDao.findById(gameId, null);
+		GameENT game = gameDao.findById(gameId, null);
 		Player player = new Player();
 		player.setName(playerName);
 		player = gameService.addNewPlayerToGame(game, player);
@@ -170,7 +170,7 @@ public class PlayerServiceWS {
 		gameService = new GameServiceImpl();
 		playerActionService = new PlayerActionServiceImpl();
 		GameDaoImpl gameDao = new GameDaoImpl();
-		Game game = gameDao.findById(gameId, null);
+		GameENT game = gameDao.findById(gameId, null);
 		Player player = playerActionService.getPlayerById(playerId);
 		HandEntity hand = playerActionService.fold(player, game);
 		ObjectMapper mapper = new ObjectMapper();
@@ -225,7 +225,7 @@ public class PlayerServiceWS {
 			@QueryParam("playerId") String playerId) {
 		gameService = new GameServiceImpl();
 		GameDaoImpl gameDao = new GameDaoImpl();
-		Game game = gameDao.findById(gameId, null);
+		GameENT game = gameDao.findById(gameId, null);
 		playerActionService = new PlayerActionServiceImpl();
 		Player player = playerActionService.getPlayerById(playerId);
 		HandEntity hand = playerActionService.call(player, game);
@@ -280,7 +280,7 @@ public class PlayerServiceWS {
 			@QueryParam("playerId") String playerId) {
 		gameService = new GameServiceImpl();
 		GameDaoImpl gameDao = new GameDaoImpl();
-		Game game = gameDao.findById(gameId, null);
+		GameENT game = gameDao.findById(gameId, null);
 		playerActionService = new PlayerActionServiceImpl();
 		Player player = playerActionService.getPlayerById(playerId);
 		HandEntity hand = playerActionService.check(player, game);
@@ -347,7 +347,7 @@ public class PlayerServiceWS {
 		gameService = new GameServiceImpl();
 		playerActionService = new PlayerActionServiceImpl();
 		GameDaoImpl gameDao = new GameDaoImpl();
-		Game game = gameDao.findById(gameId, null);
+		GameENT game = gameDao.findById(gameId, null);
 		Player player = playerActionService.getPlayerById(playerId);
 		HandEntity hand = playerActionService.bet(player, game, betAmount);
 		Map<String, Object> resultMap = new HashMap<String, Object>();

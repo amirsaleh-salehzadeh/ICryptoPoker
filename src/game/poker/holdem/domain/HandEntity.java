@@ -26,12 +26,13 @@ package game.poker.holdem.domain;
 import java.util.List;
 import java.util.Set;
 
+import common.game.poker.holdem.GameENT;
 import game.poker.holdem.Card;
 
 public class HandEntity {
 
 	private long id = 0;
-	private Game game;
+	private GameENT game;
 	private BoardEntity board;
 	private Set<PlayerHand> players;
 //	private Set<PlayerHand> allPlayers;
@@ -50,11 +51,11 @@ public class HandEntity {
 		this.id = id;
 	}
 
-	public Game getGame() {
+	public GameENT getGame() {
 		return game;
 	}
 
-	public void setGame(Game game) {
+	public void setGame(GameENT game) {
 		this.game = game;
 	}
 

@@ -24,7 +24,7 @@ THE SOFTWARE.
 package game.poker.holdem.util;
 
 import tools.AMSException;
-import game.poker.holdem.domain.Game;
+import common.game.poker.holdem.GameENT;
 import game.poker.holdem.domain.GameStatus;
 import game.poker.holdem.domain.HandEntity;
 import game.poker.holdem.service.PokerHandServiceImpl;
@@ -36,7 +36,7 @@ import game.poker.holdem.service.PokerHandServiceImpl;
  */
 public class GameUtil {
 
-	public static GameStatus getGameStatus(Game game) {
+	public static GameStatus getGameStatus(GameENT game) {
 		if (!game.isStarted()) {
 			return GameStatus.NOT_STARTED;
 		}
@@ -60,7 +60,7 @@ public class GameUtil {
 		return GameStatus.PREFLOP;
 	}
 
-	public static void goToNextStepOfTheGame(Game game, String playerId)
+	public static void goToNextStepOfTheGame(GameENT game, String playerId)
 			throws AMSException {
 		PokerHandServiceImpl phs = new PokerHandServiceImpl();
 		// if (game.getCurrentHand().getPlayers(false).size() == 1) {

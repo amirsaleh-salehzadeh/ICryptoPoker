@@ -26,7 +26,6 @@ package game.poker.holdem.service;
 import game.poker.holdem.dao.GameDaoImpl;
 import game.poker.holdem.dao.HandDaoImpl;
 import game.poker.holdem.dao.PlayerDaoImpl;
-import game.poker.holdem.domain.Game;
 import game.poker.holdem.domain.HandEntity;
 import game.poker.holdem.domain.Player;
 import game.poker.holdem.domain.PlayerHand;
@@ -37,6 +36,7 @@ import game.poker.holdem.util.PlayerUtil;
 
 import java.util.Map;
 
+import common.game.poker.holdem.GameENT;
 import tools.AMSException;
 import webservices.PlayerServiceWS;
 
@@ -59,7 +59,7 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 		return playerDao.findById(playerId, null);
 	}
 
-	public HandEntity fold(Player player, Game game) {
+	public HandEntity fold(Player player, GameENT game) {
 		HandEntity hand = game.getCurrentHand();
 		// hand = handDao.merge(hand, null);
 		// Cannot fold out of turn
@@ -93,7 +93,7 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 		return hand;
 	}
 
-	public HandEntity check(Player player, Game game) {
+	public HandEntity check(Player player, GameENT game) {
 		HandEntity hand = game.getCurrentHand();
 		hand.setGame(game);
 		// hand = handDao.merge(hand, null);
@@ -117,7 +117,7 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 		return hand;
 	}
 
-	public HandEntity bet(Player player, Game game, int betAmount) {
+	public HandEntity bet(Player player, GameENT game, int betAmount) {
 		HandEntity hand = game.getCurrentHand();
 		hand.setGame(game);
 		// hand = handDao.merge(hand, null);
@@ -173,7 +173,7 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 		return hand;
 	}
 
-	public HandEntity call(Player player, Game game) {
+	public HandEntity call(Player player, GameENT game) {
 		HandEntity hand = game.getCurrentHand();
 		hand.setGame(game);
 		// hand = handDao.merge(hand, null);
@@ -227,7 +227,7 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 			return PlayerStatus.SIT_OUT_GAME;
 		}
 		GameDaoImpl gdao = new GameDaoImpl();
-		Game game = gdao.findById(player.getGameId(), null);
+		GameENT game = gdao.findById(player.getGameId(), null);
 		if (!game.isStarted()) {
 			return PlayerStatus.NOT_STARTED;
 		}

@@ -194,7 +194,6 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 		if (toCall <= 0) {
 			return null;
 		}
-
 		playerHand.setRoundBetAmount(playerHand.getRoundBetAmount() + toCall);
 		playerHand.setBetAmount(playerHand.getBetAmount() + toCall);
 		handDao.updatePlayerHand(playerHand, null);

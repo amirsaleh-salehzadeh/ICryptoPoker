@@ -10,7 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import common.game.poker.holdem.SaleEnt;
-import game.poker.holdem.dao.FinanceDaoImpl;
+import hibernate.game.poker.holdem.FinanceDaoImpl;
 import common.game.poker.holdem.SaleEnt;
 
 public class SaleTest extends FinanceDaoImpl {

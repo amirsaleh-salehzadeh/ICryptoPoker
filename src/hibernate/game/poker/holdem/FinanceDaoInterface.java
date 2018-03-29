@@ -1,4 +1,4 @@
-package game.poker.holdem.dao;
+package hibernate.game.poker.holdem;
 
 import java.sql.Connection;
 import java.util.List;

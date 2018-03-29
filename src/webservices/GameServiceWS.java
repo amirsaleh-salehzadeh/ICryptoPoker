@@ -496,29 +496,29 @@ public class GameServiceWS {
 	 * @return {"success":true} if the player was sat out. Error otherwise.
 	 */
 
-	@GET
-	@Path("/SitOutCurrentPlayer")
-	@Produces("application/json")
-	public String sitOutCurrentPlayer(@QueryParam("handId") long handId) {
-		HandEntity hand = handService.getHandById(handId);
-		boolean result = handService.sitOutCurrentPlayer(hand);
-		ObjectMapper mapper = new ObjectMapper();
-		String json = "";
-		try {
-			json = mapper.writeValueAsString(Collections.singletonMap(
-					"success", result));
-		} catch (JsonGenerationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return json;
-	}
+//	@GET
+//	@Path("/SitOutCurrentPlayer")
+//	@Produces("application/json")
+//	public String sitOutCurrentPlayer(@QueryParam("handId") long handId) {
+//		HandEntity hand = handService.getHandById(handId);
+//		boolean result = handService.sitOutCurrentPlayer(hand);
+//		ObjectMapper mapper = new ObjectMapper();
+//		String json = "";
+//		try {
+//			json = mapper.writeValueAsString(Collections.singletonMap(
+//					"success", result));
+//		} catch (JsonGenerationException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (JsonMappingException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		return json;
+//	}
 
 	/**
 	 * Sometimes it is nice to know that everything is working

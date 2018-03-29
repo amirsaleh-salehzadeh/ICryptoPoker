@@ -112,7 +112,7 @@
 
 
 				<div class="ui-grid-b ui-block-solo"
-					style="width: 100%; height: 60%;">
+					style="width: 100%; height: 55%;">
 
 					<!-- MIDDLE-LEFT GRID  -->
 
@@ -131,6 +131,7 @@
 						</div>
 					</div>
 
+
 					<!-- MIDDLE-CENTER GRID  -->
 
 					<div class="ui-block-b" style="width: 60%; height: 100%;"
@@ -139,26 +140,26 @@
 							style="height: 20%; width: 100%;"></div>
 						<div class="ui-block-solo ui-grid-b"
 							style="height: 60%; width: 100%;">
-							<div class="ui-block-a" style="height: 100%; width: 20%;"></div>
+							<div class="ui-block-a" style="height: 100%; width: 10%;"></div>
 							<div class="ui-block-b ui-grid-d" id="flopsContainer"
-								style="height: 100%; width: 60%;">
-								<div class="ui-block-a tableCards" id="flop1">
+								style="height: 100%; width: 80%;">
+								<div class="ui-block-a tableCards card" id="flop1">
 									<img alt="" src="images/game/card.jpg">
 								</div>
-								<div class="ui-block-b tableCards" id="flop2">
+								<div class="ui-block-b tableCards card" id="flop2">
 									<img alt="" src="images/game/card.jpg">
 								</div>
-								<div class="ui-block-c tableCards" id="flop3">
+								<div class="ui-block-c tableCards card" id="flop3">
 									<img alt="" src="images/game/card.jpg">
 								</div>
-								<div class="ui-block-d tableCards" id="flop4">
+								<div class="ui-block-d tableCards card" id="flop4">
 									<img alt="" src="images/game/card.jpg">
 								</div>
-								<div class="ui-block-e tableCards" id="flop5">
+								<div class="ui-block-e tableCards card" id="flop5">
 									<img alt="" src="images/game/card.jpg">
 								</div>
 							</div>
-							<div class="ui-block-c" style="height: 100%; width: 20%;"></div>
+							<div class="ui-block-c" style="height: 100%; width: 10%;"></div>
 						</div>
 						<div class="ui-block-solo" style="height: 20%; width: 100%;">
 						</div>
@@ -188,27 +189,35 @@
 
 				<!--  BOTTOM GRID -->
 
-				<div class="ui-block-solo ui-grid-b" style="height: 20%;">
+				<div class="ui-block-solo ui-grid-b" style="height: 25%;">
 					<div class="ui-block-a"
-						style="width: 20%; height: 100% !important;"></div>
+						style="width: 20%; height: 100% !important;">
+						<div id="chatBoxContainer">This is the chat box</div>
+					</div>
 					<div class="ui-block-b sitPlaceContainer bottomSideSits"
 						style="height: 100% !important; width: 40%;" id="userSitPlace"></div>
 					<div class="ui-block-c"
 						style="width: 40%; height: 100% !important;"
 						id="raiseSliderContainer">
 						<input type="range" name="sliderRaise" id="sliderRaise"
-							data-show-value="true" data-popup-enabled="true"> 
-<!-- 							<input -->
-<!-- 							type="number" id="betAmount" value="0"> -->
+							data-show-value="true" data-popup-enabled="true">
+						<!-- 							<input -->
+						<!-- 							type="number" id="betAmount" value="0"> -->
 					</div>
 				</div>
+
 			</div>
 
 			<!-- bottom -->
 
 			<div class="ui-block-solo ui-grid-d constantBannersBottom"
 				id="buttonsContainerDIV" style="width: 100%; height: 14%;">
-				<div class="ui-block-a" style="width: 40%"></div>
+				<div class="ui-block-a" style="width: 40%">
+					<div id="btnChat">
+						<a href="" onclick="toggleChat();"><img
+							src="images/game/chatBox.png" width="32" height="32" alt="Chat" /></a>
+					</div>
+				</div>
 				<div class="ui-block-b" style="width: 15%">
 					<a href="#" data-mini="true"
 						class="actionButtons ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b"

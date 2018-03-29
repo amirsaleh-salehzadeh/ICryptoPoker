@@ -16,7 +16,6 @@ function leaveTable() {
 }
 
 function updateGameInfo(data) {
-
 	$(".tableCards").each(function() {
 		$(this).html('<img alt="" src="images/game/card.jpg">');
 	});
@@ -27,12 +26,12 @@ function updateGameInfo(data) {
 						.trigger("create");
 			});
 	$("#handPotContainer")
-			.html(
-					'<img alt="" src="images/game/stack.png" height="100%"><span>&nbsp;&cent;&nbsp;'
+			.html('<img alt="" src="images/game/stack.png" height="100%"><span>&nbsp;&cent;&nbsp;'
 							+ data.pot + '</span>');
 	$(".actionButtons").each(function() {
 		$(this).addClass("ui-state-disabled");
 	});
+	$("#raiseSliderContainer").addClass("ui-state-disabled");
 	$("#handID").val(data.handId);
 	$('.pscontainer').each(function() {
 		$(this).attr("class", "pscontainer");
@@ -131,6 +130,7 @@ function updatePlayerInfo(data) {
 			$(".actionButtons").each(function() {
 				$(this).removeClass("ui-state-disabled");
 			});
+			$("#raiseSliderContainer").removeClass("ui-state-disabled");
 			$("#sliderRaise").attr("min", parseInt(data.bigBlind) * 2);
 			$("#sliderRaise").attr("max", parseInt(data.chips));
 			$("#sliderRaise").attr("value", parseInt(data.bigBlind) * 2)
@@ -148,20 +148,17 @@ function updatePlayerInfo(data) {
 					if ("pscontainer" + playerId == this.id) {
 						$(this).html("LOST");
 						$(this).addClass("loser");
-						$(this).addClass("waitingChip");
-						$("#amountToCallcontainer" + playerToActId).html(
+						$("#amountToCallcontainer" + playerId).html(
 								data.handRank);
 					}
 				});
 
 	} else if (data.status == "WON_HAND") {
-		$('.pscontainer').each(
+		$('.playerInfo').each(
 				function() {
-					if ("pscontainer" + playerId == this.id) {
-						$(this).html("WIN");
+					if ("playerInfo" + playerId == this.id) {
 						$(this).addClass("winner");
-						$(this).addClass("waitingChip");
-						$("#amountToCallcontainer" + playerToActId).html(
+						$("#amountToCallcontainer" + playerId).html(
 								data.handRank);
 					}
 				});
@@ -174,13 +171,18 @@ function endHand() {
 
 function addANewPlayerToTable(id, name, chips, amountToCall) {
 	var content = "";
+	if (amountToCall != "0")
+		amountToCall = "&cent; " + amountToCall;
+	else
+		amountToCall = "";
 	$(".sitPlaceContainer")
 			.each(
 					function() {
 						if (content == "")
 							if (id != $("#playerID").val()) {
-								// username, chip and timer div START
-								content = "<div class='ui-block-solo playerInfo'>"
+								content = "<div class='ui-block-solo playerInfo' id='playerInfo"
+										+ id
+										+ "'>"
 										+ "<div class='ui-block-solo w3-light-grey w3-round w3-tiny'>"
 										+ "<div class='w3-container w3-round w3-green' style='width:100%; height:5px;' id='timer"
 										+ id
@@ -198,17 +200,17 @@ function addANewPlayerToTable(id, name, chips, amountToCall) {
 										+ "'></div>"
 										+ "<div class='ui-block-b amountToCallcontainer' id='amountToCallcontainer"
 										+ id
-										+ "'> &cent;"
+										+ "'>"
 										+ amountToCall
 										+ "</div></div>"
 										+ "<div class='ui-grid-a playerCardsContainer' id='cards"
 										+ id
-										+ "'><div class='ui-block-a card1'></div><div class='ui-block-b card2'></div>"
+										+ "'><div class='ui-block-a card1 card'></div><div class='ui-block-b card2 card'></div>"
 										+ "</div></div>";
-								// CARD CONTAINER END
-
 							} else {
-								content = "<div class='ui-block-a'><div class='ui-block-solo playerInfo'>"
+								content = "<div class='ui-block-a'><div class='ui-block-solo playerInfo' id='playerInfo"
+										+ id
+										+ "'>"
 										+ "<div class='ui-block-solo w3-light-grey w3-round w3-tiny'>"
 										+ "<div class='w3-container w3-round w3-green' style='width:100%; height:11px;' id='timer"
 										+ id
@@ -217,23 +219,17 @@ function addANewPlayerToTable(id, name, chips, amountToCall) {
 										+ "<div class='ui-block-a pscontainer' id='pscontainer"
 										+ id
 										+ "'></div>"
-										+ "<div class='ui-block-b'> "
-										+ name
-										+ "</div></div>"
-										+ "<div class='ui-block-solo playerTotalChipsPlace'> &cent;"
+										+ "<div class='ui-block-b playerTotalChipsPlace'> &cent; "
 										+ chips
-										+ "</div>"
-										// username, chip and timer div END
-										// PLAYER STATUS AND ACTION CONTAINER
-										// START
+										+ "</div></div>"
 										+ "<div class='ui-block-solo amountToCallcontainer' id='amountToCallcontainer"
 										+ id
-										+ "'> &cent;"
+										+ "'>"
 										+ amountToCall
 										+ "</div></div></div>"
 										+ "<div class='ui-block-b'><div class='ui-grid-a playerCardsContainer' id='cards"
 										+ id
-										+ "'><div class='ui-block-a card1'></div><div class='ui-block-b card2'></div>"
+										+ "'><div class='ui-block-a card1 card'></div><div class='ui-block-b card2 card'></div>"
 										+ "</div></div>";
 								$("#userSitPlace").html(content);
 								return false;

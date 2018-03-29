@@ -63,11 +63,11 @@ public class GameUtil {
 	public static void goToNextStepOfTheGame(GameENT game, String playerId)
 			throws AMSException {
 		PokerHandServiceImpl phs = new PokerHandServiceImpl();
-//		if (game.getCurrentHand().getPlayers(false).size() == 1) {
-//			phs.endHand(game);
-//		} else 
-			if (phs.getPlayerInBB(game.getCurrentHand()).getId()
-				.equals(playerId)) {
+		// if (game.getCurrentHand().getPlayers(false).size() == 1) {
+		// phs.endHand(game);
+		// } else
+		if (phs.getPlayerInBB(game.getCurrentHand()).getId().equals(playerId)
+				|| phs.getPlayerInBB(game.getCurrentHand()).getChips() == 0) {
 			GameStatus gs = GameUtil.getGameStatus(game);
 			if (gs.equals(GameStatus.PREFLOP))
 				phs.flop(game);

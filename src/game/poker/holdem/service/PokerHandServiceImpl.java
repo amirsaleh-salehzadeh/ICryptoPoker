@@ -84,7 +84,7 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		List<PlayerHand> players = new ArrayList<PlayerHand>();
 		players.addAll(participatingPlayers);
 		Player nextToAct = PlayerUtil.getNextPlayerToAct(hand,
-				this.getPlayerInBB(hand), PlayerHandStatus.NORMAL);
+				this.getPlayerInBB(hand));
 		hand.setCurrentToAct(nextToAct);
 		// Register the Forced Small and Big Blind bets as part of the hand
 		Player smallBlind = getPlayerInSB(hand);
@@ -220,8 +220,7 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		hand.setGame(game);
 		Player next = new Player();
 		if (!isActionResolved(hand)) {
-			next = PlayerUtil.getNextPlayerToAct(hand, hand.getCurrentToAct(),
-					PlayerHandStatus.FLOPEND);
+			next = PlayerUtil.getNextPlayerToAct(hand, hand.getCurrentToAct());
 //			hand.setCurrentToAct(next);
 			hand = handDao.merge(hand, null);
 			return hand;
@@ -244,14 +243,12 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 				break;
 			}
 		}
-		next = PlayerUtil.getNextPlayerToAct(hand, hand.getCurrentToAct(),
-				PlayerHandStatus.FLOPEND);
+		next = PlayerUtil.getNextPlayerToAct(hand, hand.getCurrentToAct());
 		if (playerHand != null
 				&& hand.getTotalBetAmount() > playerHand.getRoundBetAmount()
 				&& playerHand.getStatus() != PlayerHandStatus.FOLDED) {
 			PlayerUtil.removePlayerFromHand(hand.getCurrentToAct(), hand);
 		}
-//		hand.setCurrentToAct(next);
 		hand = handDao.merge(hand, null);
 		return hand;
 	}
@@ -263,14 +260,10 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 			throw new IllegalStateException("Unexpected Turn.");
 		}
 		handDao = new HandDaoImpl();
-		// Re-attach to persistent context for this transaction (Lazy Loading
-		// stuff)
-		// hand = handDao.findById(hand.getId(), null);
 		hand.setGame(game);
 		Player next = new Player();
 		if (!isActionResolved(hand)) {
-			next = PlayerUtil.getNextPlayerToAct(hand, hand.getCurrentToAct(),
-					PlayerHandStatus.FLOPEND);
+			next = PlayerUtil.getNextPlayerToAct(hand, hand.getCurrentToAct());
 //			hand.setCurrentToAct(next);
 			hand = handDao.merge(hand, null);
 			return hand;
@@ -292,7 +285,7 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 			}
 		}
 		next = PlayerUtil.getNextPlayerToAct(hand,
-				hand.getCurrentToAct(), PlayerHandStatus.TURNEND);
+				hand.getCurrentToAct());
 		if (playerHand != null
 				&& hand.getTotalBetAmount() > playerHand.getRoundBetAmount()
 				&& playerHand.getStatus() != PlayerHandStatus.FOLDED) {
@@ -311,14 +304,10 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 			throw new IllegalStateException("Unexpected River.");
 		}
 		handDao = new HandDaoImpl();
-		// Re-attach to persistent context for this transaction (Lazy Loading
-		// stuff)
-		// hand = handDao.findById(hand.getId(), null);
 		hand.setGame(game);
 		Player next = new Player();
 		if (!isActionResolved(hand)) {
-			next = PlayerUtil.getNextPlayerToAct(hand, hand.getCurrentToAct(),
-					PlayerHandStatus.FLOPEND);
+			next = PlayerUtil.getNextPlayerToAct(hand, hand.getCurrentToAct());
 //			hand.setCurrentToAct(next);
 			hand = handDao.merge(hand, null);
 			return hand;
@@ -341,7 +330,7 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 			}
 		}
 		next = PlayerUtil.getNextPlayerToAct(hand,
-				hand.getCurrentToAct(), PlayerHandStatus.RIVEREND);
+				hand.getCurrentToAct());
 		if (playerHand != null
 				&& hand.getTotalBetAmount() > playerHand.getRoundBetAmount()
 				&& playerHand.getStatus() != PlayerHandStatus.FOLDED) {
@@ -355,12 +344,12 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		return hand;
 	}
 
-	public boolean sitOutCurrentPlayer(HandEntity hand) {
+	public HandEntity sitOutCurrentPlayer(HandEntity hand, Player p) {
 		handDao = new HandDaoImpl();
 		playerDao = new PlayerDaoImpl();
-		Player currentPlayer = hand.getCurrentToAct();
+		Player currentPlayer = p;
 		if (currentPlayer == null) {
-			return false;
+			return null;
 		}
 		currentPlayer.setSittingOut(true);
 		playerDao.merge(currentPlayer, null);
@@ -371,16 +360,15 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 				break;
 			}
 		}
-		Player next = PlayerUtil.getNextPlayerToAct(hand, currentPlayer,
-				PlayerHandStatus.SITOUT);
+		Player next = PlayerUtil.getNextPlayerToAct(hand, currentPlayer);
 		if (playerHand != null
 				&& hand.getTotalBetAmount() > playerHand.getRoundBetAmount()
 				&& playerHand.getStatus() != PlayerHandStatus.FOLDED) {
 			PlayerUtil.removePlayerFromHand(currentPlayer, hand);
 		}
-//		hand.setCurrentToAct(next);
-		handDao.merge(hand, null);
-		return true;
+		hand.setCurrentToAct(next);
+		hand = handDao.merge(hand, null);
+		return hand;
 	}
 
 	@Override

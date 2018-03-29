@@ -30,6 +30,15 @@ public class Table {
 	private GameENT game;
 	private Map<String, Session> players = Collections
 			.synchronizedMap(new HashMap<String, Session>());
+	private PlayerDaoImpl pdao;
+	private GameDaoImpl gdao;
+	private PokerHandServiceImpl handService;
+
+	public Table() {
+		pdao = new PlayerDaoImpl();
+		gdao = new GameDaoImpl();
+		handService = new PokerHandServiceImpl();
+	}
 
 	public Map<String, Session> getPlayers() {
 		return players;
@@ -53,7 +62,6 @@ public class Table {
 	}
 
 	public void removePlayer(String uid) {
-		PlayerDaoImpl pdao = new PlayerDaoImpl();
 		Player p = pdao.findById(uid, null);
 		p.setGameId(0);
 		p.setGamePosition(0);
@@ -63,16 +71,25 @@ public class Table {
 			p.setTotalChips(p.getChips() + p.getTotalChips()
 					+ game.getCurrentHand().getTotalBetAmount());
 		}
+		if (players.size() <= 1) {
+			try {
+				handService.endHand(game);
+			} catch (AMSException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else {
+			game.setPlayersRemaining(game.getPlayersRemaining() - 1);
+		}
 		p.setChips(0);
 		pdao.merge(p, null);
-		game.setPlayersRemaining(game.getPlayersRemaining() - 1);
+		game = gdao.merge(game, null);
 		players.remove(uid, players.get(uid));
 	}
 
 	public void sendToAll(String user) {
 		GameServiceImpl gameService = new GameServiceImpl();
-		GameDaoImpl gameDao = new GameDaoImpl();
-		game = gameDao.findById(game.getId(), null);
+		game = gdao.findById(game.getId(), null);
 		GameStatus gs = GameUtil.getGameStatus(game);
 		if (players.size() >= 2 && !game.isStarted()
 				&& gs.equals(GameStatus.NOT_STARTED)) {
@@ -81,35 +98,18 @@ public class Table {
 			} catch (AMSException e) {
 				e.printStackTrace();
 			}
-			PokerHandServiceImpl handService = new PokerHandServiceImpl();
 			if (game.getCurrentHand() == null)
 				game.setCurrentHand(handService.startNewHand(game));
 		}
-		GameServiceImpl gservice = new GameServiceImpl();
-		Map<String, Object> results = gservice.getGameStatusMap(game);
+		Map<String, Object> results = gameService.getGameStatusMap(game);
 		for (String cur : players.keySet()) {
 			Map<String, Object> resultsTMP = results;
-			String json = gservice.getGameStatusJSON(game, resultsTMP, cur);
+			String json = gameService.getGameStatusJSON(game, resultsTMP, cur);
 			players.get(cur).getAsyncRemote().sendText(json);
 		}
-	}
-
-	public void nextPlayerTurn(Message message) {
-		ObjectMapper mapper = new ObjectMapper();
-		String json = "";
-		for (String cur : players.keySet()) {
-			try {
-				json = mapper.writeValueAsString(message);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			players.get(cur).getAsyncRemote().sendText(json);
-		}
-
 	}
 
 	public void setGameId(long guid) {
-		GameDaoImpl gameDao = new GameDaoImpl();
-		game = gameDao.findById(guid, null);
+		game = gdao.findById(guid, null);
 	}
 }

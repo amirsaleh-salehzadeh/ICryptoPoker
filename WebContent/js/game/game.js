@@ -353,3 +353,8 @@ function raise() {
 function allIn() {
 
 }
+function removePlayer(name){
+	
+	$("#sitPlaceContainer"+name).html('<div class="sitPlaceThumbnailEmpty">Waiting</div>');
+	$("#sitPlaceContainer"+name).attr('id',null);
+}

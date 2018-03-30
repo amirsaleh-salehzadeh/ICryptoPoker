@@ -208,15 +208,14 @@
 
 			</div>
 
+<div id="btnChat"><a href="" onclick="toggleChat();"><img src="images/game/chatIcon.png" alt="Chat"/></a></div>
+
 			<!-- bottom -->
 
 			<div class="ui-block-solo ui-grid-d constantBannersBottom"
 				id="buttonsContainerDIV" style="width: 100%; height: 14%;">
 				<div class="ui-block-a" style="width: 40%">
-					<div id="btnChat">
-						<a href="" onclick="toggleChat();"><img
-							src="images/game/chatBox.png" width="32" height="32" alt="Chat" /></a>
-					</div>
+					
 				</div>
 				<div class="ui-block-b" style="width: 15%">
 					<a href="#" data-mini="true"

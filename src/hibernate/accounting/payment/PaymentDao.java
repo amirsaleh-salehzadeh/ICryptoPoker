@@ -10,6 +10,8 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.Restrictions;
 
+import tools.AMSException;
+
 import common.accounting.payment.PaymentENT;
 import common.accounting.payment.PaymentLST;
 import hibernate.accounting.payment.PaymentDaoInterface;
@@ -21,7 +23,7 @@ public class PaymentDao extends BaseHibernateDAO implements
 	static SessionFactory conn = null;
 
 	@Override
-	public PaymentENT savePayment(PaymentENT ent) {
+	public PaymentENT savePayment(PaymentENT ent) throws AMSException {
 		Session session = getSession();
 		Transaction tx = null;
 		try {
@@ -39,7 +41,7 @@ public class PaymentDao extends BaseHibernateDAO implements
 	}
 
 	@Override
-	public PaymentLST getPaymentLST(PaymentLST paymentLSTSearch) {
+	public PaymentLST getPaymentLST(PaymentLST paymentLSTSearch) throws AMSException {
 		PaymentLST result = new PaymentLST();
 		Session session = getSession();
 		Transaction tx = null;
@@ -60,27 +62,11 @@ public class PaymentDao extends BaseHibernateDAO implements
 		return result;
 	}
 
+
 	@Override
-	public PaymentLST getUserPayments(PaymentLST searchENT) {
-		PaymentLST result = new PaymentLST();
-		Session session = getSession();
-		Transaction tx = null;
-		ArrayList<PaymentENT> ents = null;
-		try {
-			tx = session.beginTransaction();
-			Criteria cr = session.createCriteria(PaymentENT.class);
-			cr.add(Restrictions.gt("username", result.getPaymentENT().getId()));
-			ents = (ArrayList<PaymentENT>) cr.list();
-			tx.commit();
-			result.setPaymentENTs(ents);
-		} catch (HibernateException e) {
-			if (tx != null)
-				tx.rollback();
-			e.printStackTrace();
-		} finally {
-			session.close();
-		}
-		return result;
+	public void removePayment(PaymentENT ent) throws AMSException {
+		// TODO Auto-generated method stub
+		
 	}
 
 

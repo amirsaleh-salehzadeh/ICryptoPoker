@@ -1,15 +1,13 @@
 package hibernate.accounting.sale;
 
 import java.util.ArrayList;
-import java.util.List;
-
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.Restrictions;
+
+import tools.AMSException;
 
 import common.accounting.payment.PaymentENT;
 import common.accounting.sale.SaleENT;
@@ -19,7 +17,7 @@ import hibernate.config.BaseHibernateDAO;
 public class SaleDao extends BaseHibernateDAO implements SaleDaoInterface {
 
 	@Override
-	public SaleENT saveSale(SaleENT ent) {
+	public SaleENT saveUpdateSale(SaleENT ent) throws AMSException {
 		Session session = getSession();
 		Transaction tx = null;
 		try {
@@ -37,38 +35,14 @@ public class SaleDao extends BaseHibernateDAO implements SaleDaoInterface {
 	}
 
 	@Override
-	public SaleLST getSaleLST(SessionFactory conn) {
-		SaleLST result = new SaleLST();
+	public SaleLST getSaleLST(SaleLST lst) throws AMSException  {
 		Session session = getSession();
 		Transaction tx = null;
-		ArrayList<SaleENT> ents = null;
-		try {
-			tx = session.beginTransaction();
-			ents = (ArrayList<SaleENT>) session.createQuery("FROM SaleENT")
-					.list();
-			result.setSaleENTs(ents);
-			tx.commit();
-		} catch (HibernateException e) {
-			if (tx != null)
-				tx.rollback();
-			e.printStackTrace();
-		} finally {
-			session.close();
-		}
-		return result;
-	}
-
-	@Override
-	public SaleLST getUserSales(SaleENT sale) {
-		SaleLST result = new SaleLST();
-		Session session = getSession();
-		Transaction tx = null;
-		List<SaleENT> ents = null;
 		try {
 			tx = session.beginTransaction();
 			Criteria cr = session.createCriteria(PaymentENT.class);
-			cr.add(Restrictions.gt("username", sale.getId()));
-			ents = cr.list();
+			cr.add(Restrictions.gt("username", lst.getSaleENT().getId()));
+			lst.setSaleENTs((ArrayList<SaleENT>) cr.list());
 			tx.commit();
 		} catch (HibernateException e) {
 			if (tx != null)
@@ -77,7 +51,13 @@ public class SaleDao extends BaseHibernateDAO implements SaleDaoInterface {
 		} finally {
 			session.close();
 		}
-		return result;
+		return lst;
+	}
+
+	@Override
+	public SaleENT removeSales(SaleENT sale) throws AMSException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

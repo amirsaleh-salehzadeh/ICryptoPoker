@@ -1,16 +1,15 @@
 package hibernate.accounting.sale;
 
-import org.hibernate.SessionFactory;
-
+import tools.AMSException;
 import common.accounting.sale.SaleENT;
 import common.accounting.sale.SaleLST;
 
 public interface SaleDaoInterface {
 
-	public SaleENT saveSale(SaleENT ent);
+	public SaleENT saveUpdateSale(SaleENT ent) throws AMSException;
 
-	public SaleLST getSaleLST(SessionFactory conn);
+	public SaleLST getSaleLST(SaleLST lst) throws AMSException;
 
-	public SaleLST getUserSales(SaleENT sale);
+	public SaleENT removeSales(SaleENT sale) throws AMSException;
 
 }

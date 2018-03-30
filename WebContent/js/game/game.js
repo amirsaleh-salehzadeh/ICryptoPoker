@@ -19,12 +19,15 @@ function updateGameInfo(data) {
 	$(".tableCards").each(function() {
 		$(this).html('<img alt="" src="images/game/card.jpg">');
 	});
-	$(".sitPlaceContainer").each(
-			function() {
-				$(this).html(
-						"<div class='sitPlaceThumbnailEmpty'>Waiting</div>")
-						.trigger("create");
-			});
+	$(".sitPlaceContainer")
+			.each(
+					function() {
+						if ($(this).attr("id") != null)
+							$(this)
+									.html(
+											"<div class='sitPlaceThumbnailEmpty'>Waiting</div>")
+									.trigger("create");
+					});
 	$("#handPotContainer")
 			.html(
 					'<img alt="" src="images/game/stack.png" height="100%"><span>&nbsp;&cent;&nbsp;'
@@ -105,7 +108,6 @@ var timeLeft = 0;
 function updatePlayerInfo(data) {
 	var playerId = data.id;
 	var playerName = data.name;
-
 	addANewPlayerToTable(playerId, playerName, parseInt(data.chips),
 			data.amountToCall);
 	if (data.status != "NOT_STARTED" && data.status != "SEATING")
@@ -135,13 +137,13 @@ function updatePlayerInfo(data) {
 			$("#raiseSliderContainer").removeClass("ui-state-disabled");
 			if (atc > 0) {
 				$("#sliderRaise").attr("min", atc * 2);
-				$("#sliderRaise").attr("value", atc);
 			} else {
 				$("#sliderRaise").attr("min", parseInt(data.bigBlind));
-				$("#sliderRaise").attr("value", parseInt(data.bigBlind) * 2);
 			}
 			$("#sliderRaise").attr("max", parseInt(data.chips)).slider(
 					"refresh");
+			$("#sliderRaise").attr("value", $("#sliderRaise").attr("value"))
+					.slider("refresh");
 		}
 
 		playerToActId = playerId;

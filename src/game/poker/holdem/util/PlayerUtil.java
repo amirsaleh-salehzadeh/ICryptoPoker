@@ -155,11 +155,6 @@ public class PlayerUtil {
 		for (Player p : playersToRemove) {
 			removePlayerFromHand(p, hand);
 		}
-		if (next.getGamePosition() < startPlayer.getGamePosition()
-				&& players.size() > 1)
-			System.out.println("Next " + next.getId() + " " + next.getGamePosition() + " ROTATION " + " starter " + startPlayer.getId() + " " + startPlayer.getGamePosition());
-		else 
-			System.out.println("Next " + next.getId() + " " + next.getGamePosition() + " first hand " + " starter " + startPlayer.getId() + " " + startPlayer.getGamePosition());
 		return next;
 	}
 

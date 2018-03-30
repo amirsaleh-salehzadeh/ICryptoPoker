@@ -166,6 +166,8 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 				// in the list so that we calculate next button from its
 				// position
 				players.add(p);
+			} else {
+				sitOutCurrentPlayer(game.getCurrentHand(), p);
 			}
 		}
 
@@ -242,7 +244,24 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 			PlayerUtil.removePlayerFromHand(hand.getCurrentToAct(), hand);
 		}
 		hand = handDao.merge(hand, null);
+		if (goToNextAction(hand)) {
+			game.setCurrentHand(hand);
+			return turn(game);
+		}
 		return hand;
+	}
+
+	private boolean goToNextAction(HandEntity hand) {
+		int counter = 0;
+		for (PlayerHand ph : hand.getPlayers()) {
+			if (ph.getPlayer().getChips() <= 0
+					|| ph.getStatus() == PlayerHandStatus.FOLDED)
+				counter++;
+		}
+		if (hand.getPlayers().size() - counter <= 1)
+			return true;
+		else
+			return false;
 	}
 
 	public HandEntity turn(GameENT game) throws IllegalStateException {
@@ -276,6 +295,10 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 			PlayerUtil.removePlayerFromHand(hand.getCurrentToAct(), hand);
 		}
 		hand = handDao.merge(hand, null);
+		if (goToNextAction(hand)) {
+			game.setCurrentHand(hand);
+			return river(game);
+		}
 		return hand;
 	}
 
@@ -312,6 +335,14 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 			PlayerUtil.removePlayerFromHand(hand.getCurrentToAct(), hand);
 		}
 		hand = handDao.merge(hand, null);
+		if (goToNextAction(hand)) {
+			game.setCurrentHand(hand);
+			try {
+				endHand(game);
+			} catch (AMSException e) {
+				e.printStackTrace();
+			}
+		}
 		return hand;
 	}
 
@@ -331,12 +362,12 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 				break;
 			}
 		}
-		Player next = PlayerUtil.getNextPlayerToAct(hand, currentPlayer);
+		// Player next = PlayerUtil.getNextPlayerToAct(hand, currentPlayer);
 		if (playerHand != null
 				&& hand.getTotalBetAmount() > playerHand.getRoundBetAmount()) {
 			PlayerUtil.removePlayerFromHand(currentPlayer, hand);
 		}
-		hand.setCurrentToAct(next);
+		// hand.setCurrentToAct(next);
 		hand = handDao.merge(hand, null);
 		return hand;
 	}

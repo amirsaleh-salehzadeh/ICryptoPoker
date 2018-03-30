@@ -34,7 +34,9 @@ import game.poker.holdem.domain.PlayerStatus;
 import game.poker.holdem.util.GameUtil;
 import game.poker.holdem.util.PlayerUtil;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import common.game.poker.holdem.GameENT;
 import tools.AMSException;
@@ -83,7 +85,11 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 		hand.setCurrentToAct(next);
 		hand = handDao.merge(hand, null);
 		PokerHandServiceImpl phs = new PokerHandServiceImpl();
-		if (hand.getPlayers().size() <= 1)// true
+		int numberOfPH = 0;
+		for (PlayerHand ph : hand.getPlayers())
+			if (ph.getStatus() != PlayerHandStatus.FOLDED)
+				numberOfPH++;
+		if (numberOfPH <= 1)// true
 			try {
 				phs.endHand(game);
 			} catch (AMSException e) {
@@ -111,9 +117,9 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 		Player next = PlayerUtil.getNextPlayerToAct(hand, player);
 		hand.setCurrentToAct(next);
 		hand = handDao.merge(hand, null);
-//		if (next.getChips() == 0 || next.getId().equals(player.getId())) {
-//			playerServiceWS.check(game.getId(), next.getId());
-//		}
+		// if (next.getChips() == 0 || next.getId().equals(player.getId())) {
+		// playerServiceWS.check(game.getId(), next.getId());
+		// }
 		return hand;
 	}
 
@@ -161,15 +167,15 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 		hand.setCurrentToAct(next);
 		playerDao.merge(player, null);
 		hand = handDao.merge(hand, null);
-//		if (next.getChips() == 0 || next.getId().equals(player.getId())) {
-//			int lastHandCounter = 0;
-//			for (Player p : game.getPlayers()) {
-//				if (!p.equals(next) && p.getChips() == 0)
-//					lastHandCounter++;
-//			}
-//			if (lastHandCounter == 1)
-//				playerServiceWS.check(game.getId(), next.getId());
-//		}
+		// if (next.getChips() == 0 || next.getId().equals(player.getId())) {
+		// int lastHandCounter = 0;
+		// for (Player p : game.getPlayers()) {
+		// if (!p.equals(next) && p.getChips() == 0)
+		// lastHandCounter++;
+		// }
+		// if (lastHandCounter == 1)
+		// playerServiceWS.check(game.getId(), next.getId());
+		// }
 		return hand;
 	}
 
@@ -206,9 +212,9 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 		player.setGameId(game.getId());
 		playerDao.merge(player, null);
 		hand = handDao.merge(hand, null);
-//		if (next.getChips() == 0 || next.getId().equals(player.getId())) {
-//			playerServiceWS.check(game.getId(), next.getId());
-//		}
+		// if (next.getChips() == 0 || next.getId().equals(player.getId())) {
+		// playerServiceWS.check(game.getId(), next.getId());
+		// }
 		return hand;
 	}
 
@@ -257,6 +263,22 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 		}
 
 		if (hand.getCurrentToAct() == null) {
+			Set<PlayerHand> phs = hand.getPlayers();
+			Set<PlayerHand> phsTMP = new HashSet<PlayerHand>();
+			for (PlayerHand p : phs) {
+				if (p.getStatus() == PlayerHandStatus.FOLDED) {
+					phsTMP.add(playerHand);
+				}
+			}
+			if (phs.size() - phsTMP.size() == 1) {
+				for (PlayerHand p : phsTMP)
+					if (p.getStatus() != PlayerHandStatus.FOLDED)
+						return PlayerStatus.WON_HAND;
+					else
+						return PlayerStatus.LOST_HAND;
+				// if(p.getPlayer().getChips() <= 0)
+			}
+
 			// Only one player, everyone else folded, player is the winner
 			if (hand.getPlayers().size() == 1) {// true
 				return PlayerStatus.WON_HAND;

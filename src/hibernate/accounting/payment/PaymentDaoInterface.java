@@ -1,6 +1,6 @@
 package hibernate.accounting.payment;
-import common.accounting.PaymentENT;
-import common.accounting.PaymentLST;
+import common.accounting.payment.PaymentENT;
+import common.accounting.payment.PaymentLST;
 
 public interface PaymentDaoInterface {
 

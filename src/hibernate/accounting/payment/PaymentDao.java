@@ -10,9 +10,8 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.Restrictions;
 
-import common.accounting.PaymentENT;
-import common.accounting.PaymentLST;
-import common.accounting.SaleENT;
+import common.accounting.payment.PaymentENT;
+import common.accounting.payment.PaymentLST;
 import hibernate.accounting.payment.PaymentDaoInterface;
 import hibernate.config.BaseHibernateDAO;
 

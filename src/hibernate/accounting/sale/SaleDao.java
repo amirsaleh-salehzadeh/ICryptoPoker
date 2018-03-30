@@ -1,4 +1,4 @@
-package hibernate.accounting.procurement;
+package hibernate.accounting.sale;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,9 +11,9 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.Restrictions;
 
-import common.accounting.PaymentENT;
-import common.accounting.SaleENT;
-import common.accounting.SaleLST;
+import common.accounting.payment.PaymentENT;
+import common.accounting.sale.SaleENT;
+import common.accounting.sale.SaleLST;
 import hibernate.config.BaseHibernateDAO;
 
 public class SaleDao extends BaseHibernateDAO implements SaleDaoInterface {

@@ -1,8 +1,9 @@
-package hibernate.accounting.procurement;
+package hibernate.accounting.sale;
 
 import org.hibernate.SessionFactory;
-import common.accounting.SaleENT;
-import common.accounting.SaleLST;
+
+import common.accounting.sale.SaleENT;
+import common.accounting.sale.SaleLST;
 
 public interface SaleDaoInterface {
 

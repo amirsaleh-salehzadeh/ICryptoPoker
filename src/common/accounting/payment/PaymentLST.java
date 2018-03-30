@@ -1,11 +1,11 @@
-package common.accounting;
+package common.accounting.payment;
 
 import java.util.ArrayList;
 
 
-public class SaleLST {
-	ArrayList<SaleENT> saleENTs = new ArrayList<SaleENT>();
-	SaleENT saleENT;
+public class PaymentLST {
+	ArrayList<PaymentENT> paymentENTs = new ArrayList<PaymentENT>();
+	PaymentENT paymentENT;
 	private int currentPage = 0;
 	private int totalPages;
 	private int pageSize = 10;
@@ -98,32 +98,33 @@ public class SaleLST {
 	}
 
 	/**
-	 * @return the saleENTENTs
+	 * @return the paymentENTs
 	 */
-	public ArrayList<SaleENT> getSaleENTs() {
-		return saleENTs;
+	public ArrayList<PaymentENT> getPaymentENTs() {
+		return paymentENTs;
 	}
 
 	/**
-	 * @param saleENTENTs the saleENTENTs to set
+	 * @param paymentENTs the paymentENTs to set
 	 */
-	public void setSaleENTs(ArrayList<SaleENT> saleENTENTs) {
-		this.saleENTs = saleENTENTs;
+	public void setPaymentENTs(ArrayList<PaymentENT> paymentENTs) {
+		this.paymentENTs = paymentENTs;
 	}
 
 	/**
-	 * @return the saleENT
+	 * @return the paymentENT
 	 */
-	public SaleENT getSaleENT() {
-		return saleENT;
+	public PaymentENT getPaymentENT() {
+		return paymentENT;
 	}
 
 	/**
-	 * @param saleENT the saleENT to set
+	 * @param paymentENT the paymentENT to set
 	 */
-	public void setSaleENT(SaleENT saleENT) {
-		this.saleENT = saleENT;
+	public void setPaymentENT(PaymentENT paymentENT) {
+		this.paymentENT = paymentENT;
 	}
 
+	
 	
 }

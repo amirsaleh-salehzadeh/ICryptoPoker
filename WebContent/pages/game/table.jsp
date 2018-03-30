@@ -214,6 +214,11 @@
 						<a href="" onclick="toggleChat();" class="actionButtons"><img
 							src="images/game/chatBox.png" style="width: 100%;" alt="Chat" /></a>
 					</div>
+					<div id="btnFullScreen">
+					<a href="" onclick="toggleFullScreen(document.body);" ><img
+							src="images/icons/FullScreen.png" style="width: 100%;" alt="Full Screen" /></a>
+					
+					</div>
 				</div>
 				<div class="ui-block-b" style="width: 15%">
 					<a href="#" data-mini="true"

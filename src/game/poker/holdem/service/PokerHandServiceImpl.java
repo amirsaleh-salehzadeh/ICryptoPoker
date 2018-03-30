@@ -151,6 +151,7 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 				ph.getPlayer().setFinishPosition(game.getPlayersRemaining());
 				game.setPlayersRemaining(game.getPlayersRemaining() - 1);
 				playerDao.merge(ph.getPlayer(), null);
+				sitOutCurrentPlayer(game.getCurrentHand(), ph.getPlayer());
 			}
 		}
 
@@ -166,8 +167,6 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 				// in the list so that we calculate next button from its
 				// position
 				players.add(p);
-			} else {
-				sitOutCurrentPlayer(game.getCurrentHand(), p);
 			}
 		}
 
@@ -362,12 +361,12 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 				break;
 			}
 		}
-		// Player next = PlayerUtil.getNextPlayerToAct(hand, currentPlayer);
+//		Player next = PlayerUtil.getNextPlayerToAct(hand, currentPlayer);
 		if (playerHand != null
 				&& hand.getTotalBetAmount() > playerHand.getRoundBetAmount()) {
 			PlayerUtil.removePlayerFromHand(currentPlayer, hand);
 		}
-		// hand.setCurrentToAct(next);
+//		hand.setCurrentToAct(next);
 		hand = handDao.merge(hand, null);
 		return hand;
 	}

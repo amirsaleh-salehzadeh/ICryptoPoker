@@ -261,9 +261,9 @@ public class PlayerUtil {
 	 */
 	public static Map<Player, Integer> getAmountWonInHandForAllPlayers(
 			HandEntity hand) {
-		if (hand.getBoard().getRiver() == null) {
-			return null;
-		}
+//		if (hand.getBoard().getRiver() == null) {
+//			return null;
+//		}
 
 		Map<Player, Integer> winnersMap = new HashMap<Player, Integer>();
 

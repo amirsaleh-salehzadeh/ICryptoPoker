@@ -26,7 +26,8 @@ function updateGameInfo(data) {
 						.trigger("create");
 			});
 	$("#handPotContainer")
-			.html('<img alt="" src="images/game/stack.png" height="100%"><span>&nbsp;&cent;&nbsp;'
+			.html(
+					'<img alt="" src="images/game/stack.png" height="100%"><span>&nbsp;&cent;&nbsp;'
 							+ data.pot + '</span>');
 	$(".actionButtons").each(function() {
 		$(this).addClass("ui-state-disabled");
@@ -119,8 +120,9 @@ function updatePlayerInfo(data) {
 	// });
 	// } else
 	if (data.status == "ACTION_TO_CHECK" || data.status == "ACTION_TO_CALL") {
+		var atc = parseInt(data.amountToCall);
 		if (data.status == "ACTION_TO_CALL") {
-			$("#checkBTN").html("Call &cent;" + data.amountToCall);
+			$("#checkBTN").html("Call &cent;" + atc);
 			$("#checkBTN").attr("onclick", "call()");
 		} else {
 			$("#checkBTN").html("Check");
@@ -131,10 +133,15 @@ function updatePlayerInfo(data) {
 				$(this).removeClass("ui-state-disabled");
 			});
 			$("#raiseSliderContainer").removeClass("ui-state-disabled");
-			$("#sliderRaise").attr("min", parseInt(data.bigBlind) * 2);
-			$("#sliderRaise").attr("max", parseInt(data.chips));
-			$("#sliderRaise").attr("value", parseInt(data.bigBlind) * 2)
-					.slider("refresh");
+			if (atc > 0) {
+				$("#sliderRaise").attr("min", atc * 2);
+				$("#sliderRaise").attr("value", atc);
+			} else {
+				$("#sliderRaise").attr("min", parseInt(data.bigBlind));
+				$("#sliderRaise").attr("value", parseInt(data.bigBlind) * 2);
+			}
+			$("#sliderRaise").attr("max", parseInt(data.chips)).slider(
+					"refresh");
 		}
 
 		playerToActId = playerId;
@@ -143,25 +150,21 @@ function updatePlayerInfo(data) {
 		// clearInterval(timer);
 		// setInterval(SetTimer, 1000);
 	} else if (data.status == "LOST_HAND") {
-		$('.pscontainer').each(
-				function() {
-					if ("pscontainer" + playerId == this.id) {
-						$(this).html("LOST");
-						$(this).addClass("loser");
-						$("#amountToCallcontainer" + playerId).html(
-								data.handRank);
-					}
-				});
+		$('.pscontainer').each(function() {
+			if ("pscontainer" + playerId == this.id) {
+				$(this).html("LOST");
+				$(this).addClass("loser");
+				$("#amountToCallcontainer" + playerId).html(data.handRank);
+			}
+		});
 
 	} else if (data.status == "WON_HAND") {
-		$('.playerInfo').each(
-				function() {
-					if ("playerInfo" + playerId == this.id) {
-						$(this).addClass("winner");
-						$("#amountToCallcontainer" + playerId).html(
-								data.handRank);
-					}
-				});
+		$('.playerInfo').each(function() {
+			if ("playerInfo" + playerId == this.id) {
+				$(this).addClass("winner");
+				$("#amountToCallcontainer" + playerId).html(data.handRank);
+			}
+		});
 	}
 }
 function endHand() {

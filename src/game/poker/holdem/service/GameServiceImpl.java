@@ -155,7 +155,8 @@ public class GameServiceImpl implements GameServiceInterface {
 				ptmp.setCard2("");
 			} else if (gs.equals(GameStatus.END_HAND)) {
 				for (PlayerHand ph : h.getPlayers()) {
-					if (ph.getPlayer().equals(p)) {
+					if (ph.getPlayer().equals(p)
+							&& h.getBoard().getRiver() != null) {
 						HandRank rank = PlayerUtil.evaluator.evaluate(board,
 								ph.getHand());
 						ptmp.setHandRank(rank.getHandType().toString());

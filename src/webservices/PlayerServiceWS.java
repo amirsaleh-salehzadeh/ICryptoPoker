@@ -170,14 +170,14 @@ public class PlayerServiceWS {
 		ObjectMapper mapper = new ObjectMapper();
 		// game = gameDao.findById(gameId, null);
 		String json = "";
-		try {
-			// if (hand != null
-			// && player.getGamePosition() == game
-			// .getPlayersRemaining())
-			GameUtil.goToNextStepOfTheGame(game, playerId);
-		} catch (AMSException e1) {
-			e1.printStackTrace();
-		}
+//		try {
+//			// if (hand != null
+//			// && player.getGamePosition() == game
+//			// .getPlayersRemaining())
+//			GameUtil.goToNextStepOfTheGame(game, playerId);
+//		} catch (AMSException e1) {
+//			e1.printStackTrace();
+//		}
 		try {
 			if (hand == null)
 				json = mapper.writeValueAsString(Collections.singletonMap(
@@ -231,15 +231,15 @@ public class PlayerServiceWS {
 		resultMap.put("chips", player.getChips());
 		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
-		try {
-			// if (hand != null
-			// && player.getGamePosition() == game
-			// .getPlayersRemaining())
-			GameUtil.goToNextStepOfTheGame(game, playerId);
-		} catch (AMSException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+//		try {
+//			// if (hand != null
+//			// && player.getGamePosition() == game
+//			// .getPlayersRemaining())
+//			GameUtil.goToNextStepOfTheGame(game, playerId);
+//		} catch (AMSException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
 		try {
 			json = mapper.writeValueAsString(resultMap);
 		} catch (JsonGenerationException e) {
@@ -280,14 +280,14 @@ public class PlayerServiceWS {
 		HandEntity hand = playerActionService.check(player, game);
 		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
-		try {
-			// if (hand != null
-			// && player.getGamePosition() == game.getPlayersRemaining())
-			GameUtil.goToNextStepOfTheGame(game, playerId);
-		} catch (AMSException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+//		try {
+//			// if (hand != null
+//			// && player.getGamePosition() == game.getPlayersRemaining())
+//			GameUtil.goToNextStepOfTheGame(game, playerId);
+//		} catch (AMSException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
 		try {
 			if (hand == null)
 				json = mapper.writeValueAsString(Collections.singletonMap(
@@ -352,14 +352,14 @@ public class PlayerServiceWS {
 		resultMap.put("chips", player.getChips());
 		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
-		try {
-			// if (hand != null
-			// && player.getGamePosition() == game.getPlayersRemaining())
-			GameUtil.goToNextStepOfTheGame(game, playerId);
-		} catch (AMSException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+//		try {
+//			// if (hand != null
+//			// && player.getGamePosition() == game.getPlayersRemaining())
+//			GameUtil.goToNextStepOfTheGame(game, playerId);
+//		} catch (AMSException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
 		try {
 			json = mapper.writeValueAsString(resultMap);
 		} catch (JsonGenerationException e) {

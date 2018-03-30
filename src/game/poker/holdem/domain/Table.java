@@ -30,6 +30,7 @@ public class Table {
 	private GameENT game;
 	private Map<String, Session> players = Collections
 			.synchronizedMap(new HashMap<String, Session>());
+	private int handCount;
 	private PlayerDaoImpl pdao;
 	private GameDaoImpl gdao;
 	private PokerHandServiceImpl handService;
@@ -38,6 +39,7 @@ public class Table {
 		pdao = new PlayerDaoImpl();
 		gdao = new GameDaoImpl();
 		handService = new PokerHandServiceImpl();
+		handCount = 0;
 	}
 
 	public Map<String, Session> getPlayers() {
@@ -91,8 +93,22 @@ public class Table {
 		GameServiceImpl gameService = new GameServiceImpl();
 		game = gdao.findById(game.getId(), null);
 		GameStatus gs = GameUtil.getGameStatus(game);
+		if (game.isStarted())
+			try {
+				if (user.length() > 0
+						&& handCount >= game.getCurrentHand().getPlayers()
+								.size())
+					GameUtil.goToNextStepOfTheGame(game, user);
+				game = gdao.findById(game.getId(), null);
+				GameStatus gsPrimary = GameUtil.getGameStatus(game);
+				if (gsPrimary != gs)
+					handCount = 0;
+			} catch (AMSException e1) {
+				e1.printStackTrace();
+			}
 		if (players.size() >= 2 && !game.isStarted()
 				&& gs.equals(GameStatus.NOT_STARTED)) {
+			handCount = 0;
 			try {
 				game = gameService.startGame(game);
 			} catch (AMSException e) {
@@ -101,6 +117,7 @@ public class Table {
 			if (game.getCurrentHand() == null)
 				game.setCurrentHand(handService.startNewHand(game));
 		}
+		handCount++;
 		Map<String, Object> results = gameService.getGameStatusMap(game);
 		for (String cur : players.keySet()) {
 			Map<String, Object> resultsTMP = results;

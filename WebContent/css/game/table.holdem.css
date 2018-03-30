@@ -13,7 +13,6 @@
 	border-radius: 1px;
 	padding: 2px;
 	text-shadow: 0 1px 0 #b00000;
-	bottom: 7px;
 	position: relative;
 }
 
@@ -113,26 +112,6 @@
 	width: 100%;
 }
 
-.card-text {
-	margin: 0 auto;
-	font-size: 133%;
-	font-weight: bold;
-	position: absolute;
-	top: 2px;
-	left: 40%;
-}
-
-.card1>.card-small>span {
-	left: 15%;
-}
-
-.red {
-	color: red;
-}
-
-.black {
-	color: black;
-}
 
 .playerInfo {
 	border: 1px solid rgba(0, 0, 0, 0.1);

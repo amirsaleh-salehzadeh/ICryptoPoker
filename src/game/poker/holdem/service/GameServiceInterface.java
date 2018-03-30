@@ -25,8 +25,8 @@ package game.poker.holdem.service;
 
 import java.util.Map;
 
+import common.game.poker.holdem.GameENT;
 import tools.AMSException;
-import game.poker.holdem.domain.Game;
 import game.poker.holdem.domain.Player;
 
 /**
@@ -49,7 +49,7 @@ public interface GameServiceInterface {
 	 * @param game
 	 * @return
 	 */
-	public Game startGame(Game game) throws AMSException;
+	public GameENT startGame(GameENT game) throws AMSException;
 
 	/**
 	 * Add a new player to an existing game
@@ -61,7 +61,7 @@ public interface GameServiceInterface {
 	 * @return Player with persisted context. Null if the game is not accepting
 	 *         new players.
 	 */
-	public Player addNewPlayerToGame(Game game, Player player);
+	public Player addNewPlayerToGame(GameENT game, Player player);
 
 	/**
 	 * Persist any changes to a {@link Player} domain object. Or create a new
@@ -80,6 +80,6 @@ public interface GameServiceInterface {
 	// Do this in service layer to enforce tournament logic.
 	// Cash games could theoretically be done in the controller and call save
 
-	public String getGameStatusJSON(Game game, Map<String, Object> results,
+	public String getGameStatusJSON(GameENT game, Map<String, Object> results,
 			String playerId);
 }

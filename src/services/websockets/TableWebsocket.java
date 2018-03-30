@@ -11,10 +11,10 @@ import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
+import common.game.poker.holdem.GameENT;
 import tools.AMSException;
 
 import game.poker.holdem.dao.GameDaoImpl;
-import game.poker.holdem.domain.Game;
 import game.poker.holdem.domain.Table;
 import game.poker.holdem.service.GameServiceImpl;
 
@@ -61,7 +61,7 @@ public class TableWebsocket {
 				System.out.println(uid + " has left");
 				if (table.getPlayers() == null
 						|| table.getPlayers().size() == 0) {
-					Game g = table.getGame();
+					GameENT g = table.getGame();
 					GameDaoImpl gdao = new GameDaoImpl();
 					g.setCurrentHand(null);
 					g.setPlayerInBTN(null);

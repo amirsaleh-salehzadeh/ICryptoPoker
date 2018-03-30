@@ -16,16 +16,18 @@ function leaveTable() {
 }
 
 function updateGameInfo(data) {
-
 	$(".tableCards").each(function() {
 		$(this).html('<img alt="" src="images/game/card.jpg">');
 	});
-	$(".sitPlaceContainer").each(
-			function() {
-				$(this).html(
-						"<div class='sitPlaceThumbnailEmpty'>Waiting</div>")
-						.trigger("create");
-			});
+	$(".sitPlaceContainer")
+			.each(
+					function() {
+						if ($(this).attr("id") != null)
+							$(this)
+									.html(
+											"<div class='sitPlaceThumbnailEmpty'>Waiting</div>")
+									.trigger("create");
+					});
 	$("#handPotContainer")
 			.html(
 					'<img alt="" src="images/game/stack.png" height="100%"><span>&nbsp;&cent;&nbsp;'
@@ -33,6 +35,7 @@ function updateGameInfo(data) {
 	$(".actionButtons").each(function() {
 		$(this).addClass("ui-state-disabled");
 	});
+	$("#raiseSliderContainer").addClass("ui-state-disabled");
 	$("#handID").val(data.handId);
 	$('.pscontainer').each(function() {
 		$(this).attr("class", "pscontainer");
@@ -105,7 +108,6 @@ var timeLeft = 0;
 function updatePlayerInfo(data) {
 	var playerId = data.id;
 	var playerName = data.name;
-
 	addANewPlayerToTable(playerId, playerName, parseInt(data.chips),
 			data.amountToCall);
 	if (data.status != "NOT_STARTED" && data.status != "SEATING")
@@ -120,8 +122,9 @@ function updatePlayerInfo(data) {
 	// });
 	// } else
 	if (data.status == "ACTION_TO_CHECK" || data.status == "ACTION_TO_CALL") {
+		var atc = parseInt(data.amountToCall);
 		if (data.status == "ACTION_TO_CALL") {
-			$("#checkBTN").html("Call &cent;" + data.amountToCall);
+			$("#checkBTN").html("Call &cent;" + atc);
 			$("#checkBTN").attr("onclick", "call()");
 		} else {
 			$("#checkBTN").html("Check");
@@ -131,9 +134,15 @@ function updatePlayerInfo(data) {
 			$(".actionButtons").each(function() {
 				$(this).removeClass("ui-state-disabled");
 			});
-			$("#sliderRaise").attr("min", parseInt(data.bigBlind) * 2);
-			$("#sliderRaise").attr("max", parseInt(data.chips));
-			$("#sliderRaise").attr("value", parseInt(data.bigBlind) * 2)
+			$("#raiseSliderContainer").removeClass("ui-state-disabled");
+			if (atc > 0) {
+				$("#sliderRaise").attr("min", atc * 2);
+			} else {
+				$("#sliderRaise").attr("min", parseInt(data.bigBlind));
+			}
+			$("#sliderRaise").attr("max", parseInt(data.chips)).slider(
+					"refresh");
+			$("#sliderRaise").attr("value", $("#sliderRaise").attr("value"))
 					.slider("refresh");
 		}
 if(data.status == "ACTION_TO_CALL"){
@@ -147,28 +156,21 @@ if(data.status == "ACTION_TO_CALL"){
 		// clearInterval(timer);
 		// setInterval(SetTimer, 1000);
 	} else if (data.status == "LOST_HAND") {
-		$('.pscontainer').each(
-				function() {
-					if ("pscontainer" + playerId == this.id) {
-						$(this).html("LOST");
-						$(this).addClass("loser");
-						$(this).addClass("waitingChip");
-						$("#amountToCallcontainer" + playerToActId).html(
-								data.handRank);
-					}
-				});
+		$('.pscontainer').each(function() {
+			if ("pscontainer" + playerId == this.id) {
+				$(this).html("LOST");
+				$(this).addClass("loser");
+				$("#amountToCallcontainer" + playerId).html(data.handRank);
+			}
+		});
 
 	} else if (data.status == "WON_HAND") {
-		$('.pscontainer').each(
-				function() {
-					if ("pscontainer" + playerId == this.id) {
-						$(this).html("WIN");
-						$(this).addClass("winner");
-						$(this).addClass("waitingChip");
-						$("#amountToCallcontainer" + playerToActId).html(
-								data.handRank);
-					}
-				});
+		$('.playerInfo').each(function() {
+			if ("playerInfo" + playerId == this.id) {
+				$(this).addClass("winner");
+				$("#amountToCallcontainer" + playerId).html(data.handRank);
+			}
+		});
 	}
 }
 function endHand() {
@@ -178,13 +180,18 @@ function endHand() {
 
 function addANewPlayerToTable(id, name, chips, amountToCall) {
 	var content = "";
+	if (amountToCall != "0")
+		amountToCall = "&cent; " + amountToCall;
+	else
+		amountToCall = "";
 	$(".sitPlaceContainer")
 			.each(
 					function() {
 						if (content == "")
 							if (id != $("#playerID").val()) {
-								// username, chip and timer div START
-								content = "<div class='ui-block-solo playerInfo'>"
+								content = "<div class='ui-block-solo playerInfo' id='playerInfo"
+										+ id
+										+ "'>"
 										+ "<div class='ui-block-solo w3-light-grey w3-round w3-tiny'>"
 										+ "<div class='w3-container w3-round w3-green' style='width:100%; height:5px;' id='timer"
 										+ id
@@ -202,17 +209,17 @@ function addANewPlayerToTable(id, name, chips, amountToCall) {
 										+ "'></div>"
 										+ "<div class='ui-block-b amountToCallcontainer' id='amountToCallcontainer"
 										+ id
-										+ "'> &cent;"
+										+ "'>"
 										+ amountToCall
 										+ "</div></div>"
 										+ "<div class='ui-grid-a playerCardsContainer' id='cards"
 										+ id
-										+ "'><div class='ui-block-a card1'></div><div class='ui-block-b card2'></div>"
+										+ "'><div class='ui-block-a card1 card'></div><div class='ui-block-b card2 card'></div>"
 										+ "</div></div>";
-								// CARD CONTAINER END
-
 							} else {
-								content = "<div class='ui-block-a'><div class='ui-block-solo playerInfo'>"
+								content = "<div class='ui-block-a'><div class='ui-block-solo playerInfo' id='playerInfo"
+										+ id
+										+ "'>"
 										+ "<div class='ui-block-solo w3-light-grey w3-round w3-tiny'>"
 										+ "<div class='w3-container w3-round w3-green' style='width:100%; height:11px;' id='timer"
 										+ id
@@ -221,23 +228,17 @@ function addANewPlayerToTable(id, name, chips, amountToCall) {
 										+ "<div class='ui-block-a pscontainer' id='pscontainer"
 										+ id
 										+ "'></div>"
-										+ "<div class='ui-block-b'> "
-										+ name
-										+ "</div></div>"
-										+ "<div class='ui-block-solo playerTotalChipsPlace'> &cent;"
+										+ "<div class='ui-block-b playerTotalChipsPlace'> &cent; "
 										+ chips
-										+ "</div>"
-										// username, chip and timer div END
-										// PLAYER STATUS AND ACTION CONTAINER
-										// START
+										+ "</div></div>"
 										+ "<div class='ui-block-solo amountToCallcontainer' id='amountToCallcontainer"
 										+ id
-										+ "'> &cent;"
+										+ "'>"
 										+ amountToCall
 										+ "</div></div></div>"
 										+ "<div class='ui-block-b'><div class='ui-grid-a playerCardsContainer' id='cards"
 										+ id
-										+ "'><div class='ui-block-a card1'></div><div class='ui-block-b card2'></div>"
+										+ "'><div class='ui-block-a card1 card'></div><div class='ui-block-b card2 card'></div>"
 										+ "</div></div>";
 								$("#userSitPlace").html(content);
 								return false;

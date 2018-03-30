@@ -4,6 +4,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+
 import tools.AMSException;
 
 public class BaseHibernateDAO {
@@ -15,6 +19,7 @@ public class BaseHibernateDAO {
 	protected static final String DBDRIVER = "com.mysql.jdbc.Driver";
 	protected static final String USERNAME = "root";
 	protected static final String PASSWORD = "";
+	public static SessionFactory sessionFactory;
 
 	public Connection getConnection() throws AMSException {
 		try {
@@ -57,6 +62,11 @@ public class BaseHibernateDAO {
 		e.setType(operationType);
 		return e;
 
+	}
+	
+	public Session getSession(){
+		SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+		return sessionFactory.openSession();
 	}
 
 	public AMSException getAMSException(String defaultMessage, Exception ex) {

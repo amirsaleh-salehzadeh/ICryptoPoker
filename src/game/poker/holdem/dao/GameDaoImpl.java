@@ -37,8 +37,8 @@ import tools.AMSException;
 
 import com.mysql.jdbc.Statement;
 
+import common.game.poker.holdem.GameENT;
 import game.poker.holdem.domain.BlindLevel;
-import game.poker.holdem.domain.Game;
 import game.poker.holdem.domain.GameStructure;
 import game.poker.holdem.domain.GameType;
 import game.poker.holdem.domain.HandEntity;
@@ -49,8 +49,8 @@ import hibernate.config.BaseHibernateDAO;
 public class GameDaoImpl extends BaseHibernateDAO implements GameDaoInterface {
 
 	@Override
-	public Game findById(long id, Connection conn) {
-		Game game = new Game();
+	public GameENT findById(long id, Connection conn) {
+		GameENT game = new GameENT();
 		try {
 			boolean isNewConn = false;
 			if (conn == null)
@@ -107,7 +107,7 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDaoInterface {
 	}
 
 	public static void main(String[] args) {
-		Game g = new Game();
+		GameENT g = new GameENT();
 		g.setGameType(GameType.TOURNAMENT);
 		g.setName("naaameTest");
 		GameStructure gs = new GameStructure();
@@ -126,7 +126,7 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDaoInterface {
 		gdi.save(g, null);
 	}
 
-	public Game save(Game game, Connection conn) {
+	public GameENT save(GameENT game, Connection conn) {
 		try {
 			boolean isNewConn = false;
 			if (conn == null)
@@ -188,7 +188,7 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDaoInterface {
 	}
 
 	@Override
-	public Game merge(Game game, Connection conn) {
+	public GameENT merge(GameENT game, Connection conn) {
 		try {
 			boolean isNewConn = false;
 			if (conn == null)
@@ -456,8 +456,8 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDaoInterface {
 	}
 
 	@Override
-	public List<Game> getAllGames(Connection conn) {
-		List<Game> games = new ArrayList<>();
+	public List<GameENT> getAllGames(Connection conn) {
+		List<GameENT> games = new ArrayList<>();
 		try {
 			boolean isNewConn = false;
 			if (conn == null)
@@ -475,7 +475,7 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDaoInterface {
 			ResultSet rs = ps.getResultSet();
 
 			while (rs.next()) {
-				Game game = new Game();
+				GameENT game = new GameENT();
 				HandDaoImpl handDaoImpl = new HandDaoImpl();
 				PlayerDaoImpl player = new PlayerDaoImpl();
 				game.setId(rs.getLong("game_id"));

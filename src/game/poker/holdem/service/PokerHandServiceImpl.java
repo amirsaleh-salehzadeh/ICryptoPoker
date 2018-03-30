@@ -43,6 +43,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
+import common.game.poker.holdem.GameENT;
 import services.websockets.TableWebsocket;
 import tools.AMSException;
 
@@ -54,7 +55,7 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 
 	private PlayerDaoImpl playerDao;
 
-	public HandEntity startNewHand(Game game) {
+	public HandEntity startNewHand(GameENT game) {
 
 		gameDao = new GameDaoImpl();
 		handDao = new HandDaoImpl();
@@ -62,11 +63,8 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		HandEntity hand = new HandEntity();
 		updateBlindLevel(game);
 		hand.setBlindLevel(game.getGameStructure().getCurrentBlindLevel());
-
 		hand.setGame(game);
-
 		Deck d = new Deck(true);
-
 		Set<PlayerHand> participatingPlayers = new HashSet<PlayerHand>();
 		for (Player p : game.getPlayers()) {
 			if (p.getChips() > 0) {
@@ -83,7 +81,7 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		List<PlayerHand> players = new ArrayList<PlayerHand>();
 		players.addAll(participatingPlayers);
 		Player nextToAct = PlayerUtil.getNextPlayerToAct(hand,
-				this.getPlayerInBB(hand), PlayerHandStatus.NORMAL);
+				this.getPlayerInBB(hand));
 		hand.setCurrentToAct(nextToAct);
 		// Register the Forced Small and Big Blind bets as part of the hand
 		Player smallBlind = getPlayerInSB(hand);
@@ -120,20 +118,22 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		return hand;
 	}
 
-	public void endHand(Game g) throws AMSException {
+	public void endHand(GameENT g) throws AMSException {
 		gameDao = new GameDaoImpl();
 		handDao = new HandDaoImpl();
 		playerDao = new PlayerDaoImpl();
 		// HandEntity hand = handDao.findById(g.getCurrentHand().getId(), null);
 		HandEntity hand = g.getCurrentHand();
+		hand.setGame(g);
 		if (!isActionResolved(hand)) {
+			hand = handDao.merge(hand, null);
 			river(g);
 			return;
 			// throw new AMSException("There are unresolved betting actions");
 		}
 
 		// Game game = hand.getGame();
-		Game game = g;
+		GameENT game = g;
 		hand.setCurrentToAct(null);
 
 		hand = determineWinner(hand);
@@ -151,6 +151,7 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 				ph.getPlayer().setFinishPosition(game.getPlayersRemaining());
 				game.setPlayersRemaining(game.getPlayersRemaining() - 1);
 				playerDao.merge(ph.getPlayer(), null);
+				sitOutCurrentPlayer(game.getCurrentHand(), ph.getPlayer());
 			}
 		}
 
@@ -190,7 +191,7 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 			@Override
 			public void run() {
 				GameDaoImpl gameDao = new GameDaoImpl();
-				Game game = gameDao.findById(gameId, null);
+				GameENT game = gameDao.findById(gameId, null);
 				game.setCurrentHand(null);
 				game.setStarted(false);
 				game = gameDao.merge(game, null);
@@ -210,22 +211,16 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		return handDao.findById(id, null);
 	}
 
-	public HandEntity flop(Game game) throws IllegalStateException {
+	public HandEntity flop(GameENT game) throws IllegalStateException {
 		handDao = new HandDaoImpl();
 		HandEntity hand = game.getCurrentHand();
 		if (hand.getBoard().getFlop1() != null) {
 			throw new IllegalStateException("Unexpected Flop.");
 		}
 		hand.setGame(game);
-		Player next = new Player();
 		if (!isActionResolved(hand)) {
-			next = PlayerUtil.getNextPlayerToAct(hand, hand.getCurrentToAct(),
-					PlayerHandStatus.FLOPEND);
-//			hand.setCurrentToAct(next);
 			hand = handDao.merge(hand, null);
 			return hand;
-			// throw new IllegalStateException(
-			// "There are unresolved preflop actions");
 		}
 		Deck d = new Deck(hand.getCards());
 		d.shuffleDeck();
@@ -243,18 +238,32 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 				break;
 			}
 		}
-		next = PlayerUtil.getNextPlayerToAct(hand, hand.getCurrentToAct(),
-				PlayerHandStatus.FLOPEND);
 		if (playerHand != null
-				&& hand.getTotalBetAmount() > playerHand.getRoundBetAmount()
-				&& playerHand.getStatus() != PlayerHandStatus.FOLDED) {
+				&& hand.getTotalBetAmount() > playerHand.getRoundBetAmount()) {
 			PlayerUtil.removePlayerFromHand(hand.getCurrentToAct(), hand);
 		}
 		hand = handDao.merge(hand, null);
+		if (goToNextAction(hand)) {
+			game.setCurrentHand(hand);
+			return turn(game);
+		}
 		return hand;
 	}
 
-	public HandEntity turn(Game game) throws IllegalStateException {
+	private boolean goToNextAction(HandEntity hand) {
+		int counter = 0;
+		for (PlayerHand ph : hand.getPlayers()) {
+			if (ph.getPlayer().getChips() <= 0
+					|| ph.getStatus() == PlayerHandStatus.FOLDED)
+				counter++;
+		}
+		if (hand.getPlayers().size() - counter <= 1)
+			return true;
+		else
+			return false;
+	}
+
+	public HandEntity turn(GameENT game) throws IllegalStateException {
 		HandEntity hand = game.getCurrentHand();
 		if (hand.getBoard().getFlop1() == null
 				|| hand.getBoard().getTurn() != null) {
@@ -262,15 +271,9 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		}
 		handDao = new HandDaoImpl();
 		hand.setGame(game);
-		Player next = new Player();
 		if (!isActionResolved(hand)) {
-			next = PlayerUtil.getNextPlayerToAct(hand, hand.getCurrentToAct(),
-					PlayerHandStatus.FLOPEND);
-//			hand.setCurrentToAct(next);
 			hand = handDao.merge(hand, null);
 			return hand;
-			// throw new IllegalStateException(
-			// "There are unresolved preflop actions");
 		}
 		Deck d = new Deck(hand.getCards());
 		d.shuffleDeck();
@@ -286,19 +289,19 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 				break;
 			}
 		}
-		next = PlayerUtil.getNextPlayerToAct(hand,
-				hand.getCurrentToAct(), PlayerHandStatus.TURNEND);
 		if (playerHand != null
-				&& hand.getTotalBetAmount() > playerHand.getRoundBetAmount()
-				&& playerHand.getStatus() != PlayerHandStatus.FOLDED) {
+				&& hand.getTotalBetAmount() > playerHand.getRoundBetAmount()) {
 			PlayerUtil.removePlayerFromHand(hand.getCurrentToAct(), hand);
 		}
-//		hand.setCurrentToAct(next);
 		hand = handDao.merge(hand, null);
+		if (goToNextAction(hand)) {
+			game.setCurrentHand(hand);
+			return river(game);
+		}
 		return hand;
 	}
 
-	public HandEntity river(Game game) throws IllegalStateException {
+	public HandEntity river(GameENT game) throws IllegalStateException {
 		HandEntity hand = game.getCurrentHand();
 		if (hand.getBoard().getFlop1() == null
 				|| hand.getBoard().getTurn() == null
@@ -307,15 +310,9 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		}
 		handDao = new HandDaoImpl();
 		hand.setGame(game);
-		Player next = new Player();
 		if (!isActionResolved(hand)) {
-			next = PlayerUtil.getNextPlayerToAct(hand, hand.getCurrentToAct(),
-					PlayerHandStatus.FLOPEND);
-//			hand.setCurrentToAct(next);
 			hand = handDao.merge(hand, null);
 			return hand;
-			// throw new IllegalStateException(
-			// "There are unresolved preflop actions");
 		}
 
 		Deck d = new Deck(hand.getCards());
@@ -332,18 +329,19 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 				break;
 			}
 		}
-		next = PlayerUtil.getNextPlayerToAct(hand,
-				hand.getCurrentToAct(), PlayerHandStatus.RIVEREND);
 		if (playerHand != null
-				&& hand.getTotalBetAmount() > playerHand.getRoundBetAmount()
-				&& playerHand.getStatus() != PlayerHandStatus.FOLDED) {
+				&& hand.getTotalBetAmount() > playerHand.getRoundBetAmount()) {
 			PlayerUtil.removePlayerFromHand(hand.getCurrentToAct(), hand);
 		}
-//		hand.setCurrentToAct(next);
 		hand = handDao.merge(hand, null);
-		// for (PlayerHand ph : hand.getPlayers(false)) {
-		// handDao.updatePlayerHand(ph, null);
-		// }
+		if (goToNextAction(hand)) {
+			game.setCurrentHand(hand);
+			try {
+				endHand(game);
+			} catch (AMSException e) {
+				e.printStackTrace();
+			}
+		}
 		return hand;
 	}
 
@@ -363,14 +361,12 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 				break;
 			}
 		}
-		Player next = PlayerUtil.getNextPlayerToAct(hand, currentPlayer,
-				PlayerHandStatus.SITOUT);
+//		Player next = PlayerUtil.getNextPlayerToAct(hand, currentPlayer);
 		if (playerHand != null
-				&& hand.getTotalBetAmount() > playerHand.getRoundBetAmount()
-				&& playerHand.getStatus() != PlayerHandStatus.FOLDED) {
+				&& hand.getTotalBetAmount() > playerHand.getRoundBetAmount()) {
 			PlayerUtil.removePlayerFromHand(currentPlayer, hand);
 		}
-		hand.setCurrentToAct(next);
+//		hand.setCurrentToAct(next);
 		hand = handDao.merge(hand, null);
 		return hand;
 	}
@@ -404,7 +400,7 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		return PlayerUtil.getNextPlayerInGameOrderPH(players, leftOfButton);
 	}
 
-	private void updateBlindLevel(Game game) {
+	private void updateBlindLevel(GameENT game) {
 		if (game.getGameStructure().getCurrentBlindEndTime() == null) {
 			// Start the blind
 			setNewBlindEndTime(game);
@@ -427,7 +423,7 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		}
 	}
 
-	private void setNewBlindEndTime(Game game) {
+	private void setNewBlindEndTime(GameENT game) {
 		Calendar c = Calendar.getInstance();
 		c.add(Calendar.MINUTE, game.getGameStructure().getBlindLength());
 		game.getGameStructure().setCurrentBlindEndTime(c.getTime());
@@ -465,7 +461,7 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 				break;
 			}
 		}
-//		hand.setCurrentToAct(next);
+		// hand.setCurrentToAct(next);
 		handDao.merge(hand, null);
 	}
 

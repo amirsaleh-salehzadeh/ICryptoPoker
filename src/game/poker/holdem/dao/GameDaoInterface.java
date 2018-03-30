@@ -27,21 +27,21 @@ import java.sql.Connection;
 import java.util.List;
 import java.util.Set;
 
-import game.poker.holdem.domain.Game;
+import common.game.poker.holdem.GameENT;
 import game.poker.holdem.domain.GameStructure;
 import game.poker.holdem.domain.Player;
 
 public interface GameDaoInterface {
 
-	Game save(Game game, Connection conn);
+	GameENT save(GameENT game, Connection conn);
 
-	Game merge(Game game, Connection conn);
+	GameENT merge(GameENT game, Connection conn);
 
 //	Game addOnePlayerToGame(Game game, Connection conn);
 
-	Game findById(long id, Connection conn);
+	GameENT findById(long id, Connection conn);
 
-	List<Game> getAllGames(Connection conn);
+	List<GameENT> getAllGames(Connection conn);
 
 	Set<Player> getAllPlayersInGame(long id, Connection conn);
 

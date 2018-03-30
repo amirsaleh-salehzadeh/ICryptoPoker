@@ -27,7 +27,6 @@ import game.poker.holdem.dao.GameDaoImpl;
 import game.poker.holdem.dao.HandDaoImpl;
 import game.poker.holdem.dao.PlayerDaoImpl;
 import game.poker.holdem.domain.BlindLevel;
-import game.poker.holdem.domain.Game;
 import game.poker.holdem.domain.GameStatus;
 import game.poker.holdem.domain.GameStructure;
 import game.poker.holdem.domain.GameType;
@@ -55,11 +54,12 @@ import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
+import common.game.poker.holdem.GameENT;
 import tools.AMSException;
 
 public class GameServiceImpl implements GameServiceInterface {
 
-	public Game startGame(Game game) throws AMSException {
+	public GameENT startGame(GameENT game) throws AMSException {
 		GameDaoImpl gameDao = new GameDaoImpl();
 		// game = gameDao.findById(game.getId(), null);
 		if (game.getPlayers().size() < 2) {
@@ -101,7 +101,7 @@ public class GameServiceImpl implements GameServiceInterface {
 		return gameDao.merge(game, null);
 	}
 
-	public Player addNewPlayerToGame(Game game, Player player) {
+	public Player addNewPlayerToGame(GameENT game, Player player) {
 		if (game.isStarted() && game.getGameType() == GameType.TOURNAMENT) {
 			throw new IllegalStateException(
 					"Tournament in progress, no new players may join");
@@ -130,7 +130,7 @@ public class GameServiceImpl implements GameServiceInterface {
 		return player;
 	}
 
-	public String getGameStatusJSON(Game game, Map<String, Object> results,
+	public String getGameStatusJSON(GameENT game, Map<String, Object> results,
 			String playerId) {
 		PlayerServiceManagerImpl playerService = new PlayerServiceManagerImpl();
 		GameStatus gs = (GameStatus) results.get("gameStatus");
@@ -155,7 +155,8 @@ public class GameServiceImpl implements GameServiceInterface {
 				ptmp.setCard2("");
 			} else if (gs.equals(GameStatus.END_HAND)) {
 				for (PlayerHand ph : h.getPlayers()) {
-					if (ph.getPlayer().equals(p)) {
+					if (ph.getPlayer().equals(p)
+							&& h.getBoard().getRiver() != null) {
 						HandRank rank = PlayerUtil.evaluator.evaluate(board,
 								ph.getHand());
 						ptmp.setHandRank(rank.getHandType().toString());
@@ -179,7 +180,7 @@ public class GameServiceImpl implements GameServiceInterface {
 		return json;
 	}
 
-	public Map<String, Object> getGameStatusMap(Game game) {
+	public Map<String, Object> getGameStatusMap(GameENT game) {
 		GameStatus gs = GameUtil.getGameStatus(game);
 		Map<String, Object> results = new HashMap<String, Object>();
 		PokerHandServiceImpl handService = new PokerHandServiceImpl();

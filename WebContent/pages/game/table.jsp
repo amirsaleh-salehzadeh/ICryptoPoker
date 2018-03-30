@@ -1,5 +1,5 @@
+<%@page import="common.game.poker.holdem.GameENT"%>
 <%@page import="game.poker.holdem.domain.Player"%>
-<%@page import="game.poker.holdem.domain.GameEnt"%>
 <%@page import="game.poker.holdem.domain.BlindLevel"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
@@ -29,7 +29,7 @@
 <!-- <script src="js/jquery/jquery-ui.js"></script> -->
 <%
 	Player player = (Player) request.getAttribute("player");
-	GameEnt game = (GameEnt) request.getAttribute("game");
+	GameENT game = (GameENT) request.getAttribute("game");
 %>
 </head>
 <body>
@@ -180,10 +180,6 @@
 							style="height: 33%;">
 							<div class='sitPlaceThumbnailEmpty'></div>
 						</div>
-						<!-- 						<div class="ui-block-solo sitPlaceContainer rightSideSits" -->
-						<!-- 							style="height: 25%;"> -->
-						<!-- 							<div class='sitPlaceThumbnailEmpty'>Waiting</div> -->
-						<!-- 						</div> -->
 					</div>
 				</div>
 
@@ -208,14 +204,16 @@
 
 			</div>
 
-<div id="btnChat"><a href="" onclick="toggleChat();"><img src="images/game/chatIcon.png" alt="Chat"/></a></div>
 
 			<!-- bottom -->
 
 			<div class="ui-block-solo ui-grid-d constantBannersBottom"
 				id="buttonsContainerDIV" style="width: 100%; height: 14%;">
 				<div class="ui-block-a" style="width: 40%">
-					
+					<div id="btnChat">
+						<a href="" onclick="toggleChat();" class="actionButtons"><img
+							src="images/game/chatBox.png" style="width: 100%;" alt="Chat" /></a>
+					</div>
 				</div>
 				<div class="ui-block-b" style="width: 15%">
 					<a href="#" data-mini="true"

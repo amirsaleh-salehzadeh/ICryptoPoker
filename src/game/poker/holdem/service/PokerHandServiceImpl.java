@@ -63,11 +63,8 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		HandEntity hand = new HandEntity();
 		updateBlindLevel(game);
 		hand.setBlindLevel(game.getGameStructure().getCurrentBlindLevel());
-
 		hand.setGame(game);
-
 		Deck d = new Deck(true);
-
 		Set<PlayerHand> participatingPlayers = new HashSet<PlayerHand>();
 		for (Player p : game.getPlayers()) {
 			if (p.getChips() > 0) {

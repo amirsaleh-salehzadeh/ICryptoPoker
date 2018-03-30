@@ -27,6 +27,8 @@ import tools.AMSException;
 import common.game.poker.holdem.GameENT;
 import game.poker.holdem.domain.GameStatus;
 import game.poker.holdem.domain.HandEntity;
+import game.poker.holdem.domain.Player;
+import game.poker.holdem.domain.PlayerHand;
 import game.poker.holdem.service.PokerHandServiceImpl;
 
 /**
@@ -56,18 +58,20 @@ public class GameUtil {
 		if (hand.getBoard().getFlop3() != null) {
 			return GameStatus.FLOP;
 		}
-
 		return GameStatus.PREFLOP;
 	}
 
 	public static void goToNextStepOfTheGame(GameENT game, String playerId)
 			throws AMSException {
 		PokerHandServiceImpl phs = new PokerHandServiceImpl();
-		// if (game.getCurrentHand().getPlayers(false).size() == 1) {
-		// phs.endHand(game);
-		// } else
-		if (phs.getPlayerInBB(game.getCurrentHand()).getId().equals(playerId)
-				|| phs.getPlayerInBB(game.getCurrentHand()).getChips() == 0) {
+		Player pBB = phs.getPlayerInBB(game.getCurrentHand());
+		if ((pBB.getId().equals(playerId) || pBB.getChips() == 0)) {
+			for (PlayerHand ph : game.getCurrentHand().getPlayers()) {
+				if (pBB.getId() == ph.getPlayer().getId()) {
+					if (ph.getRoundBetAmount() >= 1)
+						return;
+				}
+			}
 			GameStatus gs = GameUtil.getGameStatus(game);
 			if (gs.equals(GameStatus.PREFLOP))
 				phs.flop(game);

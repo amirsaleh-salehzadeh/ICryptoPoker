@@ -70,12 +70,6 @@ public class PlayerServiceWS {
 
 	private GameServiceImpl gameService;
 
-	// public ModelAndView getGames() {
-	// TODO - Service method not yet written. For now, use gameId from game
-	// // controller
-	// return null;
-	// }
-
 	/**
 	 * Have a new player join a game.
 	 * 
@@ -177,10 +171,10 @@ public class PlayerServiceWS {
 		// game = gameDao.findById(gameId, null);
 		String json = "";
 		try {
-//			if (hand != null
-//					&& player.getGamePosition() == game
-//							.getPlayersRemaining())
-				GameUtil.goToNextStepOfTheGame(game, playerId);
+			// if (hand != null
+			// && player.getGamePosition() == game
+			// .getPlayersRemaining())
+			GameUtil.goToNextStepOfTheGame(game, playerId);
 		} catch (AMSException e1) {
 			e1.printStackTrace();
 		}
@@ -238,10 +232,10 @@ public class PlayerServiceWS {
 		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
 		try {
-//			if (hand != null
-//					&& player.getGamePosition() == game
-//							.getPlayersRemaining())
-				GameUtil.goToNextStepOfTheGame(game, playerId);
+			// if (hand != null
+			// && player.getGamePosition() == game
+			// .getPlayersRemaining())
+			GameUtil.goToNextStepOfTheGame(game, playerId);
 		} catch (AMSException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -287,9 +281,9 @@ public class PlayerServiceWS {
 		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
 		try {
-//			if (hand != null
-//					&& player.getGamePosition() == game.getPlayersRemaining())
-				GameUtil.goToNextStepOfTheGame(game, playerId);
+			// if (hand != null
+			// && player.getGamePosition() == game.getPlayersRemaining())
+			GameUtil.goToNextStepOfTheGame(game, playerId);
 		} catch (AMSException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -359,9 +353,9 @@ public class PlayerServiceWS {
 		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
 		try {
-//			if (hand != null
-//					&& player.getGamePosition() == game.getPlayersRemaining())
-				GameUtil.goToNextStepOfTheGame(game, playerId);
+			// if (hand != null
+			// && player.getGamePosition() == game.getPlayersRemaining())
+			GameUtil.goToNextStepOfTheGame(game, playerId);
 		} catch (AMSException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

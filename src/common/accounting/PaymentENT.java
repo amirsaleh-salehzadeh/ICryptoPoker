@@ -1,4 +1,4 @@
-package common.game.poker.holdem;
+package common.accounting;
 
 import java.util.Date;
 

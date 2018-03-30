@@ -1,8 +1,8 @@
-package common.game.poker.holdem;
+package common.accounting;
 
 import java.util.Date;
 
-public class SaleEnt {
+public class SaleENT {
 	private long id ;
 	private String username ;
     private  Date dateTime ;

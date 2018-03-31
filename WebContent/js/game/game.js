@@ -145,7 +145,11 @@ function updatePlayerInfo(data) {
 			$("#sliderRaise").attr("value", $("#sliderRaise").attr("value"))
 					.slider("refresh");
 		}
-
+if(data.status == "ACTION_TO_CALL"){
+	$("#sliderRaise").attr("min", parseInt(data.amountToCall) * 2);
+	$("#sliderRaise").attr("value", parseInt(data.amountToCall) * 2)
+	.slider("refresh");
+}
 		playerToActId = playerId;
 		countDownTotal = 15000;
 		timeLeft = 0;
@@ -348,4 +352,9 @@ function raise() {
 
 function allIn() {
 
+}
+function removePlayer(name){
+	
+	$("#sitPlaceContainer"+name).html('<div class="sitPlaceThumbnailEmpty">Waiting</div>');
+	$("#sitPlaceContainer"+name).attr('id',null);
 }

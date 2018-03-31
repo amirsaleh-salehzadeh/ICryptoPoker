@@ -195,7 +195,7 @@
 					<div class="ui-block-c"
 						style="width: 40%; height: 100% !important;"
 						id="raiseSliderContainer">
-						<input type="range" name="sliderRaise" id="sliderRaise"
+						<input class="actionButtons"type="range" name="sliderRaise" id="sliderRaise"
 							data-show-value="true" data-popup-enabled="true">
 						<!-- 							<input -->
 						<!-- 							type="number" id="betAmount" value="0"> -->
@@ -211,8 +211,13 @@
 				id="buttonsContainerDIV" style="width: 100%; height: 14%;">
 				<div class="ui-block-a" style="width: 40%">
 					<div id="btnChat">
-						<a href="" onclick="toggleChat();" class="actionButtons"><img
+						<a href="" onclick="toggleChat();" ><img
 							src="images/game/chatBox.png" style="width: 100%;" alt="Chat" /></a>
+					</div>
+					<div id="btnFullScreen">
+					<a href="" onclick="toggleFullScreen(document.body);" ><img
+							src="images/icons/FullScreen.png" style="width: 100%;" alt="Full Screen" /></a>
+					
 					</div>
 				</div>
 				<div class="ui-block-b" style="width: 15%">

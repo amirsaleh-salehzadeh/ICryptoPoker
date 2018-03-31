@@ -12,7 +12,9 @@ import game.poker.holdem.util.GameUtil;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -93,11 +95,10 @@ public class Table {
 		GameServiceImpl gameService = new GameServiceImpl();
 		game = gdao.findById(game.getId(), null);
 		GameStatus gs = GameUtil.getGameStatus(game);
-		if (game.isStarted())
+		if (game.isStarted()){
+			Set<PlayerHand> pltmp = getValidPlayers();
 			try {
-				if (user.length() > 0
-						&& handCount >= game.getCurrentHand().getPlayers()
-								.size())
+				if (user.length() > 0 && handCount >= pltmp.size())
 					GameUtil.goToNextStepOfTheGame(game, user);
 				game = gdao.findById(game.getId(), null);
 				GameStatus gsPrimary = GameUtil.getGameStatus(game);
@@ -106,6 +107,7 @@ public class Table {
 			} catch (AMSException e1) {
 				e1.printStackTrace();
 			}
+		}
 		if (players.size() >= 2 && !game.isStarted()
 				&& gs.equals(GameStatus.NOT_STARTED)) {
 			handCount = 0;
@@ -124,6 +126,16 @@ public class Table {
 			String json = gameService.getGameStatusJSON(game, resultsTMP, cur);
 			players.get(cur).getAsyncRemote().sendText(json);
 		}
+	}
+
+	private Set<PlayerHand> getValidPlayers() {
+		Set<PlayerHand> result = new HashSet<PlayerHand>();
+		for (PlayerHand ph : game.getCurrentHand().getPlayers()) {
+			if (ph.getPlayer().getChips() > 0
+					&& ph.getStatus() != PlayerHandStatus.FOLDED)
+				result.add(ph);
+		}
+		return result;
 	}
 
 	public void setGameId(long guid) {

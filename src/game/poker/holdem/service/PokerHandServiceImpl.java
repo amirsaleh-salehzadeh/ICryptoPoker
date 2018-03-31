@@ -74,7 +74,9 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 				ph.setCard1(d.dealCard());
 				ph.setCard2(d.dealCard());
 				participatingPlayers.add(ph);
-			}
+			} 
+//			else
+//				sitOutCurrentPlayer(game.getCurrentHand(), p);
 		}
 		hand.setPlayers(participatingPlayers);
 		// Sort and get the next player to act (immediately after the big blind)
@@ -151,7 +153,7 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 				ph.getPlayer().setFinishPosition(game.getPlayersRemaining());
 				game.setPlayersRemaining(game.getPlayersRemaining() - 1);
 				playerDao.merge(ph.getPlayer(), null);
-				hand = sitOutCurrentPlayer(hand, ph.getPlayer());
+//				hand = sitOutCurrentPlayer(hand, ph.getPlayer());
 			}
 		}
 
@@ -268,7 +270,8 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		HandEntity hand = game.getCurrentHand();
 		if (hand.getBoard().getFlop1() == null
 				|| hand.getBoard().getTurn() != null) {
-			throw new IllegalStateException("Unexpected Turn.");
+			return flop(game);
+			// throw new IllegalStateException("Unexpected Turn.");
 		}
 		handDao = new HandDaoImpl();
 		hand.setGame(game);
@@ -307,7 +310,8 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		if (hand.getBoard().getFlop1() == null
 				|| hand.getBoard().getTurn() == null
 				|| hand.getBoard().getRiver() != null) {
-			throw new IllegalStateException("Unexpected River.");
+			return turn(game);
+			// throw new IllegalStateException("Unexpected River.");
 		}
 		handDao = new HandDaoImpl();
 		hand.setGame(game);
@@ -362,12 +366,12 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 				break;
 			}
 		}
-//		Player next = PlayerUtil.getNextPlayerToAct(hand, currentPlayer);
+		// Player next = PlayerUtil.getNextPlayerToAct(hand, currentPlayer);
 		if (playerHand != null
 				&& hand.getTotalBetAmount() > playerHand.getRoundBetAmount()) {
 			PlayerUtil.removePlayerFromHand(currentPlayer, hand);
 		}
-//		hand.setCurrentToAct(next);
+		// hand.setCurrentToAct(next);
 		hand = handDao.merge(hand, null);
 		return hand;
 	}
@@ -517,7 +521,7 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 
 	// Helper method to see if there are any outstanding actions left in a
 	// betting round
-	private boolean isActionResolved(HandEntity hand) {
+	public static boolean isActionResolved(HandEntity hand) {
 		int roundBetAmount = hand.getTotalBetAmount();
 		for (PlayerHand ph : hand.getPlayers()) {// true
 			// All players should have paid the roundBetAmount or should be all

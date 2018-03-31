@@ -158,7 +158,7 @@ public class PlayerDaoImpl extends BaseHibernateDAO implements
 				p.setRegistrationDate(rs.getString("registeration_date"));
 				p.setGamePosition(rs.getInt("game_position"));
 				p.setFinishPosition(rs.getInt("finished_place"));
-				if (rs.getInt("finished_place") == 1)
+				if (rs.getInt("sitting_out") == 1)
 					p.setSittingOut(true);
 				else
 					p.setSittingOut(false);

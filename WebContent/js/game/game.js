@@ -142,7 +142,7 @@ function updatePlayerInfo(data) {
 			}
 			$("#sliderRaise").attr("max", parseInt(data.chips)).slider(
 					"refresh");
-			$("#sliderRaise").attr("value", $("#sliderRaise").attr("value"))
+			$("#sliderRaise").attr("value", $("#sliderRaise").attr("min"))
 					.slider("refresh");
 		}
 if(data.status == "ACTION_TO_CALL"){
@@ -351,8 +351,10 @@ function raise() {
 }
 
 function allIn() {
-
+	$("#sliderRaise").val($("#sliderRaise").attr("max")).slider("refresh");
+	raise();
 }
+
 function removePlayer(name){
 	
 	$("#sitPlaceContainer"+name).html('<div class="sitPlaceThumbnailEmpty">Waiting</div>');

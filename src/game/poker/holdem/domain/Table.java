@@ -95,10 +95,13 @@ public class Table {
 		GameServiceImpl gameService = new GameServiceImpl();
 		game = gdao.findById(game.getId(), null);
 		GameStatus gs = GameUtil.getGameStatus(game);
-		if (game.isStarted()){
+		if (game.isStarted()) {
 			Set<PlayerHand> pltmp = getValidPlayers();
 			try {
-				if (user.length() > 0 && handCount >= pltmp.size())
+				if (user.length() > 0
+						&& handCount >= pltmp.size()
+						&& PokerHandServiceImpl.isActionResolved(game
+								.getCurrentHand()))
 					GameUtil.goToNextStepOfTheGame(game, user);
 				game = gdao.findById(game.getId(), null);
 				GameStatus gsPrimary = GameUtil.getGameStatus(game);

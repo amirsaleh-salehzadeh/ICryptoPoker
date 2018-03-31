@@ -252,8 +252,8 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 				break;
 			}
 		}
-		if (playerHand == null)
-			return PlayerStatus.WAITING_FOR_NEXT_HAND;
+//		if (playerHand == null)
+//			return PlayerStatus.WAITING_FOR_NEXT_HAND;
 
 		if (!hand.getPlayers().contains(playerHand)) {// true
 			if (player.getChips() <= 0) {

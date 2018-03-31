@@ -338,7 +338,7 @@ function raise() {
 				// getGameStatus();
 				sendText("");
 			else
-				alert("fold failed");
+				alert("raise failed");
 		},
 		error : function(xhr, ajaxOptions, thrownError) {
 			alert(xhr.responseText);

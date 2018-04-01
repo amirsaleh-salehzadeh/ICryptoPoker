@@ -289,3 +289,9 @@ display:none;
 	height:42px;
 	
 }
+.leftSideSits{
+	display: -webkit-flex !important; /* Safari */
+    -webkit-flex-wrap: wrap !important; /* Safari 6.1+ */
+    display: flex !important;   
+    flex-wrap: wrap !important;
+}

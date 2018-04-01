@@ -132,3 +132,8 @@ function toggleFullScreen(elem) {
         }
     }
 }
+function sitIn(){
+	$("#popupSitIn").popup("open");
+	
+	
+}

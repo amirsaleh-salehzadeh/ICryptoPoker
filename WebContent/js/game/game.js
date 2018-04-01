@@ -175,6 +175,7 @@ if(data.status == "ACTION_TO_CALL"){
 }
 function endHand() {
 	console.log("GAME DONE");
+	sitIn();
 	// sendText("");
 }
 

@@ -22,6 +22,10 @@
 			<forward name="userManagement" path="page.user" />
 			<forward name="userEdit" path="page.user" />
 		</action>
+		<action path="/t_payment" type="struts.actions.tiles.T_PaymentAction">
+			<set-property property="cancellable" value="true" />
+			<forward name="paymentManagement" path="page.payment" />
+		</action>
 	</action-mappings>
 	<message-resources parameter="mic.crm.struts.tiles.ApplicationResources" />
 	<plug-in className="org.apache.struts.tiles.TilesPlugin">

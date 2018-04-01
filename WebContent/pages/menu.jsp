@@ -13,8 +13,7 @@ body {
 
 	<li class="userMenu"
 		data-filtertext="form checkboxradio widget radio input radio buttons controlgroups">
-		<a id="btnHeading" href="../"
-		data-ajax="false">Home</a>
+		<a id="btnHeading" href="../" data-ajax="false">Home</a>
 	</li>
 	<li id="liMenu" data-role="collapsible" data-enhanced="true"
 		data-collapsed-icon="carat-d" data-expanded-icon="carat-u"
@@ -43,6 +42,28 @@ body {
 					data-filtertext="form checkboxradio widget radio input radio buttons controlgroups"><a
 					id="btnMenu" class="userMenu ui-btn"
 					href="t_security.do?reqCode=groupManagement" data-ajax="false">Groups</a></li>
+			</ul>
+		</div>
+	</li>
+	<li id="liMenu" data-role="collapsible" data-enhanced="true"
+		data-collapsed-icon="carat-d" data-expanded-icon="carat-u"
+		data-iconpos="right" data-inset="false"
+		class=" ui-collapsible ui-collapsible-collapsed">
+		<h3 class="ui-collapsible-heading ui-collapsible-heading-collapsed">
+			<a id="btnHeading" href="#"
+				class="ui-collapsible-heading-toggle ui-btn ui-btn-icon-right ui-btn-inherit ui-icon-carat-d">
+				Finance Administration<span class="ui-collapsible-heading-status">
+					click to expand contents</span>
+			</a>
+		</h3>
+		<div id="divMenu"
+			class=" ui-collapsible-content ui-body-inherit ui-collapsible-content-collapsed"
+			aria-hidden="true">
+			<ul id="ulMenu">
+				<li id="liMenu" class="userMenu"
+					data-filtertext="form checkboxradio widget radio input radio buttons controlgroups"><a
+					id="btnMenu" class="userMenu ui-btn"
+					href="t_payment.do?reqCode=paymentManagement" data-ajax="false">Payment</a></li>
 			</ul>
 		</div>
 	</li>

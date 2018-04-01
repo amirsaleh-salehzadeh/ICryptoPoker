@@ -19,7 +19,7 @@ import org.apache.struts.action.ActionMapping;
  * @struts.action parameter="reqCode" validate="true"
  * @struts.action-forward name="list" path="/jsp/farsi/news/newsList.jsp"
  */
-public class T_LocationAction extends Action {
+public class T_PaymentAction extends Action {
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response) {
 		// TODO Auto-generated method stub

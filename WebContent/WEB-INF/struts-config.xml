@@ -28,6 +28,10 @@
 			<forward name="goToLobby" path="/pages/game/lobby.jsp" />
 			<forward name="joinAGame" path="/pages/game/table.jsp" />
 		</action>
+		<action path="/payment" type="struts.actions.PaymentAction">
+			<set-property property="cancellable" value="true" />
+			<forward name="paymentManagement" path="/pages/accounting/payment/paymentManagement.jsp" />
+		</action>
 		<action parameter="reqCode" path="/logOut" type="struts.actions.LogOutAction">
 			<set-property property="cancellable" value="true" />
 		</action>

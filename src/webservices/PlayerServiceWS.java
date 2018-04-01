@@ -42,6 +42,7 @@ import common.game.poker.holdem.GameENT;
 import tools.AMSException;
 
 import game.poker.holdem.dao.GameDaoImpl;
+import game.poker.holdem.dao.PlayerDaoImpl;
 import game.poker.holdem.domain.GameStatus;
 import game.poker.holdem.domain.HandEntity;
 import game.poker.holdem.domain.Player;
@@ -360,6 +361,17 @@ public class PlayerServiceWS {
 		GameENT game = gameDao.findById(player.getGameId(), null);
 		player.setGameId(0);
 		player.setGamePosition(0);
+		player.setSittingOut(false);
+		player.setTotalChips(player.getChips() + player.getTotalChips());
+		PlayerDaoImpl pdao = new PlayerDaoImpl();
+		pdao.merge(player, null);
+//		HandEntity he = game.getCurrentHand();
+//		for (Player p : game.getPlayers()) {
+//			if(!p.equals(player)&& p.getGamePosition()<player.getGamePosition())
+//		}
+		// if (game.isStarted() && he != null) {
+		//
+		// }
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("success", false);
 		ObjectMapper mapper = new ObjectMapper();
@@ -376,6 +388,39 @@ public class PlayerServiceWS {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		// game = gdao.findById(game.getId(), null);
+		// Player p = pdao.findById(uid, null);
+		// p.setGameId(0);
+		// p.setGamePosition(0);
+		// if (players.size() > 1 || !game.isStarted()
+		// || game.getCurrentHand() == null) {
+		// p.setTotalChips(p.getChips() + p.getTotalChips());
+		// } else {
+		// p.setTotalChips(p.getChips() + p.getTotalChips()
+		// + game.getCurrentHand().getTotalBetAmount());
+		// }
+		// if (players.size() <= 1 && game.getCurrentHand() != null &&
+		// game.isStarted()) {
+		// try {
+		// handService.endHand(game);
+		// } catch (AMSException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+		// } else {
+		// game.setPlayersRemaining(game.getPlayersRemaining() - 1);
+		// }
+		// p.setChips(0);
+		// pdao.merge(p, null);
+		// game = gdao.merge(game, null);
+		// try {
+		// players.get(uid).close();
+		// } catch (IOException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+		// players.remove(uid, players.get(uid));
+
 		return json;
 	}
 

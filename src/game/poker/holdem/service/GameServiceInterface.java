@@ -50,7 +50,8 @@ public interface GameServiceInterface {
 	 * @return
 	 */
 	public GameENT startGame(GameENT game) throws AMSException;
-
+	
+	
 	/**
 	 * Add a new player to an existing game
 	 * 

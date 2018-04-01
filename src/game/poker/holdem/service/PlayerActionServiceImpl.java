@@ -63,8 +63,6 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 
 	public HandEntity fold(Player player, GameENT game) {
 		HandEntity hand = game.getCurrentHand();
-		// hand = handDao.merge(hand, null);
-		// Cannot fold out of turn
 		if (!player.equals(hand.getCurrentToAct())) {
 			return null;
 		}
@@ -74,13 +72,6 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 			return null;
 		}
 		handDao = new HandDaoImpl();
-		// hand = handDao.findById(hand.getId(), null);
-		// for (PlayerHand ph : hand.getPlayers(false)) {
-		// if (ph.getPlayer().equals(player)) {
-		// handDao.updatePlayerHand(ph, null);
-		// break;
-		// }
-		// }
 		hand.setGame(game);
 		hand.setCurrentToAct(next);
 		hand = handDao.merge(hand, null);
@@ -89,7 +80,7 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 		for (PlayerHand ph : hand.getPlayers())
 			if (ph.getStatus() != PlayerHandStatus.FOLDED)
 				numberOfPH++;
-		if (numberOfPH <= 1)// true
+		if (numberOfPH <= 1)
 			try {
 				phs.endHand(game);
 			} catch (AMSException e) {
@@ -102,7 +93,6 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 	public HandEntity check(Player player, GameENT game) {
 		HandEntity hand = game.getCurrentHand();
 		hand.setGame(game);
-		// hand = handDao.merge(hand, null);
 
 		// Cannot check out of turn
 		if (!player.equals(hand.getCurrentToAct())) {
@@ -117,16 +107,12 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 		Player next = PlayerUtil.getNextPlayerToAct(hand, player);
 		hand.setCurrentToAct(next);
 		hand = handDao.merge(hand, null);
-		// if (next.getChips() == 0 || next.getId().equals(player.getId())) {
-		// playerServiceWS.check(game.getId(), next.getId());
-		// }
 		return hand;
 	}
 
 	public HandEntity bet(Player player, GameENT game, int betAmount) {
 		HandEntity hand = game.getCurrentHand();
 		hand.setGame(game);
-		// hand = handDao.merge(hand, null);
 		if (!player.equals(hand.getCurrentToAct())) {
 			return null;
 		}
@@ -167,22 +153,12 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 		hand.setCurrentToAct(next);
 		playerDao.merge(player, null);
 		hand = handDao.merge(hand, null);
-		// if (next.getChips() == 0 || next.getId().equals(player.getId())) {
-		// int lastHandCounter = 0;
-		// for (Player p : game.getPlayers()) {
-		// if (!p.equals(next) && p.getChips() == 0)
-		// lastHandCounter++;
-		// }
-		// if (lastHandCounter == 1)
-		// playerServiceWS.check(game.getId(), next.getId());
-		// }
 		return hand;
 	}
 
 	public HandEntity call(Player player, GameENT game) {
 		HandEntity hand = game.getCurrentHand();
 		hand.setGame(game);
-		// hand = handDao.merge(hand, null);
 		// Cannot call out of turn
 		if (!player.equals(hand.getCurrentToAct())) {
 			return null;
@@ -212,9 +188,6 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 		player.setGameId(game.getId());
 		playerDao.merge(player, null);
 		hand = handDao.merge(hand, null);
-		// if (next.getChips() == 0 || next.getId().equals(player.getId())) {
-		// playerServiceWS.check(game.getId(), next.getId());
-		// }
 		return hand;
 	}
 
@@ -242,9 +215,6 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 		if (hand == null) {
 			return PlayerStatus.SEATING;
 		}
-		// if(!hand.getPlayers(true).contains(player) && game.isStarted() &&
-		// hand.getPlayers(false).size() > 2)
-		// return PlayerStatus.SEATING;
 		PlayerHand playerHand = null;
 		for (PlayerHand ph : hand.getPlayers()) {// true
 			if (ph.getPlayer() != null && ph.getPlayer().equals(player)) {
@@ -252,9 +222,6 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 				break;
 			}
 		}
-//		if (playerHand == null)
-//			return PlayerStatus.WAITING_FOR_NEXT_HAND;
-
 		if (!hand.getPlayers().contains(playerHand)) {// true
 			if (player.getChips() <= 0) {
 				return PlayerStatus.ELIMINATED;
@@ -276,7 +243,6 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 						return PlayerStatus.WON_HAND;
 					else
 						return PlayerStatus.LOST_HAND;
-				// if(p.getPlayer().getChips() <= 0)
 			}
 
 			// Only one player, everyone else folded, player is the winner

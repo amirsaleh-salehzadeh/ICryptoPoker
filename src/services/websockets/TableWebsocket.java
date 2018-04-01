@@ -61,8 +61,8 @@ public class TableWebsocket {
 			if (table.getGame().getId() == guid) {
 				table.removePlayer(uid);
 				System.out.println(uid + " has left");
-				if (table.getPlayers() == null
-						|| table.getPlayers().size() == 0) {
+				if (table.getPlayerSessions() == null
+						|| table.getPlayerSessions().size() == 0) {
 					GameENT g = table.getGame();
 					GameDaoImpl gdao = new GameDaoImpl();
 					g.setCurrentHand(null);

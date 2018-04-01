@@ -1,7 +1,6 @@
 package game.poker.holdem.domain;
 
 import game.poker.holdem.dao.GameDaoImpl;
-import game.poker.holdem.dao.HandDaoImpl;
 import game.poker.holdem.dao.PlayerDaoImpl;
 import game.poker.holdem.service.GameServiceImpl;
 import game.poker.holdem.service.PlayerActionServiceImpl;
@@ -15,41 +14,35 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
-
 import javax.websocket.Session;
-
-import org.codehaus.jackson.map.ObjectMapper;
-
 import common.game.poker.holdem.GameENT;
 import tools.AMSException;
 
 public class Table {
 
 	private GameENT game;
-	private Map<String, Session> players = Collections
+	private Map<String, Session> playerSessions = Collections
 			.synchronizedMap(new HashMap<String, Session>());
 	private int handCount;
 	private PlayerDaoImpl pdao;
 	private GameDaoImpl gdao;
 	private PokerHandServiceImpl handService;
+	private PlayerActionServiceImpl playerActionService;
 
 	public Table() {
 		pdao = new PlayerDaoImpl();
 		gdao = new GameDaoImpl();
 		handService = new PokerHandServiceImpl();
 		handCount = 0;
+		playerActionService = new PlayerActionServiceImpl();
 	}
 
-	public Map<String, Session> getPlayers() {
-		return players;
+	public Map<String, Session> getPlayerSessions() {
+		return playerSessions;
 	}
 
-	public void setPlayers(Map<String, Session> players) {
-		this.players = players;
+	public void setPlayerSessions(Map<String, Session> playerSessions) {
+		this.playerSessions = playerSessions;
 	}
 
 	public GameENT getGame() {
@@ -60,43 +53,46 @@ public class Table {
 		this.game = game;
 	};
 
-	public void addPlayer(String user, Session session) {
-		players.put(user, session);
-
+	public void addPlayer(String uid, Session session) {
+		Player p = pdao.findById(uid, null);
+		if (p.isSittingOut())
+			playerActionService.sitIn(pdao.findById(uid, null));
+		playerSessions.put(uid, session);
 	}
 
 	public void removePlayer(String uid) {
 		game = gdao.findById(game.getId(), null);
 		Player p = pdao.findById(uid, null);
-		p.setGameId(0);
-		p.setGamePosition(0);
-		if (players.size() > 1 || !game.isStarted()
-				|| game.getCurrentHand() == null) {
-			p.setTotalChips(p.getChips() + p.getTotalChips());
-		} else {
-			p.setTotalChips(p.getChips() + p.getTotalChips()
-					+ game.getCurrentHand().getTotalBetAmount());
-		}
-		if (players.size() <= 1 && game.getCurrentHand() != null && game.isStarted()) {
-			try {
-				handService.endHand(game);
-			} catch (AMSException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		} else {
-			game.setPlayersRemaining(game.getPlayersRemaining() - 1);
-		}
-		p.setChips(0);
-		pdao.merge(p, null);
+		// p.setGameId(0);
+		// p.setGamePosition(0);
+		handService.sitOutCurrentPlayer(game.getCurrentHand(), p);
+		// if (playerSessions.size() > 1 || !game.isStarted()
+		// || game.getCurrentHand() == null) {
+		// p.setTotalChips(p.getChips() + p.getTotalChips());
+		// } else {
+		// p.setTotalChips(p.getChips() + p.getTotalChips()
+		// + game.getCurrentHand().getTotalBetAmount());
+		// }
+		// if (playerSessions.size() <= 1 && game.getCurrentHand() != null &&
+		// game.isStarted()) {
+		// try {
+		// handService.endHand(game);
+		// } catch (AMSException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+		// } else {
+		// game.setPlayersRemaining(game.getPlayersRemaining() - 1);
+		// }
+		// p.setChips(0);
+		// pdao.merge(p, null);
 		game = gdao.merge(game, null);
 		try {
-			players.get(uid).close();
+			playerSessions.get(uid).close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		players.remove(uid, players.get(uid));
+		playerSessions.remove(uid, playerSessions.get(uid));
 	}
 
 	public void sendToAll(String user) {
@@ -104,8 +100,8 @@ public class Table {
 		game = gdao.findById(game.getId(), null);
 		GameStatus gs = GameUtil.getGameStatus(game);
 		// To check when to start next round
-		Set<PlayerHand> pltmp = getValidPlayers();
 		if (game.isStarted() && game.getCurrentHand() != null) {
+			Set<PlayerHand> pltmp = getValidPlayers();
 			try {
 				if (user.length() > 0
 						&& handCount >= pltmp.size()
@@ -120,7 +116,7 @@ public class Table {
 				e1.printStackTrace();
 			}
 		}
-		if (players.size() > 1 && !game.isStarted()
+		if (playerSessions.size() > 1 && !game.isStarted()
 				&& gs.equals(GameStatus.NOT_STARTED)) {
 			handCount = 0;
 			try {
@@ -133,10 +129,10 @@ public class Table {
 		}
 		handCount++;
 		Map<String, Object> results = gameService.getGameStatusMap(game);
-		for (String cur : players.keySet()) {
+		for (String cur : playerSessions.keySet()) {
 			Map<String, Object> resultsTMP = results;
 			String json = gameService.getGameStatusJSON(game, resultsTMP, cur);
-			players.get(cur).getAsyncRemote().sendText(json);
+			playerSessions.get(cur).getAsyncRemote().sendText(json);
 		}
 	}
 

@@ -50,7 +50,8 @@ public class GameAction extends Action {
 			// null);
 			Player player = playerDaoImpl.findById(
 					request.getParameter("playerName"), null);
-			player.setChips(chips);
+			if (player.getChips() == 0)
+				player.setChips(chips);
 			player.setSittingOut(false);
 			player.setName(request.getParameter("nickname"));
 			if (chips > player.getTotalChips()) {

@@ -3,19 +3,21 @@ package common.accounting.sale;
 import java.util.Date;
 
 public class SaleENT {
-	private long id ;
+	private long saleId ;
 	private String username ;
     private  Date dateTime ;
-    private boolean status ;
+    private int status ;
     private double amount ;
     private String bankResponse ;
     private String currency ;
     private int payment_method ;
-	public long getId() {
-		return id;
+    private String creatorUsername ;
+	
+	public long getSaleId() {
+		return saleId;
 	}
-	public void setId(long id) {
-		this.id = id;
+	public void setSaleId(long saleId) {
+		this.saleId = saleId;
 	}
 	public String getUsername() {
 		return username;
@@ -54,11 +56,20 @@ public class SaleENT {
 	public void setPayment_method(int payment_method) {
 		this.payment_method = payment_method;
 	}
-	public boolean isStatus() {
+	public int getStatus() {
 		return status;
 	}
-	public void setStatus(boolean status) {
+
+	public void setStatus(int status) {
 		this.status = status;
+	}
+
+	public String getCreatorUsername() {
+		return creatorUsername;
+	}
+
+	public void setCreatorUsername(String creatorUsername) {
+		this.creatorUsername = creatorUsername;
 	}
 	
     

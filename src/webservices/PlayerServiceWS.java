@@ -169,16 +169,7 @@ public class PlayerServiceWS {
 		Player player = playerActionService.getPlayerById(playerId);
 		HandEntity hand = playerActionService.fold(player, game);
 		ObjectMapper mapper = new ObjectMapper();
-		// game = gameDao.findById(gameId, null);
 		String json = "";
-		// try {
-		// // if (hand != null
-		// // && player.getGamePosition() == game
-		// // .getPlayersRemaining())
-		// GameUtil.goToNextStepOfTheGame(game, playerId);
-		// } catch (AMSException e1) {
-		// e1.printStackTrace();
-		// }
 		try {
 			if (hand == null)
 				json = mapper.writeValueAsString(Collections.singletonMap(

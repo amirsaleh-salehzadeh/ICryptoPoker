@@ -50,15 +50,15 @@ public class GameAction extends Action {
 			// null);
 			Player player = playerDaoImpl.findById(
 					request.getParameter("playerName"), null);
-			if (player.getChips() == 0)
-				player.setChips(chips);
-			player.setSittingOut(false);
 			player.setName(request.getParameter("nickname"));
-			if (chips > player.getTotalChips()) {
+			if (chips > player.getTotalChips() && !player.isSittingOut()) {
 				error = "Not Enough Credit";
 				reqCode = "goToLobby";
 			} else {
-				player.setTotalChips(player.getTotalChips() - chips);
+				if (!player.isSittingOut())
+					player.setChips(chips);
+				player.setTotalChips(player.getTotalChips() - player.getChips());
+				player.setSittingOut(false);
 				player = playerDaoImpl.merge(player, null);
 				GameServiceImpl gameService = new GameServiceImpl();
 				player = gameService.addNewPlayerToGame(game, player);

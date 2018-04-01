@@ -89,7 +89,7 @@ public interface PokerHandServiceInterface {
 	 * @param hand Current Hand
 	 * @return true if the player was sat out, false otherwise
 	 */
-	public HandEntity sitOutCurrentPlayer(HandEntity hand, Player p);
+	public HandEntity sitOutCurrentPlayer(GameENT game, Player p);
 	
 	/**
 	 * Gets the player who is the Small Blind for this hand.

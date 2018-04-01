@@ -20,6 +20,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
+import javax.print.attribute.standard.Finishings;
+
 import common.game.poker.holdem.GameENT;
 import services.websockets.TableWebsocket;
 import tools.AMSException;
@@ -50,9 +52,9 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 				ph.setCard1(d.dealCard());
 				ph.setCard2(d.dealCard());
 				participatingPlayers.add(ph);
-			} 
-//			else
-//				sitOutCurrentPlayer(game.getCurrentHand(), p);
+			}
+			// else
+			// sitOutCurrentPlayer(game.getCurrentHand(), p);
 		}
 		hand.setPlayers(participatingPlayers);
 		// Sort and get the next player to act (immediately after the big blind)
@@ -107,64 +109,78 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 			hand = handDao.merge(hand, null);
 			river(g);
 			return;
-			// throw new AMSException("There are unresolved betting actions");
 		}
-
-		// Game game = hand.getGame();
-		GameENT game = g;
 		hand.setCurrentToAct(null);
-
 		hand = determineWinner(hand);
+		g.setCurrentHand(hand);
+		finishHandAndGame(g);
+	}
 
+	public void finishHandAndGame(GameENT game) {
 		// If players were eliminated this hand, set their finished position
-		List<PlayerHand> phs = new ArrayList<PlayerHand>();
-		phs.addAll(hand.getPlayers());// true
-		// Sort the list of PlayerHands so the one with the smallest chips at
-		// risk is first.
-		// Use this to determine finish position if multiple players are
-		// eliminated on the same hand.
-		Collections.sort(phs, new PlayerHandBetAmountComparator());
-		for (PlayerHand ph : phs) {
-			if (ph.getPlayer().getChips() <= 0) {
-				ph.getPlayer().setFinishPosition(game.getPlayersRemaining());
-				game.setPlayersRemaining(game.getPlayersRemaining() - 1);
-				playerDao.merge(ph.getPlayer(), null);
-//				hand = sitOutCurrentPlayer(hand, ph.getPlayer());
-			}
-		}
-
-		// For all players in the game, remove any who are out of chips
-		// (eliminated)
+		HandEntity hand = game.getCurrentHand();
+		int counterToFindLastHand = 0;
 		List<Player> players = new ArrayList<Player>();
-		for (Player p : game.getPlayers()) {
-			if (p.getChips() != 0) {
-				players.add(p);
-			} else if (p.equals(game.getPlayerInBTN())) {
-				// If the player on the Button has been eliminated, we still
-				// need this player
-				// in the list so that we calculate next button from its
-				// position
-				players.add(p);
+		if (hand != null) {
+			hand.setGame(game);
+			List<PlayerHand> phs = new ArrayList<PlayerHand>();
+			phs.addAll(hand.getPlayers());// true
+			// Sort the list of PlayerHands so the one with the smallest chips
+			// at
+			// risk is first.
+			// Use this to determine finish position if multiple players are
+			// eliminated on the same hand.
+			Collections.sort(phs, new PlayerHandBetAmountComparator());
+			for (PlayerHand ph : phs) {
+				if (ph.getPlayer().getChips() <= 0) {
+					ph.getPlayer()
+							.setFinishPosition(game.getPlayersRemaining());
+					game.setPlayersRemaining(game.getPlayersRemaining() - 1);
+					playerDao.merge(ph.getPlayer(), null);
+					hand = sitOutCurrentPlayer(game, ph.getPlayer());
+				}
 			}
+
+			// For all players in the game, remove any who are out of chips
+			// (eliminated)
+			for (Player p : game.getPlayers()) {
+				if (p.isSittingOut())
+					counterToFindLastHand++;
+				if (p.getChips() != 0) {
+					players.add(p);
+				} else if (p.equals(game.getPlayerInBTN())) {
+					// If the player on the Button has been eliminated, we still
+					// need this player
+					// in the list so that we calculate next button from its
+					// position
+					players.add(p);
+				}
+			}
+
+			// Rotate Button. Use Simplified Moving Button algorithm (for ease
+			// of
+			// coding)
+			// This means we always rotate button. Blinds will be next two
+			// active
+			// players. May skip blinds.
+			Player nextButton = PlayerUtil.getNextPlayerInGameOrder(players,
+					game.getPlayerInBTN());
+			game.setPlayerInBTN(nextButton);
+			game = gameDao.merge(game, null);
+
+			// Remove Deck from database. No need to keep that around anymore
+			hand.setCards(new ArrayList<Card>());
+			hand.setCurrentToAct(null);
+			hand.setGame(game);
+			handDao.merge(hand, null);
 		}
-
-		// Rotate Button. Use Simplified Moving Button algorithm (for ease of
-		// coding)
-		// This means we always rotate button. Blinds will be next two active
-		// players. May skip blinds.
-		Player nextButton = PlayerUtil.getNextPlayerInGameOrder(players,
-				game.getPlayerInBTN());
-		game.setPlayerInBTN(nextButton);
-		game = gameDao.merge(game, null);
-
-		// Remove Deck from database. No need to keep that around anymore
-		hand.setCards(new ArrayList<Card>());
-		hand.setCurrentToAct(null);
-		hand.setGame(game);
-		handDao.merge(hand, null);
 		final long gameId = game.getId();
 		final ScheduledExecutorService scheduler = Executors
 				.newScheduledThreadPool(1);
+		int timer = 10;
+		// if the second last player leaves
+		if (game.getPlayers().size() == counterToFindLastHand + 1)
+			timer = 1;
 		ScheduledFuture<?> countdown = scheduler.schedule(new Runnable() {
 			@Override
 			public void run() {
@@ -174,14 +190,13 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 				game.setStarted(false);
 				game = gameDao.merge(game, null);
 				scheduler.shutdownNow();
-				System.out.println("Game Finished");
 				for (Table table : TableWebsocket.games) {
 					if (table.getGame().getId() == gameId) {
 						table.sendToAll("");
 					}
 				}
 			}
-		}, 10, TimeUnit.SECONDS);
+		}, timer, TimeUnit.SECONDS);
 		// }
 	}
 
@@ -326,16 +341,18 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		return hand;
 	}
 
-	public HandEntity sitOutCurrentPlayer(HandEntity hand, Player currentPlayer) {
+	public HandEntity sitOutCurrentPlayer(GameENT game, Player currentPlayer) {
+		HandEntity hand = game.getCurrentHand();
 		handDao = new HandDaoImpl();
 		playerDao = new PlayerDaoImpl();
 		if (currentPlayer == null) {
 			return null;
 		}
-		//Refund the chips into the main account
-//		currentPlayer.setTotalChips(currentPlayer.getChips() + currentPlayer.getTotalChips());
+		// Refund the chips into the main account
+		// currentPlayer.setTotalChips(currentPlayer.getChips() +
+		// currentPlayer.getTotalChips());
 		currentPlayer.setSittingOut(true);
-		playerDao.merge(currentPlayer, null);
+		currentPlayer = playerDao.merge(currentPlayer, null);
 		PlayerHand playerHand = null;
 		for (PlayerHand ph : hand.getPlayers()) {// false
 			if (ph.getPlayer().equals(currentPlayer)) {
@@ -343,12 +360,13 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 				break;
 			}
 		}
-		// Player next = PlayerUtil.getNextPlayerToAct(hand, currentPlayer);
+//		Player next = PlayerUtil.getNextPlayerToAct(hand, currentPlayer);
 		if (playerHand != null
 				&& hand.getTotalBetAmount() > playerHand.getRoundBetAmount()) {
 			PlayerUtil.removePlayerFromHand(currentPlayer, hand);
 		}
-		// hand.setCurrentToAct(next);
+//		hand.setCurrentToAct(next);
+		hand.setGame(game);
 		hand = handDao.merge(hand, null);
 		return hand;
 	}
@@ -370,7 +388,7 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		Player button = hand.getGame().getPlayerInBTN();
 		List<PlayerHand> players = new ArrayList<PlayerHand>();
 		for (PlayerHand ph : hand.getPlayers()) {// false
-			if (ph.getPlayer() != null)
+			if (ph.getPlayer() != null && !ph.getPlayer().isSittingOut())
 				players.add(ph);
 		}
 		Player leftOfButton = PlayerUtil.getNextPlayerInGameOrderPH(players,

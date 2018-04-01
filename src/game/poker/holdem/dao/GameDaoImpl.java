@@ -106,26 +106,6 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDaoInterface {
 		return game;
 	}
 
-	public static void main(String[] args) {
-		GameENT g = new GameENT();
-		g.setGameType(GameType.TOURNAMENT);
-		g.setName("naaameTest");
-		GameStructure gs = new GameStructure();
-		gs.setBlindLength(1);
-		List<BlindLevel> blinds = new ArrayList<>();
-		Collections.sort(blinds);
-		gs.setBlindLevels(blinds);
-		// gs.setCurrentBlindEndTime(currentBlindEndTime)
-		gs.setCurrentBlindLevel(BlindLevel.BLIND_15_30);
-		gs.setStartingChips(15);
-		g.setGameStructure(gs);
-		g.setCurrentHand(new HandEntity());
-		g.setPlayerInBTN(new Player());
-		g.setStarted(false);
-		GameDaoImpl gdi = new GameDaoImpl();
-		gdi.save(g, null);
-	}
-
 	public GameENT save(GameENT game, Connection conn) {
 		try {
 			boolean isNewConn = false;

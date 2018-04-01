@@ -181,7 +181,7 @@ function updatePlayerInfo(data) {
 		countDownTotal = 15000;
 		timeLeft = 0;
 		clearInterval(timer);
-		timer = setInterval(setTimer, 1000);
+//		timer = setInterval(setTimer, 1000);
 	} else if (data.status == "LOST_HAND") {
 		$('.pscontainer').each(function() {
 			if ("pscontainer" + playerId == this.id) {

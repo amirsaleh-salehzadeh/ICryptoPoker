@@ -60,7 +60,7 @@ public class PlayerUtil {
 	 * @param startPlayer
 	 *            Start position. The player to the left of this player should
 	 *            be the next to act
-	 * @param reason 
+	 * @param reason
 	 * @return {@link Player} who is next to act
 	 */
 	public static Player getNextPlayerInGameOrder(List<Player> players,
@@ -73,7 +73,7 @@ public class PlayerUtil {
 			if (players.get(i).equals(startPlayer)) {
 				// The next player is either the next in the list, or the first
 				// in the list if startPlayer is at the end
-				
+
 				return (i == players.size() - 1) ? players.get(0) : players
 						.get(i + 1);
 			}
@@ -89,14 +89,14 @@ public class PlayerUtil {
 	 * @param startPlayer
 	 *            Start position. The Player to the left of this player should
 	 *            be the next to act
-	 * @param reason 
+	 * @param reason
 	 * @return {@link Player} who is next to act
 	 */
 	public static Player getNextPlayerInGameOrderPH(
 			List<PlayerHand> playerHands, Player startPlayer) {
 		List<Player> players = new ArrayList<Player>();
 		for (PlayerHand ph : playerHands) {
-			if (ph.getPlayer() != null)
+			if (ph.getPlayer() != null && !ph.getPlayer().isSittingOut())
 				players.add(ph.getPlayer());
 		}
 		return getNextPlayerInGameOrder(players, startPlayer);
@@ -113,8 +113,7 @@ public class PlayerUtil {
 	 *            player in game over compared to this player.
 	 * @return Player who will be next to act
 	 */
-	public static Player getNextPlayerToAct(HandEntity hand,
-			Player startPlayer) {
+	public static Player getNextPlayerToAct(HandEntity hand, Player startPlayer) {
 		List<PlayerHand> players = new ArrayList<PlayerHand>();
 		players.addAll(hand.getPlayers());// false
 		Player next = startPlayer;
@@ -256,9 +255,9 @@ public class PlayerUtil {
 	 */
 	public static Map<Player, Integer> getAmountWonInHandForAllPlayers(
 			HandEntity hand) {
-//		if (hand.getBoard().getRiver() == null) {
-//			return null;
-//		}
+		// if (hand.getBoard().getRiver() == null) {
+		// return null;
+		// }
 
 		Map<Player, Integer> winnersMap = new HashMap<Player, Integer>();
 

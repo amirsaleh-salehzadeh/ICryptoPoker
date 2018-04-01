@@ -63,12 +63,14 @@ public class Table {
 	public void removePlayer(String uid) {
 		game = gdao.findById(game.getId(), null);
 		Player p = pdao.findById(uid, null);
-		handService.sitOutCurrentPlayer(game.getCurrentHand(), p);
-		if (playerSessions.size() <= 2 && game.isStarted()
-				&& game.getCurrentHand() != null) {
-			 p.setGameId(0);
-			 p.setGamePosition(0);
-		}
+		if (playerSessions.size() >= 2 && game.isStarted()
+				&& game.getCurrentHand() != null)
+			game.setCurrentHand(handService.sitOutCurrentPlayer(game, p));
+		// if (playerSessions.size() <= 2 && game.isStarted()
+		// && game.getCurrentHand() != null) {
+		// p.setGameId(0);
+		// p.setGamePosition(0);
+		// }
 		// if (playerSessions.size() > 1 || !game.isStarted()
 		// || game.getCurrentHand() == null) {
 		// p.setTotalChips(p.getChips() + p.getTotalChips());
@@ -90,13 +92,17 @@ public class Table {
 		// }
 		// p.setChips(0);
 		// pdao.merge(p, null);
-		game = gdao.merge(game, null);
+		// game = gdao.merge(game, null);
 		try {
 			playerSessions.get(uid).close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		playerSessions.remove(uid, playerSessions.get(uid));
+		if (getValidPlayers().size() == 1){
+			game = gdao.findById(game.getId(), null);
+			handService.finishHandAndGame(game);
+		}
 	}
 
 	public void sendToAll(String user) {
@@ -146,7 +152,8 @@ public class Table {
 		// when 1st player sits
 		for (PlayerHand ph : game.getCurrentHand().getPlayers()) {
 			if (ph.getPlayer().getChips() > 0
-					&& ph.getStatus() != PlayerHandStatus.FOLDED)
+					&& ph.getStatus() != PlayerHandStatus.FOLDED
+					&& !ph.getPlayer().isSittingOut())
 				result.add(ph);
 		}
 		return result;

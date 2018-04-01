@@ -66,16 +66,18 @@ public class Table {
 	}
 
 	public void removePlayer(String uid) {
+		game = gdao.findById(game.getId(), null);
 		Player p = pdao.findById(uid, null);
 		p.setGameId(0);
 		p.setGamePosition(0);
-		if (players.size() > 1 || !game.isStarted() || game.getCurrentHand() == null) {
+		if (players.size() > 1 || !game.isStarted()
+				|| game.getCurrentHand() == null) {
 			p.setTotalChips(p.getChips() + p.getTotalChips());
 		} else {
 			p.setTotalChips(p.getChips() + p.getTotalChips()
 					+ game.getCurrentHand().getTotalBetAmount());
 		}
-		if (players.size() <= 1 && game.getCurrentHand() != null) {
+		if (players.size() <= 1 && game.getCurrentHand() != null && game.isStarted()) {
 			try {
 				handService.endHand(game);
 			} catch (AMSException e) {
@@ -101,9 +103,9 @@ public class Table {
 		GameServiceImpl gameService = new GameServiceImpl();
 		game = gdao.findById(game.getId(), null);
 		GameStatus gs = GameUtil.getGameStatus(game);
-		//To check when to start next round
+		// To check when to start next round
+		Set<PlayerHand> pltmp = getValidPlayers();
 		if (game.isStarted() && game.getCurrentHand() != null) {
-			Set<PlayerHand> pltmp = getValidPlayers();
 			try {
 				if (user.length() > 0
 						&& handCount >= pltmp.size()
@@ -138,10 +140,10 @@ public class Table {
 		}
 	}
 
-	//counting the number of players with chips > 0 and have not folded
+	// counting the number of players with chips > 0 and have not folded
 	private Set<PlayerHand> getValidPlayers() {
 		Set<PlayerHand> result = new HashSet<PlayerHand>();
-		//when 1st player sits
+		// when 1st player sits
 		for (PlayerHand ph : game.getCurrentHand().getPlayers()) {
 			if (ph.getPlayer().getChips() > 0
 					&& ph.getStatus() != PlayerHandStatus.FOLDED)

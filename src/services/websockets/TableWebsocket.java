@@ -19,11 +19,13 @@ import game.poker.holdem.domain.Table;
 
 @ServerEndpoint("/game/{guid}/{uid}")
 public class TableWebsocket {
-	public static Set<Table> games = Collections.synchronizedSet(new HashSet<Table>());
+	public static Set<Table> games = Collections
+			.synchronizedSet(new HashSet<Table>());
 
 	@OnOpen
 	public void handleOpen(Session user, @PathParam("uid") String uid,
 			@PathParam("guid") long guid) {
+		System.out.println("open");
 		Table table = new Table();
 		for (Table t : games) {
 			if (t.getGame().getId() == guid) {
@@ -54,6 +56,7 @@ public class TableWebsocket {
 	@OnClose
 	public void handleClose(Session user, @PathParam("uid") String uid,
 			@PathParam("guid") long guid) {
+		System.out.println("close");
 		for (Table table : games) {
 			if (table.getGame().getId() == guid) {
 				table.removePlayer(uid);
@@ -77,6 +80,7 @@ public class TableWebsocket {
 
 	@OnError
 	public void handleError(Throwable t) {
+		System.out.println("error");
 		t.printStackTrace();
 	}
 

@@ -56,7 +56,6 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 	private PlayerDaoImpl playerDao;
 
 	public HandEntity startNewHand(GameENT game) {
-
 		gameDao = new GameDaoImpl();
 		handDao = new HandDaoImpl();
 		playerDao = new PlayerDaoImpl();

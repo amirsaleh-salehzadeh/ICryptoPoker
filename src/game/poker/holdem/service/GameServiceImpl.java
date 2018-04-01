@@ -74,8 +74,8 @@ public class GameServiceImpl implements GameServiceInterface {
 		// Set started flag
 		game.setStarted(true);
 		// Start at the first blind level for the game
-		GameStructure gs = game.getGameStructure();
 		if (game.getGameType() == GameType.TOURNAMENT) {
+			GameStructure gs = game.getGameStructure();
 			List<BlindLevel> blinds = gs.getBlindLevels();
 			Collections.sort(blinds);
 			gs.setCurrentBlindLevel(blinds.get(0));
@@ -147,7 +147,6 @@ public class GameServiceImpl implements GameServiceInterface {
 		for (Player p : game.getPlayers()) {
 			PlayerStatusObject ptmp = playerService.buildPlayerStatus(
 					game.getId(), p.getId());
-
 			h.setGame(game);
 			if ((!p.getId().equals(playerId) || !game.isStarted())
 					&& !gs.equals(GameStatus.END_HAND)) {

@@ -51,9 +51,10 @@ public class GameAction extends Action {
 			Player player = playerDaoImpl.findById(
 					request.getParameter("playerName"), null);
 			player.setChips(chips);
+			player.setSittingOut(false);
 			player.setName(request.getParameter("nickname"));
 			if (chips > player.getTotalChips()) {
-				error = "The selected chips is larger than authorised amount in your account";
+				error = "Not Enough Credit";
 				reqCode = "goToLobby";
 			} else {
 				player.setTotalChips(player.getTotalChips() - chips);

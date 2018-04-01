@@ -1,22 +1,6 @@
 var webSocket;
 var wsUri = "";
-function onMessage(evt) {
-	console.log("received over websockets: " + evt.data);
-	updateGameInfo(JSON.parse(evt.data));
-}
 
-function onError(evt) {
-	console.log('error: ' + evt.data);
-}
-
-function onOpen() {
-	console.log("Connected to " + wsUri);
-}
-
-function sendText(json) {
-	console.log("sending text: " + json);
-	webSocket.send(json);
-}
 function fitElementsWithinScreen() {
 	$(".sitPlaceThumbnail").each(function() {
 		$(this).width($("#userSitPlace").height() / 2);
@@ -28,13 +12,6 @@ function fitElementsWithinScreen() {
 		$(this).height($("#userSitPlace").height() / 2);
 		$(this).trigger("create");
 	});
-	// $(".playerCardsContainer").each(function() {
-	// if ($(this).find(".card1").html().length > 0) {
-	// $(this).width($("#userSitPlace").height() * 1.4);
-	// $(this).height($("#userSitPlace").height());
-	// $(this).trigger("create");
-	// }
-	// });
 	$(".card").each(
 			function() {
 				if ($(this).html().length > 0) {
@@ -86,9 +63,16 @@ $(document).ready(
 			};
 			webSocket.onopen = function(evt) {
 				onOpen(evt);
-				$(".actionButtons").each(function() {
-					$(this).addClass("ui-state-disabled");
-				});
+			};
+
+			webSocket.onclose = function(evt) {
+				onClose(evt);
+			};
+
+			window.onbeforeunload = function() {
+				webSocket.onclose = function() {
+				}; // disable onclose handler first
+				webSocket.close();
 			};
 			$(window).on("resize", function() {
 				fitElementsWithinScreen();
@@ -99,6 +83,31 @@ $(document).ready(
 			$("#sliderRaise").slider();
 		});
 
+function onMessage(evt) {
+	console.log("received over websockets: " + evt.data);
+	updateGameInfo(JSON.parse(evt.data));
+}
+
+function onClose(evt) {
+	console.log("closing websockets: " + evt.data);
+	webSocket.close();
+}
+
+function onError(evt) {
+	console.log('error: ' + evt.data);
+}
+
+function onOpen() {
+	console.log("Connected to " + wsUri);
+	$(".actionButtons").each(function() {
+		$(this).addClass("ui-state-disabled");
+	});
+}
+
+function sendText(json) {
+	console.log("sending text: " + json);
+	webSocket.send(json);
+}
 // Toggles the display of the chat to block or none to be visible when the icon
 // is clicked
 function toggleChat() {
@@ -109,31 +118,36 @@ function toggleChat() {
 		$("#chatBoxContainer").css("display", "block");
 }
 function toggleFullScreen(elem) {
-    // ## The below if statement seems to work better ## if ((document.fullScreenElement && document.fullScreenElement !== null) || (document.msfullscreenElement && document.msfullscreenElement !== null) || (!document.mozFullScreen && !document.webkitIsFullScreen)) {
-    if ((document.fullScreenElement !== undefined && document.fullScreenElement === null) || (document.msFullscreenElement !== undefined && document.msFullscreenElement === null) || (document.mozFullScreen !== undefined && !document.mozFullScreen) || (document.webkitIsFullScreen !== undefined && !document.webkitIsFullScreen)) {
-        if (elem.requestFullScreen) {
-            elem.requestFullScreen();
-        } else if (elem.mozRequestFullScreen) {
-            elem.mozRequestFullScreen();
-        } else if (elem.webkitRequestFullScreen) {
-            elem.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
-        } else if (elem.msRequestFullscreen) {
-            elem.msRequestFullscreen();
-        }
-    } else {
-        if (document.cancelFullScreen) {
-            document.cancelFullScreen();
-        } else if (document.mozCancelFullScreen) {
-            document.mozCancelFullScreen();
-        } else if (document.webkitCancelFullScreen) {
-            document.webkitCancelFullScreen();
-        } else if (document.msExitFullscreen) {
-            document.msExitFullscreen();
-        }
-    }
+	// ## The below if statement seems to work better ## if
+	// ((document.fullScreenElement && document.fullScreenElement !== null) ||
+	// (document.msfullscreenElement && document.msfullscreenElement !== null)
+	// || (!document.mozFullScreen && !document.webkitIsFullScreen)) {
+	if ((document.fullScreenElement !== undefined && document.fullScreenElement === null)
+			|| (document.msFullscreenElement !== undefined && document.msFullscreenElement === null)
+			|| (document.mozFullScreen !== undefined && !document.mozFullScreen)
+			|| (document.webkitIsFullScreen !== undefined && !document.webkitIsFullScreen)) {
+		if (elem.requestFullScreen) {
+			elem.requestFullScreen();
+		} else if (elem.mozRequestFullScreen) {
+			elem.mozRequestFullScreen();
+		} else if (elem.webkitRequestFullScreen) {
+			elem.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+		} else if (elem.msRequestFullscreen) {
+			elem.msRequestFullscreen();
+		}
+	} else {
+		if (document.cancelFullScreen) {
+			document.cancelFullScreen();
+		} else if (document.mozCancelFullScreen) {
+			document.mozCancelFullScreen();
+		} else if (document.webkitCancelFullScreen) {
+			document.webkitCancelFullScreen();
+		} else if (document.msExitFullscreen) {
+			document.msExitFullscreen();
+		}
+	}
 }
-function sitIn(){
+function sitIn() {
 	$("#popupSitIn").popup("open");
-	
-	
+
 }

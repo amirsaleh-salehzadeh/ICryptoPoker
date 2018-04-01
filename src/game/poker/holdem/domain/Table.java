@@ -88,6 +88,12 @@ public class Table {
 		p.setChips(0);
 		pdao.merge(p, null);
 		game = gdao.merge(game, null);
+		try {
+			players.get(uid).close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		players.remove(uid, players.get(uid));
 	}
 

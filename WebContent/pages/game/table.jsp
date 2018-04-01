@@ -241,6 +241,35 @@
 				</div>
 			</div>
 		</div>
+		
+		
+		
+		
+<!-- 		Sit In popup          -->
+
+<div data-role="popup" id="popupSitIn" data-overlay-theme="b"
+	data-theme="b" data-dismissible="false" style="max-width: 400px;">
+	<form action="#" id="sitInGameForm" method="post">
+		<div data-role="header" data-theme="a">
+			<h1>Sit In</h1>
+		</div>
+		<div role="main" class="ui-content" data-overlay-theme="b"
+			data-theme="b" data-dismissible="false">
+			<div class="ui-block-solo" style="height: 25%;">
+				<label for="buyIn">Entry Chips</label> <input type="number" data-mini="true"
+					id="buyIn" value="0" placeholder="Chips">
+			 
+			</div>
+		</div>
+	</form>
+	            <a href="#"
+		class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b"
+		data-rel="back">Leave Game</a>         <a href="#" id="sitInBTN"
+		class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b">Join</a>
+	    
+</div>
+<!-- 		Sit In popup          -->
+
 	</div>
 </body>
 </html>

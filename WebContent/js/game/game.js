@@ -177,9 +177,6 @@ function updatePlayerInfo(data) {
 			$("#sliderRaise").attr("value", $("#sliderRaise").attr("min"))
 					.slider("refresh");
 		}
-		$("#sliderRaise").attr("min", parseInt(data.amountToCall) * 2);
-		$("#sliderRaise").attr("value", parseInt(data.amountToCall) * 2)
-				.slider("refresh");
 		playerToActId = playerId;
 		countDownTotal = 15000;
 		timeLeft = 0;

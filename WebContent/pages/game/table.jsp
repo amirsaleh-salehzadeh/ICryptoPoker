@@ -209,15 +209,17 @@
 
 			<div class="ui-block-solo ui-grid-d constantBannersBottom"
 				id="buttonsContainerDIV" style="width: 100%; height: 14%;">
-				<div class="ui-block-a" style="width: 40%">
-					<div id="btnChat">
+				<div class="ui-block-a utilBtns" style="width: 40%">
+				<div class="ui-grid-a">
+					<div id="btnChat" class="ui-block-a">
 						<a href="" onclick="toggleChat();" ><img
 							src="images/game/chatBox.png" style="width: 100%;" alt="Chat" /></a>
 					</div>
-					<div id="btnFullScreen">
+					<div id="btnFullScreen" class="ui-block-b">
 					<a href="" onclick="toggleFullScreen(document.body);" ><img
 							src="images/icons/FullScreen.png" style="width: 100%;" alt="Full Screen" /></a>
 					
+					</div>
 					</div>
 				</div>
 				<div class="ui-block-b" style="width: 15%">

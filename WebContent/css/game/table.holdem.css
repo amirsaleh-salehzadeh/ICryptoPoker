@@ -270,6 +270,7 @@
 }
 #btnChat{
 	bottom:2%;
+	width:42px;
 }
 #btnChat img{
 	width:42px !important;

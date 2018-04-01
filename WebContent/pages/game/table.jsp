@@ -45,7 +45,7 @@
 				<div class="ui-block-a" onclick="leaveTable()"
 					style="cursor: pointer;">
 					<img alt="" src="images/icons/undo.png" height="80%">&nbsp;
-					Lobby
+					
 				</div>
 				<div class="ui-block-b" id="playerChipsDiv">
 					<img alt="" src="images/game/money.png" height="80%">&nbsp;&cent;&nbsp;<%=player.getTotalChips()%>

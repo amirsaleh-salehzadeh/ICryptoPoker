@@ -16,7 +16,6 @@ import tools.AMSException;
 
 import game.poker.holdem.dao.GameDaoImpl;
 import game.poker.holdem.domain.Table;
-import game.poker.holdem.service.GameServiceImpl;
 
 @ServerEndpoint("/game/{guid}/{uid}")
 public class TableWebsocket {

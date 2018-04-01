@@ -6,7 +6,7 @@ function onMessage(evt) {
 }
 
 function onError(evt) {
-	console.log('' + evt.data);
+	console.log('error: ' + evt.data);
 }
 
 function onOpen() {

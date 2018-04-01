@@ -1,3 +1,31 @@
+var percentColors = [ {
+	pct : 0.0,
+	color : {
+		r : 0xff,
+		g : 0x00,
+		b : 0
+	}
+}, {
+	pct : 0.5,
+	color : {
+		r : 0xff,
+		g : 0xff,
+		b : 0
+	}
+}, {
+	pct : 1.0,
+	color : {
+		r : 0x00,
+		g : 0xff,
+		b : 0
+	}
+} ];
+
+var countDownTotal = 15000;
+var timeLeft = 0;
+var playerToActId;
+var timer;
+
 function leaveTable() {
 	// var url = "/ICryptoPoker/REST/GetGameServiceWS/EndHand?handId="
 	// + $("#handID").val();
@@ -49,6 +77,7 @@ function updateGameInfo(data) {
 								+ data.pot + '&nbsp;</span>');
 	if (data.gameStatus == "END_HAND") {
 		endHand();
+//		clearInterval(timer);
 	}
 	if (data.cards != null)
 		$(data.cards).each(function(k, l) {
@@ -73,25 +102,18 @@ function updateGameInfo(data) {
 			$("#pscontainer" + data.DEALER).html(
 					'<img src="images/game/d.png" height="100%" />');
 	}
-	// $("#sliderRaise").attr("min", data.bigBlind * 2); //
-	// $("#sliderRaise").attr("max", (data.players[0]).chips); // Sets min, max
-	// and
-	// // value for bet
-	// // slider
-	// // (sliderRaise) in
-	// // table.jsp
-	// $("#sliderRaise").attr("value", data.bigBlind * 2); //
 	fitElementsWithinScreen();
 }
-var playerToActId;
-var timer;
-function SetTimer() {
+
+function setTimer() {
 	if (timeLeft == 0)
 		timeLeft = countDownTotal - 1000;
 	else
 		timeLeft = timeLeft - 1000;
-	$("#timer" + playerToActId).css("width",
-			Math.round(timeLeft / countDownTotal * 100) + "%");
+	var percentage = Math.round(timeLeft / countDownTotal * 100);
+	$("#timer" + playerToActId).css("width", percentage + "%");
+	$("#timer" + playerToActId).css("background-color",
+			getColorForPercentage(percentage / 100));
 	if (timeLeft == 0) {
 		clearInterval(timer);
 		if (!$("#checkBTN").hasClass("ui-state-disabled")) {
@@ -101,10 +123,29 @@ function SetTimer() {
 				fold();
 		}
 	}
+};
+
+function getColorForPercentage(pct) {
+	for ( var i = 1; i < percentColors.length - 1; i++) {
+		if (pct < percentColors[i].pct) {
+			break;
+		}
+	}
+	var lower = percentColors[i - 1];
+	var upper = percentColors[i];
+	var range = upper.pct - lower.pct;
+	var rangePct = (pct - lower.pct) / range;
+	var pctLower = 1 - rangePct;
+	var pctUpper = rangePct;
+	var color = {
+		r : Math.floor(lower.color.r * pctLower + upper.color.r * pctUpper),
+		g : Math.floor(lower.color.g * pctLower + upper.color.g * pctUpper),
+		b : Math.floor(lower.color.b * pctLower + upper.color.b * pctUpper)
+	};
+	return 'rgb(' + [ color.r, color.g, color.b ].join(',') + ')';
+	// or output as hex if preferred
 }
 
-var countDownTotal = 15000;
-var timeLeft = 0;
 function updatePlayerInfo(data) {
 	var playerId = data.id;
 	var playerName = data.name;
@@ -112,15 +153,6 @@ function updatePlayerInfo(data) {
 			data.amountToCall);
 	if (data.status != "NOT_STARTED" && data.status != "SEATING")
 		dealCards2Players(data, playerId);
-	//
-	// if (data.status == "WAITING" || data.status == "NOT_STARTED") {
-	// $('.pscontainer').each(function() {
-	// if ("pscontainer" + playerId == this.id) {
-	// $(this).html("W");
-	// $(this).addClass("waitingChip");
-	// }
-	// });
-	// } else
 	if (data.status == "ACTION_TO_CHECK" || data.status == "ACTION_TO_CALL") {
 		var atc = parseInt(data.amountToCall);
 		if (data.status == "ACTION_TO_CALL") {
@@ -145,16 +177,14 @@ function updatePlayerInfo(data) {
 			$("#sliderRaise").attr("value", $("#sliderRaise").attr("min"))
 					.slider("refresh");
 		}
-if(data.status == "ACTION_TO_CALL"){
-	$("#sliderRaise").attr("min", parseInt(data.amountToCall) * 2);
-	$("#sliderRaise").attr("value", parseInt(data.amountToCall) * 2)
-	.slider("refresh");
-}
+		$("#sliderRaise").attr("min", parseInt(data.amountToCall) * 2);
+		$("#sliderRaise").attr("value", parseInt(data.amountToCall) * 2)
+				.slider("refresh");
 		playerToActId = playerId;
 		countDownTotal = 15000;
 		timeLeft = 0;
-		// clearInterval(timer);
-		// setInterval(SetTimer, 1000);
+		clearInterval(timer);
+		timer = setInterval(setTimer, 1000);
 	} else if (data.status == "LOST_HAND") {
 		$('.pscontainer').each(function() {
 			if ("pscontainer" + playerId == this.id) {
@@ -172,10 +202,12 @@ if(data.status == "ACTION_TO_CALL"){
 			}
 		});
 	}
+
 }
 function endHand() {
 	console.log("GAME DONE");
-	sitIn();
+	clearInterval(timer);
+	// sitIn();
 	// sendText("");
 }
 
@@ -194,7 +226,7 @@ function addANewPlayerToTable(id, name, chips, amountToCall) {
 										+ id
 										+ "'>"
 										+ "<div class='ui-block-solo w3-light-grey w3-round w3-tiny'>"
-										+ "<div class='w3-container w3-round w3-green' style='width:100%; height:5px;' id='timer"
+										+ "<div class='w3-container w3-round' style='width:100%; height:5px;' id='timer"
 										+ id
 										+ "'></div></div>"
 										+ "<div class='ui-grid-a ui-block-solo'>"
@@ -222,7 +254,7 @@ function addANewPlayerToTable(id, name, chips, amountToCall) {
 										+ id
 										+ "'>"
 										+ "<div class='ui-block-solo w3-light-grey w3-round w3-tiny'>"
-										+ "<div class='w3-container w3-round w3-green' style='width:100%; height:11px;' id='timer"
+										+ "<div class='w3-container w3-round' style='width:100%; height:11px;' id='timer"
 										+ id
 										+ "'></div></div>"
 										+ "<div class='ui-grid-a'>"
@@ -288,6 +320,7 @@ function check() {
 			alert(xhr.responseText);
 		}
 	});
+	clearInterval(timer);
 }
 
 function call() {
@@ -308,6 +341,7 @@ function call() {
 			alert(xhr.responseText);
 		}
 	});
+	clearInterval(timer);
 }
 
 function fold() {
@@ -328,6 +362,7 @@ function fold() {
 			alert(xhr.responseText);
 		}
 	});
+	clearInterval(timer);
 }
 
 function raise() {
@@ -349,6 +384,7 @@ function raise() {
 			alert(xhr.responseText);
 		}
 	});
+	clearInterval(timer);
 }
 
 function allIn() {
@@ -356,8 +392,8 @@ function allIn() {
 	raise();
 }
 
-function removePlayer(name){
-	
-	$("#sitPlaceContainer"+name).html('<div class="sitPlaceThumbnailEmpty">Waiting</div>');
-	$("#sitPlaceContainer"+name).attr('id',null);
+function removePlayer(name) {
+	$("#sitPlaceContainer" + name).html(
+			'<div class="sitPlaceThumbnailEmpty">Waiting</div>');
+	$("#sitPlaceContainer" + name).attr('id', null);
 }

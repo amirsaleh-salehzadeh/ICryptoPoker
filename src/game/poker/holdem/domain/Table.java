@@ -118,7 +118,7 @@ public class Table {
 				e1.printStackTrace();
 			}
 		}
-		if (players.size() >= 2 && !game.isStarted()
+		if (players.size() > 1 && !game.isStarted()
 				&& gs.equals(GameStatus.NOT_STARTED)) {
 			handCount = 0;
 			try {

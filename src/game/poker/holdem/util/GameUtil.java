@@ -64,25 +64,14 @@ public class GameUtil {
 	public static void goToNextStepOfTheGame(GameENT game, String playerId)
 			throws AMSException {
 		PokerHandServiceImpl phs = new PokerHandServiceImpl();
-//		Player pBB = phs.getPlayerInBB(game.getCurrentHand());
-//		Player next = PlayerUtil.getNextPlayerToAct(game.getCurrentHand(), game
-//				.getCurrentHand().getCurrentToAct());
-		// for (PlayerHand ph : game.getCurrentHand().getPlayers())
-		// if (game.getCurrentHand().getTotalBetAmount()
-		// - ph.getRoundBetAmount() >= 1
-		// && next.getGamePosition() < game.getCurrentHand()
-		// .getCurrentToAct().getGamePosition())
-		// return;
-//		if (pBB.getId().equals(playerId) || pBB.getChips() == 0) {
-			GameStatus gs = GameUtil.getGameStatus(game);
-			if (gs.equals(GameStatus.PREFLOP))
-				phs.flop(game);
-			else if (gs.equals(GameStatus.FLOP))
-				phs.turn(game);
-			else if (gs.equals(GameStatus.TURN))
-				phs.river(game);
-			else if (gs.equals(GameStatus.RIVER))
-				phs.endHand(game);
-//		}
+		GameStatus gs = GameUtil.getGameStatus(game);
+		if (gs.equals(GameStatus.PREFLOP))
+			phs.flop(game);
+		else if (gs.equals(GameStatus.FLOP))
+			phs.turn(game);
+		else if (gs.equals(GameStatus.TURN))
+			phs.river(game);
+		else if (gs.equals(GameStatus.RIVER))
+			phs.endHand(game);
 	}
 }

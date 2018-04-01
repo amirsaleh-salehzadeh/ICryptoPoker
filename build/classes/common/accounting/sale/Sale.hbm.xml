@@ -3,7 +3,7 @@
                                    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated Mar 27, 2018 7:37:47 PM by Hibernate Tools 3.5.0.Final -->
 <hibernate-mapping>
- <class name="common.game.poker.holdem.SaleEnt" table="finance_sales">
+ <class name="common.accounting.SaleENT" table="finance_sales">
   <id name="id" type="long">
    <column name="sale_id" unique="true"/>
    <generator class="assigned"/>

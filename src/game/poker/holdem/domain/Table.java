@@ -12,7 +12,9 @@ import game.poker.holdem.util.GameUtil;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -67,13 +69,13 @@ public class Table {
 		Player p = pdao.findById(uid, null);
 		p.setGameId(0);
 		p.setGamePosition(0);
-		if (players.size() > 1 || !game.isStarted()) {
+		if (players.size() > 1 || !game.isStarted() || game.getCurrentHand() == null) {
 			p.setTotalChips(p.getChips() + p.getTotalChips());
 		} else {
 			p.setTotalChips(p.getChips() + p.getTotalChips()
 					+ game.getCurrentHand().getTotalBetAmount());
 		}
-		if (players.size() <= 1) {
+		if (players.size() <= 1 && game.getCurrentHand() != null) {
 			try {
 				handService.endHand(game);
 			} catch (AMSException e) {
@@ -93,11 +95,14 @@ public class Table {
 		GameServiceImpl gameService = new GameServiceImpl();
 		game = gdao.findById(game.getId(), null);
 		GameStatus gs = GameUtil.getGameStatus(game);
-		if (game.isStarted())
+		//To check when to start next round
+		if (game.isStarted() && game.getCurrentHand() != null) {
+			Set<PlayerHand> pltmp = getValidPlayers();
 			try {
 				if (user.length() > 0
-						&& handCount >= game.getCurrentHand().getPlayers()
-								.size())
+						&& handCount >= pltmp.size()
+						&& PokerHandServiceImpl.isActionResolved(game
+								.getCurrentHand()))
 					GameUtil.goToNextStepOfTheGame(game, user);
 				game = gdao.findById(game.getId(), null);
 				GameStatus gsPrimary = GameUtil.getGameStatus(game);
@@ -106,6 +111,7 @@ public class Table {
 			} catch (AMSException e1) {
 				e1.printStackTrace();
 			}
+		}
 		if (players.size() >= 2 && !game.isStarted()
 				&& gs.equals(GameStatus.NOT_STARTED)) {
 			handCount = 0;
@@ -124,6 +130,18 @@ public class Table {
 			String json = gameService.getGameStatusJSON(game, resultsTMP, cur);
 			players.get(cur).getAsyncRemote().sendText(json);
 		}
+	}
+
+	//counting the number of players with chips > 0 and have not folded
+	private Set<PlayerHand> getValidPlayers() {
+		Set<PlayerHand> result = new HashSet<PlayerHand>();
+		//when 1st player sits
+		for (PlayerHand ph : game.getCurrentHand().getPlayers()) {
+			if (ph.getPlayer().getChips() > 0
+					&& ph.getStatus() != PlayerHandStatus.FOLDED)
+				result.add(ph);
+		}
+		return result;
 	}
 
 	public void setGameId(long guid) {

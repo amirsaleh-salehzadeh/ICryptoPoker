@@ -4,7 +4,7 @@
 <!-- Generated Mar 27, 2018 7:37:47 PM by Hibernate Tools 3.5.0.Final -->
 <hibernate-mapping>
  <class name="common.accounting.SaleENT" table="finance_sales">
-  <id name="id" type="long">
+  <id name="saleId" type="long">
    <column name="sale_id" unique="true"/>
    <generator class="assigned"/>
   </id>
@@ -17,7 +17,7 @@
   <property generated="never" lazy="false" name="dateTime" type="date">
    <column name="date_time"/>
   </property>
-  <property generated="never" lazy="false" name="status" type="boolean">
+  <property generated="never" lazy="false" name="status" type="int">
    <column name="status"/>
   </property>
   <property generated="never" lazy="false" name="amount" type="double">
@@ -27,6 +27,9 @@
    name="bankResponse" type="string"/>
   <property generated="never" lazy="false" name="currency" type="string">
    <column name="currency"/>
+  </property>
+  <property name="creatorUsername" type ="string">
+   <column name="creator_username"></column>
   </property>
  </class>
 </hibernate-mapping>

@@ -14,6 +14,7 @@ import tools.AMSException;
 
 import common.accounting.payment.PaymentENT;
 import common.accounting.payment.PaymentLST;
+import common.accounting.sale.SaleENT;
 import hibernate.accounting.payment.PaymentDaoInterface;
 import hibernate.config.BaseHibernateDAO;
 
@@ -68,6 +69,36 @@ public class PaymentDao extends BaseHibernateDAO implements
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public List<PaymentENT> searchCriteria(String accountName) throws AMSException {
+		// TODO Auto-generated method stub
+	     
+		if(accountName==null) {
+		   return getPaymentLST(null).getPaymentENTs() ;	
+		}
+		Session session = getSession();
+		Transaction tx = null;
+		ArrayList<PaymentENT> ents = null;
+		try {
+			tx = session.beginTransaction();
+			Criteria cr = session.createCriteria(PaymentENT.class);
+			cr.add(Restrictions.gt("status", 0));
+			cr.add(Restrictions.gt("reason",accountName));
+			ents =(ArrayList<PaymentENT>) cr.list() ;
+			tx.commit();
+		} catch (HibernateException e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return ents ;
+		
+	}
+
+	
 
 
 }

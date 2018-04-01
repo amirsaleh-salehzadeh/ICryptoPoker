@@ -3,21 +3,24 @@ package common.accounting.payment;
 import java.util.Date;
 
 public class PaymentENT {
-	private long id;
+	private long paymentId ;
 	private String username;
 	private Date dateTime;
-	private boolean status;
+	private int status;
 	private double amount;
 	private String reason;
 	private String bankResponse;
 	private String currency;
+	private String creatorUsername ;
 
-	public long getId() {
-		return id;
+	
+
+	public long getPaymentId() {
+		return paymentId;
 	}
 
-	public void setId(long id) {
-		this.id = id;
+	public void setPaymentId(long paymentId) {
+		this.paymentId = paymentId;
 	}
 
 	public String getUsername() {
@@ -34,14 +37,6 @@ public class PaymentENT {
 
 	public void setDateTime(Date dateTime) {
 		this.dateTime = dateTime;
-	}
-
-	public boolean isStatus() {
-		return status;
-	}
-
-	public void setStatus(boolean status) {
-		this.status = status;
 	}
 
 	public double getAmount() {
@@ -74,6 +69,22 @@ public class PaymentENT {
 
 	public void setCurrency(String currency) {
 		this.currency = currency;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+	public String getCreatorUsername() {
+		return creatorUsername;
+	}
+
+	public void setCreatorUsername(String creatorUsername) {
+		this.creatorUsername = creatorUsername;
 	}
 
 }

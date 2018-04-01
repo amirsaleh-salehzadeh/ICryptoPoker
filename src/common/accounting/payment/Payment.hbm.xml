@@ -14,7 +14,7 @@
         <property name="dateTime" type="date">
             <column name="date_time" />
         </property>
-        <property name="status" type="boolean">
+        <property name="status" type="int">
             <column name="status" />
         </property>
         <property name="amount" type="double">
@@ -29,5 +29,8 @@
         <property name="currency" type="string">
             <column name="currency" />
         </property>
+        <property name="creatorUsername" type ="string">
+   <column name="creator_username"></column>
+  </property>
     </class>
 </hibernate-mapping>

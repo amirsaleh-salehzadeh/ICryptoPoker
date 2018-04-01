@@ -63,9 +63,12 @@ public class Table {
 	public void removePlayer(String uid) {
 		game = gdao.findById(game.getId(), null);
 		Player p = pdao.findById(uid, null);
-		// p.setGameId(0);
-		// p.setGamePosition(0);
 		handService.sitOutCurrentPlayer(game.getCurrentHand(), p);
+		if (playerSessions.size() <= 2 && game.isStarted()
+				&& game.getCurrentHand() != null) {
+			 p.setGameId(0);
+			 p.setGamePosition(0);
+		}
 		// if (playerSessions.size() > 1 || !game.isStarted()
 		// || game.getCurrentHand() == null) {
 		// p.setTotalChips(p.getChips() + p.getTotalChips());
@@ -73,7 +76,8 @@ public class Table {
 		// p.setTotalChips(p.getChips() + p.getTotalChips()
 		// + game.getCurrentHand().getTotalBetAmount());
 		// }
-		// if (playerSessions.size() <= 1 && game.getCurrentHand() != null &&
+		// if (playerSessions.size() <= 1 && game.getCurrentHand() != null
+		// &&
 		// game.isStarted()) {
 		// try {
 		// handService.endHand(game);

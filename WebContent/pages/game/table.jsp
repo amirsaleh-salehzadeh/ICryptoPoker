@@ -195,8 +195,8 @@
 					<div class="ui-block-c"
 						style="width: 40%; height: 100% !important;"
 						id="raiseSliderContainer">
-						<input class="actionButtons"type="range" name="sliderRaise" id="sliderRaise"
-							data-show-value="true" data-popup-enabled="true">
+						<input class="actionButtons" type="range" name="sliderRaise"
+							id="sliderRaise" data-show-value="true" data-popup-enabled="true">
 						<!-- 							<input -->
 						<!-- 							type="number" id="betAmount" value="0"> -->
 					</div>
@@ -210,16 +210,17 @@
 			<div class="ui-block-solo ui-grid-d constantBannersBottom"
 				id="buttonsContainerDIV" style="width: 100%; height: 14%;">
 				<div class="ui-block-a utilBtns" style="width: 40%">
-				<div class="ui-grid-a">
-					<div id="btnChat" class="ui-block-a">
-						<a href="" onclick="toggleChat();" ><img
-							src="images/game/chatBox.png" style="width: 100%;" alt="Chat" /></a>
-					</div>
-					<div id="btnFullScreen" class="ui-block-b">
-					<a href="" onclick="toggleFullScreen(document.body);" ><img
-							src="images/icons/FullScreen.png" style="width: 100%;" alt="Full Screen" /></a>
-					
-					</div>
+					<div class="ui-grid-a">
+						<div id="btnChat" class="ui-block-a">
+							<a href="" onclick="toggleChat();"><img
+								src="images/game/chatBox.png" style="width: 100%;" alt="Chat" /></a>
+						</div>
+						<div id="btnFullScreen" class="ui-block-b">
+							<a href="" onclick="toggleFullScreen(document.body);"><img
+								src="images/icons/FullScreen.png" style="width: 100%;"
+								alt="Full Screen" /></a>
+
+						</div>
 					</div>
 				</div>
 				<div class="ui-block-b" style="width: 15%">
@@ -243,34 +244,34 @@
 				</div>
 			</div>
 		</div>
-		
-		
-		
-		
-<!-- 		Sit In popup          -->
 
-<div data-role="popup" id="popupSitIn" data-overlay-theme="b"
-	data-theme="b" data-dismissible="false" style="max-width: 400px;">
-	<form action="#" id="sitInGameForm" method="post">
-		<div data-role="header" data-theme="a">
-			<h1>Sit In</h1>
+
+
+
+		<!-- 		Sit In popup          -->
+
+		<div data-role="popup" id="popupSitIn" data-overlay-theme="b"
+			data-theme="b" data-dismissible="false" style="max-width: 400px;">
+			<form action="#" id="sitInGameForm" method="post">
+				<div data-role="header" data-theme="a">
+					<h1>Sit In</h1>
+				</div>
+				<div role="main" class="ui-content" data-overlay-theme="b"
+					data-theme="b" data-dismissible="false">
+					<div class="ui-block-solo" style="height: 25%;">
+						<label for="buyIn">Entry Chips</label> <input type="number"
+							data-mini="true" id="buyIn" value="0" placeholder="Chips">
+
+					</div>
+				</div>
+			</form>
+			            <a href="#"
+				class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b"
+				data-rel="back">Leave Game</a>         <a href="#" id="sitInBTN"
+				class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b">Join</a>
+			    
 		</div>
-		<div role="main" class="ui-content" data-overlay-theme="b"
-			data-theme="b" data-dismissible="false">
-			<div class="ui-block-solo" style="height: 25%;">
-				<label for="buyIn">Entry Chips</label> <input type="number" data-mini="true"
-					id="buyIn" value="0" placeholder="Chips">
-			 
-			</div>
-		</div>
-	</form>
-	            <a href="#"
-		class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b"
-		data-rel="back">Leave Game</a>         <a href="#" id="sitInBTN"
-		class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b">Join</a>
-	    
-</div>
-<!-- 		Sit In popup          -->
+		<!-- 		Sit In popup          -->
 
 	</div>
 </body>

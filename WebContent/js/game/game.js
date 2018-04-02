@@ -183,9 +183,8 @@ function updatePlayerInfo(data) {
 		clearInterval(timer);
 //		timer = setInterval(setTimer, 1000);
 	} else if (data.status == "LOST_HAND") {
-		$('.pscontainer').each(function() {
-			if ("pscontainer" + playerId == this.id) {
-				$(this).html("LOST");
+		$('.playerInfo').each(function() {
+			if ("playerInfo" + playerId == this.id) {
 				$(this).addClass("loser");
 				$("#amountToCallcontainer" + playerId).html(data.handRank);
 			}
@@ -196,6 +195,13 @@ function updatePlayerInfo(data) {
 			if ("playerInfo" + playerId == this.id) {
 				$(this).addClass("winner");
 				$("#amountToCallcontainer" + playerId).html(data.handRank);
+			}
+		});
+	}else if (data.status == "SIT_OUT") {
+		$('.playerInfo').each(function() {
+			if ("playerInfo" + playerId == this.id) {
+				$(this).addClass("sitOut");
+			
 			}
 		});
 	}

@@ -208,7 +208,7 @@
 
 .winner {
 	/* 	the shadow for the winner box */
-	-webkit-box-shadow: -28px 2px 135px 0px rgba(255, 255, 255, 1);
+		-webkit-box-shadow: -28px 2px 135px 0px rgba(255, 255, 255, 1);
 	-moz-box-shadow: -28px 2px 135px 0px rgba(255, 255, 255, 1);
 	box-shadow: -28px 2px 135px 0px rgba(255, 255, 255, 1);
 	/*  */
@@ -236,12 +236,15 @@
 		rgba(251, 223, 147, 1) 100%);
 	/*  */
 }
-
+.sitOut{
+	opacity: 0.5;
+	
+}
 .loser {
 	/* 	the shadow for the loser box */
 	-webkit-box-shadow: -28px 2px 135px 0px rgba(255, 255, 255, 1);
 	-moz-box-shadow: -28px 2px 135px 0px rgba(255, 255, 255, 1);
-	box-shadow: -28px 2px 135px 0px rgba(255, 255, 255, 1);
+	box-shadow: -28px 2px 135px 0px rgb(234, 24, 24) !important;
 	/*  */
 	/* red styling */
 	color: black !important;

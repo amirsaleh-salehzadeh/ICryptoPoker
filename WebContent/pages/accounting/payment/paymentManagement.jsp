@@ -12,66 +12,72 @@
 <html>
 <head>
 <script>
-// 	$(document).ready(function() {
-// 		refreshPlaceHolders();
-// 		refreshGrid();
-// 	});
+	// 	$(document).ready(function() {
+	// 		refreshPlaceHolders();
+	// 		refreshGrid();
+	// 	});
 </script>
 </head>
 <body>
 <body>
-hiiiii
-<!-- 	<form id="dataFilterGridMainPage" action="user.do"> -->
-<%-- 		<ams:message messageEntity="${message}"></ams:message> --%>
-<!-- 		<input type="hidden" name="reqCode" id="reqCode" -->
-<!-- 			value="userManagement"> <input type="hidden" -->
-<!-- 			name="reqCodeGrid" id="reqCodeGrid" value=""> -->
-<!-- 		<div class="ui-grid-solo" id="searchFilters"> -->
-<%-- 			<html:text name="userLST" property="searchUser.userName" --%>
-<%-- 				onkeyup="refreshGrid();" title="Search"></html:text> --%>
-<!-- 		</div> -->
-<!-- 		<div class="ui-grid-solo"> -->
-<%-- 			<bean:define id="totalRows" name="userLST" property="totalItems" --%>
-<%-- 				type="java.lang.Integer"></bean:define> --%>
-<%-- 			<bean:define id="first" name="userLST" property="first" --%>
-<%-- 				type="java.lang.Integer"></bean:define> --%>
-<%-- 			<bean:define id="currentPage" name="userLST" property="currentPage" --%>
-<%-- 				type="java.lang.Integer"></bean:define> --%>
-<%-- 			<bean:define id="pageSize" name="userLST" property="pageSize" --%>
-<%-- 				type="java.lang.Integer"></bean:define> --%>
-<%-- 			<bean:define id="totalPages" name="userLST" property="totalPages" --%>
-<%-- 				type="java.lang.Integer"></bean:define> --%>
-<%-- 			<ams:ajaxPaginate currentPage="<%=currentPage%>" --%>
-<%-- 				pageSize="<%=pageSize%>" totalRows="<%=totalRows%>" align="center" --%>
-<%-- 				columns="userName,DT_RowId,name,surName,dateOfBirth,registerationDate" --%>
-<%-- 				popupID="userManagementSettingMenu" --%>
-<%-- 				popupGridSettingItems="${gridMenuItem}" --%>
-<%-- 				popupMenuSettingItems="${settingMenuItem}"> --%>
-<!-- 				<table id="gridList" class="display cell-border dt-body-center" -->
-<!-- 					cellspacing="0" width="100%"> -->
-<!-- 					<thead> -->
-<!-- 						<tr> -->
-<!-- 							<th><input type="checkbox" id="checkAllHead"></th> -->
-<!-- 							<th data-priority="1">Username</th> -->
-<!-- 							<th data-priority="2">surname</th> -->
-<!-- 							<th data-priority="3">name</th> -->
-<!-- 							<th data-priority="4">DOB</th> -->
-<!-- 							<th data-priority="5">Registeration Date</th> -->
-<!-- 						</tr> -->
-<!-- 					</thead> -->
-<!-- 					<tfoot> -->
-<!-- 						<tr> -->
-<!-- 							<th><input type="checkbox" id="checkAllFoot"></th> -->
-<!-- 							<th data-priority="1">Username</th> -->
-<!-- 							<th data-priority="2">surname</th> -->
-<!-- 							<th data-priority="3">name</th> -->
-<!-- 							<th data-priority="4">DOB</th> -->
-<!-- 							<th data-priority="5">Registeration Date</th> -->
-<!-- 						</tr> -->
-<!-- 					</tfoot> -->
-<!-- 				</table> -->
-<%-- 			</ams:ajaxPaginate> --%>
-<!-- 		</div> -->
-<!-- 	</form> -->
+
+	<form id="dataFilterGridMainPage" action="user.do">
+		<ams:message messageEntity="${message}"></ams:message>
+		<input type="hidden" name="reqCode" id="reqCode"
+			value="paymentManagement"> <input type="hidden"
+			name="reqCodeGrid" id="reqCodeGrid" value="">
+		<div class="ui-grid-solo" id="searchFilters">
+			<html:text name="paymentLST" property="searchUser.userName"
+				onkeyup="refreshGrid();" title="Search"></html:text>
+		</div>
+		<div class="ui-grid-solo">
+			<bean:define id="totalRows" name="paymentLST" property="totalItems"
+				type="java.lang.Integer"></bean:define>
+			<bean:define id="first" name="paymentLST" property="first">
+				type="java.lang.Integer"></bean:define>
+			<bean:define id="currentPage" name="paymentLST"
+				property="currentPage">
+				type="java.lang.Integer"></bean:define>
+			<bean:define id="pageSize" name="paymentLST" property="pageSize">
+				type="java.lang.Integer"></bean:define>
+			<bean:define id="totalPages" name="paymentLST" property="totalPages"
+				type="java.lang.Integer"></bean:define>
+
+			<ams:ajaxPaginate currentPage="<%=currentPage%>"
+				pageSize="<%=pageSize%>" totalRows="<%=totalRows%>" align="center"
+				columns="creatorUsername,DT_RowId,username,dateTime,currency,amount,status,reason"
+				popupID="paymentManagementSettingMenu"
+				popupGridSettingItems="${gridMenuItem}"
+				popupMenuSettingItems="${settingMenuItem}">
+				<table id="gridList" class="display cell-border dt-body-center"
+					cellspacing="0" width="100%">
+					<thead>
+						<tr>
+							<th><input type="checkbox" id="checkAllHead"></th>
+							<th data-priority="1">creatorUsername</th>
+							<th data-priority="2">username</th>
+							<th data-priority="3">dateTime</th>
+							<th data-priority="4">currency</th>
+							<th data-priority="5">amount</th>
+							<th data-priority="6">status</th>
+							<th data-priority="7">reason</th>
+						</tr>
+					</thead>
+					<tfoot>
+						<tr>
+							<th><input type="checkbox" id="checkAllFoot"></th>
+							<th data-priority="1">creatorUsername</th>
+							<th data-priority="2">username</th>
+							<th data-priority="3">dateTime</th>
+							<th data-priority="4">currency</th>
+							<th data-priority="5">amount</th>
+							<th data-priority="6">status</th>
+							<th data-priority="7">reason</th>
+						</tr>
+					</tfoot>
+				</table>
+			</ams:ajaxPaginate>
+		</div>
+	</form>
 </body>
 </html>

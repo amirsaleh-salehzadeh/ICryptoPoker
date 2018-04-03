@@ -15,5 +15,7 @@ public interface PaymentDaoInterface {
 	public void removePayment(PaymentENT ent) throws AMSException;
 	
 	public List<PaymentENT> searchCriteria(String accountName) throws AMSException ;
+	
+   public  PaymentENT getPaymentENT(PaymentENT ent) throws AMSException ;
 
 }

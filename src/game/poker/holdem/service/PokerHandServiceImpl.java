@@ -45,7 +45,7 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		Deck d = new Deck(true);
 		Set<PlayerHand> participatingPlayers = new HashSet<PlayerHand>();
 		for (Player p : game.getPlayers()) {
-			if (p.getChips() > 0) {
+			if (p.getChips() > 0 && !p.isSittingOut()) {
 				PlayerHand ph = new PlayerHand();
 				ph.setHandId(hand.getId());
 				ph.setPlayer(p);
@@ -68,7 +68,7 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		Player bigBlind = getPlayerInBB(hand);
 		int sbBet = 0;
 		int bbBet = 0;
-		for (PlayerHand ph : hand.getPlayers()) {// false
+		for (PlayerHand ph : hand.getPlayers()) {
 			if (ph.getPlayer().equals(smallBlind)) {
 				sbBet = Math.min(hand.getBlindLevel().getSmallBlind(),
 						smallBlind.getChips());

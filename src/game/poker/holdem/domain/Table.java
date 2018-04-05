@@ -66,48 +66,18 @@ public class Table {
 		System.out.println("removed from table " + uid);
 		game = gdao.findById(game.getId(), null);
 		Player p = pdao.findById(uid, null);
+		if (playerSessions.size() == 2)
+			playerActionService.fold(p, game, true);
 		if (playerSessions.size() >= 2 && game.isStarted()
 				&& game.getCurrentHand() != null)
 			// game.setCurrentHand(handService.sitOutCurrentPlayer(game, p));
 			gameService.leaveTheGame(p);
-		// if (playerSessions.size() <= 2 && game.isStarted()
-		// && game.getCurrentHand() != null) {
-		// p.setGameId(0);
-		// p.setGamePosition(0);
-		// }
-		// if (playerSessions.size() > 1 || !game.isStarted()
-		// || game.getCurrentHand() == null) {
-		// p.setTotalChips(p.getChips() + p.getTotalChips());
-		// } else {
-		// p.setTotalChips(p.getChips() + p.getTotalChips()
-		// + game.getCurrentHand().getTotalBetAmount());
-		// }
-		// if (playerSessions.size() <= 1 && game.getCurrentHand() != null
-		// &&
-		// game.isStarted()) {
-		// try {
-		// handService.endHand(game);
-		// } catch (AMSException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-		// } else {
-		// game.setPlayersRemaining(game.getPlayersRemaining() - 1);
-		// }
-		// p.setChips(0);
-		// pdao.merge(p, null);
-		// game = gdao.merge(game, null);
 		try {
 			playerSessions.get(uid).close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		playerSessions.remove(uid, playerSessions.get(uid));
-		game = gdao.findById(game.getId(), null);
-		System.out.println("getValidPlayers SIZE in remove " + getValidPlayers().size());
-		if (getValidPlayers().size() == 1) {
-			handService.finishHandAndGame(game);
-		}
 		handCount--;
 		sendToAll("");
 	}
@@ -148,6 +118,8 @@ public class Table {
 		}
 		handCount++;
 		Map<String, Object> results = gameService.getGameStatusMap(game);
+		
+		//POSTING TO PLAYER SESSIONS
 		for (String cur : playerSessions.keySet()) {
 			Map<String, Object> resultsTMP = results;
 			String json = gameService.getGameStatusJSON(game, resultsTMP, cur);

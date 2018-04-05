@@ -63,16 +63,18 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 
 	public HandEntity fold(Player player, GameENT game, boolean forceFold) {
 		HandEntity hand = game.getCurrentHand();
-		if (!player.equals(hand.getCurrentToAct())) {
-			return null;
-		}
-
-		Player next = PlayerUtil.getNextPlayerToAct(hand, player);
-		if (!PlayerUtil.removePlayerFromHand(player, hand)) {
+		if (!player.equals(hand.getCurrentToAct()) && !forceFold) {
 			return null;
 		}
 		handDao = new HandDaoImpl();
-		hand.setCurrentToAct(next);
+		Player next = new Player();
+		if (!forceFold)
+			next = PlayerUtil.getNextPlayerToAct(hand, player);
+		if (!PlayerUtil.removePlayerFromHand(player, hand)) {
+			return null;
+		}
+		if (!forceFold)
+			hand.setCurrentToAct(next);
 		hand.setGame(game);
 		hand = handDao.merge(hand, null);
 		game.setCurrentHand(hand);

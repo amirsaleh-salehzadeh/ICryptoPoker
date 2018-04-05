@@ -210,8 +210,14 @@ public class PlayerUtil {
 				.getTurn(), hand.getBoard().getRiver());
 		HandRank highestRank = null;
 		TwoPlusTwoHandEvaluator.getInstance();
+		int cnt = 0;
 		for (PlayerHand ph : players) {
-			if (players.size() == 1) {
+			if (ph.getStatus() == PlayerHandStatus.FOLDED
+					|| ph.getPlayer().isSittingOut()) {
+				cnt++;
+				continue;
+			}
+			if (players.size() == 1 || cnt + 1 == players.size()) {
 				winners.add(ph.getPlayer());
 				return winners;
 			}

@@ -140,11 +140,11 @@ public class UserDAO extends BaseHibernateDAO implements UserDAOInterface {
 			while (rs.next()) {
 				UserENT userENT = new UserENT(rs.getString("username"));
 				userENT.setName(rs.getString("name"));
-				userENT.setSurName(rs.getString("surname"));
-				userENT.setDateOfBirth(rs.getString("dob"));
-				userENT.setGender(rs.getBoolean("gender"));
-				userENT.setRegisterationDate(rs.getString("registeration_date"));
-				userENT.setPassword(rs.getString("password"));
+//				userENT.setSurName(rs.getString("surname"));
+//				userENT.setDateOfBirth(rs.getString("dob"));
+//				userENT.setGender(rs.getBoolean("gender"));
+//				userENT.setRegisterationDate(rs.getString("registeration_date"));
+//				userENT.setPassword(rs.getString("password"));
 				userENTs.add(userENT);
 			}
 			rs.close();

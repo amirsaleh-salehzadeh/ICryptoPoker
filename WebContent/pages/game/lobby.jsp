@@ -123,10 +123,10 @@
 		<div role="main" class="ui-content" data-overlay-theme="b"
 			data-theme="b" data-dismissible="false">
 			<div class="ui-block-solo" style="height: 25%;">
-				<label for="buyIn">Entry Chips</label> <input type="number" data-mini="true"
-					id="buyIn" value="0" placeholder="Chips">
-					<label for="buyIn">Nick Name</label> <input type="text" data-mini="true"
-					id="nickname" placeholder="Nickname">
+				<label for="buyIn">Entry Chips</label> <input type="number"
+					data-mini="true" id="buyIn" value="0" placeholder="Chips">
+				<label for="buyIn">Nick Name</label> <input type="text"
+					data-mini="true" id="nickname" placeholder="Nickname">
 			</div>
 		</div>
 	</form>
@@ -135,6 +135,4 @@
 		data-rel="back">Cancel</a>         <a href="#" id="joinGameBTN"
 		class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b">Join</a>
 	    
-</div>
-</div>
 </div>

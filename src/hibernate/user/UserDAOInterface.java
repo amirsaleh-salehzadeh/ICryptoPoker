@@ -3,9 +3,9 @@ package hibernate.user;
 import java.util.ArrayList;
 
 import common.DropDownENT;
+import common.accounting.payment.PaymentLST;
 import common.security.RoleENT;
 import common.user.UserENT;
-import common.user.PaymentLST;
 import common.user.UserPassword;
 import tools.AMSException;
 

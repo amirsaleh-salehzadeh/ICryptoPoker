@@ -11,7 +11,7 @@ html{
 #loginBackground{
 	width:100%;
 	height:100%;
-	 -webkit-filter: blur(100%); /* Safari 6.0 - 9.0 */
+	-webkit-filter: blur(100%); /* Safari 6.0 - 9.0 */
     filter: blur(100%);
 }
 #loginContents {

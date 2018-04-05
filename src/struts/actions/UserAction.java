@@ -33,7 +33,7 @@ import common.MessageENT;
 import common.PopupENT;
 import common.security.RoleENT;
 import common.user.UserENT;
-import common.user.PaymentLST;
+import common.user.UserLST;
 
 /**
  * MyEclipse Struts Creation date: 09-21-2010
@@ -187,7 +187,7 @@ public class UserAction extends Action {
 		createMenusForUser(request);
 //			request.setAttribute("clientENTs", getClientDAO()
 //					.getClientsDropDown());
-		PaymentLST userLST = getUserLST(request);
+		UserLST userLST = getUserLST(request);
 		request.setAttribute("userLST", userLST);
 		UserENT ent = new UserENT();
 		ent.setUserName(request.getRemoteUser());
@@ -372,7 +372,7 @@ public class UserAction extends Action {
 		return userENT;
 	}
 
-	private PaymentLST getUserLST(HttpServletRequest request) {
+	private UserLST getUserLST(HttpServletRequest request) {
 		String search = request.getParameter("searchUser.userName");
 		if (search == null)
 			search = "";
@@ -388,7 +388,7 @@ public class UserAction extends Action {
 				&& !request.getParameter("clientID").equals(""))
 			clientID = Integer.parseInt(request.getParameter("clientID"));
 //		userENT.setUserName(search);
-		PaymentLST userLST = new PaymentLST();
+		UserLST userLST = new UserLST();
 		userLST.setPageSize(pageSize);
 		userLST.setSearchUser(userENT);
 		userLST.setCurrentPage(pageNo);

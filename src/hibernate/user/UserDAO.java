@@ -18,7 +18,7 @@ import com.mysql.jdbc.Statement;
 import common.DropDownENT;
 import common.security.RoleENT;
 import common.user.UserENT;
-import common.user.PaymentLST;
+import common.user.UserLST;
 import common.user.UserPassword;
 import hibernate.config.BaseHibernateDAO;
 import tools.AMSException;
@@ -50,7 +50,7 @@ public class UserDAO extends BaseHibernateDAO implements UserDAOInterface {
 		// ent.setPassword("pass"+i);
 		// ent = udao.saveUpdateUser(ent);
 
-		PaymentLST l = new PaymentLST();
+		UserLST l = new UserLST();
 		// UserENT us = new UserENT();
 		// ArrayList<RoleENT> ad = new ArrayList<RoleENT>();
 		// UserENT u = new UserENT();
@@ -62,7 +62,7 @@ public class UserDAO extends BaseHibernateDAO implements UserDAOInterface {
 			user.setName("tester");
 			user.setSurName("maninjwa");
 			udao.updateUserProfile(user);
-			udao.getUserLST(new PaymentLST());
+			udao.getUserLST(new UserLST());
 
 		} catch (AMSException e) {
 			e.printStackTrace();
@@ -123,7 +123,7 @@ public class UserDAO extends BaseHibernateDAO implements UserDAOInterface {
 		return ent;
 	}
 
-	public PaymentLST getUserLST(PaymentLST lst) throws AMSException {
+	public UserLST getUserLST(UserLST lst) throws AMSException {
 		ArrayList<UserENT> userENTs = new ArrayList<UserENT>();
 		try {
 			Connection conn = null;

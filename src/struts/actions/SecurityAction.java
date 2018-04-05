@@ -8,8 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import hibernate.client.ClientDAOInterface;
-import hibernate.config.NMMUMobileDAOManager;
+
 import hibernate.security.SecurityDAOInterface;
 import hibernate.user.UserDAOInterface;
 import javax.servlet.http.HttpServletRequest;
@@ -30,8 +29,7 @@ import common.MessageENT;
 import common.PopupENT;
 import common.security.RoleENT;
 import common.security.RoleLST;
-import common.security.GroupENT;
-import common.security.GroupLST;
+
 
 /**
  * MyEclipse Struts Creation date: 09-21-2010

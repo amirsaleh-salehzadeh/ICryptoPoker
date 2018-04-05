@@ -46,7 +46,6 @@ public class Tokenization {
 			 Jwts.parser().requireSubject(ent.getName())
 					.setSigningKey(DatatypeConverter.parseBase64Binary(ent.getPassword()))
 					.parseClaimsJws(token).getBody();
-			// OK, we can trust this JWT
 		      return true ;
 		} catch (SignatureException e) {
 			System.out.println("cant trust token");

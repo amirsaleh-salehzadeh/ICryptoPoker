@@ -167,7 +167,7 @@ public class PlayerServiceWS {
 		GameDaoImpl gameDao = new GameDaoImpl();
 		GameENT game = gameDao.findById(gameId, null);
 		Player player = playerActionService.getPlayerById(playerId);
-		HandEntity hand = playerActionService.fold(player, game);
+		HandEntity hand = playerActionService.fold(player, game, false);
 		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
 		try {

@@ -50,7 +50,7 @@ public interface PlayerActionServiceInterface {
 	 * @return true if the player folds, false if the fold is not permitted
 	 * (the player is out of position, the player is not in the hand).
 	 */
-	public HandEntity fold(Player player, GameENT game);
+	public HandEntity fold(Player player, GameENT game, boolean forceFold);
 	
 	/**
 	 * The Player checks back their action

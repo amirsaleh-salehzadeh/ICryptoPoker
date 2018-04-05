@@ -61,7 +61,7 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 		return playerDao.findById(playerId, null);
 	}
 
-	public HandEntity fold(Player player, GameENT game) {
+	public HandEntity fold(Player player, GameENT game, boolean forceFold) {
 		HandEntity hand = game.getCurrentHand();
 		if (!player.equals(hand.getCurrentToAct())) {
 			return null;

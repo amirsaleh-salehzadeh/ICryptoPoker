@@ -277,7 +277,7 @@ public class GameServiceImpl implements GameServiceInterface {
 			}
 		}
 		player.setGameId(0);
-		player.setTotalChips((int) (player.getChips() + player.getTotalChips()));
+		player.setTotalChips(player.getChips() + player.getTotalChips());
 		player.setChips(0);
 		player.setSittingOut(false);
 		player.setGamePosition(0);

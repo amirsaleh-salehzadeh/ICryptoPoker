@@ -66,6 +66,7 @@ public class GameUtil {
 		System.out.println("goToNextStepOfTheGame");
 		if (!PokerHandServiceImpl.isActionResolved(game.getCurrentHand()))
 			return;
+		System.out.println("goToNextStepOfTheGame isActionResolved");
 		PokerHandServiceImpl phs = new PokerHandServiceImpl();
 		GameStatus gs = GameUtil.getGameStatus(game);
 		if (gs.equals(GameStatus.PREFLOP))

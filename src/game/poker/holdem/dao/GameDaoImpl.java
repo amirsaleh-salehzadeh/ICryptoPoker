@@ -252,6 +252,7 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDaoInterface {
 					p.setSittingOut(false);
 				p.setChips(rs.getInt("chips"));
 				p.setTotalChips(rs.getInt("total_chips"));
+				p.setGameId(id);
 				players.add(p);
 			}
 			rs.close();

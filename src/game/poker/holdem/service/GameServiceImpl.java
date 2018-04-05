@@ -24,7 +24,6 @@ THE SOFTWARE.
 package game.poker.holdem.service;
 
 import game.poker.holdem.dao.GameDaoImpl;
-import game.poker.holdem.dao.HandDaoImpl;
 import game.poker.holdem.dao.PlayerDaoImpl;
 import game.poker.holdem.domain.BlindLevel;
 import game.poker.holdem.domain.GameStatus;
@@ -45,7 +44,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -236,24 +234,32 @@ public class GameServiceImpl implements GameServiceInterface {
 			return;
 		Set<Player> players = game.getPlayers();
 		double shareOfPlayers = 0;
-		if(game.getCurrentHand()!=null)
-			shareOfPlayers = game.getCurrentHand().getTotalBetAmount()/game.getPlayers().size();
+		if (game.getCurrentHand() != null)
+			shareOfPlayers = game.getCurrentHand().getTotalBetAmount()
+					/ game.getPlayers().size();
 		if (game.isStarted() && players.size() > 0) {
 			PlayerDaoImpl pdao = new PlayerDaoImpl();
 			for (Player p : players) {
-				p.setTotalChips((int) (p.getChips() + p.getTotalChips() + Math.round(shareOfPlayers)));
+				if (shareOfPlayers > 0)
+					p.setTotalChips((int) (p.getChips() + p.getTotalChips() + Math
+							.round(shareOfPlayers)));
+				else if (game.getCurrentHand() != null) 
+					p.setTotalChips(p.getChips() + p.getTotalChips() + game.getCurrentHand().getTotalBetAmount());
+				else
+					p.setTotalChips(p.getChips() + p.getTotalChips());
+				p.setChips(0);
 				p.setSittingOut(false);
 				p.setFinishPosition(0);
 				p.setGamePosition(0);
+				p.setGameId(0);
 				pdao.merge(p, null);
 			}
-			System.out.println("finishHandAndGame inside the thread");
 			GameDaoImpl gameDao = new GameDaoImpl();
 			game.setCurrentHand(null);
 			game.setStarted(false);
 			game.setPlayerInBTN(null);
 			game.setPlayersRemaining(0);
-			game.setPlayers(null);
+			game.setPlayers(new HashSet<Player>());
 			game = gameDao.merge(game, null);
 		}
 
@@ -263,9 +269,19 @@ public class GameServiceImpl implements GameServiceInterface {
 	public void leaveTheGame(Player player) {
 		GameDaoImpl gdao = new GameDaoImpl();
 		GameENT game = gdao.findById(player.getGameId(), null);
-//		Set<Player>
+		PlayerDaoImpl pdao = new PlayerDaoImpl();
 		for (Player p : game.getPlayers()) {
-			
+			if (p.getGamePosition() > player.getGamePosition()) {
+				p.setGamePosition(p.getGamePosition() - 1);
+				pdao.merge(p, null);
+			}
 		}
+		player.setGameId(0);
+		player.setTotalChips((int) (player.getChips() + player.getTotalChips()));
+		player.setChips(0);
+		player.setSittingOut(false);
+		player.setGamePosition(0);
+		player.setFinishPosition(0);
+		pdao.merge(player, null);
 	}
 }

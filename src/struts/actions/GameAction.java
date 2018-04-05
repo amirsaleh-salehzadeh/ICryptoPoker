@@ -55,9 +55,15 @@ public class GameAction extends Action {
 				error = "Not Enough Credit";
 				reqCode = "goToLobby";
 			} else {
-				if (!player.isSittingOut())
+				if (!player.isSittingOut()) {
 					player.setChips(chips);
-				player.setTotalChips(player.getTotalChips() - player.getChips());
+//					player.setTotalChips(player.getTotalChips()
+//							- player.getChips());
+				}
+				if (player.getChips() <= 0)
+					player.setChips(chips);
+				 player.setTotalChips(player.getTotalChips()
+				 - player.getChips());
 				player.setSittingOut(false);
 				player = playerDaoImpl.merge(player, null);
 				GameServiceImpl gameService = new GameServiceImpl();

@@ -211,6 +211,10 @@ public class PlayerUtil {
 		HandRank highestRank = null;
 		TwoPlusTwoHandEvaluator.getInstance();
 		for (PlayerHand ph : players) {
+			if (players.size() == 1) {
+				winners.add(ph.getPlayer());
+				return winners;
+			}
 			HandRank rank = evaluator.evaluate(board, ph.getHand());
 			// First player to be checked
 			if (highestRank == null) {

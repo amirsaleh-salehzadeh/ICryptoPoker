@@ -102,7 +102,7 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		gameDao = new GameDaoImpl();
 		handDao = new HandDaoImpl();
 		playerDao = new PlayerDaoImpl();
-		// HandEntity hand = handDao.findById(g.getCurrentHand().getId(), null);
+		System.out.println("endHand");
 		HandEntity hand = g.getCurrentHand();
 		hand.setGame(g);
 		if (!isActionResolved(hand)) {
@@ -362,12 +362,12 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 				break;
 			}
 		}
-//		Player next = PlayerUtil.getNextPlayerToAct(hand, currentPlayer);
+		// Player next = PlayerUtil.getNextPlayerToAct(hand, currentPlayer);
 		if (playerHand != null
 				&& hand.getTotalBetAmount() > playerHand.getRoundBetAmount()) {
 			PlayerUtil.removePlayerFromHand(currentPlayer, hand);
 		}
-//		hand.setCurrentToAct(next);
+		// hand.setCurrentToAct(next);
 		hand.setGame(game);
 		hand = handDao.merge(hand, null);
 		return hand;

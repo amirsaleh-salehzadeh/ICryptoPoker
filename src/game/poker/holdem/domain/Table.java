@@ -28,6 +28,7 @@ public class Table {
 	private GameDaoImpl gdao;
 	private PokerHandServiceImpl handService;
 	private PlayerActionServiceImpl playerActionService;
+	private GameServiceImpl gameService;
 
 	public Table() {
 		pdao = new PlayerDaoImpl();
@@ -35,6 +36,7 @@ public class Table {
 		handService = new PokerHandServiceImpl();
 		handCount = 0;
 		playerActionService = new PlayerActionServiceImpl();
+		gameService = new GameServiceImpl();
 	}
 
 	public Map<String, Session> getPlayerSessions() {
@@ -61,11 +63,13 @@ public class Table {
 	}
 
 	public void removePlayer(String uid) {
+		System.out.println("removed from table " + uid);
 		game = gdao.findById(game.getId(), null);
 		Player p = pdao.findById(uid, null);
 		if (playerSessions.size() >= 2 && game.isStarted()
 				&& game.getCurrentHand() != null)
-			game.setCurrentHand(handService.sitOutCurrentPlayer(game, p));
+			// game.setCurrentHand(handService.sitOutCurrentPlayer(game, p));
+			gameService.leaveTheGame(p);
 		// if (playerSessions.size() <= 2 && game.isStarted()
 		// && game.getCurrentHand() != null) {
 		// p.setGameId(0);
@@ -99,8 +103,9 @@ public class Table {
 			e.printStackTrace();
 		}
 		playerSessions.remove(uid, playerSessions.get(uid));
-		if (getValidPlayers().size() == 1){
-			game = gdao.findById(game.getId(), null);
+		game = gdao.findById(game.getId(), null);
+		System.out.println("getValidPlayers SIZE in remove " + getValidPlayers().size());
+		if (getValidPlayers().size() == 1) {
 			handService.finishHandAndGame(game);
 		}
 		handCount--;
@@ -108,15 +113,17 @@ public class Table {
 	}
 
 	public void sendToAll(String user) {
-		GameServiceImpl gameService = new GameServiceImpl();
+		if (playerSessions.size() <= 0) {
+			gameService.closeTheGame(game, null);
+		}
 		game = gdao.findById(game.getId(), null);
 		GameStatus gs = GameUtil.getGameStatus(game);
 		// To check when to start next round
 		if (game.isStarted() && game.getCurrentHand() != null) {
 			Set<PlayerHand> pltmp = getValidPlayers();
+			System.out.println("getValidPlayers SIZE in senttoall " + pltmp.size());
 			try {
-				if (user.length() > 0
-						&& handCount >= pltmp.size())
+				if (handCount >= pltmp.size() || pltmp.size() == 1)
 					GameUtil.goToNextStepOfTheGame(game, user);
 				game = gdao.findById(game.getId(), null);
 				GameStatus gsPrimary = GameUtil.getGameStatus(game);
@@ -126,6 +133,8 @@ public class Table {
 				e1.printStackTrace();
 			}
 		}
+		
+		//START THE GAME AND HAND
 		if (playerSessions.size() > 1 && !game.isStarted()
 				&& gs.equals(GameStatus.NOT_STARTED)) {
 			handCount = 0;

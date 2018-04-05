@@ -16,6 +16,7 @@ import tools.AMSException;
 
 import game.poker.holdem.dao.GameDaoImpl;
 import game.poker.holdem.domain.Table;
+import game.poker.holdem.service.GameServiceImpl;
 
 @ServerEndpoint("/game/{guid}/{uid}")
 public class TableWebsocket {
@@ -31,6 +32,13 @@ public class TableWebsocket {
 			if (t.getGame().getId() == guid) {
 				table = t;
 			}
+		}
+		if (table.getPlayerSessions().size() <= 0) {
+			GameServiceImpl gservice = new GameServiceImpl();
+			GameDaoImpl gdao = new GameDaoImpl();
+			GameENT game = gdao.findById(guid, null);
+			if (game.isStarted())
+				gservice.closeTheGame(game, null);
 		}
 		table.setGameId(guid);
 		table.addPlayer(uid, user);
@@ -64,12 +72,14 @@ public class TableWebsocket {
 				if (table.getPlayerSessions() == null
 						|| table.getPlayerSessions().size() == 0) {
 					GameENT g = table.getGame();
-					GameDaoImpl gdao = new GameDaoImpl();
-					g.setCurrentHand(null);
-					g.setPlayerInBTN(null);
-					g.setPlayersRemaining(0);
-					g.setStarted(false);
-					gdao.merge(g, null);
+					// GameDaoImpl gdao = new GameDaoImpl();
+					GameServiceImpl gservice = new GameServiceImpl();
+					gservice.closeTheGame(g, null);
+					// g.setCurrentHand(null);
+					// g.setPlayerInBTN(null);
+					// g.setPlayersRemaining(0);
+					// g.setStarted(false);
+					// gdao.merge(g, null);
 					games.remove(table);
 					System.out.println("game removed");
 				}

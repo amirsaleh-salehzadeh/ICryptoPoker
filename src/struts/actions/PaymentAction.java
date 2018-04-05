@@ -6,6 +6,18 @@ package struts.actions;
 
 import hibernate.accounting.payment.PaymentDaoInterface;
 import hibernate.config.ICryptoPokerDAOManager;
+import hibernate.user.UserDAOInterface;
+import tools.AMSErrorHandler;
+import tools.AMSException;
+import tools.AMSUtililies;
+
+import java.io.IOException;
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,6 +26,16 @@ import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
+
+import common.MessageENT;
+import common.PopupENT;
+import common.accounting.payment.PaymentENT;
+import common.accounting.payment.PaymentLST;
+import common.security.RoleENT;
+import common.user.UserENT;
 /**
  * MyEclipse Struts Creation date: 09-21-2010
  * 
@@ -33,6 +55,7 @@ public class PaymentAction extends Action {
 		success = "";
 		error = "";
 		reqCode = request.getParameter("reqCode");
+		System.out.println("hiiii");
 		if (reqCode == null) {
 			reqCode = "paymentManagement";
 		}
@@ -48,23 +71,18 @@ public class PaymentAction extends Action {
 //			saveNewPassword(request, mapping);
 //			reqCode = "passwordChange";
 //		}
-//		if (reqCode.equalsIgnoreCase("userManagement")
-//				|| reqCode.equals("gridJson")) {
-//			return userManagement(request, mapping);
-//		} else if (reqCode.equals("userEdit") || reqCode.equals("userView")
-//				|| reqCode.equals("userNew")) {
-//			return editUser(request, mapping, form);
-//		} else if (reqCode.equals("userSaveUpdate")) {
-//			return saveUpdateUser(request, mapping);
-//		} else if (reqCode.equalsIgnoreCase("userRoleView")) {
-//			return userRoleView(request, mapping);
-//		}  else if (reqCode.equals("userBuildings")) {
-//			return userBuildings(request, mapping);
-//		} else if (reqCode.equalsIgnoreCase("passwordChange")) {
-//			return passwordChange(request, mapping);
-//		} 
+		if (reqCode.equalsIgnoreCase("paymentManagement")
+				|| reqCode.equals("gridJson")) {
+			return paymentManagement(request, mapping);
+		} else if (reqCode.equals("userEdit") || reqCode.equals("userView")
+				|| reqCode.equals("userNew")) {
+			return editPayment(request, mapping,form);
+		} else if (reqCode.equals("userSaveUpdate")) {
+			return saveUpdatePayment(request, mapping);
+		
+		} 
 //		return af;
-		return mapping.findForward(reqCode);
+		return mapping.findForward(reqCode)  ;
 	}
 
 //	private ActionForward userBuildings(HttpServletRequest request,
@@ -75,237 +93,163 @@ public class PaymentAction extends Action {
 //
 //	}
 //
-//	private ActionForward saveNewPassword(HttpServletRequest request,
-//			ActionMapping mapping) {
+
 //
-//		if (request.getParameter("newPW") == ""
-//				|| request.getParameter("newPWCheck") == ""
-//				|| request.getParameter("oldPass") == "") {
-//			error = "Please fill in all fields";
-//		} else if (request.getParameter("newPW").equals(
-//				request.getParameter("newPWCheck")) == false) {
-//			error = "Passwords do not match";
-//		}  
+
 //
-//		MessageENT m = new MessageENT(success, error);
-//		request.setAttribute("message", m);
-//		return mapping.findForward("passwordChange");
+//	
 //
-//	}
+	private ActionForward userRoleView(HttpServletRequest request,
+			ActionMapping mapping) {
+		try {
+			UserENT u = getUserDAO().getUserENT(
+					new UserENT(request.getParameter("userName")));
+			request.setAttribute("userENT", u);
+			String searchKey = "";
+			if (request.getParameter("roleName") != null)
+				searchKey = request.getParameter("roleName");
+
+			RoleENT role = new RoleENT(searchKey, "", "");
+			request.setAttribute("roleENT", role);
+			request.setAttribute("userRoles",
+					getUserDAO().getAllRolesUser(u.getUserName()));
+//			request.setAttribute(
+//					"rolesList",
+//					getSecurityDAO().getRolesList(
+//							new RoleLST(role, 0, 1000, true, "role_name"))
+//							.getRoleENTs());
+			return mapping.findForward("userRole");
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		} catch (AMSException e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	private ActionForward paymentManagement(HttpServletRequest request,
+			ActionMapping mapping) {
+		createMenusForPayments(request);
+		PaymentLST paymentLST = getPaymentLST(request);
+		request.setAttribute("paymentLST", paymentLST);
+		ObjectMapper mapper = new ObjectMapper();
+		String json = "";
+		try {
+			json = mapper.writeValueAsString(paymentLST.getPaymentENTs());
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		json = AMSUtililies.prepareTheJSONStringForDataTable(
+				paymentLST.getCurrentPage(), paymentLST.getTotalItems(), json,
+				"userName", success, error);
+		request.setAttribute("json", json);
+		MessageENT m = new MessageENT(success, error);
+		request.setAttribute("message", m);
+		if (request.getParameter("reqCodeGrid") != null
+				&& request.getParameter("reqCodeGrid").equals("gridJson"))
+			return mapping.findForward("gridJson");
+		MessageENT mm = new MessageENT(success, error);
+		request.setAttribute("message", mm);
+		return mapping.findForward("paymentManagement");
+	}
 //
-//	private ActionForward passwordChange(HttpServletRequest request,
-//			ActionMapping mapping) {
+	private ActionForward editPayment(HttpServletRequest request,
+			ActionMapping mapping, ActionForm form) {
+		PaymentENT userENT = new PaymentENT();
+		String userName;
+
 //		try {
-//			UserENT u = getUserDAO().getUserENT(
-//					new UserENT(request.getParameter("userName")));
-//			request.setAttribute("userENT", u);
-//
-//			return mapping.findForward("passwordChange");
-//		} catch (NumberFormatException e) {
-//			e.printStackTrace();
+//			request.setAttribute("clientENTs", getClientDAO()
+//					.getClientsDropDown());
+			// request.setAttribute("titleENTs",
+			// getUserDAO().getTitlesDropDown());
+			// request.setAttribute("ethnicENTs", getUserDAO()
+			// .getEthnicsDropDown());
 //		} catch (AMSException e) {
 //			e.printStackTrace();
 //		}
-//		return null;
+		if (request.getParameter("paymentId") != null) {
+			userName = request.getParameter("paymentId");
+		} else {
+			request.setAttribute("paymentENT", userENT);
+			return mapping.findForward("paymentEdit");
+		}
+		userENT.setPaymentId(Long.parseLong(userName));
+		// saveTheForm();
+		try {
+			request.setAttribute("paymentENT",getPaymentDAO().getPaymentENT(userENT));
+		} catch (AMSException e) {
+			error = e.getMessage();
+			e.printStackTrace();
+		}
+		MessageENT m = new MessageENT(success, error);
+		request.setAttribute("message", m);
+		if (reqCode.equals("userView")) {
+			return mapping.findForward("paymentEdit");
+		} else {
+			return mapping.findForward("paymentEdit");
+		}
+
+	}
 //
-//	}
+	private void createMenusForPayments(HttpServletRequest request) {
+		List<PopupENT> popupEnts = new ArrayList<PopupENT>();
+		popupEnts.add(new PopupENT("hide-filters", "displaySearch();",
+				"Show/Hide Search", "#"));
+		popupEnts.add(new PopupENT("new-item",
+				"callAnAction(\"payment.do?reqCode=paymentNew\");", "New Payment", "#"));
+		popupEnts
+				.add(new PopupENT("delete-item",
+						"deleteSelectedItems(\"deletePayment\");",
+						"Delete Selected", "#"));
+
+		List<PopupENT> popupGridEnts = new ArrayList<PopupENT>();
+		popupGridEnts
+				.add(new PopupENT(
+						"hide-filters",
+						"callAnAction(\"payment.do?reqCode=paymentView&userName=REPLACEME\");",
+						"View Paymentr", "#"));
+		popupGridEnts
+				.add(new PopupENT(
+						"edit-item",
+						"callAnAction(\"payment.do?reqCode=paymentEdit&userName=REPLACEME\");",
+						"Edit Payment", "#"));
+
+		
+		popupGridEnts.add(new PopupENT("delete-item",
+				"deleteAnItem(\"REPLACEME\", \"deletePayment\");", "Remove", "#"));
+
+		request.setAttribute("settingMenuItem", popupEnts);
+		request.setAttribute("gridMenuItem", popupGridEnts);
+	}
 //
-//	private void saveUserRoles(HttpServletRequest request, ActionMapping mapping) {
-//		String[] t = request.getParameterValues("userRoleName");
-//		UserENT u = new UserENT();
-//		u.setUserName(request.getParameter("userName"));
-//		ArrayList<RoleENT> roles = new ArrayList<RoleENT>();
-//		if (t != null && t.length > 0)
-//			for (int i = 0; i < t.length; i++) {
-//				RoleENT r = new RoleENT(t[i]);
-//				roles.add(r);
-//			}
-//		u.setRoleENTs(roles);
+	private ActionForward saveUpdatePayment(HttpServletRequest request,
+			ActionMapping mapping) {
 //		try {
-//			getUserDAO().saveUpdateUserRoles(u);
-//			success = "Roles saved successfully";
-//		} catch (AMSException e) {
-//			e.printStackTrace();
-//			error = AMSErrorHandler.handle(request, this, e, "", "");
+//			request.setAttribute("clientENTs", getClientDAO()
+//					.getClientsDropDown());
+//		} catch (AMSException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
 //		}
-//		MessageENT m = new MessageENT(success, error);
-//		request.setAttribute("message", m);
-//	}
-//
-//	private ActionForward userRoleView(HttpServletRequest request,
-//			ActionMapping mapping) {
-//		try {
-//			UserENT u = getUserDAO().getUserENT(
-//					new UserENT(request.getParameter("userName")));
-//			request.setAttribute("userENT", u);
-//			String searchKey = "";
-//			if (request.getParameter("roleName") != null)
-//				searchKey = request.getParameter("roleName");
-//
-//			RoleENT role = new RoleENT(searchKey, "", "");
-//			request.setAttribute("roleENT", role);
-//			request.setAttribute("userRoles",
-//					getUserDAO().getAllRolesUser(u.getUserName()));
-////			request.setAttribute(
-////					"rolesList",
-////					getSecurityDAO().getRolesList(
-////							new RoleLST(role, 0, 1000, true, "role_name"))
-////							.getRoleENTs());
-//			return mapping.findForward("userRole");
-//		} catch (NumberFormatException e) {
-//			e.printStackTrace();
-//		} catch (AMSException e) {
-//			e.printStackTrace();
-//		}
-//
-//		return null;
-//	}
-//
-//	private ActionForward userManagement(HttpServletRequest request,
-//			ActionMapping mapping) {
-//		createMenusForUser(request);
-////			request.setAttribute("clientENTs", getClientDAO()
-////					.getClientsDropDown());
-//		UserLST userLST = getUserLST(request);
-//		request.setAttribute("userLST", userLST);
-//		UserENT ent = new UserENT();
-//		ent.setUserName(request.getRemoteUser());
-//		request.setAttribute("usertENT", ent);
-//		ObjectMapper mapper = new ObjectMapper();
-//		String json = "";
-//		try {
-//			json = mapper.writeValueAsString(userLST.getUserENTs());
-//		} catch (JsonGenerationException e) {
-//			e.printStackTrace();
-//		} catch (JsonMappingException e) {
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//		json = AMSUtililies.prepareTheJSONStringForDataTable(
-//				userLST.getCurrentPage(), userLST.getTotalItems(), json,
-//				"userName", success, error);
-//		request.setAttribute("json", json);
-//		MessageENT m = new MessageENT(success, error);
-//		request.setAttribute("message", m);
-//		if (request.getParameter("reqCodeGrid") != null
-//				&& request.getParameter("reqCodeGrid").equals("gridJson"))
-//			return mapping.findForward("gridJson");
-//		MessageENT mm = new MessageENT(success, error);
-//		request.setAttribute("message", mm);
-//		return mapping.findForward("userManagement");
-//	}
-//
-//	private ActionForward editUser(HttpServletRequest request,
-//			ActionMapping mapping, ActionForm form) {
-//		UserENT userENT = new UserENT();
-//		String userName;
-//
-////		try {
-////			request.setAttribute("clientENTs", getClientDAO()
-////					.getClientsDropDown());
-//			// request.setAttribute("titleENTs",
-//			// getUserDAO().getTitlesDropDown());
-//			// request.setAttribute("ethnicENTs", getUserDAO()
-//			// .getEthnicsDropDown());
-////		} catch (AMSException e) {
-////			e.printStackTrace();
-////		}
-//		if (request.getParameter("userName") != null) {
-//			userName = request.getParameter("userName");
-//		} else {
-//			request.setAttribute("userENT", userENT);
-//			return mapping.findForward("userEdit");
-//		}
-//		userENT.setUserName(userName);
-//		// saveTheForm();
-//		try {
-//			request.setAttribute("userENT", getUserDAO().getUserENT(userENT));
-//		} catch (AMSException e) {
-//			error = e.getMessage();
-//			e.printStackTrace();
-//		}
-//		MessageENT m = new MessageENT(success, error);
-//		request.setAttribute("message", m);
-//		if (reqCode.equals("userView")) {
-//			return mapping.findForward("userEdit");
-//		} else {
-//			return mapping.findForward("userEdit");
-//		}
-//
-//	}
-//
-//	private void createMenusForUser(HttpServletRequest request) {
-//		List<PopupENT> popupEnts = new ArrayList<PopupENT>();
-//		popupEnts.add(new PopupENT("hide-filters", "displaySearch();",
-//				"Show/Hide Search", "#"));
-//		popupEnts.add(new PopupENT("new-item",
-//				"callAnAction(\"user.do?reqCode=userNew\");", "New User", "#"));
-//		popupEnts
-//				.add(new PopupENT("delete-item",
-//						"deleteSelectedItems(\"deleteUser\");",
-//						"Delete Selected", "#"));
-//
-//		List<PopupENT> popupGridEnts = new ArrayList<PopupENT>();
-//		popupGridEnts
-//				.add(new PopupENT(
-//						"hide-filters",
-//						"callAnAction(\"user.do?reqCode=userView&userName=REPLACEME\");",
-//						"View User", "#"));
-//		popupGridEnts
-//				.add(new PopupENT(
-//						"edit-item",
-//						"callAnAction(\"user.do?reqCode=userEdit&userName=REPLACEME\");",
-//						"Edit User", "#"));
-//
-//		popupGridEnts
-//				.add(new PopupENT(
-//						"password-item",
-//						"callAnAction(\"user.do?reqCode=passwordChange&userName=REPLACEME\");",
-//						"Change Password", "#"));
-//		popupGridEnts.add(new PopupENT("delete-item",
-//				"deleteAnItem(\"REPLACEME\", \"deleteUser\");", "Remove", "#"));
-//		popupGridEnts
-//				.add(new PopupENT(
-//						"secure-item",
-//						"callAnAction(\"user.do?reqCode=userRoleView&parentPage=userList&userName=REPLACEME\");",
-//						"View Roles", "#"));
-//		popupGridEnts
-//				.add(new PopupENT(
-//						"group-item",
-//						"callAnAction(\"user.do?reqCode=userGroupView&parentPage=userList&userName=REPLACEME\");",
-//						"View Groups", "#"));
-//		popupGridEnts
-//				.add(new PopupENT(
-//						"group-item",
-//						"callAnAction(\"security.do?reqCode=userBuildings&userName=REPLACEME\");",
-//						"View Buildings", "#"));
-//		request.setAttribute("settingMenuItem", popupEnts);
-//		request.setAttribute("gridMenuItem", popupGridEnts);
-//	}
-//
-//	private ActionForward saveUpdateUser(HttpServletRequest request,
-//			ActionMapping mapping) {
-////		try {
-////			request.setAttribute("clientENTs", getClientDAO()
-////					.getClientsDropDown());
-////		} catch (AMSException e1) {
-////			// TODO Auto-generated catch block
-////			e1.printStackTrace();
-////		}
-//		UserENT userENT = getUserENT(request);
-//		try {
-//			userENT = getUserDAO().updateUserProfile(userENT);
-//			success = "The user '" + userENT.getUserName()
-//					+ "' saved successfully";
-//		} catch (AMSException e) {
-//			error = AMSErrorHandler.handle(request, this, e, "", "");
-//		}
-//		request.setAttribute("userENT", userENT);
-//		MessageENT m = new MessageENT(success, error);
-//		request.setAttribute("message", m);
-//		return mapping.findForward("userEdit");
-//	}
+		PaymentENT userENT = getPaymentENT(request);
+		try {
+			userENT = getPaymentDAO().savePayment(userENT) ;
+			success = "The user '" + userENT.getCreatorUsername() 
+					+ "' saved successfully";
+		} catch (AMSException e) {
+			error = AMSErrorHandler.handle(request, this, e, "", "");
+		}
+		request.setAttribute("paymentENT", userENT);
+		MessageENT m = new MessageENT(success, error);
+		request.setAttribute("message", m);
+		return mapping.findForward("userEdit");
+	}
 //
 //	private void deleteUser(HttpServletRequest request) {
 //		String[] delID = request.getParameter("deleteID").split(",");
@@ -325,62 +269,62 @@ public class PaymentAction extends Action {
 //		request.setAttribute("message", m);
 //	}
 //
-//	private UserENT getUserENT(HttpServletRequest request) {
-//		// date format for registration date
-//		DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-//		UserENT userENT = new UserENT();
-//		if (request.getParameter("userName") != null)
-//			userENT.setUserName(request.getParameter("userName"));
-//		else {
-//			userENT.setUserName(null);
-//		}
-//		if (userENT.getRegisterationDate() == null)
-//			userENT.setRegisterationDate(df.format(Calendar.getInstance()
-//					.getTime()));
-//		userENT.setUserName(request.getParameter("userName"));
-//		userENT.setName(request.getParameter("name"));
-//		userENT.setSurName(request.getParameter("surName"));
-//		userENT.setDateOfBirth(request.getParameter("dateOfBirth"));
-//		userENT.setPassword(request.getParameter("password"));
+	private PaymentENT getPaymentENT(HttpServletRequest request) {
+		// date format for registration date
+		DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+		PaymentENT userENT = new PaymentENT();
+		if (request.getParameter("userName") != null)
+			userENT.setPaymentId(Long.parseLong(request.getParameter("paymentId")));
+		else {
+			
+		}
+		if (userENT.getDateTime()== null)
+			userENT.setDateTime(Date.valueOf(df.format(Calendar.getInstance()
+					.getTime())));
+		userENT.setUsername(request.getParameter("userName"));
+		userENT.setCreatorUsername(request.getParameter("creatorUsername"));
+		userENT.setBankResponse(request.getParameter("bankResponse"));
+		userENT.setStatus(Integer.parseInt(request.getParameter("status")));
+		userENT.setAmount(Double.parseDouble(request.getParameter("password")));
+		userENT.setCurrency(request.getParameter("currency"));
+        userENT.setReason(request.getParameter("reason"));
+
+		return userENT;
+	}
 //
-//		if (request.getParameter("gender") != null) {
-//			userENT.setGender(true);
-//		} else {
-//			userENT.setGender(false);
-//		}
-//		return userENT;
-//	}
-//
-//	private UserLST getUserLST(HttpServletRequest request) {
-//		String search = request.getParameter("searchUser.userName");
-//		if (search == null)
-//			search = "";
-//		UserENT userENT = new UserENT();
-//		int pageNo = 1;
-//		int pageSize = 10;
-//		if (request.getParameter("currentPage") != null)
-//			pageNo = Integer.parseInt(request.getParameter("currentPage"));
-//		if (request.getParameter("pageSize") != null)
-//			pageSize = Integer.parseInt(request.getParameter("pageSize"));
-//		int clientID = 0;
-//		if (request.getParameter("clientID") != null
-//				&& !request.getParameter("clientID").equals(""))
-//			clientID = Integer.parseInt(request.getParameter("clientID"));
-////		userENT.setUserName(search);
-//		UserLST userLST = new UserLST();
-//		userLST.setPageSize(pageSize);
-//		userLST.setSearchUser(userENT);
-//		userLST.setCurrentPage(pageNo);
-//		try {
-//			userLST = getUserDAO().getUserLST(userLST);
-//		} catch (AMSException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		return userLST;
-//	}
+	private PaymentLST getPaymentLST(HttpServletRequest request) {
+		String search = request.getParameter("searchUser.userName");
+		if (search == null)
+			search = "";
+		UserENT userENT = new UserENT();
+		int pageNo = 1;
+		int pageSize = 10;
+		if (request.getParameter("currentPage") != null)
+			pageNo = Integer.parseInt(request.getParameter("currentPage"));
+		if (request.getParameter("pageSize") != null)
+			pageSize = Integer.parseInt(request.getParameter("pageSize"));
+		int clientID = 0;
+		if (request.getParameter("clientID") != null
+				&& !request.getParameter("clientID").equals(""))
+			clientID = Integer.parseInt(request.getParameter("clientID"));
+//		userENT.setUserName(search);
+		PaymentLST paymentLST = new PaymentLST();
+		paymentLST.setPageSize(pageSize);
+		//paymentLST.setSearchUser(userENT);
+		paymentLST.setCurrentPage(pageNo);
+		try {
+			paymentLST = getPaymentDAO().getPaymentLST(paymentLST) ;
+		} catch (AMSException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return paymentLST;
+	}
 //
 	private static PaymentDaoInterface getPaymentDAO() {
 		return ICryptoPokerDAOManager.getPaymentDAOInterface();
+	}
+	private static UserDAOInterface getUserDAO() {
+		return ICryptoPokerDAOManager.getUserDAOInterface();
 	}
 }

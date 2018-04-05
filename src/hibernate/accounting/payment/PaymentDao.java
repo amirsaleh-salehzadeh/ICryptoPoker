@@ -98,6 +98,26 @@ public class PaymentDao extends BaseHibernateDAO implements
 		
 	}
 
+	@Override
+	public PaymentENT getPaymentENT(PaymentENT ent) throws AMSException {
+		// TODO Auto-generated method stub
+		Session session = getSession();
+		Transaction tx = null;
+		
+		try {
+			tx = session.beginTransaction();
+			  ent =  (PaymentENT)session.get(PaymentENT.class, ent.getPaymentId()) ;
+			tx.commit();
+		} catch (HibernateException e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return ent;
+	}
+
 	
 
 

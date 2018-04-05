@@ -2,7 +2,7 @@ package common.user;
 
 import java.util.ArrayList;
 
-public class UserLST {
+public class PaymentLST {
 	ArrayList<UserENT> userENTs = new ArrayList<UserENT>();
 	UserENT searchUser = new UserENT();
 	private int currentPage = 0;
@@ -13,10 +13,10 @@ public class UserLST {
 	private boolean ascending = true;
 	private String sortedByField = "userName";
 
-	public UserLST() {
+	public PaymentLST() {
 	}
 
-	public UserLST(ArrayList<UserENT> userENTs, UserENT searchUser,
+	public PaymentLST(ArrayList<UserENT> userENTs, UserENT searchUser,
 			int currentPage, int totalPages, int pageSize, int totalItems,
 			int first, boolean ascending, String sortedByField) {
 		super();
@@ -31,7 +31,7 @@ public class UserLST {
 		this.sortedByField = sortedByField;
 	}
 
-	public UserLST(UserENT searchUser, int currentPage, int pageSize,
+	public PaymentLST(UserENT searchUser, int currentPage, int pageSize,
 			boolean ascending, String sortedByField) {
 		super();
 		this.searchUser = searchUser;

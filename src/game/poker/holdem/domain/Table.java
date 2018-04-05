@@ -103,6 +103,8 @@ public class Table {
 			game = gdao.findById(game.getId(), null);
 			handService.finishHandAndGame(game);
 		}
+		handCount--;
+		sendToAll("");
 	}
 
 	public void sendToAll(String user) {
@@ -114,9 +116,7 @@ public class Table {
 			Set<PlayerHand> pltmp = getValidPlayers();
 			try {
 				if (user.length() > 0
-						&& handCount >= pltmp.size()
-						&& PokerHandServiceImpl.isActionResolved(game
-								.getCurrentHand()))
+						&& handCount >= pltmp.size())
 					GameUtil.goToNextStepOfTheGame(game, user);
 				game = gdao.findById(game.getId(), null);
 				GameStatus gsPrimary = GameUtil.getGameStatus(game);

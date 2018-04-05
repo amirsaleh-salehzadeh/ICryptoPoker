@@ -219,4 +219,53 @@ public class GameServiceImpl implements GameServiceInterface {
 		return results;
 	}
 
+	/*
+	 * Finalize a game or the game which only has one player. Post Null to
+	 * choose a case
+	 */
+
+	@Override
+	public void closeTheGame(GameENT eitherGame, Player eitherPlayer) {
+		GameDaoImpl gdao = new GameDaoImpl();
+		GameENT game = eitherGame;
+		if (eitherGame == null)
+			game = gdao.findById(eitherPlayer.getGameId(), null);
+		else
+			game = eitherGame;
+		if (game == null)
+			return;
+		Set<Player> players = game.getPlayers();
+		double shareOfPlayers = 0;
+		if(game.getCurrentHand()!=null)
+			shareOfPlayers = game.getCurrentHand().getTotalBetAmount()/game.getPlayers().size();
+		if (game.isStarted() && players.size() > 0) {
+			PlayerDaoImpl pdao = new PlayerDaoImpl();
+			for (Player p : players) {
+				p.setTotalChips((int) (p.getChips() + p.getTotalChips() + Math.round(shareOfPlayers)));
+				p.setSittingOut(false);
+				p.setFinishPosition(0);
+				p.setGamePosition(0);
+				pdao.merge(p, null);
+			}
+			System.out.println("finishHandAndGame inside the thread");
+			GameDaoImpl gameDao = new GameDaoImpl();
+			game.setCurrentHand(null);
+			game.setStarted(false);
+			game.setPlayerInBTN(null);
+			game.setPlayersRemaining(0);
+			game.setPlayers(null);
+			game = gameDao.merge(game, null);
+		}
+
+	}
+
+	@Override
+	public void leaveTheGame(Player player) {
+		GameDaoImpl gdao = new GameDaoImpl();
+		GameENT game = gdao.findById(player.getGameId(), null);
+//		Set<Player>
+		for (Player p : game.getPlayers()) {
+			
+		}
+	}
 }

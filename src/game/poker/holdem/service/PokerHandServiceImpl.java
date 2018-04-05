@@ -177,13 +177,15 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		final long gameId = game.getId();
 		final ScheduledExecutorService scheduler = Executors
 				.newScheduledThreadPool(1);
-		int timer = 180;
+		int timer = 10;
 		// if the second last player leaves
 		if (game.getPlayers().size() == counterToFindLastHand + 1)
 			timer = 1;
+		System.out.println("finishHandAndGame before thread");
 		ScheduledFuture<?> countdown = scheduler.schedule(new Runnable() {
 			@Override
 			public void run() {
+				System.out.println("finishHandAndGame inside the thread");
 				GameDaoImpl gameDao = new GameDaoImpl();
 				GameENT game = gameDao.findById(gameId, null);
 				game.setCurrentHand(null);

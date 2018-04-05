@@ -83,4 +83,8 @@ public interface GameServiceInterface {
 
 	public String getGameStatusJSON(GameENT game, Map<String, Object> results,
 			String playerId);
+	
+	public void closeTheGame(GameENT eitherGame, Player eitherPlayer);
+	
+	public void leaveTheGame(Player player);
 }

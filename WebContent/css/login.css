@@ -1,19 +1,17 @@
-body {
+html {
+	background: url("../images/logos/loginBackground.jpg") no-repeat center
+		fixed;
+	background-size: cover;
+	background-repeat: no-repeat;
 }
-html{
 
-	background: url("../images/logos/loginBackground.jpg") no-repeat center fixed;
-    background-size: cover;
-    background-repeat: no-repeat;
-    
-	
-}
-#loginBackground{
-	width:100%;
-	height:100%;
+#loginBackground {
+	width: 100%;
+	height: 100%;
 	-webkit-filter: blur(100%); /* Safari 6.0 - 9.0 */
-    filter: blur(100%);
+	filter: blur(100%);
 }
+
 #loginContents {
 	position: absolute;
 	top: 4%;
@@ -24,21 +22,21 @@ html{
 	border: 3px solid #b00000;
 	width: 33%;
 	padding: 11px;
-	min-width:410px;
-	max-height:95%;
-	
-}
-form{
-	text-align: center;
-	min-width:410px;
+	min-width: 410px;
+	max-height: 95%;
 }
 
-.inptxt, #loginRePass {
+form {
+	text-align: center;
+	min-width: 410px;
+}
+
+.inptxt,#loginRePass {
 	margin: 1%;
 	padding: 2%;
 	color: white !important;
-	background-color: rgba(0,0,0,.7) !important;
-	text-shadow: none;
+	background-color: rgba(0, 0, 0, .9) !important;
+	text-shadow: none !important;
 	border-radius: 0;
 	min-height: 0.5em;
 	text-align: left;
@@ -46,9 +44,10 @@ form{
 	width: 77%;
 }
 
-#loginBtn, #registerBtn {
-	color: #b00000 !important;
-	background-color: rgba(66, 0, 0, .4) !important;
+
+#loginBtn,#registerBtn {
+	color: rgba(244, 244, 244, .9) !important;
+	background-color: rgba(66, 0, 0, .9) !important;
 	font-weight: 700;
 	border-color: #b00000 !important;
 	vertical-align: middle;

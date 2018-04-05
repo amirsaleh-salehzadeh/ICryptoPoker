@@ -77,7 +77,7 @@ function updateGameInfo(data) {
 								+ data.pot + '&nbsp;</span>');
 	if (data.gameStatus == "END_HAND") {
 		endHand();
-//		clearInterval(timer);
+		// clearInterval(timer);
 	}
 	if (data.cards != null)
 		$(data.cards).each(function(k, l) {
@@ -181,7 +181,7 @@ function updatePlayerInfo(data) {
 		countDownTotal = 15000;
 		timeLeft = 0;
 		clearInterval(timer);
-//		timer = setInterval(setTimer, 1000);
+		// timer = setInterval(setTimer, 1000);
 	} else if (data.status == "LOST_HAND") {
 		$('.playerInfo').each(function() {
 			if ("playerInfo" + playerId == this.id) {
@@ -197,11 +197,11 @@ function updatePlayerInfo(data) {
 				$("#amountToCallcontainer" + playerId).html(data.handRank);
 			}
 		});
-	}else if (data.status == "SIT_OUT") {
+	} else if (data.status == "SIT_OUT" || data.status == "SIT_OUT_GAME") {
 		$('.playerInfo').each(function() {
 			if ("playerInfo" + playerId == this.id) {
 				$(this).addClass("sitOut");
-			
+
 			}
 		});
 	}
@@ -397,6 +397,6 @@ function allIn() {
 
 function removePlayer(name) {
 	$("#sitPlaceContainer" + name).html(
-			'<div class="sitPlaceThumbnailEmpty">Waiting</div>');
+			'<div class="sitPlaceThumbnailEmpty">SEAT</div>');
 	$("#sitPlaceContainer" + name).attr('id', null);
 }

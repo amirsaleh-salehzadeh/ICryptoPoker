@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class PaymentENT {
 	private long paymentId ;
-	private String username;
+	 private String username;
 	private Date dateTime;
 	private int status;
 	private double amount;

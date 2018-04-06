@@ -14,16 +14,16 @@ html {
 
 #loginContents {
 	position: absolute;
-	top: 4%;
+	top: 3%;
 	left: 0;
 	right: 0;
 	margin: auto;
 	display: inline;
 	border: 3px solid #b00000;
 	width: 33%;
-	padding: 11px;
+	padding: 1%;
 	min-width: 410px;
-	max-height: 95%;
+	max-height: 90%;
 }
 
 form {
@@ -33,7 +33,7 @@ form {
 
 .inptxt,#loginRePass {
 	margin: 1%;
-	padding: 2%;
+	padding: 1.5%;
 	color: white !important;
 	background-color: rgba(0, 0, 0, .9) !important;
 	text-shadow: none !important;
@@ -52,8 +52,8 @@ form {
 	border-color: #b00000 !important;
 	vertical-align: middle;
 	font-size: 16px;
-	margin: 1%;
-	padding: 2%;
+	margin: 0.5%;
+	padding: 1%;
 	text-align: center;
 	white-space: nowrap;
 	width: 77%;

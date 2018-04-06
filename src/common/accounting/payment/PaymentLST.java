@@ -4,24 +4,42 @@ import java.util.ArrayList;
 
 import common.user.UserENT;
 
-
 public class PaymentLST {
 	ArrayList<PaymentENT> paymentENTs = new ArrayList<PaymentENT>();
-    PaymentENT searchPayment = new PaymentENT();
+	PaymentENT searchPayment = new PaymentENT();
+	private String fromDate;
+	private String toDate;
 	private int currentPage = 0;
 	private int totalPages;
 	private int pageSize = 10;
 	private int totalItems;
 	private int first;
 	private boolean ascending = true;
-	private String sortedByField = "userName";
+	private String sortedByField = "username";
+
+	public String getFromDate() {
+		return fromDate;
+	}
+
+	public void setFromDate(String fromDate) {
+		this.fromDate = fromDate;
+	}
+
+	public String getToDate() {
+		return toDate;
+	}
+
+	public void setToDate(String toDate) {
+		this.toDate = toDate;
+	}
 
 	public PaymentLST() {
 	}
 
-	public PaymentLST(ArrayList<PaymentENT> paymentENTs, PaymentENT searchPayment,
-			int currentPage, int totalPages, int pageSize, int totalItems,
-			int first, boolean ascending, String sortedByField) {
+	public PaymentLST(ArrayList<PaymentENT> paymentENTs,
+			PaymentENT searchPayment, int currentPage, int totalPages,
+			int pageSize, int totalItems, int first, boolean ascending,
+			String sortedByField) {
 		super();
 		this.paymentENTs = paymentENTs;
 		this.searchPayment = searchPayment;
@@ -140,6 +158,6 @@ public class PaymentLST {
 
 	public void setSearchPayment(PaymentENT searchPayment) {
 		this.searchPayment = searchPayment;
-	}	
-	
+	}
+
 }

@@ -47,15 +47,15 @@ function updateGameInfo(data) {
 	$(".tableCards").each(function() {
 		$(this).html('<img alt="" src="images/game/card.jpg">');
 	});
-	$(".sitPlaceContainer")
-			.each(
-					function() {
-						if ($(this).attr("id") != null)
-							$(this)
-									.html(
-											"<div class='sitPlaceThumbnailEmpty'>Seat</div>")
-									.trigger("create");
-					});
+	// $(".sitPlaceContainer")
+	// .each(
+	// function() {
+	// if ($(this).attr("id") != null)
+	// $(this)
+	// .html(
+	// "<div class='sitPlaceThumbnailEmpty'>Seat</div>")
+	// .trigger("create");
+	// });
 	$("#handPotContainer")
 			.html(
 					'<img alt="" src="images/game/stack.png" height="100%"><span>&nbsp;&cent;&nbsp;'
@@ -175,8 +175,8 @@ function updatePlayerInfo(data) {
 			$("#sliderRaise").attr("max", parseInt(data.chips)).slider(
 					"refresh");
 		}
-		$("#sliderRaise").attr("value", $("#sliderRaise").attr("min"))
-		.slider("refresh");
+		$("#sliderRaise").attr("value", $("#sliderRaise").attr("min")).slider(
+				"refresh");
 		playerToActId = playerId;
 		countDownTotal = 15000;
 		timeLeft = 0;
@@ -279,17 +279,23 @@ function addANewPlayerToTable(id, name, chips, amountToCall) {
 								$("#userSitPlace").html(content);
 								return false;
 							}
-						//set the content for the first time 
+						// set the content for the first time
 						if ($(this).children("div").hasClass(
 								"sitPlaceThumbnailEmpty")
 								&& $("#sitPlaceContainer" + id).length <= 0) {
-							
+
 							$(this).html(content);
 							$(this).attr("id", "sitPlaceContainer" + id);
 							return false;
 						} else if ($("#sitPlaceContainer" + id).length > 0) {
-							//set the content in the next rounds
-							$("#sitPlaceContainer" + id).html(content);
+							// set the content in the next rounds
+							$("#sitPlaceContainer" + id).find(
+									".amountToCallcontainer")
+									.html(amountToCall);
+							$("#sitPlaceContainer" + id).find(
+									".playerTotalChipsPlace").html(
+									"&cent; " + chips);
+//							$("#sitPlaceContainer" + id).html(content);
 							return false;
 						} else
 							return true;

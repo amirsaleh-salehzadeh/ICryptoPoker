@@ -88,7 +88,7 @@
 				<!-- TOP GRID  -->
 
 				<div class="ui-grid-c ui-block-solo"
-					style="width: 100%; height: 20%;">
+					style="width: 100%; height: 30%;">
 					<div class="ui-block-a sitPlaceContainer topSideSits"
 						style="width: 25%; height: 100%;">
 						<div class='sitPlaceThumbnailEmpty'>Seat</div>
@@ -112,21 +112,21 @@
 
 
 				<div class="ui-grid-b ui-block-solo"
-					style="width: 100%; height: 55%;">
+					style="width: 100%; height: 40%;">
 
 					<!-- MIDDLE-LEFT GRID  -->
 
 					<div class="ui-block-a" style="width: 20%; height: 100%;">
 						<div class="ui-block-solo sitPlaceContainer leftSideSits"
-							style="height: 33% !important;">
+							style="height: 33% !important;" data-sort='3'>
 							<div class='sitPlaceThumbnailEmpty'>Seat</div>
 						</div>
 						<div class="ui-block-solo sitPlaceContainer leftSideSits"
-							style="height: 33% !important;">
+							style="height: 33% !important;" data-sort='2'>
 							<div class='sitPlaceThumbnailEmpty'>Seat</div>
 						</div>
 						<div class="ui-block-solo sitPlaceContainer leftSideSits"
-							style="height: 33% !important;">
+							style="height: 33% !important;" data-sort='1'>
 							<div class='sitPlaceThumbnailEmpty'>Seat</div>
 						</div>
 					</div>
@@ -139,7 +139,7 @@
 						<div class="ui-block-solo" id="handPotContainer"
 							style="height: 20%; width: 100%;"></div>
 						<div class="ui-block-solo ui-grid-b"
-							style="height: 60%; width: 100%;">
+							style="height: 70%; width: 100%;">
 							<div class="ui-block-a" style="height: 100%; width: 10%;"></div>
 							<div class="ui-block-b ui-grid-d" id="flopsContainer"
 								style="height: 100%; width: 80%;">
@@ -161,7 +161,7 @@
 							</div>
 							<div class="ui-block-c" style="height: 100%; width: 10%;"></div>
 						</div>
-						<div class="ui-block-solo" style="height: 20%; width: 100%;">
+						<div class="ui-block-solo" style="height: 10%; width: 100%;">
 						</div>
 					</div>
 
@@ -185,7 +185,7 @@
 
 				<!--  BOTTOM GRID -->
 
-				<div class="ui-block-solo ui-grid-b" style="height: 25%;">
+				<div class="ui-block-solo ui-grid-b" style="height: 30%;">
 					<div class="ui-block-a"
 						style="width: 20%; height: 100% !important;">
 						<div id="chatBoxContainer">This is the chat box</div>

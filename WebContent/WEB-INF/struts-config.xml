@@ -32,12 +32,15 @@
 			<set-property property="cancellable" value="true" />
 <<<<<<< HEAD
 			<forward name="paymentManagement" path="/pages/accounting/payment/paymentManagement.jsp" />
+<<<<<<< HEAD
 			<forward name="paymentEdit" path="/pages/accounting/payment/paymentEdit.jsp"/>
 =======
 			<forward name="paymentManagement"
 				path="/pages/accounting/payment/paymentManagement.jsp" />
 			<forward name="gridJson" path="/pages/json.jsp" />
 >>>>>>> AmirV1
+=======
+>>>>>>> parent of 902845b... commit
 		</action>
 		<action parameter="reqCode" path="/logOut" type="struts.actions.LogOutAction">
 			<set-property property="cancellable" value="true" />

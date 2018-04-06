@@ -132,7 +132,7 @@ public class PaymentAction extends Action {
 			ActionMapping mapping) {
 		createMenusForPayments(request);
 		PaymentLST paymentLST = getPaymentLST(request);
-		request.setAttribute("paymentLST", paymentLST);
+		request.setAttribute("paymentLST", paymentLST);//we call it a bean named paymentLST
 		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
 		try {
@@ -213,7 +213,7 @@ public class PaymentAction extends Action {
 				.add(new PopupENT(
 						"hide-filters",
 						"callAnAction(\"payment.do?reqCode=paymentView&userName=REPLACEME\");",
-						"View Paymentr", "#"));
+						"View Payment", "#"));
 		popupGridEnts
 				.add(new PopupENT(
 						"edit-item",
@@ -296,7 +296,7 @@ public class PaymentAction extends Action {
 		String search = request.getParameter("searchUser.userName");
 		if (search == null)
 			search = "";
-		UserENT userENT = new UserENT();
+		PaymentENT userENT = new PaymentENT();
 		int pageNo = 1;
 		int pageSize = 10;
 		if (request.getParameter("currentPage") != null)
@@ -307,10 +307,10 @@ public class PaymentAction extends Action {
 		if (request.getParameter("clientID") != null
 				&& !request.getParameter("clientID").equals(""))
 			clientID = Integer.parseInt(request.getParameter("clientID"));
-//		userENT.setUserName(search);
+		userENT.setUsername(search);
 		PaymentLST paymentLST = new PaymentLST();
 		paymentLST.setPageSize(pageSize);
-		//paymentLST.setSearchUser(userENT);
+		paymentLST.setSearchPayment(userENT);
 		paymentLST.setCurrentPage(pageNo);
 		try {
 			paymentLST = getPaymentDAO().getPaymentLST(paymentLST) ;

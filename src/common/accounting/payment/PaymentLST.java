@@ -2,18 +2,55 @@ package common.accounting.payment;
 
 import java.util.ArrayList;
 
+import common.user.UserENT;
+
 
 public class PaymentLST {
 	ArrayList<PaymentENT> paymentENTs = new ArrayList<PaymentENT>();
-	PaymentENT paymentENT;
+    PaymentENT searchPayment = new PaymentENT();
 	private int currentPage = 0;
 	private int totalPages;
 	private int pageSize = 10;
 	private int totalItems;
 	private int first;
 	private boolean ascending = true;
-	private String sortedByField = "role_name";
+	private String sortedByField = "userName";
 
+	public PaymentLST() {
+	}
+
+	public PaymentLST(ArrayList<PaymentENT> paymentENTs, PaymentENT searchPayment,
+			int currentPage, int totalPages, int pageSize, int totalItems,
+			int first, boolean ascending, String sortedByField) {
+		super();
+		this.paymentENTs = paymentENTs;
+		this.searchPayment = searchPayment;
+		this.currentPage = currentPage;
+		this.totalPages = totalPages;
+		this.pageSize = pageSize;
+		this.totalItems = totalItems;
+		this.first = first;
+		this.ascending = ascending;
+		this.sortedByField = sortedByField;
+	}
+
+	public PaymentLST(PaymentENT searchPayment, int currentPage, int pageSize,
+			boolean ascending, String sortedByField) {
+		super();
+		this.searchPayment = searchPayment;
+		this.currentPage = currentPage;
+		this.pageSize = pageSize;
+		this.ascending = ascending;
+		this.sortedByField = sortedByField;
+	}
+
+	public ArrayList<PaymentENT> getPaymentENTs() {
+		return paymentENTs;
+	}
+
+	public void setPaymentENTs(ArrayList<PaymentENT> paymentENTs) {
+		this.paymentENTs = paymentENTs;
+	}
 
 	public boolean isAscending() {
 		return ascending;
@@ -97,34 +134,12 @@ public class PaymentLST {
 		this.first = first;
 	}
 
-	/**
-	 * @return the paymentENTs
-	 */
-	public ArrayList<PaymentENT> getPaymentENTs() {
-		return paymentENTs;
+	public PaymentENT getSearchPayment() {
+		return searchPayment;
 	}
 
-	/**
-	 * @param paymentENTs the paymentENTs to set
-	 */
-	public void setPaymentENTs(ArrayList<PaymentENT> paymentENTs) {
-		this.paymentENTs = paymentENTs;
-	}
-
-	/**
-	 * @return the paymentENT
-	 */
-	public PaymentENT getPaymentENT() {
-		return paymentENT;
-	}
-
-	/**
-	 * @param paymentENT the paymentENT to set
-	 */
-	public void setPaymentENT(PaymentENT paymentENT) {
-		this.paymentENT = paymentENT;
-	}
-
-	
+	public void setSearchPayment(PaymentENT searchPayment) {
+		this.searchPayment = searchPayment;
+	}	
 	
 }

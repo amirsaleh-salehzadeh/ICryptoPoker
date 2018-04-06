@@ -28,7 +28,7 @@
 			name="reqCodeGrid" id="reqCodeGrid" value="">
 		<div class="ui-grid-solo" id="searchFilters">
 			<html:text name="paymentLST" property="searchPayment.username"
-				onkeyup="refreshGrid();" title="Search"></html:text> 
+				onkeyup="refreshGrid();" title="Username"></html:text> 
 		</div>
 		<div class="ui-grid-solo">
 			<bean:define id="totalRows" name="paymentLST" property="totalItems"

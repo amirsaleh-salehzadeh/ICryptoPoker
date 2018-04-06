@@ -53,7 +53,7 @@ function updateGameInfo(data) {
 						if ($(this).attr("id") != null)
 							$(this)
 									.html(
-											"<div class='sitPlaceThumbnailEmpty'>Waiting</div>")
+											"<div class='sitPlaceThumbnailEmpty'>Seat</div>")
 									.trigger("create");
 					});
 	$("#handPotContainer")
@@ -150,7 +150,7 @@ function updatePlayerInfo(data) {
 	var playerId = data.id;
 	var playerName = data.name;
 	addANewPlayerToTable(playerId, playerName, parseInt(data.chips),
-			data.amountToCall);
+			data.amountBetRound);
 	if (data.status != "NOT_STARTED" && data.status != "SEATING")
 		dealCards2Players(data, playerId);
 	if (data.status == "ACTION_TO_CHECK" || data.status == "ACTION_TO_CALL") {
@@ -174,9 +174,9 @@ function updatePlayerInfo(data) {
 			}
 			$("#sliderRaise").attr("max", parseInt(data.chips)).slider(
 					"refresh");
-			$("#sliderRaise").attr("value", $("#sliderRaise").attr("min"))
-					.slider("refresh");
 		}
+		$("#sliderRaise").attr("value", $("#sliderRaise").attr("min"))
+		.slider("refresh");
 		playerToActId = playerId;
 		countDownTotal = 15000;
 		timeLeft = 0;
@@ -279,13 +279,16 @@ function addANewPlayerToTable(id, name, chips, amountToCall) {
 								$("#userSitPlace").html(content);
 								return false;
 							}
+						//set the content for the first time 
 						if ($(this).children("div").hasClass(
 								"sitPlaceThumbnailEmpty")
 								&& $("#sitPlaceContainer" + id).length <= 0) {
+							
 							$(this).html(content);
 							$(this).attr("id", "sitPlaceContainer" + id);
 							return false;
 						} else if ($("#sitPlaceContainer" + id).length > 0) {
+							//set the content in the next rounds
 							$("#sitPlaceContainer" + id).html(content);
 							return false;
 						} else

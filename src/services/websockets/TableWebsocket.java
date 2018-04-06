@@ -72,14 +72,8 @@ public class TableWebsocket {
 				if (table.getPlayerSessions() == null
 						|| table.getPlayerSessions().size() == 0) {
 					GameENT g = table.getGame();
-					// GameDaoImpl gdao = new GameDaoImpl();
 					GameServiceImpl gservice = new GameServiceImpl();
 					gservice.closeTheGame(g, null);
-					// g.setCurrentHand(null);
-					// g.setPlayerInBTN(null);
-					// g.setPlayersRemaining(0);
-					// g.setStarted(false);
-					// gdao.merge(g, null);
 					games.remove(table);
 					System.out.println("game removed");
 				}

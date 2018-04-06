@@ -96,7 +96,8 @@ public class PlayerUtil {
 			List<PlayerHand> playerHands, Player startPlayer) {
 		List<Player> players = new ArrayList<Player>();
 		for (PlayerHand ph : playerHands) {
-			if (ph.getPlayer() != null && !ph.getPlayer().isSittingOut())
+			if (ph.getPlayer() != null && !ph.getPlayer().isSittingOut()
+					&& ph.getStatus() != PlayerHandStatus.FOLDED)
 				players.add(ph.getPlayer());
 		}
 		return getNextPlayerInGameOrder(players, startPlayer);
@@ -210,8 +211,14 @@ public class PlayerUtil {
 				.getTurn(), hand.getBoard().getRiver());
 		HandRank highestRank = null;
 		TwoPlusTwoHandEvaluator.getInstance();
+		int cnt = 0;
 		for (PlayerHand ph : players) {
-			if (players.size() == 1) {
+			if (ph.getStatus() == PlayerHandStatus.FOLDED
+					|| ph.getPlayer().isSittingOut()) {
+				cnt++;
+				continue;
+			}
+			if (players.size() == 1 || cnt + 1 == players.size()) {
 				winners.add(ph.getPlayer());
 				return winners;
 			}
@@ -259,11 +266,22 @@ public class PlayerUtil {
 	 */
 	public static Map<Player, Integer> getAmountWonInHandForAllPlayers(
 			HandEntity hand) {
-		// if (hand.getBoard().getRiver() == null) {
-		// return null;
-		// }
-
 		Map<Player, Integer> winnersMap = new HashMap<Player, Integer>();
+		int validPH = 0;
+		Player onlyP = new Player();
+		for (PlayerHand ph : hand.getPlayers()) {
+			if (ph.getPlayer().getChips() > 0
+					&& ph.getStatus() != PlayerHandStatus.FOLDED
+					&& !ph.getPlayer().isSittingOut())
+				validPH++;
+			onlyP = ph.getPlayer();
+		}
+
+		if (hand.getBoard().getRiver() == null || validPH == 1) {
+			winnersMap.put(onlyP, hand.getPot());
+			return winnersMap;
+		}
+
 
 		// Make deep copy of players. We will manipulate this set in the
 		// following methods

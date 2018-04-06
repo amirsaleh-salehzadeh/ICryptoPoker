@@ -33,6 +33,7 @@ package game.poker.holdem.domain;
 public enum BlindLevel {
 
 	//it opens it
+	BLIND_1_2(1,2),
 	BLIND_10_20(10,20),
 	BLIND_15_30(15,30),
 	BLIND_20_40(20,40),

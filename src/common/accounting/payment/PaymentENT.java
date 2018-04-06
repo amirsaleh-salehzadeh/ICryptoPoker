@@ -8,12 +8,10 @@ public class PaymentENT {
 	private Date dateTime;
 	private int status;
 	private double amount;
-	private String reason;
+	private String reason;//integer
 	private String bankResponse;
-	private String currency;
+	private String currency;//integer
 	private String creatorUsername ;
-
-	
 
 	public long getPaymentId() {
 		return paymentId;

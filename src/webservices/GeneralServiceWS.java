@@ -72,7 +72,6 @@ public class GeneralServiceWS {
 		Matcher mu = userNameCheck.matcher(userName);
 		boolean boolUName = mu.find();
 		
-		
 //		userPasswordCheck regex will enforce these rules:
 //
 //			At least one upper case English letter, (?=.*?[A-Z])

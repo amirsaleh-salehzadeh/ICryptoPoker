@@ -187,7 +187,8 @@ public class GameServiceImpl implements GameServiceInterface {
 			h = game.getCurrentHand();
 		h.setGame(game);
 		if (game.isStarted() && game.getCurrentHand() != null
-				&& gs.equals(GameStatus.PREFLOP)) {
+				&& gs.equals(GameStatus.PREFLOP)
+				&& handService.getPlayerInSB(h) != null) {
 			results.put("POST_SB", handService.getPlayerInSB(h).getId());
 			results.put("POST_BB", handService.getPlayerInBB(h).getId());
 			results.put("DEALER", game.getPlayerInBTN().getId());
@@ -243,8 +244,9 @@ public class GameServiceImpl implements GameServiceInterface {
 				if (shareOfPlayers > 0)
 					p.setTotalChips((int) (p.getChips() + p.getTotalChips() + Math
 							.round(shareOfPlayers)));
-				else if (game.getCurrentHand() != null) 
-					p.setTotalChips(p.getChips() + p.getTotalChips() + game.getCurrentHand().getTotalBetAmount());
+				else if (game.getCurrentHand() != null)
+					p.setTotalChips(p.getChips() + p.getTotalChips()
+							+ game.getCurrentHand().getTotalBetAmount());
 				else
 					p.setTotalChips(p.getChips() + p.getTotalChips());
 				p.setChips(0);

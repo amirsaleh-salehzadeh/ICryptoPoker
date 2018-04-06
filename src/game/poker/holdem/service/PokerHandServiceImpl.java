@@ -523,6 +523,8 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		for (PlayerHand ph : hand.getPlayers()) {// true
 			// All players should have paid the roundBetAmount or should be all
 			// in
+			if (ph.getStatus() == PlayerHandStatus.FOLDED)
+				continue;
 			if (ph.getPlayer() != null
 					&& ph.getRoundBetAmount() != roundBetAmount
 					&& ph.getPlayer().getChips() > 0) {

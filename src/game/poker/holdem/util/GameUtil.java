@@ -61,10 +61,13 @@ public class GameUtil {
 		return GameStatus.PREFLOP;
 	}
 
-	public static void goToNextStepOfTheGame(GameENT game, String playerId)
+	public static void goToNextStepOfTheGame(GameENT game)
 			throws AMSException {
-		System.out.println("goToNextStepOfTheGame");
-		if (!PokerHandServiceImpl.isActionResolved(game.getCurrentHand()))
+		boolean isActionResolved = PokerHandServiceImpl.isActionResolved(game
+				.getCurrentHand());
+		System.out.println("goToNextStepOfTheGame isActionResolved "
+				+ isActionResolved);
+		if (!isActionResolved)
 			return;
 		System.out.println("goToNextStepOfTheGame isActionResolved");
 		PokerHandServiceImpl phs = new PokerHandServiceImpl();

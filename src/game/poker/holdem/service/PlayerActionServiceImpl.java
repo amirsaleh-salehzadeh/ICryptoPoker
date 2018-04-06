@@ -88,7 +88,6 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 			try {
 				phs.endHand(game);
 			} catch (AMSException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		return hand;
@@ -111,6 +110,11 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 		Player next = PlayerUtil.getNextPlayerToAct(hand, player);
 		hand.setCurrentToAct(next);
 		hand = handDao.merge(hand, null);
+		PlayerHand p = new PlayerHand();
+		for (PlayerHand ph : game.getCurrentHand().getPlayers()) {
+			if (ph.getPlayer().equals(next))
+				p = ph;
+		}
 		return hand;
 	}
 
@@ -192,6 +196,13 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 		player.setGameId(game.getId());
 		playerDao.merge(player, null);
 		hand = handDao.merge(hand, null);
+		// if (hand.getLastBetAmount() > 0
+		// && PokerHandServiceImpl.isActionResolved(hand))
+		// try {
+		// GameUtil.goToNextStepOfTheGame(game);
+		// } catch (AMSException e) {
+		// e.printStackTrace();
+		// }
 		return hand;
 	}
 
@@ -227,12 +238,14 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 			}
 		}
 		if (!hand.getPlayers().contains(playerHand)) {// true
+
 			if (player.getChips() <= 0) {
 				return PlayerStatus.ELIMINATED;
 			}
 			return PlayerStatus.SIT_OUT;
 		}
-
+		if (playerHand.getStatus() == PlayerHandStatus.FOLDED)
+			return PlayerStatus.FOLDED;
 		if (hand.getCurrentToAct() == null) {
 			Set<PlayerHand> phs = hand.getPlayers();
 			Set<PlayerHand> phsTMP = new HashSet<PlayerHand>();
@@ -242,7 +255,7 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 				}
 			}
 			if (phs.size() - phsTMP.size() == 1) {
-				for (PlayerHand p : phsTMP)
+				for (PlayerHand p : phs)
 					if (p.getStatus() != PlayerHandStatus.FOLDED)
 						return PlayerStatus.WON_HAND;
 					else
@@ -274,6 +287,10 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 		if (!player.equals(hand.getCurrentToAct())) {
 			// Small and Big Blind to be determined later?
 			// Let controller handle that status
+			// if (playerHand != null) {
+			// if (playerHand.getRoundBetAmount() == hand.getLastBetAmount())
+			// return PlayerStatus.CALLED;
+			// }
 			return PlayerStatus.WAITING;
 		}
 
@@ -285,10 +302,8 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 			// TODO still problem when every player checks or BB. Need
 			// additional info to solve this
 			return PlayerStatus.ACTION_TO_CHECK;
-		} else {
+		} else
 			return PlayerStatus.ACTION_TO_CHECK;
-		}
-
 	}
 
 }

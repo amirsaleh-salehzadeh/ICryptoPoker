@@ -91,19 +91,19 @@
 					style="width: 100%; height: 20%;">
 					<div class="ui-block-a sitPlaceContainer topSideSits"
 						style="width: 25%; height: 100%;">
-						<div class='sitPlaceThumbnailEmpty'>Waiting</div>
+						<div class='sitPlaceThumbnailEmpty'>Seat</div>
 					</div>
 					<div class="ui-block-b sitPlaceContainer topSideSits"
 						style="width: 25%; height: 100%;">
-						<div class='sitPlaceThumbnailEmpty'>Waiting</div>
+						<div class='sitPlaceThumbnailEmpty'>Seat</div>
 					</div>
 					<div class="ui-block-c sitPlaceContainer topSideSits"
 						style="width: 25%; height: 100%;">
-						<div class='sitPlaceThumbnailEmpty'>Waiting</div>
+						<div class='sitPlaceThumbnailEmpty'>Seat</div>
 					</div>
 					<div class="ui-block-d sitPlaceContainer topSideSits"
 						style="width: 25%; height: 100%;">
-						<div class='sitPlaceThumbnailEmpty'>Waiting</div>
+						<div class='sitPlaceThumbnailEmpty'>Seat</div>
 					</div>
 				</div>
 
@@ -119,15 +119,15 @@
 					<div class="ui-block-a" style="width: 20%; height: 100%;">
 						<div class="ui-block-solo sitPlaceContainer leftSideSits"
 							style="height: 33% !important;">
-							<div class='sitPlaceThumbnailEmpty'>Waiting</div>
+							<div class='sitPlaceThumbnailEmpty'>Seat</div>
 						</div>
 						<div class="ui-block-solo sitPlaceContainer leftSideSits"
 							style="height: 33% !important;">
-							<div class='sitPlaceThumbnailEmpty'>Waiting</div>
+							<div class='sitPlaceThumbnailEmpty'>Seat</div>
 						</div>
 						<div class="ui-block-solo sitPlaceContainer leftSideSits"
 							style="height: 33% !important;">
-							<div class='sitPlaceThumbnailEmpty'>Waiting</div>
+							<div class='sitPlaceThumbnailEmpty'>Seat</div>
 						</div>
 					</div>
 
@@ -170,11 +170,11 @@
 					<div class="ui-block-c" style="width: 20%; height: 100%;">
 						<div class="ui-block-solo sitPlaceContainer rightSideSits"
 							style="height: 33%;">
-							<div class='sitPlaceThumbnailEmpty'>Waiting</div>
+							<div class='sitPlaceThumbnailEmpty'>Seat</div>
 						</div>
 						<div class="ui-block-solo sitPlaceContainer rightSideSits"
 							style="height: 33%;">
-							<div class='sitPlaceThumbnailEmpty'>Waiting</div>
+							<div class='sitPlaceThumbnailEmpty'>Seat</div>
 						</div>
 						<div class="ui-block-solo sitPlaceContainer rightSideSits"
 							style="height: 33%;">

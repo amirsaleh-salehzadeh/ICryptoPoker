@@ -91,10 +91,11 @@ public class Table {
 		// To check when to start next round
 		if (game.isStarted() && game.getCurrentHand() != null) {
 			Set<PlayerHand> pltmp = getValidPlayers();
-			System.out.println("getValidPlayers SIZE in senttoall " + pltmp.size());
+//			System.out.println("getValidPlayers SIZE in senttoall "
+//					+ pltmp.size());
 			try {
 				if (handCount >= pltmp.size() || pltmp.size() == 1)
-					GameUtil.goToNextStepOfTheGame(game, user);
+					GameUtil.goToNextStepOfTheGame(game);
 				game = gdao.findById(game.getId(), null);
 				GameStatus gsPrimary = GameUtil.getGameStatus(game);
 				if (gsPrimary != gs)
@@ -104,7 +105,7 @@ public class Table {
 			}
 		}
 		
-		//START THE GAME AND HAND
+		// START THE GAME AND HAND
 		if (playerSessions.size() > 1 && !game.isStarted()
 				&& gs.equals(GameStatus.NOT_STARTED)) {
 			handCount = 0;
@@ -118,8 +119,8 @@ public class Table {
 		}
 		handCount++;
 		Map<String, Object> results = gameService.getGameStatusMap(game);
-		
-		//POSTING TO PLAYER SESSIONS
+
+		// POSTING TO PLAYER SESSIONS
 		for (String cur : playerSessions.keySet()) {
 			Map<String, Object> resultsTMP = results;
 			String json = gameService.getGameStatusJSON(game, resultsTMP, cur);
@@ -139,7 +140,7 @@ public class Table {
 		}
 		return result;
 	}
-
+	
 	public void setGameId(long guid) {
 		game = gdao.findById(guid, null);
 	}

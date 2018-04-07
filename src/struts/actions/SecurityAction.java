@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import hibernate.config.ICryptoPokerDAOManager;
 import hibernate.security.SecurityDAOInterface;
 import hibernate.user.UserDAOInterface;
@@ -34,7 +33,6 @@ import common.MessageENT;
 import common.PopupENT;
 import common.security.RoleENT;
 import common.security.RoleLST;
-
 
 /**
  * MyEclipse Struts Creation date: 09-21-2010
@@ -68,15 +66,13 @@ public class SecurityAction extends Action {
 			return editRole(request, mapping, form);
 		} else if (reqCode.equals("saveUpdateRole")) {
 			return saveUpdateRole(request, mapping, form);
-		} 
+		}
 		return af;
 	}
 
-
 	private ActionForward saveUpdateRole(HttpServletRequest request,
 			ActionMapping mapping, ActionForm form) {
-		RoleENT test = (RoleENT)form;
-		RoleENT roleENT = getRoleENT(request);
+		RoleENT roleENT = (RoleENT) form;
 		try {
 			roleENT = getSecurityDAO().saveUpdateRole(roleENT, null);
 			success = "The role '" + roleENT.getRoleName()
@@ -89,7 +85,6 @@ public class SecurityAction extends Action {
 		request.setAttribute("message", m);
 		return mapping.findForward("roleEdit");
 	}
-
 
 	private ActionForward editRole(HttpServletRequest request,
 			ActionMapping mapping, ActionForm form) {
@@ -158,50 +153,15 @@ public class SecurityAction extends Action {
 						"deleteSelectedItems(\"deleteRole\");",
 						"Delete Selected", "#"));
 		List<PopupENT> popupGridEnts = new ArrayList<PopupENT>();
-		// popupGridEnts
-		// .add(new PopupENT(
-		// "edit-item",
-		// "callAnAction(\"security.do?reqCode=roleEdit&roleName=REPLACEME\");",
-		// "Edit Role", "#"));
+		popupGridEnts
+				.add(new PopupENT(
+						"edit-item",
+						"callAnAction(\"security.do?reqCode=roleEdit&roleName=REPLACEME\");",
+						"Edit Role", "#"));
 		popupGridEnts.add(new PopupENT("delete-item",
 				"deleteAnItem(\"REPLACEME\", \"deleteRole\");", "Remove", "#")); //
 		request.setAttribute("settingMenuItem", popupEnts);
 		request.setAttribute("gridMenuItem", popupGridEnts);
-	}
-
-	private void createMenusForGroup(HttpServletRequest request) {
-		List<PopupENT> popupEnts = new ArrayList<PopupENT>();
-		popupEnts.add(new PopupENT("hide-filters", "displaySearch();",
-				"Show/Hide Search", "#"));
-		popupEnts.add(new PopupENT("new-item",
-				"callAnAction(\"security.do?reqCode=groupEdit\");",
-				"New Group", "#"));
-		popupEnts
-				.add(new PopupENT("delete-item",
-						"deleteSelectedItems(\"deleteGroup\");",
-						"Delete Selected", "#"));
-		List<PopupENT> popupGridEnts = new ArrayList<PopupENT>();
-		popupGridEnts
-				.add(new PopupENT(
-						"edit-item",
-						"callAnAction(\"security.do?reqCode=groupEdit&groupID=REPLACEME\");",
-						"Edit Group", "#"));
-		popupGridEnts.add(new PopupENT("delete-item",
-				"deleteAnItem(REPLACEME, \"deleteGroup\");", "Remove", "#")); //
-		request.setAttribute("settingMenuItem", popupEnts);
-		request.setAttribute("gridMenuItem", popupGridEnts);
-	}
-
-	private RoleENT getRoleENT(HttpServletRequest request) {
-		RoleENT roleENT = new RoleENT();
-		if (request.getParameter("roleName") != null)
-			roleENT.setRoleName(request.getParameter("roleName"));
-		else
-			roleENT.setRoleName("");
-		roleENT.setRoleCategory(request.getParameter("roleCategory"));
-		roleENT.setRoleName(request.getParameter("roleName"));
-		roleENT.setComment(request.getParameter("comment"));
-		return roleENT;
 	}
 
 	private RoleLST getRoleLST(HttpServletRequest request) {
@@ -226,12 +186,10 @@ public class SecurityAction extends Action {
 		return roleLST;
 	}
 
-
 	// /////calls a DAO containg methods for the security management
 	private static SecurityDAOInterface getSecurityDAO() {
 		return ICryptoPokerDAOManager.getSecuirtyDAOInterface();
 	}
-
 
 	private static UserDAOInterface getUserDAO() {
 		return ICryptoPokerDAOManager.getUserDAOInterface();

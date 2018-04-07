@@ -2,7 +2,10 @@ package common.security;
 
 import java.util.ArrayList;
 
-public class RoleLST {
+import org.apache.struts.action.ActionForm;
+
+public class RoleLST extends ActionForm {
+	static final long serialVersionUID = 42L;
 	ArrayList<RoleENT> roleENTs = new ArrayList<RoleENT>();
 	RoleENT searchRole;
 	private int currentPage = 0;
@@ -18,8 +21,7 @@ public class RoleLST {
 
 	public RoleLST(ArrayList<RoleENT> roleENTs, RoleENT searchRole,
 			int currentPage, int totalPages, int pageSize, int totalItems,
-			int first, boolean ascending,
-			String sortedByField) {
+			int first, boolean ascending, String sortedByField) {
 		super();
 		this.roleENTs = roleENTs;
 		this.searchRole = searchRole;
@@ -31,10 +33,9 @@ public class RoleLST {
 		this.ascending = ascending;
 		this.sortedByField = sortedByField;
 	}
-	
-	public RoleLST(RoleENT searchRole, int currentPage, int pageSize, 
-			boolean ascending,
-			String sortedByField) {
+
+	public RoleLST(RoleENT searchRole, int currentPage, int pageSize,
+			boolean ascending, String sortedByField) {
 		super();
 		this.searchRole = searchRole;
 		this.currentPage = currentPage;
@@ -56,6 +57,8 @@ public class RoleLST {
 	}
 
 	public RoleENT getSearchRole() {
+		if (searchRole == null)
+			searchRole = new RoleENT();
 		return searchRole;
 	}
 
@@ -134,6 +137,8 @@ public class RoleLST {
 	}
 
 	public ArrayList<RoleENT> getRoleENTs() {
+		if (roleENTs == null)
+			roleENTs = new ArrayList<RoleENT>();
 		return roleENTs;
 	}
 

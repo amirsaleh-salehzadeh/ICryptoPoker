@@ -18,7 +18,7 @@
 </script>
 </head>
 <body>
-	<form id="dataFilterGridMainPage" action="security.do">
+	<html:form styleId="dataFilterGridMainPage" action="security.do">
 		<ams:message messageEntity="${message}"></ams:message>
 		<input type="hidden" name="reqCode" id="reqCode" value="roleManagement">
 		<input type="hidden" name="reqCodeGrid" id="reqCodeGrid" value="">
@@ -64,6 +64,6 @@
 				</table>
 			</ams:ajaxPaginate>
 		</div>
-	</form>
+	</html:form>
 </body>
 </html>

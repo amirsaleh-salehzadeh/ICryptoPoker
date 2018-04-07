@@ -15,7 +15,7 @@ public class SaleLST extends ActionForm{
 	private int totalItems;
 	private int first;
 	private boolean ascending = true;
-	private String sortedByField = "role_name";
+	private String sortedByField = "username";
 
 
 	public boolean isAscending() {
@@ -104,6 +104,8 @@ public class SaleLST extends ActionForm{
 	 * @return the saleENTENTs
 	 */
 	public ArrayList<SaleENT> getSaleENTs() {
+		if(saleENTs==null)
+			saleENTs = new ArrayList<SaleENT>() ;
 		return saleENTs;
 	}
 
@@ -118,6 +120,8 @@ public class SaleLST extends ActionForm{
 	 * @return the saleENT
 	 */
 	public SaleENT getSaleENT() {
+		if(saleENT==null)
+			saleENT = new SaleENT();
 		return saleENT;
 	}
 

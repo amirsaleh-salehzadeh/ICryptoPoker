@@ -33,5 +33,9 @@
 		<put name="title" value="i Crypto Poker" />
 		<put name="body" value="/payment.do" />
 	</definition>
+	<definition name="page.sale" extends="baseLayout">
+		<put name="title" value="i Crypto Poker" />
+		<put name="body" value="/sale.do" />
+	</definition>
 	
 </tiles-definitions>

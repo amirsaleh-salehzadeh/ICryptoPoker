@@ -62,6 +62,8 @@ public class PaymentLST extends ActionForm {
 	}
 
 	public ArrayList<PaymentENT> getPaymentENTs() {
+		if(paymentENTs==null)
+			paymentENTs = new ArrayList<PaymentENT>() ;
 		return paymentENTs;
 	}
 
@@ -152,11 +154,13 @@ public class PaymentLST extends ActionForm {
 	}
 
 	public PaymentENT getSearchPayment() {
+		if(searchPayment==null)
+		searchPayment = new PaymentENT() ;
 		return searchPayment;
 	}
 
 	public void setSearchPayment(PaymentENT searchPayment) {
 		this.searchPayment = searchPayment;
 	}
-
+   
 }

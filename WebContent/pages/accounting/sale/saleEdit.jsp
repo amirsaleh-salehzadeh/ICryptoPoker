@@ -48,7 +48,11 @@
 				<html:textarea name="saleENT" property="paymentMethod"
 					styleId="paymentMethod" title="paymentMethod" />
 			</div>
-
+                <div class="ui-block-solo">
+				<label>Currency</label>
+				<html:textarea name="saleENT" property="currency" styleId="currency"
+					title="Currency" />
+			</div>
 			<div class="ui-block-solo">
 				<label>Amount</label>
 				<html:textarea name="saleENT" property="amount" styleId="amount"

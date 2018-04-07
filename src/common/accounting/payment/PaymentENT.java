@@ -2,18 +2,9 @@ package common.accounting.payment;
 
 import java.util.Date;
 
-
 import org.apache.struts.action.ActionForm;
 
 public class PaymentENT extends ActionForm {
-
-	/**
-	 * 
-	 */
-
-	/**
-	 * 
-	 */
 	static final long serialVersionUID = 42L;
 
 	private long paymentId;
@@ -24,7 +15,10 @@ public class PaymentENT extends ActionForm {
 	private String reason;// integer
 	private String bankResponse;
 
+
 	private int paymentType;
+
+
 
 	private String creatorUsername;
 

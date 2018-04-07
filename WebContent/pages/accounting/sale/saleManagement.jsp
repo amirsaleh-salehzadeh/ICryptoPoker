@@ -21,13 +21,13 @@
 <body>
 <body>
 
-	<html:form styleId="dataFilterGridMainPage" action="payment.do">
+	<html:form styleId="dataFilterGridMainPage" action="sale.do">
 		<ams:message messageEntity="${message}"></ams:message>
 		<input type="hidden" name="reqCode" id="reqCode"
-			value="paymentManagement"> <input type="hidden"
+			value="saleManagement"> <input type="hidden"
 			name="reqCodeGrid" id="reqCodeGrid" value="">
 		<div class="ui-grid-solo" id="searchFilters">
-			<html:text name="saleLST" property="searchSale.username"
+			<html:text name="saleLST" property="saleENT.username"
 				onkeyup="refreshGrid();" title="Username"></html:text> 
 		</div>
 		<div class="ui-grid-solo">

@@ -37,6 +37,7 @@ import common.PopupENT;
 
 import common.accounting.payment.PaymentENT;
 import common.accounting.payment.PaymentLST;
+import common.security.RoleLST;
 
 /**
  * MyEclipse Struts Creation date: 09-21-2010
@@ -65,7 +66,7 @@ public class PaymentAction extends Action {
 			return paymentManagement(request, mapping, form);
 		} else if (reqCode.equals("paymentEdit") || reqCode.equals("paymentView") || reqCode.equals("paymentNew")
 				|| reqCode.equals("paymentView")) {
-			return editPayment(request, mapping ,form);
+			return editPayment(request, mapping, form);
 		} else if (reqCode.equals("saveUpdatePayment")) {
 			return saveUpdatePayment(request, mapping, form);
 
@@ -99,18 +100,21 @@ public class PaymentAction extends Action {
 	//
 	private ActionForward editPayment(HttpServletRequest request, ActionMapping mapping, ActionForm form) {
 		PaymentENT paymentENT = new PaymentENT();
-		form = paymentENT;
 		long paymentId;
-		if (request.getParameter("paymentId") != null) {
-			paymentId = Long.parseLong(request.getParameter("paymentId"));
-		} else {
-			request.setAttribute("paymentENT", paymentENT);
+		PaymentLST lst = (PaymentLST) form;
+		if (request.getParameter("paymentId") == null) {
 			return mapping.findForward("paymentEdit");
 		}
+		// request.setAttribute("paymentENT", paymentENT);
+
+		paymentId = Long.parseLong(request.getParameter("paymentId"));
+
 		paymentENT.setPaymentId(paymentId);
 		// saveTheForm();
 		try {
-			request.setAttribute("paymentENT", getPaymentDAO().getPaymentENT(paymentENT));
+			paymentENT = getPaymentDAO().getPaymentENT(paymentENT) ;
+			lst.setSearchPayment(paymentENT);
+			form = lst;
 		} catch (AMSException e) {
 			error = e.getMessage();
 			e.printStackTrace();
@@ -148,7 +152,8 @@ public class PaymentAction extends Action {
 
 	//
 	private ActionForward saveUpdatePayment(HttpServletRequest request, ActionMapping mapping, ActionForm form) {
-		PaymentENT paymentENT = (PaymentENT) form;
+		PaymentLST lst = (PaymentLST) form;
+		PaymentENT paymentENT = lst.getSearchPayment();
 		try {
 			paymentENT = getPaymentDAO().savePayment(paymentENT);
 			success = "The user '" + paymentENT.getCreatorUsername() + "' saved successfully";

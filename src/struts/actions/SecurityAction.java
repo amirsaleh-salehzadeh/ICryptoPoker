@@ -72,7 +72,8 @@ public class SecurityAction extends Action {
 
 	private ActionForward saveUpdateRole(HttpServletRequest request,
 			ActionMapping mapping, ActionForm form) {
-		RoleENT roleENT = (RoleENT) form;
+		RoleLST lst = (RoleLST) form;
+		RoleENT roleENT = lst.getRoleENT();
 		try {
 			roleENT = getSecurityDAO().saveUpdateRole(roleENT, null);
 			success = "The role '" + roleENT.getRoleName()
@@ -88,14 +89,16 @@ public class SecurityAction extends Action {
 
 	private ActionForward editRole(HttpServletRequest request,
 			ActionMapping mapping, ActionForm form) {
-		RoleENT roleENT = (RoleENT) form;
+		RoleENT roleENT = new RoleENT();
+		RoleLST lst = (RoleLST) form;
 		if (request.getParameter("roleName") == null) {
-			request.setAttribute("roleENT", roleENT);
 			return mapping.findForward("roleEdit");
 		}
 		roleENT.setRoleName(request.getParameter("roleName"));
 		try {
-			request.setAttribute("roleENT", getSecurityDAO().getRole(roleENT));
+			roleENT = getSecurityDAO().getRole(roleENT);
+			lst.setRoleENT(roleENT);
+			form = lst;
 		} catch (AMSException e) {
 			error = e.getMessage();
 			e.printStackTrace();
@@ -124,7 +127,7 @@ public class SecurityAction extends Action {
 	private ActionForward roleManagement(HttpServletRequest request,
 			ActionMapping mapping, ActionForm form) {
 		createMenusForRole(request);
-		RoleLST roleLST = (RoleLST)form;
+		RoleLST roleLST = (RoleLST) form;
 		try {
 			roleLST = getSecurityDAO().getRolesList(roleLST);
 		} catch (AMSException e) {
@@ -158,33 +161,6 @@ public class SecurityAction extends Action {
 						"deleteSelectedItems(\"deleteRole\");",
 						"Delete Selected", "#"));
 		List<PopupENT> popupGridEnts = new ArrayList<PopupENT>();
-
-		// popupGridEnts
-		// .add(new PopupENT(
-		// "edit-item",
-		// "callAnAction(\"security.do?reqCode=roleEdit&roleName=REPLACEME\");",
-		// "Edit Role", "#"));
-		popupGridEnts.add(new PopupENT("delete-item",
-				"deleteAnItem(\"REPLACEME\", \"deleteRole\");", "Remove", "#")); //
-		request.setAttribute("settingMenuItem", popupEnts);
-		request.setAttribute("gridMenuItem", popupGridEnts);
-	}
-
-	private void createMenusForGroup(HttpServletRequest request) {
-		List<PopupENT> popupEnts = new ArrayList<PopupENT>();
-		popupEnts.add(new PopupENT("hide-filters", "displaySearch();",
-				"Show/Hide Search", "#"));
-		popupEnts.add(new PopupENT("new-item",
-				"callAnAction(\"security.do?reqCode=groupEdit\");",
-				"New Group", "#"));
-		popupEnts
-				.add(new PopupENT("delete-item",
-						"deleteSelectedItems(\"deleteGroup\");",
-						"Delete Selected", "#"));
-		
-		
-		List<PopupENT> popupGridEnts = new ArrayList<PopupENT>();
-
 		popupGridEnts
 				.add(new PopupENT(
 						"edit-item",

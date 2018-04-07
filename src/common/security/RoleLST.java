@@ -7,7 +7,8 @@ import org.apache.struts.action.ActionForm;
 public class RoleLST extends ActionForm {
 	static final long serialVersionUID = 42L;
 	ArrayList<RoleENT> roleENTs = new ArrayList<RoleENT>();
-	RoleENT searchRole;
+	private RoleENT roleENT;
+	private String roleName;
 	private int currentPage = 0;
 	private int totalPages;
 	private int pageSize = 10;
@@ -19,12 +20,12 @@ public class RoleLST extends ActionForm {
 	public RoleLST() {
 	}
 
-	public RoleLST(ArrayList<RoleENT> roleENTs, RoleENT searchRole,
+	public RoleLST(ArrayList<RoleENT> roleENTs, RoleENT roleENT,
 			int currentPage, int totalPages, int pageSize, int totalItems,
 			int first, boolean ascending, String sortedByField) {
 		super();
 		this.roleENTs = roleENTs;
-		this.searchRole = searchRole;
+		this.roleENT = roleENT;
 		this.currentPage = currentPage;
 		this.totalPages = totalPages;
 		this.pageSize = pageSize;
@@ -34,10 +35,10 @@ public class RoleLST extends ActionForm {
 		this.sortedByField = sortedByField;
 	}
 
-	public RoleLST(RoleENT searchRole, int currentPage, int pageSize,
+	public RoleLST(RoleENT roleENT, int currentPage, int pageSize,
 			boolean ascending, String sortedByField) {
 		super();
-		this.searchRole = searchRole;
+		this.roleENT = roleENT;
 		this.currentPage = currentPage;
 		this.pageSize = pageSize;
 		this.ascending = ascending;
@@ -56,14 +57,28 @@ public class RoleLST extends ActionForm {
 		return currentPage;
 	}
 
-	public RoleENT getSearchRole() {
-		if (searchRole == null)
-			searchRole = new RoleENT();
-		return searchRole;
+	/**
+	 * @return the roleName
+	 */
+	public String getRoleName() {
+		return roleName;
 	}
 
-	public void setSearchRole(RoleENT searchRole) {
-		this.searchRole = searchRole;
+	/**
+	 * @param roleName the roleName to set
+	 */
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
+	}
+
+	public RoleENT getRoleENT() {
+		if (roleENT == null)
+			roleENT = new RoleENT();
+		return roleENT;
+	}
+
+	public void setRoleENT(RoleENT roleENT) {
+		this.roleENT = roleENT;
 	}
 
 	public void setCurrentPage(int currentPage) {

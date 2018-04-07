@@ -35,8 +35,12 @@ import com.google.gson.Gson;
 
 import common.MessageENT;
 import common.PopupENT;
+import common.accounting.payment.PaymentENT;
+import common.accounting.payment.PaymentLST;
 import common.accounting.sale.SaleENT;
 import common.accounting.sale.SaleLST;
+import common.security.RoleENT;
+import common.security.RoleLST;
 
 /**
  * MyEclipse Struts Creation date: 09-21-2010
@@ -98,18 +102,21 @@ public class SaleAction extends Action {
 	//
 	private ActionForward editSale(HttpServletRequest request, ActionMapping mapping, ActionForm form) {
 		SaleENT saleENT = new SaleENT();
-		form = saleENT;
 		long saleId;
-		if (request.getParameter("saleId") != null) {
-			saleId = Long.parseLong(request.getParameter("saleId"));
-		} else {
-			request.setAttribute("saleENT", saleENT);
+		SaleLST lst = (SaleLST) form;
+		if (request.getParameter("saleId") == null) {
 			return mapping.findForward("saleEdit");
 		}
+		// request.setAttribute("paymentENT", paymentENT);
+
+		saleId = Long.parseLong(request.getParameter("paymentId"));
+
 		saleENT.setSaleId(saleId);
 		// saveTheForm();
 		try {
-			request.setAttribute("saleENT", getSaleDAO().getSaleENT(saleENT));
+			saleENT = getSaleDAO().getSaleENT(saleENT) ;
+			lst.setSaleENT(saleENT);
+			form = lst;
 		} catch (AMSException e) {
 			error = e.getMessage();
 			e.printStackTrace();
@@ -147,7 +154,9 @@ public class SaleAction extends Action {
 
 	//
 	private ActionForward saveUpdateSale(HttpServletRequest request, ActionMapping mapping, ActionForm form) {
-		SaleENT saleENT = (SaleENT) form;
+		
+		SaleLST lst = (SaleLST) form;
+		SaleENT saleENT = lst.getSaleENT();
 		try {
 			saleENT = getSaleDAO().saveUpdateSale(saleENT);
 			success = "The user '" + saleENT.getCreatorUsername() + "' saved successfully";

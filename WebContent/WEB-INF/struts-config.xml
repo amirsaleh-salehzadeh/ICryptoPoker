@@ -4,24 +4,25 @@
 <struts-config>
 	<data-sources />
 	<form-beans>
-		<form-bean name="paymentForm" type="common.accounting.payment.PaymentLST" />
-		<form-bean name="paymentForm" type="common.accounting.payment.PaymentENT" />
+		<form-bean name="paymentGrid" type="common.accounting.payment.PaymentLST" />
 		<form-bean name="securityForm" type="common.security.RoleENT" />
 		<form-bean name="securityForm" type="common.security.RoleLST" />
-		<form-bean name="saleForm" type="common.accounting.sale.SaleLST" />
-		<form-bean name="saleForm" type="common.accounting.sale.SaleENT" />
+		<form-bean name="saleGrid" type="common.accounting.sale.SaleLST" />
+		
+		<form-bean name="roleGrid" type="common.security.RoleLST" />
 
 	</form-beans>
 	<global-exceptions />
 	<global-forwards />
 	<action-mappings>
 		<action path="/security" type="struts.actions.SecurityAction"
-			name="securityForm">
+			name="roleGrid">
 			<set-property property="cancellable" value="true" />
 			<forward name="roleManagement" path="/pages/security/roleManagement.jsp" />
 			<forward name="roleEdit" path="/pages/security/roleEdit.jsp" />
 			<forward name="gridJson" path="/pages/json.jsp" />
 		</action>
+
 		<action path="/user" type="struts.actions.UserAction">
 			<set-property property="cancellable" value="true" />
 			<forward name="userManagement" path="/pages/user/userManagement.jsp" />
@@ -38,14 +39,14 @@
 			<forward name="joinAGame" path="/pages/game/table.jsp" />
 		</action>
 		<action path="/payment" type="struts.actions.PaymentAction"
-			name="paymentForm">
+			name="paymentGrid">
 			<set-property property="cancellable" value="true" />
 			<forward name="paymentEdit" path="/pages/accounting/payment/paymentEdit.jsp" />
 			<forward name="paymentManagement"
 				path="/pages/accounting/payment/paymentManagement.jsp" />
 			<forward name="gridJson" path="/pages/json.jsp" />
 		</action>
-		<action path="/sale" type="struts.actions.SaleAction" name="saleForm">
+		<action path="/sale" type="struts.actions.SaleAction" name="saleGrid">
 			<set-property property="cancellable" value="true" />
 			<forward name="saleEdit" path="/pages/accounting/sale/saleEdit.jsp" />
 			<forward name="saleManagement" path="/pages/accounting/sale/saleManagement.jsp" />

@@ -8,6 +8,8 @@
 		<form-bean name="paymentForm" type="common.accounting.payment.PaymentENT" />
 		<form-bean name="securityForm" type="common.security.RoleENT" />
 		<form-bean name="securityForm" type="common.security.RoleLST" />
+		<form-bean name="saleForm" type="common.accounting.sale.SaleLST" />
+		<form-bean name="saleForm" type="common.accounting.sale.SaleENT" />
 
 	</form-beans>
 	<global-exceptions />
@@ -35,12 +37,18 @@
 			<forward name="goToLobby" path="/pages/game/lobby.jsp" />
 			<forward name="joinAGame" path="/pages/game/table.jsp" />
 		</action>
-		<action path="/payment" type="struts.actions.PaymentAction" name="paymentForm">
+		<action path="/payment" type="struts.actions.PaymentAction"
+			name="paymentForm">
 			<set-property property="cancellable" value="true" />
 			<forward name="paymentEdit" path="/pages/accounting/payment/paymentEdit.jsp" />
 			<forward name="paymentManagement"
 				path="/pages/accounting/payment/paymentManagement.jsp" />
-			<forward name="paymentEdit" path="/pages/accounting/payment/paymentEdit.jsp" />
+			<forward name="gridJson" path="/pages/json.jsp" />
+		</action>
+		<action path="/sale" type="struts.actions.SaleAction" name="saleForm">
+			<set-property property="cancellable" value="true" />
+			<forward name="saleEdit" path="/pages/accounting/sale/saleEdit.jsp" />
+			<forward name="saleManagement" path="/pages/accounting/sale/saleManagement.jsp" />
 			<forward name="gridJson" path="/pages/json.jsp" />
 		</action>
 		<action parameter="reqCode" path="/logOut" type="struts.actions.LogOutAction">

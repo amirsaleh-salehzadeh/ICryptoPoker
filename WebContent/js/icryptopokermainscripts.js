@@ -28,10 +28,12 @@ function callAnAction(url) {
 
 function saveTheForm() {
 	var url = $("#dataFilterGridMainPage").attr("action");
-	url += "?" + $("#dataFilterGridMainPage").serialize();
+//	url += "?" + $("#dataFilterGridMainPage").serialize();
 	$.ajax({
 		url : url,
 		cache : false,
+		type: 'POST',
+		data: $("#dataFilterGridMainPage").serialize(),
 		success : function(data) {
 			$("#mainBodyContents").html("");
 			$("#mainBodyContents").html(data).trigger("create");

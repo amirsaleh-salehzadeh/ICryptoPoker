@@ -2,8 +2,11 @@ package common.accounting.sale;
 
 import java.util.ArrayList;
 
+import org.apache.struts.action.ActionForm;
 
-public class SaleLST {
+
+public class SaleLST extends ActionForm{
+	static final long serialVersionUID = 42L;
 	ArrayList<SaleENT> saleENTs = new ArrayList<SaleENT>();
 	SaleENT saleENT;
 	private int currentPage = 0;

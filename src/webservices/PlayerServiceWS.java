@@ -33,12 +33,17 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
+import com.google.gson.Gson;
+
 import common.game.poker.holdem.GameENT;
+import services.websockets.TableWebsocket;
 import tools.AMSException;
 
 import game.poker.holdem.dao.GameDaoImpl;
@@ -47,6 +52,7 @@ import game.poker.holdem.domain.GameStatus;
 import game.poker.holdem.domain.HandEntity;
 import game.poker.holdem.domain.Player;
 import game.poker.holdem.domain.PlayerStatus;
+import game.poker.holdem.domain.Table;
 import game.poker.holdem.service.GameServiceImpl;
 import game.poker.holdem.service.PlayerActionServiceImpl;
 import game.poker.holdem.service.PlayerServiceManager;
@@ -356,10 +362,10 @@ public class PlayerServiceWS {
 		player.setTotalChips(player.getChips() + player.getTotalChips());
 		PlayerDaoImpl pdao = new PlayerDaoImpl();
 		pdao.merge(player, null);
-//		HandEntity he = game.getCurrentHand();
-//		for (Player p : game.getPlayers()) {
-//			if(!p.equals(player)&& p.getGamePosition()<player.getGamePosition())
-//		}
+		// HandEntity he = game.getCurrentHand();
+		// for (Player p : game.getPlayers()) {
+		// if(!p.equals(player)&& p.getGamePosition()<player.getGamePosition())
+		// }
 		// if (game.isStarted() && he != null) {
 		//
 		// }
@@ -379,38 +385,6 @@ public class PlayerServiceWS {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		// game = gdao.findById(game.getId(), null);
-		// Player p = pdao.findById(uid, null);
-		// p.setGameId(0);
-		// p.setGamePosition(0);
-		// if (players.size() > 1 || !game.isStarted()
-		// || game.getCurrentHand() == null) {
-		// p.setTotalChips(p.getChips() + p.getTotalChips());
-		// } else {
-		// p.setTotalChips(p.getChips() + p.getTotalChips()
-		// + game.getCurrentHand().getTotalBetAmount());
-		// }
-		// if (players.size() <= 1 && game.getCurrentHand() != null &&
-		// game.isStarted()) {
-		// try {
-		// handService.endHand(game);
-		// } catch (AMSException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-		// } else {
-		// game.setPlayersRemaining(game.getPlayersRemaining() - 1);
-		// }
-		// p.setChips(0);
-		// pdao.merge(p, null);
-		// game = gdao.merge(game, null);
-		// try {
-		// players.get(uid).close();
-		// } catch (IOException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-		// players.remove(uid, players.get(uid));
 
 		return json;
 	}
@@ -425,26 +399,40 @@ public class PlayerServiceWS {
 	@GET
 	@Path("/sitIn")
 	@Produces("application/json")
-	public String sitIn(@QueryParam("playerId") String playerId) {
+	public Response sitIn(@QueryParam("playerId") String playerId,
+			@QueryParam("gameId") long gameId, @QueryParam("chips") int chips,
+			@QueryParam("nickname") String nickname) {
 		playerActionService = new PlayerActionServiceImpl();
 		Player player = playerActionService.getPlayerById(playerId);
-		playerActionService.sitIn(player);
-		ObjectMapper mapper = new ObjectMapper();
-		String json = "";
-		try {
-			json = mapper.writeValueAsString(Collections.singletonMap(
-					"success", true));
-		} catch (JsonGenerationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		/**
+		 * Player is already in other game, should leave the other game first
+		 */
+		if (player.getGameId() != gameId && player.getGameId() != 0)
+			return Response
+					.serverError()
+					.entity("Unauthorised Access to the Game. You are already in a different game")
+					.build();
+		/**
+		 * Player decides to sit back in the game he/she sat out
+		 */
+		if (player.getGameId() != 0 && player.isSittingOut()) {
+			try {
+				player = playerActionService.sitIn(player);
+			} catch (AMSException e) {
+				return Response.serverError().entity(e.getMessage()).build();
+			}
+		} else {
+			GameDaoImpl gdo = new GameDaoImpl();
+			gameService.addNewPlayerToGame(gdo.findById(gameId, null), player);
 		}
-		return json;
+		Gson gson = new Gson();
+		String json = "";
+		json = gson.toJson(Collections.singletonMap("success", true));
+		for (Table table : TableWebsocket.games) {
+			if (table.getGame().getId() == gameId) {
+				table.sendToAll("");
+			}
+		}
+		return Response.ok(json, MediaType.APPLICATION_JSON).build();
 	}
-
 }

@@ -12,7 +12,6 @@ function fitElementsWithinScreen() {
 		$(this).width($("#userSitPlace").height() * 0.7);
 		$(this).height($("#userSitPlace").height() * 0.7);
 		$(this).trigger("create");
-		$(this).attr("onclick","sitIn()");
 	});
 	$(".card").each(
 			function() {
@@ -83,6 +82,7 @@ $(document).ready(
 //					$("#flop1").width() + ($("#flop1").width() * 0.7));
 			// resetplayerInfo();
 			$("#sliderRaise").slider();
+			fitElementsWithinScreen();
 		});
 
 function onMessage(evt) {
@@ -149,7 +149,7 @@ function toggleFullScreen(elem) {
 		}
 	}
 }
-function sitIn() {
-	$("#popupSitIn").popup("open");
 
+function sitInPopupOpen() {
+	$("#popupSitIn").popup("open");
 }

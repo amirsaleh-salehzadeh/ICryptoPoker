@@ -56,7 +56,7 @@
 			<!-- MIDDLE PANEL  -->
 
 
-			<div class="ui-block-solo" id="mainBoardContainerDIV">
+			<div class="ui-block-solo" id="mainBoardContainerDIV" role="main">
 
 				<!-- TOP GRID  -->
 
@@ -64,19 +64,19 @@
 					style="width: 100%; height: 20%;">
 					<div class="ui-block-a sitPlaceContainer topSideSits"
 						style="width: 25%; height: 100%;" data-sort='4'>
-						<div class='sitPlaceThumbnailEmpty'>Seat</div>
+						<div class='sitPlaceThumbnailEmpty'>&nbsp;</div>
 					</div>
 					<div class="ui-block-b sitPlaceContainer topSideSits"
 						style="width: 25%; height: 100%;" data-sort='5'>
-						<div class='sitPlaceThumbnailEmpty'>Seat</div>
+						<div class='sitPlaceThumbnailEmpty'>&nbsp;</div>
 					</div>
 					<div class="ui-block-c sitPlaceContainer topSideSits"
 						style="width: 25%; height: 100%;" data-sort='6'>
-						<div class='sitPlaceThumbnailEmpty'>Seat</div>
+						<div class='sitPlaceThumbnailEmpty'>&nbsp;</div>
 					</div>
 					<div class="ui-block-d sitPlaceContainer topSideSits"
 						style="width: 25%; height: 100%;" data-sort='7'>
-						<div class='sitPlaceThumbnailEmpty'>Seat</div>
+						<div class='sitPlaceThumbnailEmpty'>&nbsp;</div>
 					</div>
 				</div>
 
@@ -92,15 +92,15 @@
 					<div class="ui-block-a" style="width: 20%; height: 100%;">
 						<div class="ui-block-solo sitPlaceContainer leftSideSits"
 							style="height: 33% !important;" data-sort='3'>
-							<div class='sitPlaceThumbnailEmpty'>Seat</div>
+							<div class='sitPlaceThumbnailEmpty'></div>
 						</div>
 						<div class="ui-block-solo sitPlaceContainer leftSideSits"
 							style="height: 33% !important;" data-sort='2'>
-							<div class='sitPlaceThumbnailEmpty'>Seat</div>
+							<div class='sitPlaceThumbnailEmpty'></div>
 						</div>
 						<div class="ui-block-solo sitPlaceContainer leftSideSits"
 							style="height: 33% !important;" data-sort='1'>
-							<div class='sitPlaceThumbnailEmpty'>Seat</div>
+							<div class='sitPlaceThumbnailEmpty'>&nbsp;</div>
 						</div>
 					</div>
 
@@ -142,12 +142,12 @@
 
 					<div class="ui-block-c" style="width: 20%; height: 100%;">
 						<div class="ui-block-solo sitPlaceContainer rightSideSits"
-							style="height: 33%;">
-							<div class='sitPlaceThumbnailEmpty' data-sort='8'>Seat</div>
+							style="height: 33%;" data-sort='8'>
+							<div class='sitPlaceThumbnailEmpty' >&nbsp;</div>
 						</div>
 						<div class="ui-block-solo sitPlaceContainer rightSideSits"
-							style="height: 33%;">
-							<div class='sitPlaceThumbnailEmpty' data-sort='9'>Seat</div>
+							style="height: 33%;" data-sort='9'>
+							<div class='sitPlaceThumbnailEmpty' >&nbsp;</div>
 						</div>
 						<div class="ui-block-solo sitPlaceContainer rightSideSits"
 							style="height: 33%;">
@@ -166,9 +166,6 @@
 					<div class="ui-block-a"
 						style="width: 20%; height: 100% !important;">
 						<div id="chatBoxContainer">This is the chat box</div>
-
-
-
 						<div class="ui-block-solo smallIcon">
 							<img src="images/game/sb.png" width="20">&nbsp;&cent;<%
 								out.write(game.getGameStructure().getCurrentBlindLevel().toString()
@@ -183,14 +180,14 @@
 						</div>
 					</div>
 					<div class="ui-block-b sitPlaceContainer bottomSideSits"
-						style="height: 100% !important; width: 40%;" id="userSitPlace"></div>
+						style="height: 100% !important; width: 40%; cursor: pointer;" id="userSitPlace" onclick="sitInPopupOpen()">
+						<div class='sitPlaceThumbnailEmpty' data-sort='9'>SEAT</div>
+					</div>
 					<div class="ui-block-c"
 						style="width: 40%; height: 100% !important;"
 						id="raiseSliderContainer">
 						<input class="actionButtons" type="range" name="sliderRaise"
 							id="sliderRaise" data-show-value="true" data-popup-enabled="true">
-						<!-- 							<input -->
-						<!-- 							type="number" id="betAmount" value="0"> -->
 					</div>
 				</div>
 
@@ -199,8 +196,8 @@
 
 			<!-- bottom -->
 
-			<div class="ui-block-solo ui-grid-d constantBannersBottom"
-				id="buttonsContainerDIV" style="width: 100%; height: 14%;">
+			<div data-role="footer" class="ui-grid-d constantBannersBottom"
+				id="buttonsContainerDIV">
 				<div class="ui-block-a utilBtns" style="width: 40%">
 					<div class="ui-grid-a">
 						<div id="btnChat" class="ui-block-a">
@@ -252,12 +249,12 @@
 					data-theme="b" data-dismissible="false">
 					<div class="ui-block-solo" style="height: 25%;">
 						<label for="buyIn">Entry Chips</label> <input type="number"
-							data-mini="true" id="buyIn" value="0" placeholder="Chips">
+							data-mini="true" id="sitInChips" value="0" placeholder="Chips">
 
 					</div>
 					<div class="ui-block-solo" style="height: 25%;">
-						<label for="buyIn">Nick Name</label> <input type="number"
-							data-mini="true" id="buyIn" value="<%=player.getName()%>"
+						<label for="buyIn">Nick Name</label> <input type="text"
+							data-mini="true" id="nickname" value="<%=player.getName()%>"
 							placeholder="Nick Name">
 
 					</div>
@@ -268,7 +265,7 @@
 				data-rel="back" data-mini="true">Leave Game</a>         <a href="#"
 				id="sitInBTN"
 				class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b"
-				data-mini="true">Join</a>     
+				data-mini="true" onclick="sitInTheGame()">Join</a>     
 		</div>
 		<!-- 		Sit In popup          -->
 

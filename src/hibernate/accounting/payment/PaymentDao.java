@@ -64,11 +64,7 @@ public class PaymentDao extends BaseHibernateDAO implements
 	}
 
 
-	@Override
-	public void removePayment(PaymentENT ent) throws AMSException {
-		// TODO Auto-generated method stub
-		
-	}
+	
 
 	@Override
 	public List<PaymentENT> searchCriteria(String accountName) throws AMSException {
@@ -117,6 +113,13 @@ public class PaymentDao extends BaseHibernateDAO implements
 		}
 		return ent;
 	}
+
+	@Override
+	public void removePayment(PaymentENT ent) throws AMSException {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 	
 

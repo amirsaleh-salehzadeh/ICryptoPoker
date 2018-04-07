@@ -27,25 +27,25 @@
 			value="paymentManagement"> <input type="hidden"
 			name="reqCodeGrid" id="reqCodeGrid" value="">
 		<div class="ui-grid-solo" id="searchFilters">
-			<html:text name="paymentLST" property="searchPayment.username"
+			<html:text name="saleLST" property="searchSale.username"
 				onkeyup="refreshGrid();" title="Username"></html:text> 
 		</div>
 		<div class="ui-grid-solo">
-			<bean:define id="totalRows" name="paymentLST" property="totalItems"
+			<bean:define id="totalRows" name="saleLST" property="totalItems"
 				type="java.lang.Integer"></bean:define>
-			<bean:define id="first" name="paymentLST" property="first"
+			<bean:define id="first" name="saleLST" property="first"
 				type="java.lang.Integer"></bean:define>
-			<bean:define id="currentPage" name="paymentLST"
+			<bean:define id="currentPage" name="saleLST"
 				property="currentPage" type="java.lang.Integer"></bean:define>
-			<bean:define id="pageSize" name="paymentLST" property="pageSize"
+			<bean:define id="pageSize" name="saleLST" property="pageSize"
 				type="java.lang.Integer"></bean:define>
-			<bean:define id="totalPages" name="paymentLST" property="totalPages"
+			<bean:define id="totalPages" name="saleLST" property="totalPages"
 				type="java.lang.Integer"></bean:define>
 
 			<ams:ajaxPaginate currentPage="<%=currentPage%>"
 				pageSize="<%=pageSize%>" totalRows="<%=totalRows%>" align="center"
-				columns="creatorUsername,DT_RowId,username,dateTime,paymentType,amount,status,reason"
-				popupID="paymentManagementSettingMenu"
+				columns="creatorUsername,DT_RowId,username,dateTime,currency,amount,status,paymentMethod"
+				popupID="saleManagementSettingMenu"
 				popupGridSettingItems="${gridMenuItem}"
 				popupMenuSettingItems="${settingMenuItem}">
 				<table id="gridList" class="display cell-border dt-body-center"
@@ -56,10 +56,10 @@
 							<th data-priority="1">creatorUsername</th>
 							<th data-priority="2">username</th>
 							<th data-priority="3">dateTime</th>
-							<th data-priority="4">paymentType</th>
+							<th data-priority="4">currency</th>
 							<th data-priority="5">amount</th>
 							<th data-priority="6">status</th>
-							<th data-priority="7">reason</th>
+							<th data-priority="7">paymentMethod</th>
 						</tr>
 					</thead>
 					<tfoot>
@@ -68,10 +68,10 @@
 							<th data-priority="1">creatorUsername</th>
 							<th data-priority="2">username</th>
 							<th data-priority="3">dateTime</th>
-							<th data-priority="4">paymentType</th>
+							<th data-priority="4">currency</th>
 							<th data-priority="5">amount</th>
 							<th data-priority="6">status</th>
-							<th data-priority="7">reason</th>
+							<th data-priority="7">paymentMethod</th>
 						</tr>
 					</tfoot>
 				</table>

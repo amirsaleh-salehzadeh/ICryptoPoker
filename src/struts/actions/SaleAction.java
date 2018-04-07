@@ -5,6 +5,7 @@
 package struts.actions;
 
 import hibernate.accounting.payment.PaymentDaoInterface;
+import hibernate.accounting.sale.SaleDaoInterface;
 import hibernate.config.ICryptoPokerDAOManager;
 import hibernate.user.UserDAOInterface;
 import tools.AMSErrorHandler;
@@ -34,9 +35,8 @@ import com.google.gson.Gson;
 
 import common.MessageENT;
 import common.PopupENT;
-
-import common.accounting.payment.PaymentENT;
-import common.accounting.payment.PaymentLST;
+import common.accounting.sale.SaleENT;
+import common.accounting.sale.SaleLST;
 
 /**
  * MyEclipse Struts Creation date: 09-21-2010
@@ -46,7 +46,7 @@ import common.accounting.payment.PaymentLST;
  * @struts.action parameter="reqCode" validate="true"
  * @struts.action-forward name="list" path="/jsp/farsi/news/newsList.jsp"
  */
-public class PaymentAction extends Action {
+public class SaleAction extends Action {
 	private static String success = "";
 	private static String error = "";
 	private String reqCode = "";
@@ -58,34 +58,33 @@ public class PaymentAction extends Action {
 		error = "";
 		reqCode = request.getParameter("reqCode");
 		if (reqCode == null) {
-			reqCode = "paymentManagement";
+			reqCode = "saleManagement";
 		}
 		System.out.println(reqCode);
-		if (reqCode.equalsIgnoreCase("paymentManagement") || reqCode.equals("gridJson")) {
-			return paymentManagement(request, mapping, form);
-		} else if (reqCode.equals("paymentEdit") || reqCode.equals("paymentView") || reqCode.equals("paymentNew")
-				|| reqCode.equals("paymentView")) {
-			return editPayment(request, mapping ,form);
-		} else if (reqCode.equals("saveUpdatePayment")) {
-			return saveUpdatePayment(request, mapping, form);
+		if (reqCode.equalsIgnoreCase("saleManagement") || reqCode.equals("gridJson")) {
+			return saleManagement(request, mapping, form);
+		} else if (reqCode.equals("saleEdit") || reqCode.equals("saleView") || reqCode.equals("saleNew")) {
+			return editSale(request, mapping, form);
+		} else if (reqCode.equals("saveUpdateSale")) {
+			return saveUpdateSale(request, mapping, form);
 
 		}
 		return mapping.findForward(reqCode);
 	}
 
-	private ActionForward paymentManagement(HttpServletRequest request, ActionMapping mapping, ActionForm form) {
-		createMenusForPayments(request);
-		PaymentLST paymentLST = (PaymentLST) form;
+	private ActionForward saleManagement(HttpServletRequest request, ActionMapping mapping, ActionForm form) {
+		createMenusForSales(request);
+		SaleLST saleLST = (SaleLST) form;
 		try {
-			paymentLST = getPaymentDAO().getPaymentLST(paymentLST);
+			saleLST = getSaleDAO().getSaleLST(saleLST) ;
 		} catch (AMSException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		request.setAttribute("paymentLST", paymentLST);// we call it a bean named paymentLST
+		request.setAttribute("saleLST", saleLST);// we call it a bean named paymentLST
 		Gson gson = new Gson();
-		String json = AMSUtililies.prepareTheJSONStringForDataTable(paymentLST.getCurrentPage(),
-				paymentLST.getTotalItems(), gson.toJson(paymentLST.getPaymentENTs()), "paymentId", success, error);
+		String json = AMSUtililies.prepareTheJSONStringForDataTable(saleLST.getCurrentPage(),
+				saleLST.getTotalItems(), gson.toJson(saleLST.getSaleENTs()),"saleId", success, error);
 		request.setAttribute("json", json);
 		MessageENT m = new MessageENT(success, error);
 		request.setAttribute("message", m);
@@ -93,24 +92,24 @@ public class PaymentAction extends Action {
 			return mapping.findForward("gridJson");
 		MessageENT mm = new MessageENT(success, error);
 		request.setAttribute("message", mm);
-		return mapping.findForward("paymentManagement");
+		return mapping.findForward("saleManagement");
 	}
 
 	//
-	private ActionForward editPayment(HttpServletRequest request, ActionMapping mapping, ActionForm form) {
-		PaymentENT paymentENT = new PaymentENT();
-		form = paymentENT;
-		long paymentId;
-		if (request.getParameter("paymentId") != null) {
-			paymentId = Long.parseLong(request.getParameter("paymentId"));
+	private ActionForward editSale(HttpServletRequest request, ActionMapping mapping, ActionForm form) {
+		SaleENT saleENT = new SaleENT();
+		form = saleENT;
+		long saleId;
+		if (request.getParameter("saleId") != null) {
+			saleId = Long.parseLong(request.getParameter("saleId"));
 		} else {
-			request.setAttribute("paymentENT", paymentENT);
-			return mapping.findForward("paymentEdit");
+			request.setAttribute("saleENT", saleENT);
+			return mapping.findForward("saleEdit");
 		}
-		paymentENT.setPaymentId(paymentId);
+		saleENT.setSaleId(saleId);
 		// saveTheForm();
 		try {
-			request.setAttribute("paymentENT", getPaymentDAO().getPaymentENT(paymentENT));
+			request.setAttribute("saleENT", getSaleDAO().getSaleENT(saleENT));
 		} catch (AMSException e) {
 			error = e.getMessage();
 			e.printStackTrace();
@@ -122,11 +121,11 @@ public class PaymentAction extends Action {
 	}
 
 	//
-	private void createMenusForPayments(HttpServletRequest request) {
+	private void createMenusForSales(HttpServletRequest request) {
 		List<PopupENT> popupEnts = new ArrayList<PopupENT>();
 		popupEnts.add(new PopupENT("hide-filters", "displaySearch();", "Show/Hide Search", "#"));
 		popupEnts
-				.add(new PopupENT("new-item", "callAnAction(\"payment.do?reqCode=paymentEdit\");", "New Payment", "#"));
+				.add(new PopupENT("new-item", "callAnAction(\"sale.do?reqCode=saleEdit\");", "New Sale", "#"));
 		popupEnts.add(new PopupENT("delete-item", "deleteSelectedItems(\"deletePayment\");", "Delete Selected", "#"));
 		// popupEnts
 		// .add(new PopupENT("edit-item",
@@ -135,30 +134,30 @@ public class PaymentAction extends Action {
 
 		List<PopupENT> popupGridEnts = new ArrayList<PopupENT>();
 		popupGridEnts.add(new PopupENT("hide-filters",
-				"callAnAction(\"payment.do?reqCode=paymentView&paymentId=REPLACEME\");", "View Payment", "#"));
+				"callAnAction(\"payment.do?reqCode=saleView&saleId=REPLACEME\");", "View Sale", "#"));
 		popupGridEnts.add(new PopupENT("edit-item",
-				"callAnAction(\"payment.do?reqCode=paymentEdit&paymentId=REPLACEME\");", "Edit Payment", "#"));
+				"callAnAction(\"payment.do?reqCode=saleEdit&saleId=REPLACEME\");", "Edit Sale", "#"));
 
 		popupGridEnts
-				.add(new PopupENT("delete-item", "deleteAnItem(\"REPLACEME\", \"deletePayment\");", "Remove", "#"));
+				.add(new PopupENT("delete-item", "deleteAnItem(\"REPLACEME\", \"deleteSale\");", "Remove", "#"));
 
 		request.setAttribute("settingMenuItem", popupEnts);
 		request.setAttribute("gridMenuItem", popupGridEnts);
 	}
 
 	//
-	private ActionForward saveUpdatePayment(HttpServletRequest request, ActionMapping mapping, ActionForm form) {
-		PaymentENT paymentENT = (PaymentENT) form;
+	private ActionForward saveUpdateSale(HttpServletRequest request, ActionMapping mapping, ActionForm form) {
+		SaleENT saleENT = (SaleENT) form;
 		try {
-			paymentENT = getPaymentDAO().savePayment(paymentENT);
-			success = "The user '" + paymentENT.getCreatorUsername() + "' saved successfully";
+			saleENT = getSaleDAO().saveUpdateSale(saleENT);
+			success = "The user '" + saleENT.getCreatorUsername() + "' saved successfully";
 		} catch (AMSException e) {
 			error = AMSErrorHandler.handle(request, this, e, "", "");
 		}
-		request.setAttribute("paymentENT", paymentENT);
+		request.setAttribute("saleENT", saleENT);
 		MessageENT m = new MessageENT(success, error);
 		request.setAttribute("message", m);
-		return mapping.findForward("paymentEdit");
+		return mapping.findForward("saleEdit");
 	}
 
 	//
@@ -180,29 +179,29 @@ public class PaymentAction extends Action {
 	// request.setAttribute("message", m);
 	// }
 	//
-	private PaymentENT getPaymentENT(HttpServletRequest request) {
+	private SaleENT getSaleENT(HttpServletRequest request) {
 		// date format for registration date
 		DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-		PaymentENT paymentENT = new PaymentENT();
-		if (request.getParameter("paymentId") != null)
-			paymentENT.setPaymentId(Long.parseLong(request.getParameter("paymentId")));
+		SaleENT saleENT = new SaleENT();
+		if (request.getParameter("saleId") != null)
+			saleENT.setSaleId(Long.parseLong(request.getParameter("saleId")));
 		else {
 
 		}
-		if (paymentENT.getDateTime() == null)
-			paymentENT.setDateTime(Date.valueOf(df.format(Calendar.getInstance().getTime())));
-		paymentENT.setUsername(request.getParameter("userName"));
-		paymentENT.setCreatorUsername(request.getParameter("creatorUsername"));
-		paymentENT.setBankResponse(request.getParameter("bankResponse"));
-		paymentENT.setStatus(Integer.parseInt(request.getParameter("status")));
-		paymentENT.setAmount(Double.parseDouble(request.getParameter("amount")));
-		paymentENT.setPaymentType(Integer.parseInt(request.getParameter("paymentType")));
-		paymentENT.setReason(request.getParameter("reason"));
+		if (saleENT.getDateTime() == null)
+			saleENT.setDateTime(Date.valueOf(df.format(Calendar.getInstance().getTime())));
+		saleENT.setUsername(request.getParameter("userName"));
+		saleENT.setCreatorUsername(request.getParameter("creatorUsername"));
+		saleENT.setBankResponse(request.getParameter("bankResponse"));
+		saleENT.setStatus(Integer.parseInt(request.getParameter("status")));
+		saleENT.setAmount(Double.parseDouble(request.getParameter("amount")));
+		saleENT.setPaymentMethod(Integer.parseInt(request.getParameter("paymentMethod")));
+		
 
-		return paymentENT;
+		return saleENT;
 	}
 
-	private static PaymentDaoInterface getPaymentDAO() {
-		return ICryptoPokerDAOManager.getPaymentDAOInterface();
+	private static SaleDaoInterface getSaleDAO() {
+		return ICryptoPokerDAOManager.getSaleDAOInterface();
 	}
 }

@@ -2,6 +2,7 @@ package hibernate.config;
 
 import hibernate.accounting.payment.PaymentDao;
 import hibernate.accounting.payment.PaymentDaoInterface;
+import hibernate.accounting.sale.SaleDaoInterface;
 import hibernate.security.SecurityDAO;
 import hibernate.security.SecurityDAOInterface;
 import hibernate.user.UserDAO;
@@ -12,6 +13,7 @@ public class ICryptoPokerDAOManager {
 	static UserDAOInterface _userDAOInterface ;
 	static SecurityDAOInterface _securityDAOInterface ;
 	static PaymentDaoInterface _paymentDAOInterface ;
+	private static SaleDaoInterface _saleDAOInterface ;
 	
 	public static UserDAOInterface getUserDAOInterface(){
 		if (_userDAOInterface == null) {
@@ -33,7 +35,11 @@ public class ICryptoPokerDAOManager {
 		}
 		return _paymentDAOInterface; 
 	}
-	
+
+	public static SaleDaoInterface getSaleDAOInterface() {
+		return _saleDAOInterface;
+	}
+
 	
 	
 	

@@ -10,7 +10,6 @@ import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
 import tools.AMSException;
-
 import common.accounting.payment.PaymentENT;
 import common.accounting.sale.SaleENT;
 import common.accounting.sale.SaleLST;
@@ -42,7 +41,7 @@ public class SaleDao extends BaseHibernateDAO implements SaleDaoInterface {
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
-			Criteria cr = session.createCriteria(PaymentENT.class);
+			Criteria cr = session.createCriteria(SaleENT.class);
 			cr.add(Restrictions.gt("username", lst.getSaleENT().getSaleId()));
 			lst.setTotalItems(cr.list().size());
 			cr.setFirstResult(lst.getFirst());
@@ -92,5 +91,25 @@ public class SaleDao extends BaseHibernateDAO implements SaleDaoInterface {
 		return ents ;
 		
 	}
+
+	@Override
+	public SaleENT getSaleENT(SaleENT ent) throws AMSException {
+		// TODO Auto-generated method stub
+		Session session = getSession();
+		Transaction tx = null;
+		
+		try {
+			tx = session.beginTransaction();
+			  ent =  (SaleENT)session.get(SaleENT.class, ent.getSaleId()) ;
+			tx.commit();
+		} catch (HibernateException e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return ent;
+	}	
 
 }

@@ -7,7 +7,7 @@
   <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/icryptopoker</property>
   <property name="hibernate.connection.username">root</property>
   <property name="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</property>
-  <mapping resource="common/accounting/sale/Sale.hbm.xml"/>
-  <mapping resource="common/accounting/payment/Payment.hbm.xml"/>
+  <mapping resource="common/accounting/sale/SaleENT.hbm.xml"/>
+  <mapping resource="common/accounting/payment/PaymentENT.hbm.xml"/>
  </session-factory>
 </hibernate-configuration>

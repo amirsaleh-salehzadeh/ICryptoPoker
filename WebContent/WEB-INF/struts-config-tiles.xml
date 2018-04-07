@@ -25,6 +25,7 @@
 		<action path="/t_payment" type="struts.actions.tiles.T_PaymentAction">
 			<set-property property="cancellable" value="true" />
 			<forward name="paymentManagement" path="page.payment" />
+			<forward name="paymentEdit" path="page.payment"/>
 		</action>
 	</action-mappings>
 	<message-resources parameter="mic.crm.struts.tiles.ApplicationResources" />

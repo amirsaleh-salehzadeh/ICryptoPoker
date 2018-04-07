@@ -2,16 +2,26 @@ package common.accounting.payment;
 
 import java.util.Date;
 
-public class PaymentENT {
-	private long paymentId ;
+import org.apache.struts.action.ActionForm;
+
+public class PaymentENT extends ActionForm {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4115521618560067141L;
+	/**
+	 * 
+	 */
+	
+	private long paymentId;
 	private String username;
 	private Date dateTime;
 	private int status;
 	private double amount;
-	private String reason;//integer
+	private String reason;// integer
 	private String bankResponse;
-	private String currency;//integer
-	private String creatorUsername ;
+	private String currency;// integer
+	private String creatorUsername;
 
 	public long getPaymentId() {
 		return paymentId;

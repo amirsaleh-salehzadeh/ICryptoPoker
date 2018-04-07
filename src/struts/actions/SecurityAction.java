@@ -184,6 +184,8 @@ public class SecurityAction extends Action {
 				.add(new PopupENT("delete-item",
 						"deleteSelectedItems(\"deleteGroup\");",
 						"Delete Selected", "#"));
+		
+		
 		List<PopupENT> popupGridEnts = new ArrayList<PopupENT>();
 		popupGridEnts
 				.add(new PopupENT(

@@ -6,22 +6,25 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<script src="js/icryptopokermainscripts.js"></script>
 </head>
 <body>
 	<div id='formContainer'>
 		<ams:message messageEntity="${message}"></ams:message>
-		<form id="dataFilterGridMainPage" action="payment.do"
-			autocomplete="off">
+		<html:form styleId="dataFilterGridMainPage" action="payment.do" method="post">
 			<input type="hidden" name="reqCode" value="saveUpdatePayment">
 			<div class="ui-block-solo">
+
 				<%
 					boolean view = ((request.getParameter("reqCode").equals("paymentView")) ? true : false);
-					if (view) {
+						if (view) {
 				%>
-				<bean:write name="paymentENT" property="username"  />
+
+				<bean:write name="paymentENT" property="username" />
 				<%
 					} else {
 				%>
+				<label>Username</label>
 				<html:text name="paymentENT" property="username" title="UserName" />
 				<%
 					}
@@ -29,26 +32,31 @@
 			</div>
 
 			<div class="ui-block-solo">
+				<label>Status</label>
 				<html:text name="paymentENT" property="status" styleId="status"
 					title="Status" />
 			</div>
 
 			<div class="ui-block-solo">
+				<label>Reason</label>
 				<html:textarea name="paymentENT" property="reason" styleId="reason"
 					title="Reason" />
 			</div>
 
 			<div class="ui-block-solo">
+				<label>Bank Response</label>
 				<html:textarea name="paymentENT" property="bankResponse"
 					styleId="bankResponse" title="Bank Response" />
 			</div>
 
 			<div class="ui-block-solo">
-				<html:textarea name="paymentENT" property="currency"
-					styleId="currency" title="Currency" />
+				<label>Payment Type</label>
+				<html:textarea name="paymentENT" property="paymentType"
+					styleId="paymentType" title="paymentType" />
 			</div>
 
 			<div class="ui-block-solo">
+				<label>Amount</label>
 				<html:textarea name="paymentENT" property="amount" styleId="amount"
 					title="Amount" />
 			</div>
@@ -59,10 +67,10 @@
 				</div>
 				<div class=ui-block-b>
 					<a href="#" data-role="button" class="save-icon" data-mini="true"
-						onclick="saveTheForm();">Save</a>
+						onclick='$("#dataFilterGridMainPage").submit();'>Save</a>
 				</div>
 			</div>
-		</form>
+		</html:form>
 	</div>
 </body>
 

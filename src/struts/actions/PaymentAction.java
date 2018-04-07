@@ -30,6 +30,8 @@ import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
+import com.google.gson.Gson;
+
 import common.MessageENT;
 import common.PopupENT;
 import common.accounting.payment.PaymentENT;
@@ -59,34 +61,30 @@ public class PaymentAction extends Action {
 		}
 		System.out.println(reqCode);
 		if (reqCode.equalsIgnoreCase("paymentManagement") || reqCode.equals("gridJson")) {
-			return paymentManagement(request, mapping);
+			return paymentManagement(request, mapping, form);
 		} else if (reqCode.equals("paymentEdit") || reqCode.equals("paymentView") || reqCode.equals("paymentNew")
 				|| reqCode.equals("paymentView")) {
-			return editPayment(request, mapping, form);
-		} else if (reqCode.equals("paymentSaveUpdate")) {
-			return saveUpdatePayment(request, mapping);
+			return editPayment(request, mapping ,form);
+		} else if (reqCode.equals("saveUpdatePayment")) {
+			return saveUpdatePayment(request, mapping, form);
 
 		}
 		return mapping.findForward(reqCode);
 	}
 
-	private ActionForward paymentManagement(HttpServletRequest request, ActionMapping mapping) {
+	private ActionForward paymentManagement(HttpServletRequest request, ActionMapping mapping, ActionForm form) {
 		createMenusForPayments(request);
-		PaymentLST paymentLST = getPaymentLST(request);
-		request.setAttribute("paymentLST", paymentLST);// we call it a bean named paymentLST
-		ObjectMapper mapper = new ObjectMapper();
-		String json = "";
+		PaymentLST paymentLST = (PaymentLST) form;
 		try {
-			json = mapper.writeValueAsString(paymentLST.getPaymentENTs());
-		} catch (JsonGenerationException e) {
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
+			paymentLST = getPaymentDAO().getPaymentLST(paymentLST);
+		} catch (AMSException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		json = AMSUtililies.prepareTheJSONStringForDataTable(paymentLST.getCurrentPage(), paymentLST.getTotalItems(),
-				json, "paymentId", success, error);
+		request.setAttribute("paymentLST", paymentLST);// we call it a bean named paymentLST
+		Gson gson = new Gson();
+		String json = AMSUtililies.prepareTheJSONStringForDataTable(paymentLST.getCurrentPage(),
+				paymentLST.getTotalItems(), gson.toJson(paymentLST.getPaymentENTs()), "paymentId", success, error);
 		request.setAttribute("json", json);
 		MessageENT m = new MessageENT(success, error);
 		request.setAttribute("message", m);
@@ -100,8 +98,8 @@ public class PaymentAction extends Action {
 	//
 	private ActionForward editPayment(HttpServletRequest request, ActionMapping mapping, ActionForm form) {
 		PaymentENT paymentENT = new PaymentENT();
+		form = paymentENT;
 		long paymentId;
-		System.out.println("here");
 		if (request.getParameter("paymentId") != null) {
 			paymentId = Long.parseLong(request.getParameter("paymentId"));
 		} else {
@@ -118,7 +116,6 @@ public class PaymentAction extends Action {
 		}
 		MessageENT m = new MessageENT(success, error);
 		request.setAttribute("message", m);
-
 		return mapping.findForward("paymentEdit");
 
 	}
@@ -149,22 +146,15 @@ public class PaymentAction extends Action {
 	}
 
 	//
-	private ActionForward saveUpdatePayment(HttpServletRequest request, ActionMapping mapping) {
-		// try {
-		// request.setAttribute("clientENTs", getClientDAO()
-		// .getClientsDropDown());
-		// } catch (AMSException e1) {
-		// // TODO Auto-generated catch block
-		// e1.printStackTrace();
-		// }
-		PaymentENT userENT = getPaymentENT(request);
+	private ActionForward saveUpdatePayment(HttpServletRequest request, ActionMapping mapping, ActionForm form) {
+		PaymentENT paymentENT = (PaymentENT) form;
 		try {
-			userENT = getPaymentDAO().savePayment(userENT);
-			success = "The user '" + userENT.getCreatorUsername() + "' saved successfully";
+			paymentENT = getPaymentDAO().savePayment(paymentENT);
+			success = "The user '" + paymentENT.getCreatorUsername() + "' saved successfully";
 		} catch (AMSException e) {
 			error = AMSErrorHandler.handle(request, this, e, "", "");
 		}
-		request.setAttribute("paymentENT", userENT);
+		request.setAttribute("paymentENT", paymentENT);
 		MessageENT m = new MessageENT(success, error);
 		request.setAttribute("message", m);
 		return mapping.findForward("paymentEdit");
@@ -205,39 +195,12 @@ public class PaymentAction extends Action {
 		paymentENT.setBankResponse(request.getParameter("bankResponse"));
 		paymentENT.setStatus(Integer.parseInt(request.getParameter("status")));
 		paymentENT.setAmount(Double.parseDouble(request.getParameter("amount")));
-		paymentENT.setCurrency(request.getParameter("currency"));
+		paymentENT.setPaymentType(Integer.parseInt(request.getParameter("paymentType")));
 		paymentENT.setReason(request.getParameter("reason"));
 
 		return paymentENT;
 	}
 
-	//
-	private PaymentLST getPaymentLST(HttpServletRequest request) {
-		String search = request.getParameter("searchUser.userName");
-		if (search == null)
-			search = "";
-		PaymentENT paymentENT = new PaymentENT();
-		int pageNo = 1;
-		int pageSize = 10;
-		if (request.getParameter("currentPage") != null)
-			pageNo = Integer.parseInt(request.getParameter("currentPage"));
-		if (request.getParameter("pageSize") != null)
-			pageSize = Integer.parseInt(request.getParameter("pageSize"));
-		paymentENT.setUsername(search);
-		PaymentLST paymentLST = new PaymentLST();
-		paymentLST.setPageSize(pageSize);
-		paymentLST.setSearchPayment(paymentENT);
-		paymentLST.setCurrentPage(pageNo);
-		try {
-			paymentLST = getPaymentDAO().getPaymentLST(paymentLST);
-		} catch (AMSException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return paymentLST;
-	}
-
-	//
 	private static PaymentDaoInterface getPaymentDAO() {
 		return ICryptoPokerDAOManager.getPaymentDAOInterface();
 	}

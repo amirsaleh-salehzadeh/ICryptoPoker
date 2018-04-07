@@ -26,8 +26,8 @@
         <property name="bankResponse" type="string">
             <column name="bank_response" />
         </property>
-        <property name="currency" type="string">
-            <column name="currency" />
+        <property name="paymentType" type="int">
+            <column name="payment_type" />
         </property>
         <property name="creatorUsername" type ="string">
    <column name="creator_username"></column>

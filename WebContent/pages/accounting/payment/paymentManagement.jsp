@@ -21,7 +21,7 @@
 <body>
 <body>
 
-	<form id="dataFilterGridMainPage" action="payment.do">
+	<html:form styleId="dataFilterGridMainPage" action="payment.do">
 		<ams:message messageEntity="${message}"></ams:message>
 		<input type="hidden" name="reqCode" id="reqCode"
 			value="paymentManagement"> <input type="hidden"
@@ -56,7 +56,7 @@
 							<th data-priority="1">creatorUsername</th>
 							<th data-priority="2">username</th>
 							<th data-priority="3">dateTime</th>
-							<th data-priority="4">currency</th>
+							<th data-priority="4">paymentType</th>
 							<th data-priority="5">amount</th>
 							<th data-priority="6">status</th>
 							<th data-priority="7">reason</th>
@@ -68,7 +68,7 @@
 							<th data-priority="1">creatorUsername</th>
 							<th data-priority="2">username</th>
 							<th data-priority="3">dateTime</th>
-							<th data-priority="4">currency</th>
+							<th data-priority="4">paymentType</th>
 							<th data-priority="5">amount</th>
 							<th data-priority="6">status</th>
 							<th data-priority="7">reason</th>
@@ -77,6 +77,6 @@
 				</table>
 			</ams:ajaxPaginate>
 		</div>
-	</form>
+	</html:form>
 </body>
 </html>

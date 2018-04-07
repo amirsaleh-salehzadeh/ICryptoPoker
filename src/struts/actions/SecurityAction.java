@@ -61,7 +61,7 @@ public class SecurityAction extends Action {
 			reqCode = "roleManagement";
 		}
 		if (reqCode.equalsIgnoreCase("roleManagement")) {
-			return roleManagement(request, mapping);
+			return roleManagement(request, mapping, form);
 		} else if (reqCode.equals("roleEdit")) {
 			return editRole(request, mapping, form);
 		} else if (reqCode.equals("saveUpdateRole")) {
@@ -122,9 +122,14 @@ public class SecurityAction extends Action {
 	}
 
 	private ActionForward roleManagement(HttpServletRequest request,
-			ActionMapping mapping) {
+			ActionMapping mapping, ActionForm form) {
 		createMenusForRole(request);
-		RoleLST roleLST = getRoleLST(request);
+		RoleLST roleLST = (RoleLST)form;
+		try {
+			roleLST = getSecurityDAO().getRolesList(roleLST);
+		} catch (AMSException e) {
+			e.printStackTrace();
+		}
 		request.setAttribute("roleLST", roleLST);
 		String json = "";
 		Gson g = new Gson();
@@ -191,34 +196,9 @@ public class SecurityAction extends Action {
 		request.setAttribute("gridMenuItem", popupGridEnts);
 	}
 
-	private RoleLST getRoleLST(HttpServletRequest request) {
-		String search = request.getParameter("searchRole.roleName");
-		if (search == null)
-			search = "";
-		int pageNo = 1;
-		int pageSize = 10;
-		if (request.getParameter("currentPage") != null)
-			pageNo = Integer.parseInt(request.getParameter("currentPage"));
-		if (request.getParameter("pageSize") != null)
-			pageSize = Integer.parseInt(request.getParameter("pageSize"));
-		RoleENT roleENT = new RoleENT(search, "", search);
-		RoleLST roleLST = new RoleLST(roleENT, pageNo, pageSize, true,
-				"category_role");
-		try {
-			roleLST = getSecurityDAO().getRolesList(roleLST);
-		} catch (AMSException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return roleLST;
-	}
-
 	// /////calls a DAO containg methods for the security management
 	private static SecurityDAOInterface getSecurityDAO() {
 		return ICryptoPokerDAOManager.getSecuirtyDAOInterface();
 	}
 
-	private static UserDAOInterface getUserDAO() {
-		return ICryptoPokerDAOManager.getUserDAOInterface();
-	}
 }

@@ -8,7 +8,11 @@
 		<form-bean name="paymentForm" type="common.accounting.payment.PaymentENT" />
 
 		<form-bean name="securityForm" type="common.security.RoleENT" />
+<<<<<<< HEAD
 
+=======
+		<form-bean name="securityForm" type="common.security.RoleLST" />
+>>>>>>> AmirV1
 	</form-beans>
 	<global-exceptions />
 	<global-forwards />

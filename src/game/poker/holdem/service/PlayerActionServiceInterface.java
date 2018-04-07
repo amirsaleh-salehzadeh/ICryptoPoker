@@ -23,6 +23,7 @@ THE SOFTWARE.
 */
 package game.poker.holdem.service;
 
+import tools.AMSException;
 import common.game.poker.holdem.GameENT;
 import game.poker.holdem.domain.HandEntity;
 import game.poker.holdem.domain.Player;
@@ -94,6 +95,8 @@ public interface PlayerActionServiceInterface {
 	/**
 	 * If a player is sitting out of the game, sit the player back in.
 	 * @param player {@link Player} who is back in the game
+	 * @return 
+	 * @throws AMSException 
 	 */
-	public void sitIn(Player player);
+	public Player sitIn(Player player) throws AMSException;
 }

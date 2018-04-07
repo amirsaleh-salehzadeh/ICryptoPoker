@@ -47,10 +47,9 @@ public class GameAction extends Action {
 			Player player = playerDaoImpl.findById(
 					request.getParameter("playerName"), null);
 			player.setName(request.getParameter("nickname"));
-			player.setSittingOut(true);
 			player = playerDaoImpl.merge(player, null);
-			GameServiceImpl gameService = new GameServiceImpl();
-			player = gameService.addNewPlayerToGame(game, player);
+//			GameServiceImpl gameService = new GameServiceImpl();
+//			player = gameService.addNewPlayerToGame(game, player);
 			request.setAttribute("game", game);
 			request.setAttribute("player", player);
 		}

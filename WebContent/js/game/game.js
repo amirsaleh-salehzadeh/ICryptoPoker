@@ -44,18 +44,17 @@ function leaveTable() {
 }
 
 function updateGameInfo(data) {
+	if (data.gameStatus == "NOT_STARTED") {
+		$("#handPotContainer").html('Game is not started');
+		return;
+	} else
+		$("#handPotContainer")
+				.html(
+						'<img alt="" src="images/game/stack.png" height="100%"><span>&nbsp;&cent;&nbsp;'
+								+ data.pot + '&nbsp;</span>');
 	$(".tableCards").each(function() {
 		$(this).html('<img alt="" src="images/game/card.jpg">');
 	});
-	// $(".sitPlaceContainer")
-	// .each(
-	// function() {
-	// if ($(this).attr("id") != null)
-	// $(this)
-	// .html(
-	// "<div class='sitPlaceThumbnailEmpty'>Seat</div>")
-	// .trigger("create");
-	// });
 	$("#handPotContainer")
 			.html(
 					'<img alt="" src="images/game/stack.png" height="100%"><span>&nbsp;&cent;&nbsp;'
@@ -68,13 +67,6 @@ function updateGameInfo(data) {
 	$('.pscontainer').each(function() {
 		$(this).attr("class", "pscontainer");
 	});
-	if (data.gameStatus == "NOT_STARTED") {
-		$("#handPotContainer").html('Game is not started');
-	} else
-		$("#handPotContainer")
-				.html(
-						'<img alt="" src="images/game/stack.png" height="100%"><span>&nbsp;&cent;&nbsp;'
-								+ data.pot + '&nbsp;</span>');
 	if (data.gameStatus == "END_HAND") {
 		endHand();
 		// clearInterval(timer);
@@ -390,6 +382,27 @@ function raise() {
 	var url = "/ICryptoPoker/REST/GetPlayerServiceWS/bet?gameId="
 			+ $("#gameID").val() + "&playerId=" + $("#playerID").val()
 			+ "&betAmount=" + $("#sliderRaise").val();
+	$.ajax({
+		url : url,
+		cache : false,
+		async : true,
+		success : function(data) {
+			if (data.success == true)
+				sendText("");
+			else
+				alert("raise failed");
+		},
+		error : function(xhr, ajaxOptions, thrownError) {
+			alert(xhr.responseText);
+		}
+	});
+	clearInterval(timer);
+}
+
+function sitInTheGame() {
+	var url = "/ICryptoPoker/REST/GetPlayerServiceWS/sitIn?gameId="
+			+ $("#gameID").val() + "&playerId=" + $("#playerID").val()
+			+ "&chips=" + $("#sitInChips").val()+ "&nickname=" + $("#nickname").val();
 	$.ajax({
 		url : url,
 		cache : false,

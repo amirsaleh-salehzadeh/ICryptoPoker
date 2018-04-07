@@ -56,9 +56,9 @@ public class Table {
 	};
 
 	public void addPlayer(String uid, Session session) {
-		Player p = pdao.findById(uid, null);
-		if (p.isSittingOut())
-			playerActionService.sitIn(pdao.findById(uid, null));
+//		Player p = pdao.findById(uid, null);
+//		if (p.isSittingOut())
+//			playerActionService.sitIn(pdao.findById(uid, null));
 		playerSessions.put(uid, session);
 	}
 

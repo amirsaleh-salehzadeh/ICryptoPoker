@@ -158,6 +158,33 @@ public class SecurityAction extends Action {
 						"deleteSelectedItems(\"deleteRole\");",
 						"Delete Selected", "#"));
 		List<PopupENT> popupGridEnts = new ArrayList<PopupENT>();
+
+		// popupGridEnts
+		// .add(new PopupENT(
+		// "edit-item",
+		// "callAnAction(\"security.do?reqCode=roleEdit&roleName=REPLACEME\");",
+		// "Edit Role", "#"));
+		popupGridEnts.add(new PopupENT("delete-item",
+				"deleteAnItem(\"REPLACEME\", \"deleteRole\");", "Remove", "#")); //
+		request.setAttribute("settingMenuItem", popupEnts);
+		request.setAttribute("gridMenuItem", popupGridEnts);
+	}
+
+	private void createMenusForGroup(HttpServletRequest request) {
+		List<PopupENT> popupEnts = new ArrayList<PopupENT>();
+		popupEnts.add(new PopupENT("hide-filters", "displaySearch();",
+				"Show/Hide Search", "#"));
+		popupEnts.add(new PopupENT("new-item",
+				"callAnAction(\"security.do?reqCode=groupEdit\");",
+				"New Group", "#"));
+		popupEnts
+				.add(new PopupENT("delete-item",
+						"deleteSelectedItems(\"deleteGroup\");",
+						"Delete Selected", "#"));
+		
+		
+		List<PopupENT> popupGridEnts = new ArrayList<PopupENT>();
+
 		popupGridEnts
 				.add(new PopupENT(
 						"edit-item",

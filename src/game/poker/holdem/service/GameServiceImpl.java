@@ -235,11 +235,12 @@ public class GameServiceImpl implements GameServiceInterface {
 			return;
 		Set<Player> players = game.getPlayers();
 		double shareOfPlayers = 0;
-		if (game.getCurrentHand() != null)
-			shareOfPlayers = game.getCurrentHand().getTotalBetAmount()
-					/ game.getPlayers().size();
-		if (game.isStarted() && players.size() > 0) {
+		
+		if (players.size() > 0) {
 			PlayerDaoImpl pdao = new PlayerDaoImpl();
+			if (game.getCurrentHand() != null)
+				shareOfPlayers = game.getCurrentHand().getTotalBetAmount()
+						/ players.size();
 			for (Player p : players) {
 				if (shareOfPlayers > 0)
 					p.setTotalChips((int) (p.getChips() + p.getTotalChips() + Math
@@ -256,15 +257,14 @@ public class GameServiceImpl implements GameServiceInterface {
 				p.setGameId(0);
 				pdao.merge(p, null);
 			}
-			GameDaoImpl gameDao = new GameDaoImpl();
-			game.setCurrentHand(null);
-			game.setStarted(false);
-			game.setPlayerInBTN(null);
-			game.setPlayersRemaining(0);
-			game.setPlayers(new HashSet<Player>());
-			game = gameDao.merge(game, null);
 		}
-
+		GameDaoImpl gameDao = new GameDaoImpl();
+		game.setCurrentHand(null);
+		game.setStarted(false);
+		game.setPlayerInBTN(null);
+		game.setPlayersRemaining(0);
+		game.setPlayers(new HashSet<Player>());
+		game = gameDao.merge(game, null);
 	}
 
 	@Override

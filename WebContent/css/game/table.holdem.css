@@ -26,26 +26,6 @@
 	background-color: rgba(108, 112, 120, .4);
 }
 
-.constantBannersTop {
-	height: 10%;
-	width: 100%;
-	background-color: rgba(108, 112, 120, .4);
-	width: 100%;
-	float: none;
-}
-
-.constantBannersTop>div {
-	height: 100%;
-	border-bottom: 1px solid #bb0000;
-	padding-left: 5px;
-	padding-right: 5px;
-	box-shadow: inset 1px 1px 2px rgba(190, 191, 193, 0.7), inset 3px 15px
-		45px rgba(128, 135, 151, 0.1), inset -1px -1px 2px
-		rgba(81, 89, 106, 0.5), inset -3px -15px 45px rgba(108, 112, 120, 0.8),
-		1px 5px 30px -4px rgba(142, 145, 151, 0.1);
-	whitespace: nowrap;
-}
-
 .sitPlaceContainer {
 	position: relative;
 	z-index: 1;
@@ -111,7 +91,6 @@
 	height: 100%;
 	width: 100%;
 }
-
 
 .playerInfo {
 	border: 1px solid rgba(0, 0, 0, 0.1);
@@ -198,8 +177,8 @@
 	height: 100%;
 	margin: 0 auto;
 	border: 1px solid rgba(0, 0, 0, .1);
-	border-radius: 50%;
-	font-size: 80%;
+	border-radius: 20%;
+	font-size: 100%;
 	box-shadow: inset 1px 1px 2px rgba(255, 66, 66, 0.3), inset 3px 15px
 		45px rgba(255, 33, 33, 0.1), inset -1px -1px 2px rgba(55, 0, 0, 0.5),
 		inset -3px -15px 45px rgba(122, 0, 0, .3), 1px 5px 30px -4px
@@ -208,7 +187,7 @@
 
 .winner {
 	/* 	the shadow for the winner box */
-		-webkit-box-shadow: -28px 2px 135px 0px rgba(255, 255, 255, 1);
+	-webkit-box-shadow: -28px 2px 135px 0px rgba(255, 255, 255, 1);
 	-moz-box-shadow: -28px 2px 135px 0px rgba(255, 255, 255, 1);
 	box-shadow: -28px 2px 135px 0px rgba(255, 255, 255, 1);
 	/*  */
@@ -236,10 +215,11 @@
 		rgba(251, 223, 147, 1) 100%);
 	/*  */
 }
-.sitOut{
+
+.sitOut {
 	opacity: 0.5;
-	
 }
+
 .loser {
 	/* 	the shadow for the loser box */
 	-webkit-box-shadow: -28px 2px 135px 0px rgba(255, 255, 255, 1);
@@ -271,30 +251,117 @@
 		rgba(240, 47, 23, 1) 71%, rgba(231, 56, 39, 1) 100%) !important;
 	/* 	 */
 }
-#btnChat{
-	bottom:2%;
-	width:42px;
+
+#btnChat {
+	bottom: 2%;
+	width: 42px;
 }
-#btnChat img{
-	width:42px !important;
-	height:42px !important;
+
+#btnChat img {
+	width: 42px !important;
+	height: 42px !important;
 }
-#chatBoxContainer{
-	border-width:2px;
-	border-radius:3px;
-	border-color:maroon;
-	width:100%;
-	height:100%;
-display:none;
+
+#chatBoxContainer {
+	border-width: 2px;
+	border-radius: 3px;
+	border-color: maroon;
+	width: 100%;
+	height: 100%;
+	display: none;
 }
-#btnFullScreen{
-	width:42px;
-	height:42px;
-	
+
+#btnFullScreen {
+	width: 42px;
+	height: 42px;
 }
-.leftSideSits{
-	display: -webkit-flex !important; /* Safari */
-    -webkit-flex-wrap: wrap !important; /* Safari 6.1+ */
-    display: flex !important;   
-    flex-wrap: wrap !important;
+
+#toLobbyIcon {
+	padding-top: 10px !important;
+	left: 0 !important;
+	margin-left: 0 !important;
+}
+
+#toLobbyIcon:after {
+	background: url(../../images/icons/undo.png) 50% 50% no-repeat;
+	background-size: 22px 22px;
+	padding-top: 0px !important;
+	left: 0 !important;
+	margin-left: 0 !important;
+}
+
+
+#chipsIcon {
+	padding-top: 10px !important;
+	left: 0 !important;
+	margin-left: 0 !important;
+}
+
+#chipsIcon:after {
+	background: url(../../images/game/money.png) 50% 50% no-repeat;
+	background-size: 22px 22px;
+	padding-top: 0px !important;
+	left: 0 !important;
+	margin-left: 0 !important;
+}
+
+#userIcon {
+	padding-top: 10px !important;
+	left: 0 !important;
+	margin-left: 0 !important;
+}
+
+#userIcon:after {
+	background: url(../../images/game/user.png) 50% 50% no-repeat;
+	background-size: 22px 22px;
+	padding-top: 0px !important;
+	left: 0 !important;
+	margin-left: 0 !important;
+}
+
+#smallIcon {
+	padding-top: 3px !important;
+	height: 100% !important;
+	left: 0 !important;
+	margin-left: 0 !important;
+}
+
+#smallIcon:after {
+	background: none;
+	background-size: 22px 22px;
+	padding-top: 0px !important;
+	left: 0 !important;
+	margin-left: 0 !important;
+}
+
+#gameIcon:after {
+	background: url(../../images/icons/finish.png) 50% 50% no-repeat;
+	background-size: 22px 22px;
+	padding-top: 0px !important;
+	left: 0 !important;
+	margin-left: 0 !important;
+}
+
+#gameIcon {
+	padding-top: 10px !important;
+	left: 0 !important;
+	margin-left: 3 !important;
+}
+
+.constantBannersTop>ul>li>a {
+	background-color: rgba(108, 112, 120, .4) !important;
+	height: 10% !important;
+}
+
+.constantBannersTop {
+	background-color: transparent !important;
+}
+
+.constantBannersTop>ul>li>a {
+	color: white !important;
+	text-shadow: none !important;
+	box-shadow: inset 1px 1px 2px rgba(190, 191, 193, 0.7), inset 3px 15px
+		45px rgba(128, 135, 151, 0.1), inset -1px -1px 2px
+		rgba(81, 89, 106, 0.5), inset -3px -15px 45px rgba(108, 112, 120, 0.8),
+		1px 5px 30px -4px rgba(142, 145, 151, 0.1) !important;
 }

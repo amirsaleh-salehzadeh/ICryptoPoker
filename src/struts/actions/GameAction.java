@@ -43,33 +43,15 @@ public class GameAction extends Action {
 		if (reqCode.equalsIgnoreCase("joinAGame")) {
 			GameDaoImpl gamedao = new GameDaoImpl();
 			long gameId = Long.parseLong(request.getParameter("gameId"));
-			int chips = Integer.parseInt(request.getParameter("chips"));
 			GameENT game = gamedao.findById(gameId, null);
-			// TODO: AMS>> FIX Username
-			// Player player = playerDaoImpl.findById(request.getRemoteUser(),
-			// null);
 			Player player = playerDaoImpl.findById(
 					request.getParameter("playerName"), null);
 			player.setName(request.getParameter("nickname"));
-			if (chips > player.getTotalChips() && !player.isSittingOut()) {
-				error = "Not Enough Credit";
-				reqCode = "goToLobby";
-			} else {
-				if (!player.isSittingOut()) {
-					player.setChips(chips);
-//					player.setTotalChips(player.getTotalChips()
-//							- player.getChips());
-				}
-				if (player.getChips() <= 0)
-					player.setChips(chips);
-				 player.setTotalChips(player.getTotalChips()
-				 - player.getChips());
-				player.setSittingOut(false);
-				player = playerDaoImpl.merge(player, null);
-				GameServiceImpl gameService = new GameServiceImpl();
-				player = gameService.addNewPlayerToGame(game, player);
-				request.setAttribute("game", game);
-			}
+			player.setSittingOut(true);
+			player = playerDaoImpl.merge(player, null);
+			GameServiceImpl gameService = new GameServiceImpl();
+			player = gameService.addNewPlayerToGame(game, player);
+			request.setAttribute("game", game);
 			request.setAttribute("player", player);
 		}
 		// startNewHand

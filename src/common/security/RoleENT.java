@@ -1,6 +1,9 @@
 package common.security;
 
-public class RoleENT {
+import org.apache.struts.action.ActionForm;
+
+public class RoleENT extends ActionForm {
+	static final long serialVersionUID = 42L;
 	String roleName = "";
 	String roleCategory;
 	String comment = "";

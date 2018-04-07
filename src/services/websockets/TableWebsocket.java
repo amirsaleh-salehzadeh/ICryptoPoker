@@ -67,10 +67,10 @@ public class TableWebsocket {
 		System.out.println("close");
 		for (Table table : games) {
 			if (table.getGame().getId() == guid) {
-				table.removePlayer(uid);
 				System.out.println(uid + " has left");
-				if (table.getPlayerSessions() == null
-						|| table.getPlayerSessions().size() == 0) {
+				if (table.getPlayerSessions().size() > 1)
+					table.removePlayer(uid);
+				else {
 					GameENT g = table.getGame();
 					GameServiceImpl gservice = new GameServiceImpl();
 					gservice.closeTheGame(g, null);

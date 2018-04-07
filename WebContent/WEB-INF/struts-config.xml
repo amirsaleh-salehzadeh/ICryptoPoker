@@ -3,11 +3,13 @@
 
 <struts-config>
 	<data-sources />
-	<form-beans />
+	<form-beans>
+		<form-bean name="securityForm" type="common.security.RoleENT" />
+	</form-beans>
 	<global-exceptions />
 	<global-forwards />
 	<action-mappings>
-		<action path="/security" type="struts.actions.SecurityAction">
+		<action path="/security" type="struts.actions.SecurityAction" name="securityForm">
 			<set-property property="cancellable" value="true" />
 			<forward name="roleManagement" path="/pages/security/roleManagement.jsp" />
 			<forward name="roleEdit" path="/pages/security/roleEdit.jsp" />
@@ -30,8 +32,9 @@
 		</action>
 		<action path="/payment" type="struts.actions.PaymentAction">
 			<set-property property="cancellable" value="true" />
-			<forward name="paymentManagement" path="/pages/accounting/payment/paymentManagement.jsp" />
-			<forward name="paymentEdit" path="/pages/accounting/payment/paymentEdit.jsp"/>
+			<forward name="paymentManagement"
+				path="/pages/accounting/payment/paymentManagement.jsp" />
+			<forward name="paymentEdit" path="/pages/accounting/payment/paymentEdit.jsp" />
 			<forward name="gridJson" path="/pages/json.jsp" />
 		</action>
 		<action parameter="reqCode" path="/logOut" type="struts.actions.LogOutAction">

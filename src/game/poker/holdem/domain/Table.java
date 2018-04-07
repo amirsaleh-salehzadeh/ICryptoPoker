@@ -78,6 +78,15 @@ public class Table {
 			e.printStackTrace();
 		}
 		playerSessions.remove(uid, playerSessions.get(uid));
+		if (playerSessions.size() == 1 && game.getCurrentHand() != null) {
+			try {
+				handService.endHand(game);
+			} catch (AMSException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			game = gdao.findById(game.getId(), null);
+		}
 		handCount--;
 		sendToAll("");
 	}
@@ -91,8 +100,8 @@ public class Table {
 		// To check when to start next round
 		if (game.isStarted() && game.getCurrentHand() != null) {
 			Set<PlayerHand> pltmp = getValidPlayers();
-//			System.out.println("getValidPlayers SIZE in senttoall "
-//					+ pltmp.size());
+			// System.out.println("getValidPlayers SIZE in senttoall "
+			// + pltmp.size());
 			try {
 				if (handCount >= pltmp.size() || pltmp.size() == 1)
 					GameUtil.goToNextStepOfTheGame(game);
@@ -104,7 +113,7 @@ public class Table {
 				e1.printStackTrace();
 			}
 		}
-		
+
 		// START THE GAME AND HAND
 		if (playerSessions.size() > 1 && !game.isStarted()
 				&& gs.equals(GameStatus.NOT_STARTED)) {
@@ -140,7 +149,7 @@ public class Table {
 		}
 		return result;
 	}
-	
+
 	public void setGameId(long guid) {
 		game = gdao.findById(guid, null);
 	}

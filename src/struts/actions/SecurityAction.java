@@ -19,8 +19,12 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.annotate.JsonAutoDetect.Visibility;
+import org.codehaus.jackson.annotate.JsonMethod;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
+
+import com.google.gson.Gson;
 
 import tools.AMSErrorHandler;
 import tools.AMSException;
@@ -63,14 +67,15 @@ public class SecurityAction extends Action {
 		} else if (reqCode.equals("roleEdit")) {
 			return editRole(request, mapping, form);
 		} else if (reqCode.equals("saveUpdateRole")) {
-			return saveUpdateRole(request, mapping);
+			return saveUpdateRole(request, mapping, form);
 		} 
 		return af;
 	}
 
 
 	private ActionForward saveUpdateRole(HttpServletRequest request,
-			ActionMapping mapping) {
+			ActionMapping mapping, ActionForm form) {
+		RoleENT test = (RoleENT)form;
 		RoleENT roleENT = getRoleENT(request);
 		try {
 			roleENT = getSecurityDAO().saveUpdateRole(roleENT, null);
@@ -88,7 +93,7 @@ public class SecurityAction extends Action {
 
 	private ActionForward editRole(HttpServletRequest request,
 			ActionMapping mapping, ActionForm form) {
-		RoleENT roleENT = new RoleENT();
+		RoleENT roleENT = (RoleENT) form;
 		if (request.getParameter("roleName") == null) {
 			request.setAttribute("roleENT", roleENT);
 			return mapping.findForward("roleEdit");
@@ -126,20 +131,11 @@ public class SecurityAction extends Action {
 		createMenusForRole(request);
 		RoleLST roleLST = getRoleLST(request);
 		request.setAttribute("roleLST", roleLST);
-		ObjectMapper objectMapper  ;
-		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
-		try {
-			json = mapper.writeValueAsString(roleLST.getRoleENTs());
-		} catch (JsonGenerationException e) {
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		Gson g = new Gson();
+		String j = g.toJson(roleLST.getRoleENTs());
 		json = AMSUtililies.prepareTheJSONStringForDataTable(
-				roleLST.getCurrentPage(), roleLST.getTotalItems(), json,
+				roleLST.getCurrentPage(), roleLST.getTotalItems(), j,
 				"roleName", success, error);
 		request.setAttribute("json", json);
 		if (request.getParameter("reqCodeGrid") != null

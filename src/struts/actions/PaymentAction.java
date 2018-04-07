@@ -98,7 +98,6 @@ public class PaymentAction extends Action {
 	//
 	private ActionForward editPayment(HttpServletRequest request, ActionMapping mapping, ActionForm form) {
 		PaymentENT paymentENT = new PaymentENT();
-		form = paymentENT;
 		long paymentId;
 		if (request.getParameter("paymentId") != null) {
 			paymentId = Long.parseLong(request.getParameter("paymentId"));
@@ -147,7 +146,8 @@ public class PaymentAction extends Action {
 
 	//
 	private ActionForward saveUpdatePayment(HttpServletRequest request, ActionMapping mapping, ActionForm form) {
-		PaymentENT paymentENT = (PaymentENT) form;
+		PaymentLST lst = (PaymentLST) form;
+		PaymentENT paymentENT = lst.getSearchPayment();
 		try {
 			paymentENT = getPaymentDAO().savePayment(paymentENT);
 			success = "The user '" + paymentENT.getCreatorUsername() + "' saved successfully";

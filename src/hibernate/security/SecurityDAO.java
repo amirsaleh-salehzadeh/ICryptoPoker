@@ -101,7 +101,7 @@ public class SecurityDAO extends BaseHibernateDAO implements
 			} catch (AMSException e) {
 				e.printStackTrace();
 			}
-			String searchKey = roleLST.getSearchRole().getRoleName();
+			String searchKey = roleLST.getRoleName();
 			String query = "Select r.* from roles r where "
 					+ "r.role_name like ? or r.category_role like ? ";
 			query += " order by " + roleLST.getSortedByField();

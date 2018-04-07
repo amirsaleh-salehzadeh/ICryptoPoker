@@ -20,11 +20,12 @@
 <body>
 	<html:form styleId="dataFilterGridMainPage" action="security.do">
 		<ams:message messageEntity="${message}"></ams:message>
-		<input type="hidden" name="reqCode" id="reqCode" value="roleManagement">
+		<input type="hidden" name="reqCode" id="reqCode"
+			value="roleManagement">
 		<input type="hidden" name="reqCodeGrid" id="reqCodeGrid" value="">
 		<div class="ui-grid-solo" id="searchFilters">
-					<html:text name="roleLST" property="searchRole.roleName"
-						onkeyup="refreshGrid();" title="Role Name" ></html:text>
+			<html:text property="roleName"
+				onkeyup="refreshGrid();" title="Role Name"></html:text>
 		</div>
 		<div class="ui-grid-solo">
 			<bean:define id="totalRows" name="roleLST" property="totalItems"
@@ -43,8 +44,9 @@
 				popupID="roleManagementSettingMenu"
 				popupGridSettingItems="${gridMenuItem}"
 				popupMenuSettingItems="${settingMenuItem}">
-				<table id="gridList" class="mainGrid display cell-border dt-body-center"
-					cellspacing="0" width="100%" data-mini="true">
+				<table id="gridList"
+					class="mainGrid display cell-border dt-body-center" cellspacing="0"
+					width="100%" data-mini="true">
 					<thead>
 						<tr>
 							<th><input type="checkbox" id="checkAllHead"></th>

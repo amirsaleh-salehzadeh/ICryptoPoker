@@ -44,18 +44,18 @@
 		<html:form styleId="dataFilterGridMainPage" action="security.do" method="POST">
 			<input type="hidden" name="reqCode" value="saveUpdateRole">
 			<div class="ui-block-solo">
-				<html:text name="roleENT" property="roleName" title="Role Name" />
-				<html:hidden name="roleENT" property="roleName" styleId="roleName" />
+				<html:text property="roleENT.roleName" title="Role Name" />
+				<html:hidden property="roleENT.roleName" styleId="roleName" />
 			</div>
 			<div class="ui-block-solo">
-				<html:text name="roleENT" property="roleCategory"
+				<html:text property="roleENT.roleCategory"
 					styleId="roleCategory" title="Category" onkeyup="completeMe()" />
 				<ul id="autocomplete" data-role="listview" data-inset="true"
 					data-filter="true" class="autocomplete-list"
 					data-input="#roleCategory"></ul>
 			</div>
 			<div class="ui-block-solo">
-				<html:textarea name="roleENT" property="comment" styleId="comment"
+				<html:textarea property="roleENT.comment" styleId="comment"
 					title="Comment" />
 			</div>
 			<div class=ui-grid-a>

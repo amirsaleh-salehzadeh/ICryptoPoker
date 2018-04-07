@@ -153,7 +153,7 @@ public class SecurityAction extends Action {
 						"deleteSelectedItems(\"deleteRole\");",
 						"Delete Selected", "#"));
 		List<PopupENT> popupGridEnts = new ArrayList<PopupENT>();
-<<<<<<< HEAD
+
 		// popupGridEnts
 		// .add(new PopupENT(
 		// "edit-item",
@@ -179,8 +179,7 @@ public class SecurityAction extends Action {
 		
 		
 		List<PopupENT> popupGridEnts = new ArrayList<PopupENT>();
-=======
->>>>>>> AmirV1
+
 		popupGridEnts
 				.add(new PopupENT(
 						"edit-item",

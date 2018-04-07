@@ -5,14 +5,18 @@ import java.util.Date;
 import org.apache.struts.action.ActionForm;
 
 public class PaymentENT extends ActionForm {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 4115521618560067141L;
+	
+
+	
+	
 	/**
 	 * 
 	 */
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4115521618560067141L;
 	private long paymentId;
 	private String username;
 	private Date dateTime;

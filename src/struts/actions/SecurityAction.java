@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import hibernate.config.ICryptoPokerDAOManager;
 import hibernate.security.SecurityDAOInterface;
 import hibernate.user.UserDAOInterface;
@@ -19,8 +18,12 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.annotate.JsonAutoDetect.Visibility;
+import org.codehaus.jackson.annotate.JsonMethod;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
+
+import com.google.gson.Gson;
 
 import tools.AMSErrorHandler;
 import tools.AMSException;
@@ -30,7 +33,6 @@ import common.MessageENT;
 import common.PopupENT;
 import common.security.RoleENT;
 import common.security.RoleLST;
-
 
 /**
  * MyEclipse Struts Creation date: 09-21-2010
@@ -63,15 +65,14 @@ public class SecurityAction extends Action {
 		} else if (reqCode.equals("roleEdit")) {
 			return editRole(request, mapping, form);
 		} else if (reqCode.equals("saveUpdateRole")) {
-			return saveUpdateRole(request, mapping);
-		} 
+			return saveUpdateRole(request, mapping, form);
+		}
 		return af;
 	}
 
-
 	private ActionForward saveUpdateRole(HttpServletRequest request,
-			ActionMapping mapping) {
-		RoleENT roleENT = getRoleENT(request);
+			ActionMapping mapping, ActionForm form) {
+		RoleENT roleENT = (RoleENT) form;
 		try {
 			roleENT = getSecurityDAO().saveUpdateRole(roleENT, null);
 			success = "The role '" + roleENT.getRoleName()
@@ -85,10 +86,9 @@ public class SecurityAction extends Action {
 		return mapping.findForward("roleEdit");
 	}
 
-
 	private ActionForward editRole(HttpServletRequest request,
 			ActionMapping mapping, ActionForm form) {
-		RoleENT roleENT = new RoleENT();
+		RoleENT roleENT = (RoleENT) form;
 		if (request.getParameter("roleName") == null) {
 			request.setAttribute("roleENT", roleENT);
 			return mapping.findForward("roleEdit");
@@ -126,20 +126,11 @@ public class SecurityAction extends Action {
 		createMenusForRole(request);
 		RoleLST roleLST = getRoleLST(request);
 		request.setAttribute("roleLST", roleLST);
-		ObjectMapper objectMapper  ;
-		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
-		try {
-			json = mapper.writeValueAsString(roleLST.getRoleENTs());
-		} catch (JsonGenerationException e) {
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		Gson g = new Gson();
+		String j = g.toJson(roleLST.getRoleENTs());
 		json = AMSUtililies.prepareTheJSONStringForDataTable(
-				roleLST.getCurrentPage(), roleLST.getTotalItems(), json,
+				roleLST.getCurrentPage(), roleLST.getTotalItems(), j,
 				"roleName", success, error);
 		request.setAttribute("json", json);
 		if (request.getParameter("reqCodeGrid") != null
@@ -162,6 +153,7 @@ public class SecurityAction extends Action {
 						"deleteSelectedItems(\"deleteRole\");",
 						"Delete Selected", "#"));
 		List<PopupENT> popupGridEnts = new ArrayList<PopupENT>();
+<<<<<<< HEAD
 		// popupGridEnts
 		// .add(new PopupENT(
 		// "edit-item",
@@ -187,27 +179,17 @@ public class SecurityAction extends Action {
 		
 		
 		List<PopupENT> popupGridEnts = new ArrayList<PopupENT>();
+=======
+>>>>>>> AmirV1
 		popupGridEnts
 				.add(new PopupENT(
 						"edit-item",
-						"callAnAction(\"security.do?reqCode=groupEdit&groupID=REPLACEME\");",
-						"Edit Group", "#"));
+						"callAnAction(\"security.do?reqCode=roleEdit&roleName=REPLACEME\");",
+						"Edit Role", "#"));
 		popupGridEnts.add(new PopupENT("delete-item",
-				"deleteAnItem(REPLACEME, \"deleteGroup\");", "Remove", "#")); //
+				"deleteAnItem(\"REPLACEME\", \"deleteRole\");", "Remove", "#")); //
 		request.setAttribute("settingMenuItem", popupEnts);
 		request.setAttribute("gridMenuItem", popupGridEnts);
-	}
-
-	private RoleENT getRoleENT(HttpServletRequest request) {
-		RoleENT roleENT = new RoleENT();
-		if (request.getParameter("roleName") != null)
-			roleENT.setRoleName(request.getParameter("roleName"));
-		else
-			roleENT.setRoleName("");
-		roleENT.setRoleCategory(request.getParameter("roleCategory"));
-		roleENT.setRoleName(request.getParameter("roleName"));
-		roleENT.setComment(request.getParameter("comment"));
-		return roleENT;
 	}
 
 	private RoleLST getRoleLST(HttpServletRequest request) {
@@ -232,12 +214,10 @@ public class SecurityAction extends Action {
 		return roleLST;
 	}
 
-
 	// /////calls a DAO containg methods for the security management
 	private static SecurityDAOInterface getSecurityDAO() {
 		return ICryptoPokerDAOManager.getSecuirtyDAOInterface();
 	}
-
 
 	private static UserDAOInterface getUserDAO() {
 		return ICryptoPokerDAOManager.getUserDAOInterface();

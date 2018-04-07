@@ -3,14 +3,16 @@ var wsUri = "";
 
 function fitElementsWithinScreen() {
 	$(".sitPlaceThumbnail").each(function() {
-		$(this).width($("#userSitPlace").height() / 2);
-		$(this).height($("#userSitPlace").height() / 2);
+		$(this).width($("#userSitPlace").height() * 0.7);
+		$(this).height($("#userSitPlace").height() * 0.7);
 		$(this).trigger("create");
+		
 	});
 	$(".sitPlaceThumbnailEmpty").each(function() {
-		$(this).width($("#userSitPlace").height() / 2);
-		$(this).height($("#userSitPlace").height() / 2);
+		$(this).width($("#userSitPlace").height() * 0.7);
+		$(this).height($("#userSitPlace").height() * 0.7);
 		$(this).trigger("create");
+		$(this).attr("onclick","sitIn()");
 	});
 	$(".card").each(
 			function() {
@@ -77,8 +79,8 @@ $(document).ready(
 			$(window).on("resize", function() {
 				fitElementsWithinScreen();
 			});
-			$("#flopsContainer div").height(
-					$("#flop1").width() + ($("#flop1").width() * 0.7));
+//			$("#flopsContainer div").height(
+//					$("#flop1").width() + ($("#flop1").width() * 0.7));
 			// resetplayerInfo();
 			$("#sliderRaise").slider();
 		});

@@ -47,15 +47,15 @@ function updateGameInfo(data) {
 	$(".tableCards").each(function() {
 		$(this).html('<img alt="" src="images/game/card.jpg">');
 	});
-	$(".sitPlaceContainer")
-			.each(
-					function() {
-						if ($(this).attr("id") != null)
-							$(this)
-									.html(
-											"<div class='sitPlaceThumbnailEmpty'>Seat</div>")
-									.trigger("create");
-					});
+	// $(".sitPlaceContainer")
+	// .each(
+	// function() {
+	// if ($(this).attr("id") != null)
+	// $(this)
+	// .html(
+	// "<div class='sitPlaceThumbnailEmpty'>Seat</div>")
+	// .trigger("create");
+	// });
 	$("#handPotContainer")
 			.html(
 					'<img alt="" src="images/game/stack.png" height="100%"><span>&nbsp;&cent;&nbsp;'
@@ -175,8 +175,8 @@ function updatePlayerInfo(data) {
 			$("#sliderRaise").attr("max", parseInt(data.chips)).slider(
 					"refresh");
 		}
-		$("#sliderRaise").attr("value", $("#sliderRaise").attr("min"))
-		.slider("refresh");
+		$("#sliderRaise").attr("value", $("#sliderRaise").attr("min")).slider(
+				"refresh");
 		playerToActId = playerId;
 		countDownTotal = 15000;
 		timeLeft = 0;
@@ -197,11 +197,11 @@ function updatePlayerInfo(data) {
 				$("#amountToCallcontainer" + playerId).html(data.handRank);
 			}
 		});
-	} else if (data.status == "SIT_OUT" || data.status == "SIT_OUT_GAME") {
+	} else if (data.status == "SIT_OUT" || data.status == "SIT_OUT_GAME"
+			|| data.status == "SEATING") {
 		$('.playerInfo').each(function() {
 			if ("playerInfo" + playerId == this.id) {
 				$(this).addClass("sitOut");
-
 			}
 		});
 	}
@@ -210,6 +210,10 @@ function updatePlayerInfo(data) {
 function endHand() {
 	console.log("GAME DONE");
 	clearInterval(timer);
+	"<div class='ui-grid-a playerCardsContainer' id='cards"
+			+ id
+			+ "'><div class='ui-block-a card1 card'></div><div class='ui-block-b card2 card'></div>"
+			+ "</div>";
 	// sitIn();
 	// sendText("");
 }
@@ -247,49 +251,61 @@ function addANewPlayerToTable(id, name, chips, amountToCall) {
 										+ id
 										+ "'>"
 										+ amountToCall
-										+ "</div></div>"
-										+ "<div class='ui-grid-a playerCardsContainer' id='cards"
-										+ id
-										+ "'><div class='ui-block-a card1 card'></div><div class='ui-block-b card2 card'></div>"
-										+ "</div></div>";
+										+ "</div></div></div>";
 							} else {
-								content = "<div class='ui-block-a'><div class='ui-block-solo playerInfo' id='playerInfo"
-										+ id
-										+ "'>"
-										+ "<div class='ui-block-solo w3-light-grey w3-round w3-tiny'>"
-										+ "<div class='w3-container w3-round' style='width:100%; height:11px;' id='timer"
-										+ id
-										+ "'></div></div>"
-										+ "<div class='ui-grid-a'>"
-										+ "<div class='ui-block-a pscontainer' id='pscontainer"
-										+ id
-										+ "'></div>"
-										+ "<div class='ui-block-b playerTotalChipsPlace'> &cent; "
-										+ chips
-										+ "</div></div>"
-										+ "<div class='ui-block-solo amountToCallcontainer' id='amountToCallcontainer"
-										+ id
-										+ "'>"
-										+ amountToCall
-										+ "</div></div></div>"
-										+ "<div class='ui-block-b'><div class='ui-grid-a playerCardsContainer' id='cards"
-										+ id
-										+ "'><div class='ui-block-a card1 card'></div><div class='ui-block-b card2 card'></div>"
-										+ "</div></div>";
-								$("#userSitPlace").html(content);
+								if ($("#userSitPlace").find(
+										".amountToCallcontainer").length <= 0) {
+									content = "<div class='ui-block-a'><div class='ui-block-solo playerInfo' id='playerInfo"
+											+ id
+											+ "'>"
+											+ "<div class='ui-block-solo w3-light-grey w3-round w3-tiny'>"
+											+ "<div class='w3-container w3-round' style='width:100%; height:11px;' id='timer"
+											+ id
+											+ "'></div></div>"
+											+ "<div class='ui-grid-a'>"
+											+ "<div class='ui-block-a pscontainer' id='pscontainer"
+											+ id
+											+ "'></div>"
+											+ "<div class='ui-block-b playerTotalChipsPlace'> &cent; "
+											+ chips
+											+ "</div></div>"
+											+ "<div class='ui-block-solo amountToCallcontainer' id='amountToCallcontainer"
+											+ id
+											+ "'>"
+											+ amountToCall
+											+ "</div></div></div>"
+											+ "<div class='ui-block-b'><div class='ui-grid-a playerCardsContainer' id='cards"
+											+ id
+											+ "'><div class='ui-block-a card1 card'></div><div class='ui-block-b card2 card'></div>"
+											+ "</div></div>";
+									$("#userSitPlace").html(content);
+								} else {
+									$("#userSitPlace").find(
+											".amountToCallcontainer").html(
+											amountToCall);
+									$("#userSitPlace").find(
+											".playerTotalChipsPlace").html(
+											"&cent; " + chips);
+								}
 								return false;
 							}
-						//set the content for the first time 
+						// set the content for the first time
 						if ($(this).children("div").hasClass(
 								"sitPlaceThumbnailEmpty")
 								&& $("#sitPlaceContainer" + id).length <= 0) {
-							
+
 							$(this).html(content);
 							$(this).attr("id", "sitPlaceContainer" + id);
 							return false;
 						} else if ($("#sitPlaceContainer" + id).length > 0) {
-							//set the content in the next rounds
-							$("#sitPlaceContainer" + id).html(content);
+							// set the content in the next rounds
+							$("#sitPlaceContainer" + id).find(
+									".amountToCallcontainer")
+									.html(amountToCall);
+							$("#sitPlaceContainer" + id).find(
+									".playerTotalChipsPlace").html(
+									"&cent; " + chips);
+							// $("#sitPlaceContainer" + id).html(content);
 							return false;
 						} else
 							return true;
@@ -359,7 +375,6 @@ function fold() {
 		async : true,
 		success : function(data) {
 			if (data.success == true)
-				// getGameStatus();
 				sendText("Folded");
 			else
 				alert("fold failed");
@@ -381,7 +396,6 @@ function raise() {
 		async : true,
 		success : function(data) {
 			if (data.success == true)
-				// getGameStatus();
 				sendText("");
 			else
 				alert("raise failed");

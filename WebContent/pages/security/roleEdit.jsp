@@ -8,7 +8,8 @@
 <head>
 <script type="text/javascript">
 	function completeMe() {
-		var $ul = $("#autocomplete"), $input = $("#roleCategory"), value = $input.val(), html = "";
+		var $ul = $("#autocomplete"), $input = $("#roleCategory"), value = $input
+				.val(), html = "";
 		$ul.fadeIn();
 		$ul.html("");
 		$ul
@@ -20,14 +21,16 @@
 			data : {
 				q : $input.val()
 			}
-		}).then(function(response) {
-			$.each(response, function(i, val) {
-				html += "<li onclick=\"addValue('" + val + "');\" >" + val + "</li>";
-			});
-			$ul.html(html);
-			$ul.listview("refresh");
-			$ul.trigger("updatelayout");
-		});
+		}).then(
+				function(response) {
+					$.each(response, function(i, val) {
+						html += "<li onclick=\"addValue('" + val + "');\" >"
+								+ val + "</li>";
+					});
+					$ul.html(html);
+					$ul.listview("refresh");
+					$ul.trigger("updatelayout");
+				});
 	}
 	function addValue(x) {
 		$("#roleCategory").val(x);
@@ -36,38 +39,36 @@
 </script>
 </head>
 <body>
-<div id='formContainer'>
-	<ams:message messageEntity="${message}"></ams:message>
-	<form id="dataFilterGridMainPage" action="security.do"
-		autocomplete="off">
-		<input type="hidden" name="reqCode" value="saveUpdateRole">
-		<div class="ui-block-solo">
-			<html:text name="roleENT" property="roleName" title="Role Name" />
-			<html:hidden name="roleENT" property="roleName" styleId="roleName" />
-		</div>
-		<div class="ui-block-solo">
-			<html:text name="roleENT" property="roleCategory"
-				styleId="roleCategory" title="Category" onkeyup="completeMe()" />
-			<ul id="autocomplete" data-role="listview" data-inset="true"
-				data-filter="true" class="autocomplete-list"
-				data-input="#roleCategory"></ul>
-		</div>
-		<div class="ui-block-solo">
-			<html:textarea name="roleENT" property="comment" styleId="comment"
-				title="Comment" />
-		</div>
-		<div class=ui-grid-a>
-			<div class=ui-block-a>
-				<a href="#" data-role="button" data-mini="true"
-					class="cancel-icon"
-					onclick="callAnAction('security.do?reqCode=roleManagement');">Cancel</a>
+	<div id='formContainer'>
+		<ams:message messageEntity="${message}"></ams:message>
+		<html:form styleId="dataFilterGridMainPage" action="security.do" method="POST">
+			<input type="hidden" name="reqCode" value="saveUpdateRole">
+			<div class="ui-block-solo">
+				<html:text name="roleENT" property="roleName" title="Role Name" />
+				<html:hidden name="roleENT" property="roleName" styleId="roleName" />
 			</div>
-			<div class=ui-block-b>
-				<a href="#" data-role="button" class="save-icon"
-					data-mini="true" onclick="saveTheForm();">Save</a>
+			<div class="ui-block-solo">
+				<html:text name="roleENT" property="roleCategory"
+					styleId="roleCategory" title="Category" onkeyup="completeMe()" />
+				<ul id="autocomplete" data-role="listview" data-inset="true"
+					data-filter="true" class="autocomplete-list"
+					data-input="#roleCategory"></ul>
 			</div>
-		</div>
-	</form>
+			<div class="ui-block-solo">
+				<html:textarea name="roleENT" property="comment" styleId="comment"
+					title="Comment" />
+			</div>
+			<div class=ui-grid-a>
+				<div class=ui-block-a>
+					<a href="#" data-role="button" data-mini="true" class="cancel-icon"
+						onclick="callAnAction('security.do?reqCode=roleManagement');">Cancel</a>
+				</div>
+				<div class=ui-block-b>
+					<a href="#" data-role="button" class="save-icon" data-mini="true"
+						onclick="saveTheForm();">Save</a>
+				</div>
+			</div>
+		</html:form>
 	</div>
 </body>
 

@@ -2,9 +2,10 @@ package common.accounting.payment;
 
 import java.util.ArrayList;
 
-import common.user.UserENT;
+import org.apache.struts.action.ActionForm;
 
-public class PaymentLST {
+public class PaymentLST extends ActionForm {
+	static final long serialVersionUID = 42L;
 	ArrayList<PaymentENT> paymentENTs = new ArrayList<PaymentENT>();
 	PaymentENT searchPayment = new PaymentENT();
 	private String fromDate;
@@ -36,10 +37,8 @@ public class PaymentLST {
 	public PaymentLST() {
 	}
 
-	public PaymentLST(ArrayList<PaymentENT> paymentENTs,
-			PaymentENT searchPayment, int currentPage, int totalPages,
-			int pageSize, int totalItems, int first, boolean ascending,
-			String sortedByField) {
+	public PaymentLST(ArrayList<PaymentENT> paymentENTs, PaymentENT searchPayment, int currentPage, int totalPages,
+			int pageSize, int totalItems, int first, boolean ascending, String sortedByField) {
 		super();
 		this.paymentENTs = paymentENTs;
 		this.searchPayment = searchPayment;
@@ -52,8 +51,8 @@ public class PaymentLST {
 		this.sortedByField = sortedByField;
 	}
 
-	public PaymentLST(PaymentENT searchPayment, int currentPage, int pageSize,
-			boolean ascending, String sortedByField) {
+	public PaymentLST(PaymentENT searchPayment, int currentPage, int pageSize, boolean ascending,
+			String sortedByField) {
 		super();
 		this.searchPayment = searchPayment;
 		this.currentPage = currentPage;

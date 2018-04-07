@@ -5,18 +5,15 @@ import java.util.Date;
 import org.apache.struts.action.ActionForm;
 
 public class PaymentENT extends ActionForm {
-	
 
-	
-	
 	/**
 	 * 
 	 */
-	
+
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 4115521618560067141L;
+	static final long serialVersionUID = 42L;
 	private long paymentId;
 	private String username;
 	private Date dateTime;
@@ -24,7 +21,7 @@ public class PaymentENT extends ActionForm {
 	private double amount;
 	private String reason;// integer
 	private String bankResponse;
-	private String currency;// integer
+	private int paymentType;
 	private String creatorUsername;
 
 	public long getPaymentId() {
@@ -75,14 +72,6 @@ public class PaymentENT extends ActionForm {
 		this.bankResponse = bankResponse;
 	}
 
-	public String getCurrency() {
-		return currency;
-	}
-
-	public void setCurrency(String currency) {
-		this.currency = currency;
-	}
-
 	public int getStatus() {
 		return status;
 	}
@@ -97,6 +86,14 @@ public class PaymentENT extends ActionForm {
 
 	public void setCreatorUsername(String creatorUsername) {
 		this.creatorUsername = creatorUsername;
+	}
+
+	public int getPaymentType() {
+		return paymentType;
+	}
+
+	public void setPaymentType(int paymentType) {
+		this.paymentType = paymentType;
 	}
 
 }

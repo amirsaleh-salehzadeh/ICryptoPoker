@@ -4,15 +4,11 @@
 <struts-config>
 	<data-sources />
 	<form-beans>
-
+		<form-bean name="paymentForm" type="common.accounting.payment.PaymentLST" />
 		<form-bean name="paymentForm" type="common.accounting.payment.PaymentENT" />
-
 		<form-bean name="securityForm" type="common.security.RoleENT" />
-<<<<<<< HEAD
-
-=======
 		<form-bean name="securityForm" type="common.security.RoleLST" />
->>>>>>> AmirV1
+
 	</form-beans>
 	<global-exceptions />
 	<global-forwards />
@@ -39,18 +35,13 @@
 			<forward name="goToLobby" path="/pages/game/lobby.jsp" />
 			<forward name="joinAGame" path="/pages/game/table.jsp" />
 		</action>
-		<action path="/payment" type="struts.actions.PaymentAction">
+		<action path="/payment" type="struts.actions.PaymentAction" name="paymentForm">
 			<set-property property="cancellable" value="true" />
-
 			<forward name="paymentEdit" path="/pages/accounting/payment/paymentEdit.jsp" />
-
 			<forward name="paymentManagement"
 				path="/pages/accounting/payment/paymentManagement.jsp" />
 			<forward name="paymentEdit" path="/pages/accounting/payment/paymentEdit.jsp" />
 			<forward name="gridJson" path="/pages/json.jsp" />
-
-
-
 		</action>
 		<action parameter="reqCode" path="/logOut" type="struts.actions.LogOutAction">
 			<set-property property="cancellable" value="true" />

@@ -27,16 +27,6 @@ function fitElementsWithinScreen() {
 	$(".ui-content").height(content);
 }
 
-function generateACard(cardVal, divID, cardNumber) {
-	var res = "<img src='images/game/cards/" + cardVal
-			+ ".png' height='100%' />";
-	if (divID == "flopsContainer") {
-		$("#flop" + cardNumber).html(res).trigger("create");
-	} else {
-		$("#" + divID).find(".card" + cardNumber).html(res).trigger("create");
-	}
-}
-
 function resetPlayerInfo() {
 	if ($(".playerInfo").length > 0)
 		$(".playerInfo").each(function(i) {

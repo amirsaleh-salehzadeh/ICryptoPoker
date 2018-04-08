@@ -460,7 +460,6 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDaoInterface {
 				HandDaoImpl handDaoImpl = new HandDaoImpl();
 				PlayerDaoImpl player = new PlayerDaoImpl();
 				game.setId(rs.getLong("game_id"));
-				game.setName(rs.getString("players_left"));
 				if (rs.getString("game_type").equalsIgnoreCase("T"))
 					game.setGameType(GameType.TOURNAMENT);
 				else

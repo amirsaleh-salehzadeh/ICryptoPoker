@@ -150,7 +150,6 @@ public class PlayerDaoImpl extends BaseHibernateDAO implements
 			ps.setString(1, playerId);
 			ResultSet rs = ps.executeQuery();
 			Player p = new Player();
-			GameDaoImpl gdao = new GameDaoImpl();
 			if (rs.next()) {
 				p.setId(rs.getString("username"));
 				p.setName(rs.getString("name"));

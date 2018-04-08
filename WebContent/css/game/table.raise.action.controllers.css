@@ -35,15 +35,6 @@
 	border-color: rgb(66, 244, 66) !important;
 }
 
-#buttonsContainerDIV {
-	bottom: 0;
-}
-
-#buttonsContainerDIV>div>a {
-	bottom: 0;
-	width: 90%;
-	padding: 0.7em 0.3em;
-}
 div .ui-slider-track{
 	
 	background-color:maroon !important;
@@ -79,10 +70,10 @@ div.ui-slider>div>a {
 	color: white;
 }
 
-#raiseSliderContainer input {
-	display: none;
-}
+/* #raiseSliderContainer input { */
+/* 	display: none; */
+/* } */
 
-#raiseSliderContainer .ui-slider-track {
-	margin-left: 15px;
-}
+/* #raiseSliderContainer .ui-slider-track { */
+/* 	margin-left: 15px; */
+/* } */

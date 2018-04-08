@@ -9,7 +9,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 <link rel="stylesheet"
-	href="css/themes/default/jquery.mobile-1.4.5.min.css">
+	href="css/themes/default/jquery.mobile.icons.min.css">
+<link rel="stylesheet" href="css/themes/default/theme-classic.css">
+<link rel="stylesheet"
+	href="css/themes/default/jquery.mobile.structure-1.4.5.min.css">
 <script src="js/jquery/jquery.min.js"></script>
 <script src="js/jquery/jquery.mobile-1.4.5.min.js"></script>
 <script src="js/game/table.js"></script>
@@ -210,22 +213,22 @@
 				</div>
 			</div>
 			<div class="ui-block-b" style="width: 17%">
-				<a href="#" data-mini="true"
+				<a href="#" data-mini="true" data-role="button" id="foldBTN"
 					class="actionButtons ui-btn ui-icon-minus ui-btn-icon-left ui-shadow ui-corner-all ui-state-disabled"
 					onclick="fold()">Fold</a>
 			</div>
 			<div class="ui-block-c" style="width: 17%">
-				<a href="#" data-mini="true"
+				<a href="#" data-mini="true" data-role="button" id="checkBTN"
 					class="actionButtons ui-btn ui-icon-check ui-btn-icon-left ui-shadow ui-corner-all ui-state-disabled"
 					onclick="check()">Check</a>
 			</div>
 			<div class="ui-block-d" style="width: 17%">
-				<a href="#" data-mini="true"
+				<a href="#" data-mini="true" data-role="button" id="raiseBTN"
 					class="actionButtons ui-btn ui-icon-carat-u ui-btn-icon-left ui-shadow ui-corner-all ui-state-disabled"
 					onclick="raise()">Raise</a>
 			</div>
-			<div class="ui-block-e" style="width: 17%">
-				<a href="#" data-mini="true" onclick="allIn()"
+			<div class="ui-block-e" data-role="button" style="width: 17%">
+				<a href="#" data-mini="true" onclick="allIn()" id="allInBTN"
 					class="actionButtons ui-btn ui-icon-action ui-btn-icon-left ui-shadow ui-corner-all ui-state-disabled">All-In</a>
 			</div>
 		</div>

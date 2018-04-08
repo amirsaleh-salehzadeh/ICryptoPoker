@@ -50,7 +50,7 @@ html,body {
 	background-repeat: no-repeat !important;
 	background-size: contain !important;
 	padding: 1px;
-	padding-left: 33%;
+	/* 	padding-left: 33%; */
 	color: white;
 	background-color: transparent;
 	font-size: 100%;
@@ -97,19 +97,20 @@ html,body {
 	background: -moz-linear-gradient(top, #736D70, #09131C);
 	box-shadow: 1px 1px 1px #3A454D;
 	margin-right: 3px;
+	width: 100%;
 }
 
 .playerCardsContainer {
-	float: right;
+	/* 	float: right; */
 	z-index: 0;
 	margin: 0 !important;
 	/* 	width: 100%; */
 	/* 	height: 100%; */
-	right: 0;
-	top: 0;
+	/* 	right: 0; */
+	/* 	top: 0; */
 	/* 	left: 0; */
-	bottom: 0;
-	position: absolute;
+	/* 	bottom: 0; */
+	/* 	position: absolute; */
 	/* 	display: none; */
 }
 
@@ -119,7 +120,6 @@ html,body {
 
 .pscontainer {
 	background-color: transparent;
-	width: 50% !important;
 	/* 	border: 1px solid #b00000; */
 	/* 	border-radius: 11px; */
 	z-index: 10;
@@ -128,33 +128,42 @@ html,body {
 
 .pscontainer img {
 	/* 	position: absolute; */
-	max-width: 1em;
-	max-height: 1em;
+	max-width: 1.1em;
+	max-height: 1.1em;
 }
 
 .sitPlaceContainer {
 	padding: 2px;
 }
 
-.sitPlaceContainer>.ui-block-a {
-	width: 60%;
-	height: 100%;
-}
+/* .sitPlaceContainer>.ui-block-a { */
+/* 	width: 60%; */
+/* 	height: 100%; */
+/* } */
 
-.sitPlaceContainer>.ui-block-b {
-	width: 40%;
-	height: 100%;
-}
-
+/* .sitPlaceContainer>.ui-block-b { */
+/* 	width: 40%; */
+/* 	height: 100%; */
+/* } */
 .amountToCallcontainer {
-	background-color: transparent;
 	position: absolute;
-	bottom: 0;
 	left: 0;
-	border-radius: 50%;
-	color: white;
+	border-radius: 11%;
+	border: solid 1px rgb(199, 199, 199);
+	color: red;
 	font-size: 100%;
 	z-index: 10;
+	bottom: 0;
+	top: 0;
+	right: 0;
+	height: 27%;
+	text-align: center;
+	background-color: rgba(0, 0, 0, .7);
+	padding: 7px;
+	text-align: center;
+	line-height: .7;
+	font-weight: bold;
+	text-shadow: white !important;
 }
 
 #panelChat {
@@ -209,38 +218,44 @@ html,body {
 	opacity: 0.5;
 }
 
-.loser {
-	/* 	the shadow for the loser box */
-	-webkit-box-shadow: -28px 2px 135px 0px rgba(255, 255, 255, 1);
-	-moz-box-shadow: -28px 2px 135px 0px rgba(255, 255, 255, 1);
-	box-shadow: -28px 2px 135px 0px rgb(234, 24, 24) !important;
-	/*  */
-	/* red styling */
-	color: black !important;
-	background: rgba(248, 80, 50, 1) !important;
-	background: -moz-linear-gradient(left, rgba(248, 80, 50, 1) 0%,
-		rgba(246, 41, 12, 1) 46%, rgba(241, 111, 92, 1) 61%,
-		rgba(240, 47, 23, 1) 71%, rgba(231, 56, 39, 1) 100%) !important;
-	background: -webkit-gradient(left top, right top, color-stop(0%, rgba(248, 80, 50, 1
-		)), color-stop(46%, rgba(246, 41, 12, 1)),
-		color-stop(61%, rgba(241, 111, 92, 1)),
-		color-stop(71%, rgba(240, 47, 23, 1)),
-		color-stop(100%, rgba(231, 56, 39, 1))) !important;
-	background: -webkit-linear-gradient(left, rgba(248, 80, 50, 1) 0%,
-		rgba(246, 41, 12, 1) 46%, rgba(241, 111, 92, 1) 61%,
-		rgba(240, 47, 23, 1) 71%, rgba(231, 56, 39, 1) 100%) !important;
-	background: -o-linear-gradient(left, rgba(248, 80, 50, 1) 0%,
-		rgba(246, 41, 12, 1) 46%, rgba(241, 111, 92, 1) 61%,
-		rgba(240, 47, 23, 1) 71%, rgba(231, 56, 39, 1) 100%) !important;
-	background: -ms-linear-gradient(left, rgba(248, 80, 50, 1) 0%,
-		rgba(246, 41, 12, 1) 46%, rgba(241, 111, 92, 1) 61%,
-		rgba(240, 47, 23, 1) 71%, rgba(231, 56, 39, 1) 100%) !important;
-	background: linear-gradient(to right, rgba(248, 80, 50, 1) 0%,
-		rgba(246, 41, 12, 1) 46%, rgba(241, 111, 92, 1) 61%,
-		rgba(240, 47, 23, 1) 71%, rgba(231, 56, 39, 1) 100%) !important;
-	/* 	 */
-}
-
+/* .loser { */
+/* 	/* 	the shadow for the loser box */
+* /
+	/* 	-webkit-box-shadow: -28px 2px 135px 0px rgba(255, 255, 255, 1); */
+	/* 	-moz-box-shadow: -28px 2px 135px 0px rgba(255, 255, 255, 1); */
+	/* 	box-shadow: -28px 2px 135px 0px rgb(234, 24, 24) !important; */
+	/* 	/*  */   
+ 
+* /
+	/* 	/* red styling */   
+ 
+* /
+	/* 	color: black !important; */
+	/* 	background: rgba(248, 80, 50, 1) !important; */
+	/* 	background: -moz-linear-gradient(left, rgba(248, 80, 50, 1) 0%, */
+	/* 		rgba(246, 41, 12, 1) 46%, rgba(241, 111, 92, 1) 61%, */
+	/* 		rgba(240, 47, 23, 1) 71%, rgba(231, 56, 39, 1) 100%) !important; */
+	/* 	background: -webkit-gradient(left top, right top, color-stop(0%, rgba(248, 80, 50, 1 */
+	/* 		)), color-stop(46%, rgba(246, 41, 12, 1)), */
+	/* 		color-stop(61%, rgba(241, 111, 92, 1)), */
+	/* 		color-stop(71%, rgba(240, 47, 23, 1)), */
+	/* 		color-stop(100%, rgba(231, 56, 39, 1))) !important; */
+	/* 	background: -webkit-linear-gradient(left, rgba(248, 80, 50, 1) 0%, */
+	/* 		rgba(246, 41, 12, 1) 46%, rgba(241, 111, 92, 1) 61%, */
+	/* 		rgba(240, 47, 23, 1) 71%, rgba(231, 56, 39, 1) 100%) !important; */
+	/* 	background: -o-linear-gradient(left, rgba(248, 80, 50, 1) 0%, */
+	/* 		rgba(246, 41, 12, 1) 46%, rgba(241, 111, 92, 1) 61%, */
+	/* 		rgba(240, 47, 23, 1) 71%, rgba(231, 56, 39, 1) 100%) !important; */
+	/* 	background: -ms-linear-gradient(left, rgba(248, 80, 50, 1) 0%, */
+	/* 		rgba(246, 41, 12, 1) 46%, rgba(241, 111, 92, 1) 61%, */
+	/* 		rgba(240, 47, 23, 1) 71%, rgba(231, 56, 39, 1) 100%) !important; */
+	/* 	background: linear-gradient(to right, rgba(248, 80, 50, 1) 0%, */
+	/* 		rgba(246, 41, 12, 1) 46%, rgba(241, 111, 92, 1) 61%, */
+	/* 		rgba(240, 47, 23, 1) 71%, rgba(231, 56, 39, 1) 100%) !important; */
+	/* 	/* 	 */   
+ 
+* /
+	/* } */   
 .ui-btn {
 	margin: 0 !important;
 }

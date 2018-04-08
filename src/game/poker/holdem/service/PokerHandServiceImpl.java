@@ -177,7 +177,7 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		final long gameId = game.getId();
 		final ScheduledExecutorService scheduler = Executors
 				.newScheduledThreadPool(1);
-		int timer = 10;
+		int timer = 1000;
 		// if the second last player leaves
 		if (game.getPlayers().size() == counterToFindLastHand + 1)
 			timer = 1;

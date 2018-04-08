@@ -7,7 +7,7 @@ import org.apache.struts.action.ActionForm;
 public class PaymentLST extends ActionForm {
 	static final long serialVersionUID = 42L;
 	ArrayList<PaymentENT> paymentENTs = new ArrayList<PaymentENT>();
-	PaymentENT searchPayment = new PaymentENT();
+	PaymentENT paymentENT = new PaymentENT();
 	private String fromDate;
 	private String toDate;
 	private int currentPage = 0;
@@ -41,7 +41,7 @@ public class PaymentLST extends ActionForm {
 			int pageSize, int totalItems, int first, boolean ascending, String sortedByField) {
 		super();
 		this.paymentENTs = paymentENTs;
-		this.searchPayment = searchPayment;
+		this.paymentENT = searchPayment;
 		this.currentPage = currentPage;
 		this.totalPages = totalPages;
 		this.pageSize = pageSize;
@@ -54,7 +54,7 @@ public class PaymentLST extends ActionForm {
 	public PaymentLST(PaymentENT searchPayment, int currentPage, int pageSize, boolean ascending,
 			String sortedByField) {
 		super();
-		this.searchPayment = searchPayment;
+		this.paymentENT = searchPayment;
 		this.currentPage = currentPage;
 		this.pageSize = pageSize;
 		this.ascending = ascending;
@@ -153,14 +153,14 @@ public class PaymentLST extends ActionForm {
 		this.first = first;
 	}
 
-	public PaymentENT getSearchPayment() {
-		if(searchPayment==null)
-		searchPayment = new PaymentENT() ;
-		return searchPayment;
+	public PaymentENT getPaymentENT() {
+		if(paymentENT==null)
+		paymentENT = new PaymentENT() ;
+		return paymentENT;
 	}
 
-	public void setSearchPayment(PaymentENT searchPayment) {
-		this.searchPayment = searchPayment;
+	public void setPaymentENT(PaymentENT searchPayment) {
+		this.paymentENT = searchPayment;
 	}
    
 }

@@ -5,10 +5,7 @@
 	<data-sources />
 	<form-beans>
 		<form-bean name="paymentGrid" type="common.accounting.payment.PaymentLST" />
-		<form-bean name="securityForm" type="common.security.RoleENT" />
-		<form-bean name="securityForm" type="common.security.RoleLST" />
 		<form-bean name="saleGrid" type="common.accounting.sale.SaleLST" />
-		
 		<form-bean name="roleGrid" type="common.security.RoleLST" />
 
 	</form-beans>

@@ -4,20 +4,20 @@
  */
 package struts.actions;
 
-import hibernate.accounting.payment.PaymentDaoInterface;
 import hibernate.accounting.sale.SaleDaoInterface;
 import hibernate.config.ICryptoPokerDAOManager;
-import hibernate.user.UserDAOInterface;
 import tools.AMSErrorHandler;
 import tools.AMSException;
 import tools.AMSUtililies;
 
 import java.io.IOException;
-import java.sql.Date;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.sql.*;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -80,7 +80,7 @@ public class SaleAction extends Action {
 		createMenusForSales(request);
 		SaleLST saleLST = (SaleLST) form;
 		try {
-			saleLST = getSaleDAO().getSaleLST(saleLST) ;
+			form = getSaleDAO().getSaleLST(saleLST) ;
 		} catch (AMSException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -109,7 +109,7 @@ public class SaleAction extends Action {
 		}
 		// request.setAttribute("paymentENT", paymentENT);
 
-		saleId = Long.parseLong(request.getParameter("paymentId"));
+		saleId = Long.parseLong(request.getParameter("saleId"));
 
 		saleENT.setSaleId(saleId);
 		// saveTheForm();
@@ -123,7 +123,7 @@ public class SaleAction extends Action {
 		}
 		MessageENT m = new MessageENT(success, error);
 		request.setAttribute("message", m);
-		return mapping.findForward("paymentEdit");
+		return mapping.findForward("saleEdit");
 
 	}
 
@@ -133,7 +133,7 @@ public class SaleAction extends Action {
 		popupEnts.add(new PopupENT("hide-filters", "displaySearch();", "Show/Hide Search", "#"));
 		popupEnts
 				.add(new PopupENT("new-item", "callAnAction(\"sale.do?reqCode=saleEdit\");", "New Sale", "#"));
-		popupEnts.add(new PopupENT("delete-item", "deleteSelectedItems(\"deletePayment\");", "Delete Selected", "#"));
+		popupEnts.add(new PopupENT("delete-item", "deleteSelectedItems(\"deleteSale\");", "Delete Selected", "#"));
 		// popupEnts
 		// .add(new PopupENT("edit-item",
 		// "callAnAction(\"payment.do?reqCode=paymentEdit\");",
@@ -158,6 +158,15 @@ public class SaleAction extends Action {
 		SaleLST lst = (SaleLST) form;
 		SaleENT saleENT = lst.getSaleENT();
 		try {
+			if(saleENT.getDateTime()==null) {
+			DateFormat df = new SimpleDateFormat("yyyy/mm/dd HH:mm:ss");
+			Date date = new Date( ) ;
+			
+		    date.setTime(Calendar.getInstance().getTime().getTime());
+		    
+			saleENT.setDateTime(date);
+			
+			}
 			saleENT = getSaleDAO().saveUpdateSale(saleENT);
 			success = "The user '" + saleENT.getCreatorUsername() + "' saved successfully";
 		} catch (AMSException e) {
@@ -198,7 +207,7 @@ public class SaleAction extends Action {
 
 		}
 		if (saleENT.getDateTime() == null)
-			saleENT.setDateTime(Date.valueOf(df.format(Calendar.getInstance().getTime())));
+		//	saleENT.setDateTime(Date.valueOf(df.format(Calendar.getInstance().getTime())));
 		saleENT.setUsername(request.getParameter("userName"));
 		saleENT.setCreatorUsername(request.getParameter("creatorUsername"));
 		saleENT.setBankResponse(request.getParameter("bankResponse"));

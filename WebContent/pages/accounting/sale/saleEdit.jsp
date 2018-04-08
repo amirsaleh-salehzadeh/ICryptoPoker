@@ -11,7 +11,7 @@
 <body>
 	<div id='formContainer'>
 		<ams:message messageEntity="${message}"></ams:message>
-		<html:form styleId="dataFilterGridMainPage" action="sale.do" method="post">
+		<html:form styleId="dataFilterGridMainPage" action="sale.do" method="POST">
 			<input type="hidden" name="reqCode" value="saveUpdateSale">
 			<div class="ui-block-solo">
 
@@ -20,12 +20,12 @@
 						if (view) {
 				%>
 
-				<bean:write name="saleENT" property="username" />
+					<bean:write name="saleLST" property="saleENT.username" />
 				<%
 					} else {
 				%>
 				<label>Username</label>
-				<html:text name="saleENT" property="username" title="UserName" />
+				<html:text  property="saleENT.username" title="UserName" />
 				<%
 					}
 				%>
@@ -33,29 +33,29 @@
 
 			<div class="ui-block-solo">
 				<label>Status</label>
-				<html:text name="saleENT" property="status" styleId="status"
+				<html:text  property="saleENT.status" styleId="status"
 					title="Status" />
 			</div>
 			
 			<div class="ui-block-solo">
 				<label>Bank Response</label>
-				<html:textarea name="saleENT" property="bankResponse"
+				<html:textarea  property="saleENT.bankResponse"
 					styleId="bankResponse" title="Bank Response" />
 			</div>
 
 			<div class="ui-block-solo">
 				<label>Payment Method</label>
-				<html:textarea name="saleENT" property="paymentMethod"
+				<html:text  property="saleENT.paymentMethod"
 					styleId="paymentMethod" title="paymentMethod" />
 			</div>
                 <div class="ui-block-solo">
 				<label>Currency</label>
-				<html:textarea name="saleENT" property="currency" styleId="currency"
+				<html:text  property="saleENT.currency" styleId="currency"
 					title="Currency" />
 			</div>
 			<div class="ui-block-solo">
 				<label>Amount</label>
-				<html:textarea name="saleENT" property="amount" styleId="amount"
+				<html:text  property="saleENT.amount" styleId="amount"
 					title="Amount" />
 			</div>
 			<div class=ui-grid-a>

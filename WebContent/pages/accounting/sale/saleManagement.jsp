@@ -27,7 +27,7 @@
 			value="saleManagement"> <input type="hidden"
 			name="reqCodeGrid" id="reqCodeGrid" value="">
 		<div class="ui-grid-solo" id="searchFilters">
-			<html:text name="saleLST" property="saleENT.username"
+			<html:text property="username"
 				onkeyup="refreshGrid();" title="Username"></html:text> 
 		</div>
 		<div class="ui-grid-solo">

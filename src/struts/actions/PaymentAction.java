@@ -12,11 +12,12 @@ import tools.AMSException;
 import tools.AMSUtililies;
 
 import java.io.IOException;
-import java.sql.Date;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -113,7 +114,7 @@ public class PaymentAction extends Action {
 		// saveTheForm();
 		try {
 			paymentENT = getPaymentDAO().getPaymentENT(paymentENT) ;
-			lst.setSearchPayment(paymentENT);
+			lst.setPaymentENT(paymentENT);
 			form = lst;
 		} catch (AMSException e) {
 			error = e.getMessage();
@@ -153,8 +154,15 @@ public class PaymentAction extends Action {
 	//
 	private ActionForward saveUpdatePayment(HttpServletRequest request, ActionMapping mapping, ActionForm form) {
 		PaymentLST lst = (PaymentLST) form;
-		PaymentENT paymentENT = lst.getSearchPayment();
+		PaymentENT paymentENT = lst.getPaymentENT();
 		try {
+			if(paymentENT.getDateTime()==null) {
+		   DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+           Date date = new Date( ) ;
+			
+		    date.setTime(Calendar.getInstance().getTime().getTime());
+			paymentENT.setDateTime(date) ;
+			}
 			paymentENT = getPaymentDAO().savePayment(paymentENT);
 			success = "The user '" + paymentENT.getCreatorUsername() + "' saved successfully";
 		} catch (AMSException e) {
@@ -195,7 +203,7 @@ public class PaymentAction extends Action {
 
 		}
 		if (paymentENT.getDateTime() == null)
-			paymentENT.setDateTime(Date.valueOf(df.format(Calendar.getInstance().getTime())));
+		//	paymentENT.setDateTime(Date.valueOf(df.format(Calendar.getInstance().getTime())));
 		paymentENT.setUsername(request.getParameter("userName"));
 		paymentENT.setCreatorUsername(request.getParameter("creatorUsername"));
 		paymentENT.setBankResponse(request.getParameter("bankResponse"));

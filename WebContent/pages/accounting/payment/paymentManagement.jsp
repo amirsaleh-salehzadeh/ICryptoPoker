@@ -27,7 +27,7 @@
 			value="paymentManagement"> <input type="hidden"
 			name="reqCodeGrid" id="reqCodeGrid" value="">
 		<div class="ui-grid-solo" id="searchFilters">
-			<html:text name="paymentLST" property="searchPayment.username"
+			<html:text name="paymentLST" property="paymentENT.username"
 				onkeyup="refreshGrid();" title="Username"></html:text> 
 		</div>
 		<div class="ui-grid-solo">

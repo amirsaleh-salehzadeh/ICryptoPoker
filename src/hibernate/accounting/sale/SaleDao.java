@@ -42,7 +42,7 @@ public class SaleDao extends BaseHibernateDAO implements SaleDaoInterface {
 		try {
 			tx = session.beginTransaction();
 			Criteria cr = session.createCriteria(SaleENT.class);
-			cr.add(Restrictions.gt("username", lst.getSaleENT().getSaleId()));
+			cr.add(Restrictions.gt("username", lst.getUsername()));
 			lst.setTotalItems(cr.list().size());
 			cr.setFirstResult(lst.getFirst());
 			cr.setMaxResults(lst.getPageSize());

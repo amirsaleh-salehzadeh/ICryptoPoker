@@ -20,12 +20,12 @@
 						if (view) {
 				%>
 
-				<bean:write name="paymentENT" property="username" />
+				<bean:write name="paymentLST" property="paymentENT.username" />
 				<%
 					} else {
 				%>
 				<label>Username</label>
-				<html:text name="paymentENT" property="username" title="UserName" />
+				<html:text property="paymentENT.username" title="UserName" />
 				<%
 					}
 				%>
@@ -33,31 +33,31 @@
 
 			<div class="ui-block-solo">
 				<label>Status</label>
-				<html:text name="paymentENT" property="status" styleId="status"
+				<html:text property="paymentENT.status" styleId="status"
 					title="Status" />
 			</div>
 
 			<div class="ui-block-solo">
 				<label>Reason</label>
-				<html:textarea name="paymentENT" property="reason" styleId="reason"
+				<html:text property="paymentENT.reason" styleId="reason"
 					title="Reason" />
 			</div>
 
 			<div class="ui-block-solo">
 				<label>Bank Response</label>
-				<html:textarea name="paymentENT" property="bankResponse"
+				<html:textarea  property="paymentENT.bankResponse"
 					styleId="bankResponse" title="Bank Response" />
 			</div>
 
 			<div class="ui-block-solo">
 				<label>Payment Type</label>
-				<html:textarea name="paymentENT" property="paymentType"
+				<html:text property="paymentENT.paymentType"
 					styleId="paymentType" title="paymentType" />
 			</div>
 
 			<div class="ui-block-solo">
 				<label>Amount</label>
-				<html:textarea name="paymentENT" property="amount" styleId="amount"
+				<html:text property="paymentENT.amount" styleId="amount"
 					title="Amount" />
 			</div>
 			<div class=ui-grid-a>

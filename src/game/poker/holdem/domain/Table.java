@@ -56,39 +56,45 @@ public class Table {
 	};
 
 	public void addPlayer(String uid, Session session) {
-//		Player p = pdao.findById(uid, null);
-//		if (p.isSittingOut())
-//			playerActionService.sitIn(pdao.findById(uid, null));
+		// Player p = pdao.findById(uid, null);
+		// if (p.isSittingOut())
+		// playerActionService.sitIn(pdao.findById(uid, null));
 		playerSessions.put(uid, session);
 	}
 
 	public void removePlayer(String uid) {
-		System.out.println("removed from table " + uid);
+		// if the user is in the game
 		game = gdao.findById(game.getId(), null);
-		Player p = pdao.findById(uid, null);
-		if (playerSessions.size() == 2)
-			playerActionService.fold(p, game, true);
-		if (playerSessions.size() >= 2 && game.isStarted()
-				&& game.getCurrentHand() != null)
-			// game.setCurrentHand(handService.sitOutCurrentPlayer(game, p));
-			gameService.leaveTheGame(p);
-		try {
-			playerSessions.get(uid).close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		playerSessions.remove(uid, playerSessions.get(uid));
-		if (playerSessions.size() == 1 && game.getCurrentHand() != null) {
-			try {
-				handService.endHand(game);
-			} catch (AMSException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		for (Player p : game.getPlayers()) {
+			if (p.getId().equals(uid)) {
+				handService.sitOutCurrentPlayer(game, p);
 			}
-			game = gdao.findById(game.getId(), null);
 		}
+//		Player p = pdao.findById(uid, null);
+//		if (playerSessions.size() == 2)
+//			playerActionService.fold(p, game, true);
+//		if (playerSessions.size() >= 2 && game.isStarted()
+//				&& game.getCurrentHand() != null)
+//			// game.setCurrentHand(handService.sitOutCurrentPlayer(game, p));
+//			gameService.leaveTheGame(p);
+//		try {
+//			playerSessions.get(uid).close();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+		playerSessions.remove(uid, playerSessions.get(uid));
+//		if (playerSessions.size() == 1 && game.getCurrentHand() != null) {
+//			try {
+//				handService.endHand(game);
+//			} catch (AMSException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//			game = gdao.findById(game.getId(), null);
+//		}
 		handCount--;
 		sendToAll("");
+		System.out.println("removed from table " + uid);
 	}
 
 	public void sendToAll(String user) {
@@ -115,7 +121,7 @@ public class Table {
 		}
 
 		// START THE GAME AND HAND
-		if (playerSessions.size() > 1 && !game.isStarted()
+		if (getPlayerHands().size() > 1 && !game.isStarted()
 				&& gs.equals(GameStatus.NOT_STARTED)) {
 			handCount = 0;
 			try {
@@ -148,6 +154,15 @@ public class Table {
 				result.add(ph);
 		}
 		return result;
+	}
+
+	private Set<Player> getPlayerHands() {
+		Set<Player> playersInSeat = new HashSet<Player>();
+		for(Player p : game.getPlayers()){
+			if(!p.isSittingOut())
+			playersInSeat.add(p);
+		}
+		return playersInSeat;
 	}
 
 	public void setGameId(long guid) {

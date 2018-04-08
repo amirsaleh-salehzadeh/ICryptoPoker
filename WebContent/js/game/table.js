@@ -2,17 +2,6 @@ var webSocket;
 var wsUri = "";
 
 function fitElementsWithinScreen() {
-	$(".sitPlaceThumbnail").each(function() {
-		$(this).width($("#userSitPlace").height() * 0.7);
-		$(this).height($("#userSitPlace").height() * 0.7);
-		$(this).trigger("create");
-		
-	});
-	$(".sitPlaceThumbnailEmpty").each(function() {
-		$(this).width($("#userSitPlace").height() * 0.7);
-		$(this).height($("#userSitPlace").height() * 0.7);
-		$(this).trigger("create");
-	});
 	$(".card").each(
 			function() {
 				if ($(this).html().length > 0) {
@@ -25,6 +14,17 @@ function fitElementsWithinScreen() {
 					$(this).trigger("create");
 				}
 			});
+	var screen = $.mobile.getScreenHeight();
+	var header = $(".ui-header").hasClass("ui-header-fixed") ? $(
+			".ui-header").outerHeight() - 1 : $(".ui-header")
+			.outerHeight();
+	var footer = $(".ui-footer").hasClass("ui-footer-fixed") ? $(
+			".ui-footer").outerHeight() - 1 : $(".ui-footer")
+			.outerHeight();
+	var contentCurrent = $(".ui-content").outerHeight()
+			- $(".ui-content").height();
+	var content = screen - header - footer - contentCurrent;
+	$(".ui-content").height(content);
 }
 
 function generateACard(cardVal, divID, cardNumber) {
@@ -55,6 +55,7 @@ $(document).ready(
 			var wsUri = "ws://" + document.location.host
 					+ "/ICryptoPoker/game/" + $("#gameID").val() + "/"
 					+ $("#playerID").val();
+			// fitElementsWithinScreen();
 			webSocket = new WebSocket(wsUri);
 			webSocket.onmessage = function(evt) {
 				onMessage(evt);
@@ -78,10 +79,6 @@ $(document).ready(
 			$(window).on("resize", function() {
 				fitElementsWithinScreen();
 			});
-//			$("#flopsContainer div").height(
-//					$("#flop1").width() + ($("#flop1").width() * 0.7));
-			// resetplayerInfo();
-			$("#sliderRaise").slider();
 			fitElementsWithinScreen();
 		});
 
@@ -101,9 +98,6 @@ function onError(evt) {
 
 function onOpen() {
 	console.log("Connected to " + wsUri);
-	$(".actionButtons").each(function() {
-		$(this).addClass("ui-state-disabled");
-	});
 }
 
 function sendText(json) {
@@ -114,16 +108,11 @@ function sendText(json) {
 // is clicked
 function toggleChat() {
 	if ($("#chatBoxContainer").css("display") == "block") {
-
 		$("#chatBoxContainer").css("display", "none");
 	} else
 		$("#chatBoxContainer").css("display", "block");
 }
 function toggleFullScreen(elem) {
-	// ## The below if statement seems to work better ## if
-	// ((document.fullScreenElement && document.fullScreenElement !== null) ||
-	// (document.msfullscreenElement && document.msfullscreenElement !== null)
-	// || (!document.mozFullScreen && !document.webkitIsFullScreen)) {
 	if ((document.fullScreenElement !== undefined && document.fullScreenElement === null)
 			|| (document.msFullscreenElement !== undefined && document.msFullscreenElement === null)
 			|| (document.mozFullScreen !== undefined && !document.mozFullScreen)

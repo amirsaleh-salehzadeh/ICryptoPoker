@@ -403,6 +403,7 @@ public class PlayerServiceWS {
 			@QueryParam("gameId") long gameId, @QueryParam("chips") int chips,
 			@QueryParam("nickname") String nickname) {
 		playerActionService = new PlayerActionServiceImpl();
+		gameService = new GameServiceImpl();
 		Player player = playerActionService.getPlayerById(playerId);
 		/**
 		 * Player is already in other game, should leave the other game first
@@ -412,19 +413,28 @@ public class PlayerServiceWS {
 					.serverError()
 					.entity("Unauthorised Access to the Game. You are already in a different game")
 					.build();
+		// TODO Neil: check for sufficient fund here private boolean
+		// checkSufficientFundToJoinAGame(Player p, Game g) if not ERROR then
+		// sit
 		/**
 		 * Player decides to sit back in the game he/she sat out
 		 */
-		if (player.getGameId() != 0 && player.isSittingOut()) {
+		if (player.getGameId() != 0 && player.isSittingOut())
 			try {
 				player = playerActionService.sitIn(player);
 			} catch (AMSException e) {
 				return Response.serverError().entity(e.getMessage()).build();
 			}
-		} else {
-			GameDaoImpl gdo = new GameDaoImpl();
-			gameService.addNewPlayerToGame(gdo.findById(gameId, null), player);
+		else {
+			player.setChips(chips);
+			player.setTotalChips(player.getTotalChips() - player.getChips());
 		}
+		/**
+		 * Player JOINs a game
+		 */
+		player.setName(nickname);
+		GameDaoImpl gdo = new GameDaoImpl();
+		gameService.addNewPlayerToGame(gdo.findById(gameId, null), player);
 		Gson gson = new Gson();
 		String json = "";
 		json = gson.toJson(Collections.singletonMap("success", true));

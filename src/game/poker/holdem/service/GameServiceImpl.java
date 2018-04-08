@@ -235,7 +235,7 @@ public class GameServiceImpl implements GameServiceInterface {
 			return;
 		Set<Player> players = game.getPlayers();
 		double shareOfPlayers = 0;
-		
+
 		if (players.size() > 0) {
 			PlayerDaoImpl pdao = new PlayerDaoImpl();
 			if (game.getCurrentHand() != null)

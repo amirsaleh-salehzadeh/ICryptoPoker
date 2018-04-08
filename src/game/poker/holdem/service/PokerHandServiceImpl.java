@@ -350,9 +350,6 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		if (currentPlayer == null) {
 			return null;
 		}
-		// Refund the chips into the main account
-		// currentPlayer.setTotalChips(currentPlayer.getChips() +
-		// currentPlayer.getTotalChips());
 		currentPlayer.setSittingOut(true);
 		currentPlayer = playerDao.merge(currentPlayer, null);
 		PlayerHand playerHand = null;
@@ -362,14 +359,15 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 				break;
 			}
 		}
-		// Player next = PlayerUtil.getNextPlayerToAct(hand, currentPlayer);
 		if (playerHand != null
 				&& hand.getTotalBetAmount() > playerHand.getRoundBetAmount()) {
 			PlayerUtil.removePlayerFromHand(currentPlayer, hand);
 		}
-		// hand.setCurrentToAct(next);
 		hand.setGame(game);
 		hand = handDao.merge(hand, null);
+		hand.setGame(game);
+		PlayerActionServiceImpl playerActionServiceImpl = new PlayerActionServiceImpl();
+		playerActionServiceImpl.fold(currentPlayer, game, true);
 		return hand;
 	}
 

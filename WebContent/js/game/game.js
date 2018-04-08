@@ -44,21 +44,22 @@ function leaveTable() {
 }
 
 function updateGameInfo(data) {
+	$('.playerInfo').each(function() {
+		if ($(this).hasClass("sitOut")) {
+			$(this).addClass("sitOut");
+		}
+	});
 	if (data.gameStatus == "NOT_STARTED") {
 		$("#handPotContainer").html('Game is not started');
-		return;
+//		$("#sliderRaise").slider();
 	} else
 		$("#handPotContainer")
 				.html(
-						'<img alt="" src="images/game/stack.png" height="100%"><span>&nbsp;&cent;&nbsp;'
+						'<img alt="" src="images/game/stack.png" height="100%"><span>&nbsp;$&nbsp;'
 								+ data.pot + '&nbsp;</span>');
 	$(".tableCards").each(function() {
 		$(this).html('<img alt="" src="images/game/card.jpg">');
 	});
-	$("#handPotContainer")
-			.html(
-					'<img alt="" src="images/game/stack.png" height="100%"><span>&nbsp;&cent;&nbsp;'
-							+ data.pot + '</span>');
 	$(".actionButtons").each(function() {
 		$(this).addClass("ui-state-disabled");
 	});
@@ -140,19 +141,17 @@ function getColorForPercentage(pct) {
 
 function updatePlayerInfo(data) {
 	var playerId = data.id;
-	var playerName = data.name;
-	addANewPlayerToTable(playerId, playerName, parseInt(data.chips),
-			data.amountBetRound);
+	addANewPlayerToTable(data);
 	if (data.status != "NOT_STARTED" && data.status != "SEATING")
 		dealCards2Players(data, playerId);
 	if (data.status == "ACTION_TO_CHECK" || data.status == "ACTION_TO_CALL") {
 		var atc = parseInt(data.amountToCall);
 		if (data.status == "ACTION_TO_CALL") {
-			$("#checkBTN").html("Call &cent;" + atc);
-			$("#checkBTN").attr("onclick", "call()");
+			$("#checkBTN").text("Call $" + atc);
+			$("#checkBTN").attr("onclick", "call()").button("refresh").trigger("create");
 		} else {
-			$("#checkBTN").html("Check");
-			$("#checkBTN").attr("onclick", "check()").trigger("create");
+			$("#checkBTN").text("Check");
+			$("#checkBTN").attr("onclick", "check()").button("refresh").trigger("create");
 		}
 		if (playerId == $("#playerID").val()) {
 			$(".actionButtons").each(function() {
@@ -202,18 +201,19 @@ function updatePlayerInfo(data) {
 function endHand() {
 	console.log("GAME DONE");
 	clearInterval(timer);
-	"<div class='ui-grid-a playerCardsContainer' id='cards"
-			+ id
-			+ "'><div class='ui-block-a card1 card'></div><div class='ui-block-b card2 card'></div>"
-			+ "</div>";
+//	"<div class='ui-grid-a playerCardsContainer' id='cards"
+//			+ id
+//			+ "'><div class='ui-block-a card1 card'></div><div class='ui-block-b card2 card'></div>"
+//			+ "</div>";
 	// sitIn();
 	// sendText("");
 }
 
-function addANewPlayerToTable(id, name, chips, amountToCall) {
+function addANewPlayerToTable(data) {
+	var id = data.id, name = data.name, chips = data.chips, amountToCall = data.amountToCall;
 	var content = "";
 	if (amountToCall != "0")
-		amountToCall = "&cent; " + amountToCall;
+		amountToCall = "$" + amountToCall;
 	else
 		amountToCall = "";
 	$(".sitPlaceContainer")
@@ -228,23 +228,21 @@ function addANewPlayerToTable(id, name, chips, amountToCall) {
 										+ "<div class='w3-container w3-round' style='width:100%; height:5px;' id='timer"
 										+ id
 										+ "'></div></div>"
-										+ "<div class='ui-grid-a ui-block-solo'>"
-										+ "<div class='ui-block-a playerTotalChipsPlace'> &cent;"
-										+ chips
-										+ "</div>"
-										+ "<div class='ui-block-b'> "
+										+ "<div class='ui-block-solo otherPlayersName'>"
 										+ name
-										+ "</div></div>"
-										+ "<div class='ui-grid-a ui-block-solo'>"
+										+ "</div><div class='ui-block-solo ui-grid-a'>"
 										+ "<div class='ui-block-a pscontainer' id='pscontainer"
 										+ id
 										+ "'></div>"
-										+ "<div class='ui-block-b amountToCallcontainer' id='amountToCallcontainer"
+										+ "<div class='ui-block-b playerTotalChipsPlace'> $ "
+										+ chips
+										+ "</div></div><div class='amountToCallcontainer' id='amountToCallcontainer"
 										+ id
 										+ "'>"
 										+ amountToCall
-										+ "</div></div></div>";
-							} else {
+										+ "</div></div>";
+							} else if (data.status != "SIT_OUT_GAME"
+									&& data.status != "SIT_OUT") {
 								if ($("#userSitPlace").find(
 										".amountToCallcontainer").length <= 0) {
 									content = "<div class='ui-block-a'><div class='ui-block-solo playerInfo' id='playerInfo"
@@ -296,7 +294,7 @@ function addANewPlayerToTable(id, name, chips, amountToCall) {
 									.html(amountToCall);
 							$("#sitPlaceContainer" + id).find(
 									".playerTotalChipsPlace").html(
-									"&cent; " + chips);
+									"$ " + chips);
 							// $("#sitPlaceContainer" + id).html(content);
 							return false;
 						} else
@@ -402,14 +400,15 @@ function raise() {
 function sitInTheGame() {
 	var url = "/ICryptoPoker/REST/GetPlayerServiceWS/sitIn?gameId="
 			+ $("#gameID").val() + "&playerId=" + $("#playerID").val()
-			+ "&chips=" + $("#sitInChips").val()+ "&nickname=" + $("#nickname").val();
+			+ "&chips=" + $("#sitInChips").val() + "&nickname="
+			+ $("#nickname").val();
 	$.ajax({
 		url : url,
 		cache : false,
 		async : true,
 		success : function(data) {
 			if (data.success == true)
-				sendText("");
+				$("#popupSitIn").popup("close");
 			else
 				alert("raise failed");
 		},

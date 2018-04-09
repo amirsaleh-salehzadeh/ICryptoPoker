@@ -26,75 +26,6 @@ var timeLeft = 0;
 var playerToActId;
 var timer;
 
-function leaveTable() {
-	// var url = "/ICryptoPoker/REST/GetGameServiceWS/EndHand?handId="
-	// + $("#handID").val();
-	// $.ajax({
-	// url : url,
-	// cache : false,
-	// async : true,
-	// success : function(data) {
-	// if (data.success == true)
-	window.location.replace('t_game.do');
-	// },
-	// error : function(xhr, ajaxOptions, thrownError) {
-	// alert(xhr.responseText);
-	// }
-	// });
-}
-
-function updateGameInfo(data) {
-	$('.playerInfo').each(function() {
-		if ($(this).hasClass("sitOut")) {
-			$(this).removeClass("sitOut");
-		}
-	});
-	if (data.gameStatus == "NOT_STARTED") {
-		$("#handPotContainer").html('Game is not started');
-		$("#sliderRaise").slider();
-	} else
-		$("#handPotContainer").html(
-				'<img alt="" src="images/game/stack.png" height="100%"><span>&nbsp;$&nbsp;'
-						+ data.pot + '&nbsp;</span>');
-	if (data.gameStatus == "END_HAND") {
-		return endHand(data);
-	}
-	$(".tableCards").each(function() {
-		$(this).html('<img alt="" src="images/game/card.jpg">');
-	});
-	$(".actionButtons").each(function() {
-		$(this).addClass("ui-state-disabled");
-	});
-	$("#raiseSliderContainer").addClass("ui-state-disabled");
-	$("#handID").val(data.handId);
-	if (data.cards != null)
-		$(data.cards).each(function(k, l) {
-			generateACard(l, "flopsContainer", k + 1);
-		});
-
-	$(data.players).each(function(k, l) {
-		updatePlayerInfo(l);
-	});
-	if ($("#pscontainer" + data.POST_SB).length <= 0)
-		$("#pscontainer" + data.POST_SB).html(
-				'<img src="images/game/sb.png" height="100%" />');
-	if ($("#pscontainer" + data.POST_BB).length <= 0)
-		$("#pscontainer" + data.POST_BB).html(
-				'<img src="images/game/bb.png" height="100%" />');
-	if ($("#pscontainer" + data.DEALER).length <= 0) {
-		// if the div already contain info
-		if ($("#pscontainer" + data.DEALER).html().length > 1)
-			$("#pscontainer" + data.DEALER).html(
-					$("#pscontainer" + data.DEALER).html()
-							+ '<img src="images/game/d.png" height="100%" />');
-		// else
-		else
-			$("#pscontainer" + data.DEALER).html(
-					'<img src="images/game/d.png" height="100%" />');
-	}
-	fitElementsWithinScreen();
-}
-
 function setTimer() {
 	if (timeLeft == 0)
 		timeLeft = countDownTotal - 1000;
@@ -134,6 +65,83 @@ function getColorForPercentage(pct) {
 	};
 	return 'rgb(' + [ color.r, color.g, color.b ].join(',') + ')';
 	// or output as hex if preferred
+}
+
+function leaveTable() {
+	// var url = "/ICryptoPoker/REST/GetGameServiceWS/EndHand?handId="
+	// + $("#handID").val();
+	// $.ajax({
+	// url : url,
+	// cache : false,
+	// async : true,
+	// success : function(data) {
+	// if (data.success == true)
+	window.location.replace('t_game.do');
+	// },
+	// error : function(xhr, ajaxOptions, thrownError) {
+	// alert(xhr.responseText);
+	// }
+	// });
+}
+
+function updateGameInfo(data) {
+	$('.playerInfo').each(function() {
+		if ($(this).hasClass("sitOut")) {
+			$(this).removeClass("sitOut");
+		}
+	});
+	if (data.gameStatus == "NOT_STARTED") {
+		$("#handPotContainer").html('Game is not started');
+		$("#sliderRaise").slider();
+	} else
+		$("#handPotContainer").html(
+				'<img alt="" src="images/game/stack.png" height="100%"><span>&nbsp;$&nbsp;'
+						+ data.pot + '&nbsp;</span>');
+	fitElementsWithinScreen();
+	if (data.gameStatus == "END_HAND") {
+		return endHand(data.players);
+	}
+	$(".tableCards").each(function() {
+		$(this).html('<img alt="" src="images/game/card.jpg">');
+	});
+	$(".actionButtons").each(function() {
+		$(this).addClass("ui-state-disabled");
+	});
+	$("#raiseSliderContainer").addClass("ui-state-disabled");
+	$("#handID").val(data.handId);
+	if (data.cards != null)
+		$(data.cards).each(function(k, l) {
+			generateACard(l, "flopsContainer", k + 1);
+		});
+
+	$(data.players).each(function(k, l) {
+		updatePlayerInfo(l);
+	});
+	if ($("#pscontainer" + data.POST_SB).length <= 0)
+		$("#pscontainer" + data.POST_SB).html(
+				'<img src="images/game/sb.png" height="100%" />');
+	if ($("#pscontainer" + data.POST_BB).length <= 0)
+		$("#pscontainer" + data.POST_BB).html(
+				'<img src="images/game/bb.png" height="100%" />');
+	if ($("#pscontainer" + data.DEALER).length <= 0)
+		// if the div already contain info
+		$("#pscontainer" + data.DEALER).html(
+				$("#pscontainer" + data.DEALER).html()
+						+ '<img src="images/game/d.png" height="100%" />');
+	// else
+	else
+		$("#pscontainer" + data.DEALER).html(
+				'<img src="images/game/d.png" height="100%" />');
+}
+
+function generateACard(cardVal, divID, cardNumber) {
+	var res = "<img src='images/game/cards/" + cardVal
+			+ ".png' height='100%' />";
+	if (divID == "flopsContainer") {
+		$("#flop" + cardNumber).html(res).trigger("create");
+	} else {
+		$("#" + divID).find(".card" + cardNumber).html(res).trigger("create");
+	}
 }
 
 function updatePlayerInfo(data) {
@@ -178,14 +186,17 @@ function updatePlayerInfo(data) {
 			}
 		});
 
-	} else if (data.status == "WON_HAND") {
-		$('.playerInfo').each(function() {
-			if ("playerInfo" + playerId == this.id) {
-				$(this).addClass("winner");
-				$("#amountToCallcontainer" + playerId).html(data.handRank);
-			}
-		});
-	} else if (data.status == "SIT_OUT" || data.status == "SIT_OUT_GAME"
+	}
+
+	// else if (data.status == "WON_HAND") {
+	// $('.playerInfo').each(function() {
+	// if ("playerInfo" + playerId == this.id) {
+	// $(this).addClass("winner");
+	// $("#amountToCallcontainer" + playerId).html(data.handRank);
+	// }
+	// });
+	// }
+	else if (data.status == "SIT_OUT" || data.status == "SIT_OUT_GAME"
 			|| data.status == "SEATING") {
 		$('.playerInfo').each(function() {
 			if ("playerInfo" + playerId == this.id) {
@@ -195,22 +206,39 @@ function updatePlayerInfo(data) {
 	}
 
 }
-function endHand() {
+
+// if playersFinalCard exist remove all of them>>>last hadn
+function endHand(players) {
 	console.log("GAME DONE");
 	clearInterval(timer);
-	var res = "<div class='ui-grid-a playerCardsContainer' id='cards"
-	 + id
-	 + "'><div class='ui-block-a card1 card'></div>" +
-	 		"<div class='ui-block-b card2 card'></div></div><div class='handRankingRes'></div>";
-	$(".sitPlaceContainer")
-	.each(
-			function() {
-					if (id != $("#playerID").val()) {}
-			});
-	// sitIn();
-	// sendText("");
-	last hand div and presentation here...
-	
+	$(players)
+			.each(
+					function(k, l) {
+						$(".sitPlaceContainer")
+								.each(
+										function() {
+											if ($(this).attr("id") == "sitPlaceContainer"
+													+ l.id) {
+												var res = "<div class='ui-grid-a playersFinalCard'><div class='ui-block-a card1 card'><img src='images/game/cards/"
+														+ l.card1
+														+ ".png' height='100%' /></div>"
+														+ "<div class='ui-block-b card2 card'><img src='images/game/cards/"
+														+ l.card2
+														+ ".png' height='100%' /></div></div><div class='handRankingRes'></div>";
+												$(this).html(res);
+												if (l.status == "WON_HAND") {
+													$(this).addClass("winner");
+													$(
+															"#amountToCallcontainer"
+																	+ l.id)
+															.html(
+																	players.handRank);
+												}
+											}
+										});
+					});
+	return true;
+
 }
 
 function addANewPlayerToTable(data) {
@@ -227,7 +255,9 @@ function addANewPlayerToTable(data) {
 					function() {
 						if (content == "")
 							if (id != $("#playerID").val()) {
-								content = "<div class='ui-block-solo playerInfo' id='playerInfo"
+								content = "<input type='hidden' class='playerIDSittingDiv' id='"
+										+ id
+										+ "'> <div class='ui-block-solo playerInfo' id='playerInfo"
 										+ id
 										+ "'>"
 										+ "<div class='ui-block-solo w3-light-grey w3-round w3-tiny'>"
@@ -251,7 +281,9 @@ function addANewPlayerToTable(data) {
 									&& data.status != "SIT_OUT") {
 								if ($("#userSitPlace").find(
 										".amountToCallcontainer").length <= 0) {
-									content = "<div class='ui-grid-a'><div class='ui-block-a'><div class='ui-block-solo playerInfo' id='playerInfo"
+									content = "<input type='hidden' class='playerIDSittingDiv' id='"
+											+ id
+											+ "'><div class='ui-grid-a'><div class='ui-block-a'><div class='ui-block-solo playerInfo' id='playerInfo"
 											+ id
 											+ "'>"
 											+ "<div class='ui-block-solo w3-light-grey w3-round w3-tiny'>"
@@ -264,16 +296,7 @@ function addANewPlayerToTable(data) {
 											+ "'></div>"
 											+ "<div class='ui-block-b playerTotalChipsPlace'> $"
 											+ chips
-											+ "</div></div>"
-											+
-											// + "<div class='ui-block-solo
-											// amountToCallcontainer'
-											// id='amountToCallcontainer"
-											// + id
-											// + "'>"
-											// + amountBetRound
-											// + "</div>" +
-											"</div></div>"
+											+ "</div></div></div></div>"
 											+ "<div class='ui-block-b ui-grid-a playerCardsContainer' id='cards"
 											+ id
 											+ "'><div class='ui-block-a card1 card'></div><div class='ui-block-b card2 card'></div>"
@@ -287,12 +310,15 @@ function addANewPlayerToTable(data) {
 								return false;
 							}
 						// set the content for the first time
-						if ($(this).children("div").hasClass(
-								"sitPlaceThumbnailEmpty")
-								&& $("#sitPlaceContainer" + id).length <= 0) {
-
+						if (($(this).children("div").hasClass(
+								"sitPlaceThumbnailEmpty") && $("#sitPlaceContainer"
+								+ id).length <= 0)
+								|| $(this).find("playersFinalCard").length > 0) {
 							$(this).html(content);
 							$(this).attr("id", "sitPlaceContainer" + id);
+							$("#sitPlaceContainer" + id).find(
+							".amountToCallcontainer").css(
+							"display", "none");
 							return false;
 						} else if ($("#sitPlaceContainer" + id).length > 0) {
 							// set the content in the next rounds
@@ -303,13 +329,14 @@ function addANewPlayerToTable(data) {
 								$("#sitPlaceContainer" + id).find(
 										".amountToCallcontainer").html(
 										amountBetRound).trigger("create");
-							} else
+							}
+							if ($("#sitPlaceContainer" + id).find(
+									".amountToCallcontainer").html() == "")
 								$("#sitPlaceContainer" + id).find(
 										".amountToCallcontainer").css(
 										"display", "none");
 							$("#sitPlaceContainer" + id).find(
-									".playerTotalChipsPlace")
-									.html("$ " + chips);
+									".playerTotalChipsPlace").html("$" + chips);
 							// $("#sitPlaceContainer" + id).html(content);
 							return false;
 						} else
@@ -332,15 +359,13 @@ function dealCards2Players(l, id) {
 function check() {
 	var url = "/ICryptoPoker/REST/GetPlayerServiceWS/check?gameId="
 			+ $("#gameID").val() + "&playerId=" + $("#playerID").val();
+	$("#raiseSliderContainer").addClass("ui-state-disabled");
 	$.ajax({
 		url : url,
 		cache : false,
 		async : true,
 		success : function(data) {
-			if (data.success == true)
-				// getGameStatus();
-				sendText("Checked");
-			else
+			if (data.success != true)
 				alert("check failed");
 		},
 		error : function(xhr, ajaxOptions, thrownError) {
@@ -353,15 +378,13 @@ function check() {
 function call() {
 	var url = "/ICryptoPoker/REST/GetPlayerServiceWS/call?gameId="
 			+ $("#gameID").val() + "&playerId=" + $("#playerID").val();
+	$("#raiseSliderContainer").addClass("ui-state-disabled");
 	$.ajax({
 		url : url,
 		cache : false,
 		async : true,
 		success : function(data) {
-			if (data.success == true)
-				// getGameStatus();
-				sendText("Called");
-			else
+			if (data.success != true)
 				alert("check failed");
 		},
 		error : function(xhr, ajaxOptions, thrownError) {
@@ -374,14 +397,13 @@ function call() {
 function fold() {
 	var url = "/ICryptoPoker/REST/GetPlayerServiceWS/fold?gameId="
 			+ $("#gameID").val() + "&playerId=" + $("#playerID").val();
+	$("#raiseSliderContainer").addClass("ui-state-disabled");
 	$.ajax({
 		url : url,
 		cache : false,
 		async : true,
 		success : function(data) {
-			if (data.success == true)
-				sendText("Folded");
-			else
+			if (data.success != true)
 				alert("fold failed");
 		},
 		error : function(xhr, ajaxOptions, thrownError) {
@@ -395,14 +417,13 @@ function raise() {
 	var url = "/ICryptoPoker/REST/GetPlayerServiceWS/bet?gameId="
 			+ $("#gameID").val() + "&playerId=" + $("#playerID").val()
 			+ "&betAmount=" + $("#sliderRaise").val();
+	$("#raiseSliderContainer").addClass("ui-state-disabled");
 	$.ajax({
 		url : url,
 		cache : false,
 		async : true,
 		success : function(data) {
-			if (data.success == true)
-				sendText("");
-			else
+			if (data.success != true)
 				alert("raise failed");
 		},
 		error : function(xhr, ajaxOptions, thrownError) {
@@ -436,6 +457,7 @@ function sitInTheGame() {
 
 function allIn() {
 	$("#sliderRaise").val($("#sliderRaise").attr("max")).slider("refresh");
+	$("#raiseSliderContainer").addClass("ui-state-disabled");
 	raise();
 }
 

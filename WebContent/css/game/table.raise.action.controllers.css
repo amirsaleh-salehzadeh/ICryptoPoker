@@ -70,10 +70,10 @@ div.ui-slider>div>a {
 	color: white;
 }
 
-/* #raiseSliderContainer input { */
-/* 	display: none; */
-/* } */
+#raiseSliderContainer input {
+	display: none;
+}
 
-/* #raiseSliderContainer .ui-slider-track { */
-/* 	margin-left: 15px; */
-/* } */
+#raiseSliderContainer .ui-slider-track {
+	margin-left: 15px;
+}

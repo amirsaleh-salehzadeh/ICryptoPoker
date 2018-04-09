@@ -70,28 +70,34 @@ public class Table {
 				handService.sitOutCurrentPlayer(game, p);
 			}
 		}
-//		Player p = pdao.findById(uid, null);
-//		if (playerSessions.size() == 2)
-//			playerActionService.fold(p, game, true);
-//		if (playerSessions.size() >= 2 && game.isStarted()
-//				&& game.getCurrentHand() != null)
-//			// game.setCurrentHand(handService.sitOutCurrentPlayer(game, p));
-//			gameService.leaveTheGame(p);
-//		try {
-//			playerSessions.get(uid).close();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
+		// Player p = pdao.findById(uid, null);
+		// if (playerSessions.size() == 2)
+		// playerActionService.fold(p, game, true);
+		// if (playerSessions.size() >= 2 && game.isStarted()
+		// && game.getCurrentHand() != null)
+		// // game.setCurrentHand(handService.sitOutCurrentPlayer(game, p));
+		// gameService.leaveTheGame(p);
+		// try {
+		// playerSessions.get(uid).close();
+		// } catch (IOException e) {
+		// e.printStackTrace();
+		// }
+		try {
+			playerSessions.get(uid).close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		playerSessions.remove(uid, playerSessions.get(uid));
-//		if (playerSessions.size() == 1 && game.getCurrentHand() != null) {
-//			try {
-//				handService.endHand(game);
-//			} catch (AMSException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//			game = gdao.findById(game.getId(), null);
-//		}
+		// if (playerSessions.size() == 1 && game.getCurrentHand() != null) {
+		// try {
+		// handService.endHand(game);
+		// } catch (AMSException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+		// game = gdao.findById(game.getId(), null);
+		// }
 		handCount--;
 		sendToAll("");
 		System.out.println("removed from table " + uid);
@@ -136,11 +142,25 @@ public class Table {
 		Map<String, Object> results = gameService.getGameStatusMap(game);
 
 		// POSTING TO PLAYER SESSIONS
-		for (String cur : playerSessions.keySet()) {
-			Map<String, Object> resultsTMP = results;
-			String json = gameService.getGameStatusJSON(game, resultsTMP, cur);
-			playerSessions.get(cur).getAsyncRemote().sendText(json);
-		}
+		if (playerSessions.size() > 0)
+			for (String cur : playerSessions.keySet()) {
+				Map<String, Object> resultsTMP = results;
+				String json = gameService.getGameStatusJSON(game, resultsTMP,
+						cur);
+				if (playerSessions.get(cur).isOpen())
+					playerSessions.get(cur).getAsyncRemote().sendText(json);
+				else {
+					try {
+						playerSessions.get(cur).close();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					playerSessions.remove(cur, playerSessions.get(cur));
+				}
+			}
+		// TODO else destroy the sessions, close the game and clean the game
+		// from tableSocket
 	}
 
 	// counting the number of players with chips > 0 and have not folded
@@ -158,9 +178,9 @@ public class Table {
 
 	private Set<Player> getPlayerHands() {
 		Set<Player> playersInSeat = new HashSet<Player>();
-		for(Player p : game.getPlayers()){
-			if(!p.isSittingOut())
-			playersInSeat.add(p);
+		for (Player p : game.getPlayers()) {
+			if (!p.isSittingOut())
+				playersInSeat.add(p);
 		}
 		return playersInSeat;
 	}

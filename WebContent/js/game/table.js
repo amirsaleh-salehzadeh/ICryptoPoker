@@ -2,25 +2,35 @@ var webSocket;
 var wsUri = "";
 
 function fitElementsWithinScreen() {
-	$(".card").each(
-			function() {
-				if ($(this).html().length > 0) {
-					$(".playerCardsContainer").width(
-							$("#userSitPlace").height() * 1.5);
-					$(".playerCardsContainer").height(
-							$("#userSitPlace").height());
-					$(this).width($("#userSitPlace").height() * 0.7);
-					$(this).height($("#userSitPlace").height());
-					$(this).trigger("create");
-				}
-			});
+	$(".card")
+			.each(
+					function() {
+						if ($(this).html().length > 0) {
+							$(".playerCardsContainer").width(
+									$("#userSitPlace").height() * 1.5);
+							$(".playerCardsContainer").height(
+									$("#userSitPlace").height());
+							if (!$(this).hasClass("tableCards")) {
+								$(this)
+										.width(
+												$(this).parent().parent()
+														.height() * 0.7);
+								$(this).height(
+										$(this).parent().parent().height());
+							} else {
+								$(this)
+										.width(
+												$("#userSitPlace").height() * 0.7);
+								$(this).height($("#userSitPlace").height());
+							}
+							$(this).trigger("create");
+						}
+					});
 	var screen = $.mobile.getScreenHeight();
-	var header = $(".ui-header").hasClass("ui-header-fixed") ? $(
-			".ui-header").outerHeight() - 1 : $(".ui-header")
-			.outerHeight();
-	var footer = $(".ui-footer").hasClass("ui-footer-fixed") ? $(
-			".ui-footer").outerHeight() - 1 : $(".ui-footer")
-			.outerHeight();
+	var header = $(".ui-header").hasClass("ui-header-fixed") ? $(".ui-header")
+			.outerHeight() - 1 : $(".ui-header").outerHeight();
+	var footer = $(".ui-footer").hasClass("ui-footer-fixed") ? $(".ui-footer")
+			.outerHeight() - 1 : $(".ui-footer").outerHeight();
 	var contentCurrent = $(".ui-content").outerHeight()
 			- $(".ui-content").height();
 	var content = screen - header - footer - contentCurrent;
@@ -72,14 +82,18 @@ $(document).ready(
 			fitElementsWithinScreen();
 		});
 
+$(window).on("load", fitElementsWithinScreen);
+
 function onMessage(evt) {
 	console.log("received over websockets: " + evt.data);
 	updateGameInfo(JSON.parse(evt.data));
+	fitElementsWithinScreen();
 }
 
 function onClose(evt) {
 	console.log("closing websockets: " + evt.data);
 	webSocket.close();
+	fitElementsWithinScreen();
 }
 
 function onError(evt) {

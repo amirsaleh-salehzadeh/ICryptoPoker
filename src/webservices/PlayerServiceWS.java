@@ -178,11 +178,16 @@ public class PlayerServiceWS {
 		String json = "";
 		try {
 			if (hand == null)
-				json = mapper.writeValueAsString(Collections.singletonMap(
+				return  mapper.writeValueAsString(Collections.singletonMap(
 						"success", false));
 			else
 				json = mapper.writeValueAsString(Collections.singletonMap(
 						"success", true));
+			for (Table table : TableWebsocket.games) {
+				if (table.getGame().getId() == gameId) {
+					table.sendToAll("");
+				}
+			}
 		} catch (JsonGenerationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -231,6 +236,11 @@ public class PlayerServiceWS {
 		String json = "";
 		try {
 			json = mapper.writeValueAsString(resultMap);
+			for (Table table : TableWebsocket.games) {
+				if (table.getGame().getId() == gameId) {
+					table.sendToAll("");
+				}
+			}
 		} catch (JsonGenerationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -276,6 +286,11 @@ public class PlayerServiceWS {
 			else
 				json = mapper.writeValueAsString(Collections.singletonMap(
 						"success", true));
+			for (Table table : TableWebsocket.games) {
+				if (table.getGame().getId() == gameId) {
+					table.sendToAll("");
+				}
+			}
 		} catch (JsonGenerationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -334,6 +349,11 @@ public class PlayerServiceWS {
 		String json = "";
 		try {
 			json = mapper.writeValueAsString(resultMap);
+			for (Table table : TableWebsocket.games) {
+				if (table.getGame().getId() == gameId) {
+					table.sendToAll("");
+				}
+			}
 		} catch (JsonGenerationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -351,30 +371,28 @@ public class PlayerServiceWS {
 	@Path("/LeaveGame")
 	@Produces("application/json")
 	public String leaveGame(@QueryParam("playerId") String playerId) {
+		//TODO Check if we can merge it with the close the game function
 		gameService = new GameServiceImpl();
 		playerActionService = new PlayerActionServiceImpl();
 		GameDaoImpl gameDao = new GameDaoImpl();
 		Player player = playerActionService.getPlayerById(playerId);
-		GameENT game = gameDao.findById(player.getGameId(), null);
 		player.setGameId(0);
 		player.setGamePosition(0);
 		player.setSittingOut(false);
 		player.setTotalChips(player.getChips() + player.getTotalChips());
 		PlayerDaoImpl pdao = new PlayerDaoImpl();
 		pdao.merge(player, null);
-		// HandEntity he = game.getCurrentHand();
-		// for (Player p : game.getPlayers()) {
-		// if(!p.equals(player)&& p.getGamePosition()<player.getGamePosition())
-		// }
-		// if (game.isStarted() && he != null) {
-		//
-		// }
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("success", false);
 		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
 		try {
 			json = mapper.writeValueAsString(resultMap);
+			for (Table table : TableWebsocket.games) {
+				if (table.getGame().getId() == player.getGameId()) {
+					table.sendToAll("");
+				}
+			}
 		} catch (JsonGenerationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

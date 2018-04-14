@@ -78,79 +78,6 @@ public class PlayerServiceWS {
 	private GameServiceImpl gameService;
 
 	/**
-	 * Have a new player join a game.
-	 * 
-	 * @param gameId
-	 *            unique ID for the game to be joined
-	 * @param playerName
-	 *            player name
-	 * @return Map representing the JSON String of the new player's unique id.
-	 *         The playerId will be used for that player's actions in future
-	 *         requests. Example: {"playerId":xxx}
-	 */
-
-	@GET
-	@Path("/JoinGame")
-	@Produces("application/json")
-	public String joinGame(long gameId, String playerName) {
-		GameDaoImpl gameDao = new GameDaoImpl();
-		GameENT game = gameDao.findById(gameId, null);
-		Player player = new Player();
-		player.setName(playerName);
-		player = gameService.addNewPlayerToGame(game, player);
-		ObjectMapper mapper = new ObjectMapper();
-		String json = "";
-		try {
-			json = mapper.writeValueAsString(Collections.singletonMap(
-					"playerId", player.getId()));
-		} catch (JsonGenerationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return json;
-	}
-
-	/**
-	 * Player status in the current game and hand.
-	 * 
-	 * @param gameId
-	 *            unique ID of the game the player is playing in
-	 * @param playerId
-	 *            unique ID of the player
-	 * @return a Map represented as a JSON String with values for status (
-	 *         {@link PlayerStatus}), chips left, current hole cards, amount bet
-	 *         this betting round, and amount to call if there is a bet this
-	 *         round. Example:
-	 *         {"status":"ACTION_TO_CALL","chips":1000,"card1":"Xx"
-	 *         ,"card2":"Xx", "amountBetRound":xx,"amountToCall":100}
-	 */
-
-	@GET
-	@Path("/GetPlayerStatus")
-	@Produces("application/json")
-	public String getPlayerStatus(@QueryParam("gameId") long gameId,
-			@QueryParam("playerId") String playerId) {
-		ObjectMapper mapper = new ObjectMapper();
-		String json = "";
-		playerService = new PlayerServiceManagerImpl();
-		try {
-			json = mapper.writeValueAsString(playerService.buildPlayerStatus(
-					gameId, playerId));
-		} catch (JsonGenerationException e) {
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return json;
-	}
-
-	/**
 	 * Fold the hand.
 	 * 
 	 * @param gameId
@@ -166,7 +93,7 @@ public class PlayerServiceWS {
 	@GET
 	@Path("/fold")
 	@Produces("application/json")
-	public String fold(@QueryParam("gameId") long gameId,
+	public Response fold(@QueryParam("gameId") long gameId,
 			@QueryParam("playerId") String playerId) {
 		gameService = new GameServiceImpl();
 		playerActionService = new PlayerActionServiceImpl();
@@ -178,7 +105,7 @@ public class PlayerServiceWS {
 		String json = "";
 		try {
 			if (hand == null)
-				return  mapper.writeValueAsString(Collections.singletonMap(
+				json = mapper.writeValueAsString(Collections.singletonMap(
 						"success", false));
 			else
 				json = mapper.writeValueAsString(Collections.singletonMap(
@@ -198,7 +125,7 @@ public class PlayerServiceWS {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return json;
+		return Response.ok(json, MediaType.APPLICATION_JSON).build();
 	}
 
 	/**
@@ -218,7 +145,7 @@ public class PlayerServiceWS {
 	@GET
 	@Path("/call")
 	@Produces("application/json")
-	public String call(@QueryParam("gameId") long gameId,
+	public Response call(@QueryParam("gameId") long gameId,
 			@QueryParam("playerId") String playerId) {
 		gameService = new GameServiceImpl();
 		GameDaoImpl gameDao = new GameDaoImpl();
@@ -251,7 +178,7 @@ public class PlayerServiceWS {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return json;
+		return Response.ok(json, MediaType.APPLICATION_JSON).build();
 	}
 
 	/**
@@ -269,7 +196,7 @@ public class PlayerServiceWS {
 	@GET
 	@Path("/check")
 	@Produces("application/json")
-	public String check(@QueryParam("gameId") long gameId,
+	public Response check(@QueryParam("gameId") long gameId,
 			@QueryParam("playerId") String playerId) {
 		gameService = new GameServiceImpl();
 		GameDaoImpl gameDao = new GameDaoImpl();
@@ -301,7 +228,7 @@ public class PlayerServiceWS {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return json;
+		return Response.ok(json, MediaType.APPLICATION_JSON).build();
 	}
 
 	/**
@@ -331,7 +258,7 @@ public class PlayerServiceWS {
 	@GET
 	@Path("/bet")
 	@Produces("application/json")
-	public String bet(@QueryParam("gameId") long gameId,
+	public Response bet(@QueryParam("gameId") long gameId,
 			@QueryParam("playerId") String playerId,
 			@QueryParam("betAmount") int betAmount) {
 		gameService = new GameServiceImpl();
@@ -364,17 +291,16 @@ public class PlayerServiceWS {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return json;
+		return Response.ok(json, MediaType.APPLICATION_JSON).build();
 	}
 
 	@GET
 	@Path("/LeaveGame")
 	@Produces("application/json")
-	public String leaveGame(@QueryParam("playerId") String playerId) {
-		//TODO Check if we can merge it with the close the game function
+	public Response leaveGame(@QueryParam("playerId") String playerId) {
+		// TODO Check if we can merge it with the close the game function
 		gameService = new GameServiceImpl();
 		playerActionService = new PlayerActionServiceImpl();
-		GameDaoImpl gameDao = new GameDaoImpl();
 		Player player = playerActionService.getPlayerById(playerId);
 		player.setGameId(0);
 		player.setGamePosition(0);
@@ -387,12 +313,12 @@ public class PlayerServiceWS {
 		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
 		try {
-			json = mapper.writeValueAsString(resultMap);
 			for (Table table : TableWebsocket.games) {
 				if (table.getGame().getId() == player.getGameId()) {
 					table.sendToAll("");
 				}
 			}
+			json = mapper.writeValueAsString(resultMap);
 		} catch (JsonGenerationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -404,7 +330,7 @@ public class PlayerServiceWS {
 			e.printStackTrace();
 		}
 
-		return json;
+		return Response.ok(json, MediaType.APPLICATION_JSON).build();
 	}
 
 	/**

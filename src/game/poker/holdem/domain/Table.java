@@ -188,4 +188,13 @@ public class Table {
 	public void setGameId(long guid) {
 		game = gdao.findById(guid, null);
 	}
+	
+	public boolean isPlayingTheGame(Player p){
+		boolean res = false;
+		for(Player player: game.getPlayers()){
+			if(player.equals(p))
+				res = true;
+		}
+		return res;
+	}
 }

@@ -207,7 +207,7 @@ function updatePlayerInfo(data) {
 
 }
 
-// if playersFinalCard exist remove all of them>>>last hadn
+// if playersFinalCard exist remove all of them>>>last hand
 function endHand(players) {
 	console.log("GAME DONE");
 	clearInterval(timer);
@@ -224,15 +224,11 @@ function endHand(players) {
 														+ ".png' height='100%' /></div>"
 														+ "<div class='ui-block-b card2 card'><img src='images/game/cards/"
 														+ l.card2
-														+ ".png' height='100%' /></div></div><div class='handRankingRes'></div>";
+														+ ".png' height='100%' /></div></div><div class='handRankingRes'>"
+														+ l.handRank + "</div>";
 												$(this).html(res);
 												if (l.status == "WON_HAND") {
 													$(this).addClass("winner");
-													$(
-															"#amountToCallcontainer"
-																	+ l.id)
-															.html(
-																	players.handRank);
 												}
 											}
 										});
@@ -317,8 +313,8 @@ function addANewPlayerToTable(data) {
 							$(this).html(content);
 							$(this).attr("id", "sitPlaceContainer" + id);
 							$("#sitPlaceContainer" + id).find(
-							".amountToCallcontainer").css(
-							"display", "none");
+									".amountToCallcontainer").css("display",
+									"none");
 							return false;
 						} else if ($("#sitPlaceContainer" + id).length > 0) {
 							// set the content in the next rounds

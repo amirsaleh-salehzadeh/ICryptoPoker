@@ -94,6 +94,7 @@ public class PlayerUtil {
 	 */
 	public static Player getNextPlayerInGameOrderPH(
 			List<PlayerHand> playerHands, Player startPlayer) {
+		//TODO isPlayingTheGame check 
 		List<Player> players = new ArrayList<Player>();
 		for (PlayerHand ph : playerHands) {
 			if (ph.getPlayer() != null && !ph.getPlayer().isSittingOut()

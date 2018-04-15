@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
@@ -39,14 +40,24 @@ public class SaleDao extends BaseHibernateDAO implements SaleDaoInterface {
 	public SaleLST getSaleLST(SaleLST lst) throws AMSException  {
 		Session session = getSession();
 		Transaction tx = null;
+		SaleLST results = new SaleLST() ;
+		ArrayList<SaleENT> ents = new ArrayList<SaleENT>() ;
 		try {
 			tx = session.beginTransaction();
+			
 			Criteria cr = session.createCriteria(SaleENT.class);
-			cr.add(Restrictions.gt("username", lst.getUsername()));
+			
+			if(lst.getUsername()==null) {
+			
+				 ents = ((ArrayList<SaleENT>) session.createQuery("FROM SaleENT").list());
+				
+			} else {
+			cr.add(Restrictions.ilike("username", lst.getUsername()));
 			lst.setTotalItems(cr.list().size());
-			cr.setFirstResult(lst.getFirst());
-			cr.setMaxResults(lst.getPageSize());
-			lst.setSaleENTs((ArrayList<SaleENT>) cr.list());
+		
+			 ents= ((ArrayList<SaleENT>) cr.list());
+			}
+			results.setSaleENTs(ents);
 			tx.commit();
 		} catch (HibernateException e) {
 			if (tx != null)
@@ -55,13 +66,33 @@ public class SaleDao extends BaseHibernateDAO implements SaleDaoInterface {
 		} finally {
 			session.close();
 		}
-		return lst;
+		return results ;
 	}
 
 	@Override
-	public SaleENT removeSales(SaleENT sale) throws AMSException {
+	public void removeSales(ArrayList<SaleENT> ents) throws AMSException {
 		// TODO Auto-generated method stub
-		return null;
+		Session session = getSession();
+		Transaction tx = null;
+		
+		try {
+			session.flush();
+			session.clear();
+			tx = session.beginTransaction();
+			Query query = null;
+			for (SaleENT ent: ents) {
+				query = session.createQuery("DELETE SaleENT  WHERE saleId IN (:ids)");
+				query.setParameter("ids", ent.getSaleId());
+				query.executeUpdate();
+				tx.commit();
+			}
+		} catch (HibernateException e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
 	}
     
 	@Override

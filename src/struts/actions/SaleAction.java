@@ -80,7 +80,7 @@ public class SaleAction extends Action {
 		createMenusForSales(request);
 		SaleLST saleLST = (SaleLST) form;
 		try {
-			form = getSaleDAO().getSaleLST(saleLST) ;
+			saleLST = getSaleDAO().getSaleLST(saleLST) ;
 		} catch (AMSException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -116,7 +116,7 @@ public class SaleAction extends Action {
 		try {
 			saleENT = getSaleDAO().getSaleENT(saleENT) ;
 			lst.setSaleENT(saleENT);
-			form = lst;
+			request.setAttribute("paymentLST",lst);
 		} catch (AMSException e) {
 			error = e.getMessage();
 			e.printStackTrace();
@@ -178,25 +178,26 @@ public class SaleAction extends Action {
 		return mapping.findForward("saleEdit");
 	}
 
-	//
-	// private void deleteUser(HttpServletRequest request) {
-	// String[] delID = request.getParameter("deleteID").split(",");
-	// ArrayList<UserENT> usersToDelete = new ArrayList<UserENT>();
-	// for (int i = 0; i < delID.length; i++) {
-	// UserENT user = new UserENT();
-	// usersToDelete.add(user);
-	// try {
-	// getUserDAO().deleteUsers(usersToDelete);
-	// success = "The user(s) removed successfully";
-	// } catch (AMSException e) {
-	// e.printStackTrace();
-	// error = AMSErrorHandler.handle(request, this, e, "", "");
-	// }
-	// }
-	// MessageENT m = new MessageENT(success, error);
-	// request.setAttribute("message", m);
-	// }
-	//
+	
+	 private void deleteUser(HttpServletRequest request) {
+	 String[] delID = request.getParameter("deleteID").split(",");
+	 ArrayList<SaleENT> salesToDelete = new ArrayList<SaleENT>();
+	 for (int i = 0; i < delID.length; i++) {
+	 SaleENT sale = new SaleENT();
+	 sale.setSaleId(Long.parseLong(delID[i]));
+	 salesToDelete.add(sale);
+	 try {
+	 getSaleDAO().removeSales(salesToDelete);
+	 success = "The sale(s) removed successfully";
+	 } catch (AMSException e) {
+	 e.printStackTrace();
+	 error = AMSErrorHandler.handle(request, this, e, "", "");
+	 }
+	 }
+	 MessageENT m = new MessageENT(success, error);
+	 request.setAttribute("message", m);
+	 }
+	
 	private SaleENT getSaleENT(HttpServletRequest request) {
 		// date format for registration date
 		DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");

@@ -62,6 +62,10 @@ public class PaymentAction extends Action {
 		if (reqCode == null) {
 			reqCode = "paymentManagement";
 		}
+		if (reqCode.equalsIgnoreCase("deletePayment")) {
+			deletePayment(request);
+			reqCode = "paymentManagement";
+		}
 		System.out.println(reqCode);
 		if (reqCode.equalsIgnoreCase("paymentManagement") || reqCode.equals("gridJson")) {
 			return paymentManagement(request, mapping, form);
@@ -115,7 +119,7 @@ public class PaymentAction extends Action {
 		try {
 			paymentENT = getPaymentDAO().getPaymentENT(paymentENT) ;
 			lst.setPaymentENT(paymentENT);
-			form = lst;
+			request.setAttribute("paymentLST",lst);
 		} catch (AMSException e) {
 			error = e.getMessage();
 			e.printStackTrace();
@@ -162,6 +166,7 @@ public class PaymentAction extends Action {
 			
 		    date.setTime(Calendar.getInstance().getTime().getTime());
 			paymentENT.setDateTime(date) ;
+			paymentENT.setCreatorUsername(paymentENT.getUsername());
 			}
 			paymentENT = getPaymentDAO().savePayment(paymentENT);
 			success = "The user '" + paymentENT.getCreatorUsername() + "' saved successfully";
@@ -174,25 +179,26 @@ public class PaymentAction extends Action {
 		return mapping.findForward("paymentEdit");
 	}
 
-	//
-	// private void deleteUser(HttpServletRequest request) {
-	// String[] delID = request.getParameter("deleteID").split(",");
-	// ArrayList<UserENT> usersToDelete = new ArrayList<UserENT>();
-	// for (int i = 0; i < delID.length; i++) {
-	// UserENT user = new UserENT();
-	// usersToDelete.add(user);
-	// try {
-	// getUserDAO().deleteUsers(usersToDelete);
-	// success = "The user(s) removed successfully";
-	// } catch (AMSException e) {
-	// e.printStackTrace();
-	// error = AMSErrorHandler.handle(request, this, e, "", "");
-	// }
-	// }
-	// MessageENT m = new MessageENT(success, error);
-	// request.setAttribute("message", m);
-	// }
-	//
+	
+	 private void deletePayment(HttpServletRequest request) {
+	 String[] delID = request.getParameter("deleteID").split(",");
+	 ArrayList<PaymentENT> paymentsToDelete = new ArrayList<PaymentENT>();
+	 for (int i = 0; i < delID.length; i++) {
+	 PaymentENT payment = new PaymentENT() ;
+	 payment.setPaymentId(Long.parseLong(delID[i]));
+	 paymentsToDelete.add(payment);
+	 try {
+	 getPaymentDAO().removePayment(paymentsToDelete);
+	 success = "The user(s) removed successfully";
+	 } catch (AMSException e) {
+	 e.printStackTrace();
+	 error = AMSErrorHandler.handle(request, this, e, "", "");
+	 }
+	 }
+	 MessageENT m = new MessageENT(success, error);
+	 request.setAttribute("message", m);
+	 }
+	
 	private PaymentENT getPaymentENT(HttpServletRequest request) {
 		// date format for registration date
 		DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");

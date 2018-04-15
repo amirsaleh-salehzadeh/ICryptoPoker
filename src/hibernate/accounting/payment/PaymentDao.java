@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.SessionFactory;
@@ -18,8 +19,7 @@ import common.accounting.sale.SaleENT;
 import hibernate.accounting.payment.PaymentDaoInterface;
 import hibernate.config.BaseHibernateDAO;
 
-public class PaymentDao extends BaseHibernateDAO implements
-		PaymentDaoInterface {
+public class PaymentDao extends BaseHibernateDAO implements PaymentDaoInterface {
 
 	static SessionFactory conn = null;
 
@@ -29,6 +29,7 @@ public class PaymentDao extends BaseHibernateDAO implements
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
+			
 			session.saveOrUpdate(ent);
 			tx.commit();
 		} catch (HibernateException e) {
@@ -47,10 +48,19 @@ public class PaymentDao extends BaseHibernateDAO implements
 		Session session = getSession();
 		Transaction tx = null;
 		ArrayList<PaymentENT> ents = null;
+		Criteria cr = session.createCriteria(PaymentENT.class);
 		try {
 			tx = session.beginTransaction();
-			ents = (ArrayList<PaymentENT>) session.createQuery("FROM PaymentENT")
-					.list();
+			if(paymentLSTSearch.getPaymentENT()!=null) {
+			ents = (ArrayList<PaymentENT>) session.createQuery("FROM PaymentENT").list();
+			
+			}else {
+				cr.add(Restrictions.ilike("username", paymentLSTSearch.getPaymentENT().getUsername()));
+				paymentLSTSearch.setTotalItems(cr.list().size());
+				cr.setFirstResult(paymentLSTSearch.getFirst());
+				cr.setMaxResults(paymentLSTSearch.getPageSize());
+				ents = ((ArrayList<PaymentENT>) cr.list());
+			}
 			result.setPaymentENTs(ents);
 			tx.commit();
 		} catch (HibernateException e) {
@@ -63,15 +73,12 @@ public class PaymentDao extends BaseHibernateDAO implements
 		return result;
 	}
 
-
-	
-
 	@Override
 	public List<PaymentENT> searchCriteria(String accountName) throws AMSException {
 		// TODO Auto-generated method stub
-	     
-		if(accountName==null) {
-		   return getPaymentLST(null).getPaymentENTs() ;	
+
+		if (accountName == null) {
+			return getPaymentLST(null).getPaymentENTs();
 		}
 		Session session = getSession();
 		Transaction tx = null;
@@ -80,8 +87,8 @@ public class PaymentDao extends BaseHibernateDAO implements
 			tx = session.beginTransaction();
 			Criteria cr = session.createCriteria(PaymentENT.class);
 			cr.add(Restrictions.gt("status", 0));
-			cr.add(Restrictions.gt("reason",accountName));
-			ents =(ArrayList<PaymentENT>) cr.list() ;
+			cr.add(Restrictions.gt("reason", accountName));
+			ents = (ArrayList<PaymentENT>) cr.list();
 			tx.commit();
 		} catch (HibernateException e) {
 			if (tx != null)
@@ -90,8 +97,8 @@ public class PaymentDao extends BaseHibernateDAO implements
 		} finally {
 			session.close();
 		}
-		return ents ;
-		
+		return ents;
+
 	}
 
 	@Override
@@ -99,10 +106,10 @@ public class PaymentDao extends BaseHibernateDAO implements
 		// TODO Auto-generated method stub
 		Session session = getSession();
 		Transaction tx = null;
-		
+
 		try {
 			tx = session.beginTransaction();
-			  ent =  (PaymentENT)session.get(PaymentENT.class, ent.getPaymentId()) ;
+			ent = (PaymentENT) session.get(PaymentENT.class, ent.getPaymentId());
 			tx.commit();
 		} catch (HibernateException e) {
 			if (tx != null)
@@ -115,13 +122,31 @@ public class PaymentDao extends BaseHibernateDAO implements
 	}
 
 	@Override
-	public void removePayment(PaymentENT ent) throws AMSException {
+	public void removePayment(ArrayList<PaymentENT> ents) throws AMSException {
 		// TODO Auto-generated method stub
 		
+		Session session = getSession();
+		Transaction tx = null;
+		
+		try {
+			session.flush();
+			session.clear();
+			tx = session.beginTransaction();
+			Query query = null;
+			for (PaymentENT ent : ents) {
+				query = session.createQuery("DELETE PaymentENT p WHERE paymentId IN (:ids)");
+				query.setParameter("ids", ent.getPaymentId());
+				query.executeUpdate();
+				tx.commit();
+			}
+		} catch (HibernateException e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+
 	}
-
-
-	
-
 
 }

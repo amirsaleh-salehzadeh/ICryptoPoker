@@ -178,19 +178,23 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		final ScheduledExecutorService scheduler = Executors
 				.newScheduledThreadPool(1);
 		int timer = 10;
-		// if the second last player leaves
+		// when the second last player leaves
 		if (game.getPlayers().size() == counterToFindLastHand + 1)
 			timer = 1;
+		for (Table table : TableWebsocket.games) {
+			if (table.getGame().getId() == gameId) {
+				table.sendToAll("");
+			}
+		}
 		System.out.println("finishHandAndGame before thread");
+		GameDaoImpl gameDao = new GameDaoImpl();
+		game.setCurrentHand(null);
+		game.setStarted(false);
+		game = gameDao.merge(game, null);
 		ScheduledFuture<?> countdown = scheduler.schedule(new Runnable() {
 			@Override
 			public void run() {
 				System.out.println("finishHandAndGame inside the thread");
-				GameDaoImpl gameDao = new GameDaoImpl();
-				GameENT game = gameDao.findById(gameId, null);
-				game.setCurrentHand(null);
-				game.setStarted(false);
-				game = gameDao.merge(game, null);
 				scheduler.shutdownNow();
 				for (Table table : TableWebsocket.games) {
 					if (table.getGame().getId() == gameId) {
@@ -347,12 +351,10 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		HandEntity hand = game.getCurrentHand();
 		handDao = new HandDaoImpl();
 		playerDao = new PlayerDaoImpl();
-		if (currentPlayer == null) {
+		if (currentPlayer == null || !game.isStarted()
+				|| game.getCurrentHand() == null) {
 			return null;
 		}
-		// Refund the chips into the main account
-		// currentPlayer.setTotalChips(currentPlayer.getChips() +
-		// currentPlayer.getTotalChips());
 		currentPlayer.setSittingOut(true);
 		currentPlayer = playerDao.merge(currentPlayer, null);
 		PlayerHand playerHand = null;
@@ -362,14 +364,15 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 				break;
 			}
 		}
-		// Player next = PlayerUtil.getNextPlayerToAct(hand, currentPlayer);
 		if (playerHand != null
 				&& hand.getTotalBetAmount() > playerHand.getRoundBetAmount()) {
 			PlayerUtil.removePlayerFromHand(currentPlayer, hand);
 		}
-		// hand.setCurrentToAct(next);
 		hand.setGame(game);
 		hand = handDao.merge(hand, null);
+		hand.setGame(game);
+		PlayerActionServiceImpl playerActionServiceImpl = new PlayerActionServiceImpl();
+		playerActionServiceImpl.fold(currentPlayer, game, true);
 		return hand;
 	}
 

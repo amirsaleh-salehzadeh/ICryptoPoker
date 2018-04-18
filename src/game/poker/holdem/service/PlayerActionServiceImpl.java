@@ -207,8 +207,6 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 	}
 
 	public Player sitIn(Player player) throws AMSException {
-		// TODO neil check for sufficient fund here private boolean
-		// checkSufficientFundToJoinAGame(Player p, Game g) if not ERROR
 		player.setSittingOut(false);
 		return playerDao.merge(player, null);
 	}

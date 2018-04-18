@@ -2,39 +2,39 @@ var webSocket;
 var wsUri = "";
 
 function fitElementsWithinScreen() {
-	$(".sitPlaceThumbnail").each(function() {
-		$(this).width($("#userSitPlace").height() * 0.7);
-		$(this).height($("#userSitPlace").height() * 0.7);
-		$(this).trigger("create");
-		
-	});
-	$(".sitPlaceThumbnailEmpty").each(function() {
-		$(this).width($("#userSitPlace").height() * 0.7);
-		$(this).height($("#userSitPlace").height() * 0.7);
-		$(this).trigger("create");
-	});
-	$(".card").each(
-			function() {
-				if ($(this).html().length > 0) {
-					$(".playerCardsContainer").width(
-							$("#userSitPlace").height() * 1.5);
-					$(".playerCardsContainer").height(
-							$("#userSitPlace").height());
-					$(this).width($("#userSitPlace").height() * 0.7);
-					$(this).height($("#userSitPlace").height());
-					$(this).trigger("create");
-				}
-			});
-}
-
-function generateACard(cardVal, divID, cardNumber) {
-	var res = "<img src='images/game/cards/" + cardVal
-			+ ".png' height='100%' />";
-	if (divID == "flopsContainer") {
-		$("#flop" + cardNumber).html(res).trigger("create");
-	} else {
-		$("#" + divID).find(".card" + cardNumber).html(res).trigger("create");
-	}
+	$(".card")
+			.each(
+					function() {
+						if ($(this).html().length > 0) {
+							$(".playerCardsContainer").width(
+									$("#userSitPlace").height() * 1.5);
+							$(".playerCardsContainer").height(
+									$("#userSitPlace").height());
+							if (!$(this).hasClass("tableCards")) {
+								$(this)
+										.width(
+												$(this).parent().parent()
+														.height() * 0.7);
+								$(this).height(
+										$(this).parent().parent().height());
+							} else {
+								$(this)
+										.width(
+												$("#userSitPlace").height() * 0.7);
+								$(this).height($("#userSitPlace").height());
+							}
+							$(this).trigger("create");
+						}
+					});
+	var screen = $.mobile.getScreenHeight();
+	var header = $(".ui-header").hasClass("ui-header-fixed") ? $(".ui-header")
+			.outerHeight() - 1 : $(".ui-header").outerHeight();
+	var footer = $(".ui-footer").hasClass("ui-footer-fixed") ? $(".ui-footer")
+			.outerHeight() - 1 : $(".ui-footer").outerHeight();
+	var contentCurrent = $(".ui-content").outerHeight()
+			- $(".ui-content").height();
+	var content = screen - header - footer - contentCurrent;
+	$(".ui-content").height(content);
 }
 
 function resetPlayerInfo() {
@@ -55,6 +55,7 @@ $(document).ready(
 			var wsUri = "ws://" + document.location.host
 					+ "/ICryptoPoker/game/" + $("#gameID").val() + "/"
 					+ $("#playerID").val();
+			// fitElementsWithinScreen();
 			webSocket = new WebSocket(wsUri);
 			webSocket.onmessage = function(evt) {
 				onMessage(evt);
@@ -78,21 +79,21 @@ $(document).ready(
 			$(window).on("resize", function() {
 				fitElementsWithinScreen();
 			});
-//			$("#flopsContainer div").height(
-//					$("#flop1").width() + ($("#flop1").width() * 0.7));
-			// resetplayerInfo();
-			$("#sliderRaise").slider();
 			fitElementsWithinScreen();
 		});
+
+$(window).on("load", fitElementsWithinScreen);
 
 function onMessage(evt) {
 	console.log("received over websockets: " + evt.data);
 	updateGameInfo(JSON.parse(evt.data));
+	fitElementsWithinScreen();
 }
 
 function onClose(evt) {
 	console.log("closing websockets: " + evt.data);
 	webSocket.close();
+	fitElementsWithinScreen();
 }
 
 function onError(evt) {
@@ -101,9 +102,6 @@ function onError(evt) {
 
 function onOpen() {
 	console.log("Connected to " + wsUri);
-	$(".actionButtons").each(function() {
-		$(this).addClass("ui-state-disabled");
-	});
 }
 
 function sendText(json) {
@@ -114,16 +112,11 @@ function sendText(json) {
 // is clicked
 function toggleChat() {
 	if ($("#chatBoxContainer").css("display") == "block") {
-
 		$("#chatBoxContainer").css("display", "none");
 	} else
 		$("#chatBoxContainer").css("display", "block");
 }
 function toggleFullScreen(elem) {
-	// ## The below if statement seems to work better ## if
-	// ((document.fullScreenElement && document.fullScreenElement !== null) ||
-	// (document.msfullscreenElement && document.msfullscreenElement !== null)
-	// || (!document.mozFullScreen && !document.webkitIsFullScreen)) {
 	if ((document.fullScreenElement !== undefined && document.fullScreenElement === null)
 			|| (document.msFullscreenElement !== undefined && document.msFullscreenElement === null)
 			|| (document.mozFullScreen !== undefined && !document.mozFullScreen)

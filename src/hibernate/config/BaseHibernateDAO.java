@@ -37,7 +37,6 @@ public class BaseHibernateDAO {
 					conn.close();
 				}
 			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 			throw getAMSException(e.getMessage(), e);
@@ -51,6 +50,9 @@ public class BaseHibernateDAO {
 		case AMSEX_DELETE:
 			msg = "A problem occured while deleting";
 			break;
+		case AMSException.AMSEX_CONNECTION_TO_DATABASE:
+			msg = "Cannot connect to the database server";
+			break;
 		case AMSEX_SAVE:
 			msg = "A problem occured while saving";
 			break;
@@ -63,9 +65,10 @@ public class BaseHibernateDAO {
 		return e;
 
 	}
-	
-	public Session getSession(){
-		SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+
+	public Session getSession() {
+		SessionFactory sessionFactory = new Configuration().configure()
+				.buildSessionFactory();
 		return sessionFactory.openSession();
 	}
 

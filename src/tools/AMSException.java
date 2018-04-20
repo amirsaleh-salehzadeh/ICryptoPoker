@@ -10,6 +10,7 @@ public class AMSException extends Exception {
 	public static final int AMSEX_DELETE = 1;
 	public static final int AMSEX_SAVE = 2;
 	public static final int AMSEX_SAVE_DUPLICATE = 3;
+	public static final int AMSEX_CONNECTION_TO_DATABASE= 4;
 
 	private int type = 0;
 

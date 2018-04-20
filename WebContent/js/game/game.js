@@ -251,6 +251,7 @@ function addANewPlayerToTable(data) {
 					function() {
 						if (content == "")
 							if (id != $("#playerID").val()) {
+								// content for other players around the table
 								content = "<input type='hidden' class='playerIDSittingDiv' id='"
 										+ id
 										+ "'> <div class='ui-block-solo playerInfo' id='playerInfo"
@@ -275,6 +276,7 @@ function addANewPlayerToTable(data) {
 										+ "</div></div>";
 							} else if (data.status != "SIT_OUT_GAME"
 									&& data.status != "SIT_OUT") {
+								// the player user's sitplace
 								if ($("#userSitPlace").find(
 										".amountToCallcontainer").length <= 0) {
 									content = "<input type='hidden' class='playerIDSittingDiv' id='"
@@ -299,17 +301,17 @@ function addANewPlayerToTable(data) {
 											+ "</div></div>";
 									$("#userSitPlace").html(content);
 								} else {
+									// Update the player user's chips value
 									$("#userSitPlace").find(
 											".playerTotalChipsPlace").html(
-											"$; " + chips);
+											"$" + chips);
 								}
 								return false;
 							}
 						// set the content for the first time
 						if (($(this).children("div").hasClass(
 								"sitPlaceThumbnailEmpty") && $("#sitPlaceContainer"
-								+ id).length <= 0)
-								|| $(this).find("playersFinalCard").length > 0) {
+								+ id).length <= 0)) {
 							$(this).html(content);
 							$(this).attr("id", "sitPlaceContainer" + id);
 							$("#sitPlaceContainer" + id).find(
@@ -317,6 +319,15 @@ function addANewPlayerToTable(data) {
 									"none");
 							return false;
 						} else if ($("#sitPlaceContainer" + id).length > 0) {
+							if ($("#sitPlaceContainer" + id).find(
+									".playersFinalCard").length > 0) {
+								$("#sitPlaceContainer" + id).html(content);
+								$("#sitPlaceContainer" + id).find(
+										".amountToCallcontainer").css(
+										"display", "none");
+								$(this).removeClass("winner");
+								return;
+							}
 							// set the content in the next rounds
 							if (betDivShow) {
 								$("#sitPlaceContainer" + id).find(

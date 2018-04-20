@@ -55,7 +55,7 @@
 			<!-- TOP GRID  -->
 			<div class="ui-grid-d ui-block-solo"
 				style="width: 100%; height: 20%;">
-				<div class="ui-block-a sitPlaceContainer topSideSits"
+				<div class="ui-block-a"
 					style="width: 20%; height: 100%;"></div>
 				<div class="ui-block-b sitPlaceContainer"
 					style="width: 20%; height: 100%;" data-sort='4'>

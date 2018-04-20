@@ -9,7 +9,6 @@
 <%
 	Player p = (Player) request.getAttribute("player");
 %>
-<div>
 <div class="ui-grid-b">
 	<div class="ui-block-a">
 		<img alt="chips" title="Total Chips" src="images/game/user.png"

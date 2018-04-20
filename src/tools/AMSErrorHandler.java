@@ -43,9 +43,11 @@ public class AMSErrorHandler {
 		className = className.substring(className.lastIndexOf(".") + 1);
 
 		String error = "";
-//		error = errorHandler.generalDBErrorHandle(e);
+		// error = errorHandler.generalDBErrorHandle(e);
 		if ("UserAction".equalsIgnoreCase(className)) {
 			error = errorHandler.userActionErrorHandle(e);
+		} else if ("BaseHibernateDAO".equalsIgnoreCase(className)) {
+			error = errorHandler.baseHibernateDAOErrorHandle(e);
 		} else if ("SecurityAction".equalsIgnoreCase(className)) {
 			error = errorHandler.securityActionErrorHandle(e);
 			// } else if ("BankAccountAction".equalsIgnoreCase(className)) {
@@ -86,6 +88,14 @@ public class AMSErrorHandler {
 		return error;
 	}
 
+	private String baseHibernateDAOErrorHandle(Exception e) {
+		String error = "";
+		if (e.getMessage().contains("Communications link failure")) {
+			error = "Error in connection to the database server. Please contact the system administrator.";
+		}
+		return error;
+	}
+
 	public static void throwException(Object obj, Exception e)
 			throws AMSException {
 		e.printStackTrace();
@@ -93,7 +103,8 @@ public class AMSErrorHandler {
 		className = className.substring(className.lastIndexOf(".") + 1);
 		if ("MellatEPaymentWS".equalsIgnoreCase(className)) {
 			if (e.getMessage().contains("java.net.UnknownHostException")) {
-				throw new AMSException("ارتباط با بانک قطع شده است");
+				throw new AMSException(
+						"ارتباط با بانک قطع شده است");
 			} else {
 				throw new AMSException(e.getMessage());
 			}
@@ -106,17 +117,21 @@ public class AMSErrorHandler {
 			error = "کد مشتري صحيح نيست";
 		} else if (e.getMessage().contains("تاريخ صحيح نيست")) {
 			error = "تاريخ صحيح نيست";
-		} else if (e.getMessage().contains("کد مشتري وارد شده موجود نيست")) {
+		} else if (e.getMessage().contains(
+				"کد مشتري وارد شده موجود نيست")) {
 			error = "کد مشتري وارد شده موجود نيست";
-		} else if (e.getMessage().contains("حواله اي با اين شماره وجود ندارد")) {
+		} else if (e.getMessage().contains(
+				"حواله اي با اين شماره وجود ندارد")) {
 			error = "حواله اي با اين شماره وجود ندارد";
 		} else if (e
 				.getMessage()
 				.contains(
 						"�?قط آخرين درخواست يک مشتري براي يک �?رآورده قابل ويرايش و تغيير ميباشد")) {
 			error = "�?قط آخرين درخواست يک مشتري براي يک �?رآورده قابل ويرايش و تغيير ميباشد";
-		} else if (e.getMessage()
-				.contains("درخواست تائيد شده قابل ويرايش نيست")) {
+		} else if (e
+				.getMessage()
+				.contains(
+						"درخواست تائيد شده قابل ويرايش نيست")) {
 			error = "درخواست تائيد شده قابل ويرايش نيست";
 		} else if (e
 				.getMessage()
@@ -128,7 +143,8 @@ public class AMSErrorHandler {
 				.contains(
 						"�?قط آخرين درخواست يک مشتري براي يک �?رآورده قابل تائيد ميباشد")) {
 			error = "�?قط آخرين درخواست يک مشتري براي يک �?رآورده قابل تائيد ميباشد";
-		} else if (e.getMessage().contains("اين درخواست قبلا در تاريخ")) {
+		} else if (e.getMessage().contains(
+				"اين درخواست قبلا در تاريخ")) {
 			error = "اين درخواست قبلا تائيد شده است";
 		} else {
 			error = "unhandled";
@@ -154,11 +170,15 @@ public class AMSErrorHandler {
 				.contains(
 						"اشکال در اطلاعات �?يش ها : �?يش (ها(ي کا�?ي براي حواله انتخاب نشده است . لط�?ا بررسي شود")) {
 			error = "اشکال در اطلاعات �?يش ها : �?يش هاي کا�?ي براي حواله انتخاب نشده است";
-		} else if (e.getMessage().contains(
-				"لط�?ا مجوز مالي يا �?يش نقدي مربوط به حواله را وارد نمائيد")) {
+		} else if (e
+				.getMessage()
+				.contains(
+						"لط�?ا مجوز مالي يا �?يش نقدي مربوط به حواله را وارد نمائيد")) {
 			error = "لط�?ا مجوز مالي يا �?يش نقدي مربوط به حواله را وارد نمائيد";
-		} else if (e.getMessage().contains(
-				"لط�?ا قرارداد حـمل مشتري را  وارد نمائيد")) {
+		} else if (e
+				.getMessage()
+				.contains(
+						"لط�?ا قرارداد حـمل مشتري را  وارد نمائيد")) {
 			error = "لط�?ا قرارداد حـمل مشتري را  وارد نمائيد";
 		} else if (e
 				.getMessage()
@@ -170,8 +190,10 @@ public class AMSErrorHandler {
 				.contains(
 						"مجوز انتخاب شده براي �?رآورده انتخاب شده در حواله نيست و همخواني ندارد")) {
 			error = "مجوز انتخاب شده براي �?رآورده انتخاب شده در حواله نيست و همخواني ندارد";
-		} else if (e.getMessage().contains(
-				"مانده سهمیه کمتر از مقدار حواله میباشد")) {
+		} else if (e
+				.getMessage()
+				.contains(
+						"مانده سهمیه کمتر از مقدار حواله میباشد")) {
 			error = "مانده سهمیه کمتر از مقدار حواله میباشد";
 		} else if (e
 				.getMessage()
@@ -183,41 +205,57 @@ public class AMSErrorHandler {
 				.contains(
 						"اشکال در اطلاعات �?يش ها : �?يش (ها( اضا�?ي براي حواله انتخاب شده است . لط�?ا بررسي شود")) {
 			error = "اشکال در اطلاعات �?يش ها : �?يش های اضا�?ي براي حواله انتخاب شده است";
-		} else if (e.getMessage().contains(
-				"مشتري با مشخصات درخواست شده وجود ندارد")) {
+		} else if (e
+				.getMessage()
+				.contains(
+						"مشتري با مشخصات درخواست شده وجود ندارد")) {
 			error = "مشتري با مشخصات درخواست شده وجود ندارد";
-		} else if (e.getMessage().contains(
-				"شناسه حواله درخواست شده در بانک اطلاعاتي وجود ندارد")) {
+		} else if (e
+				.getMessage()
+				.contains(
+						"شناسه حواله درخواست شده در بانک اطلاعاتي وجود ندارد")) {
 			error = "شناسه حواله درخواست شده در بانک اطلاعاتي وجود ندارد";
 		} else if (e
 				.getMessage()
 				.contains(
 						"اشکال در اطلاعات �?يش ها : �?يش  مجزا(ها(ي کا�?ي براي حواله انتخاب نشده است . لط�?ا بررسي شود")) {
 			error = "اشکال در اطلاعات �?يش ها : �?يش های مجزای کا�?ی برای حواله انتخاب نشده است";
-		} else if (e.getMessage().contains(
-				"اطلاعات حساب بانکي يا کد شعبه و يا شماره حساب صحيح نميباشد")) {
+		} else if (e
+				.getMessage()
+				.contains(
+						"اطلاعات حساب بانکي يا کد شعبه و يا شماره حساب صحيح نميباشد")) {
 			error = "اطلاعات حساب بانکي يا کد شعبه و يا شماره حساب صحيح نميباشد";
 		} else if (e
 				.getMessage()
 				.contains(
 						"Violation of UNIQUE KEY constraint 'U_Fiches_FicheNo_F_CustomerID'. Cannot insert duplicate key in object 'Fiches'.")) {
 			error = "این �?یش قبلا ثبت شده است";
-		} else if (e.getMessage().contains(
-				"مقدار حواله با ظر�?يتهاي تعيين شده براي مشتري همخواني ندارد")) {
+		} else if (e
+				.getMessage()
+				.contains(
+						"مقدار حواله با ظر�?يتهاي تعيين شده براي مشتري همخواني ندارد")) {
 			error = "مقدار حواله با ظر�?يتهاي تعيين شده براي مشتري همخواني ندارد";
 		} else if (e.getMessage().contains("costsNotMatch")) {
 			error = "عدم تطابق مبالغ هزینه ها";
-		} else if (e.getMessage().contains(
-				"براي صدور حواله اينترنتي تعري�? ظر�?يت حمل مشتري الزامي است")) {
+		} else if (e
+				.getMessage()
+				.contains(
+						"براي صدور حواله اينترنتي تعري�? ظر�?يت حمل مشتري الزامي است")) {
 			error = "براي صدور حواله اينترنتي تعري�? ظر�?يت حمل مشتري الزامي است";
-		} else if (e.getMessage().contains(
-				"شناسه س�?ارش درخواست شده در بانک اطلاعاتي وجود ندارد")) {
+		} else if (e
+				.getMessage()
+				.contains(
+						"شناسه س�?ارش درخواست شده در بانک اطلاعاتي وجود ندارد")) {
 			error = "شناسه س�?ارش درخواست شده در بانک اطلاعاتي وجود ندارد";
-		} else if (e.getMessage().contains(
-				"بسته شده است وامکان ثبت حواله جديد وجود ندارد")) {
+		} else if (e
+				.getMessage()
+				.contains(
+						"بسته شده است وامکان ثبت حواله جديد وجود ندارد")) {
 			error = "�?روش بسته شده است وامکان ثبت حواله جديد وجود ندارد";
-		} else if (e.getMessage().contains(
-				"کد مشتري اشتباه است لط�?ا تصحيح شود")) {
+		} else if (e
+				.getMessage()
+				.contains(
+						"کد مشتري اشتباه است لط�?ا تصحيح شود")) {
 			error = "کد مشتري اشتباه است لط�?ا تصحيح شود";
 		} else if (e.getMessage().contains("غير�?عال است")) {
 			int indexStart = e.getMessage().indexOf("مشتري");
@@ -264,8 +302,10 @@ public class AMSErrorHandler {
 				.contains(
 						"از تاريخ اعتبار مجوز درخواستي گذشته است و امکان است�?اده در اين حواله را ندارد")) {
 			error = "از تاريخ اعتبار مجوز درخواستي گذشته است و امکان است�?اده در اين حواله را ندارد";
-		} else if (e.getMessage().contains(
-				"براي اطلاعات درخواستي مجوزي پيدا نشد")) {
+		} else if (e
+				.getMessage()
+				.contains(
+						"براي اطلاعات درخواستي مجوزي پيدا نشد")) {
 			error = "براي اطلاعات درخواستي مجوزي پيدا نشد";
 		} else if (e
 				.getMessage()
@@ -289,14 +329,20 @@ public class AMSErrorHandler {
 				.contains(
 						"Violation of UNIQUE KEY constraint 'U_Fiches_FicheNo'. Cannot insert duplicate key in object 'Fiches'.")) {
 			error = "این شماره �?یش قبلا ثبت شده است";
-		} else if (e.getMessage().contains(
-				"مشتري با مشخصات درخواست شده وجود ندارد")) {
+		} else if (e
+				.getMessage()
+				.contains(
+						"مشتري با مشخصات درخواست شده وجود ندارد")) {
 			error = "مشتري با مشخصات درخواست شده وجود ندارد";
-		} else if (e.getMessage().contains(
-				"مشتري با مشخصات درخواست شده بيش از يک مورد پيدا شده است")) {
+		} else if (e
+				.getMessage()
+				.contains(
+						"مشتري با مشخصات درخواست شده بيش از يک مورد پيدا شده است")) {
 			error = "مشتري با مشخصات درخواست شده بيش از يک مورد پيدا شده است";
-		} else if (e.getMessage().contains(
-				"اطلاعات حساب بانکي يا کد شعبه و يا شماره حساب صحيح نميباشد")) {
+		} else if (e
+				.getMessage()
+				.contains(
+						"اطلاعات حساب بانکي يا کد شعبه و يا شماره حساب صحيح نميباشد")) {
 			error = "اطلاعات حساب بانکي يا کد شعبه و يا شماره حساب صحيح نميباشد";
 		} else if (e
 				.getMessage()
@@ -306,10 +352,13 @@ public class AMSErrorHandler {
 		} else if (e.getMessage().contains(
 				"Violation of UNIQUE KEY constraint 'U_Fiches_FicheNo'")) {
 			error = "این �?یش قبلا ثبت شده است";
-		} else if (e.getMessage().contains("محل جاري تعري�? نشده است")) {
-			error = "محل جاري تعري�? نشده است";
 		} else if (e.getMessage().contains(
-				"محل جاري در منوي  کاربر تعري�? نشده است")) {
+				"محل جاري تعري�? نشده است")) {
+			error = "محل جاري تعري�? نشده است";
+		} else if (e
+				.getMessage()
+				.contains(
+						"محل جاري در منوي  کاربر تعري�? نشده است")) {
 			error = "محل جاري در منوي  کاربر تعري�? نشده است";
 		} else if (e.getMessage().contains("غير�?عال است")) {
 			int index = e.getMessage().indexOf(
@@ -333,15 +382,20 @@ public class AMSErrorHandler {
 
 	public String orderPursuitActionErrorHandle(Exception e) {
 		String error = "";
-		if (e.getMessage().contains("حواله مورد درخواست وجود ندارد")) {
+		if (e.getMessage().contains(
+				"حواله مورد درخواست وجود ندارد")) {
 			error = "حواله مورد درخواست وجود ندارد";
-		} else if (e.getMessage().contains("حواله درخواست شده به شماره")) {
+		} else if (e.getMessage().contains(
+				"حواله درخواست شده به شماره")) {
 			error = e.getMessage().split("--->")[1];
-		} else if (e.getMessage().contains("س�?ارش مورد درخواست وجود ندارد")) {
+		} else if (e.getMessage().contains(
+				"س�?ارش مورد درخواست وجود ندارد")) {
 			error = "حواله مورد درخواست وجود ندارد";
-		} else if (e.getMessage().contains("کد مشتري اشتباه است")) {
+		} else if (e.getMessage().contains(
+				"کد مشتري اشتباه است")) {
 			error = "کد مشتري اشتباه است";
-		} else if (e.getMessage().contains("س�?ارش درخواست شده به شماره")) {
+		} else if (e.getMessage().contains(
+				"س�?ارش درخواست شده به شماره")) {
 			error = e.getMessage().split("--->")[1];
 		} else {
 			error = "unhandled";

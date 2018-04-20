@@ -12,11 +12,12 @@ import tools.AMSException;
 import tools.AMSUtililies;
 
 import java.io.IOException;
-import java.sql.Date;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,8 +35,10 @@ import com.google.gson.Gson;
 
 import common.MessageENT;
 import common.PopupENT;
+
 import common.accounting.payment.PaymentENT;
 import common.accounting.payment.PaymentLST;
+import common.security.RoleLST;
 
 /**
  * MyEclipse Struts Creation date: 09-21-2010
@@ -59,12 +62,16 @@ public class PaymentAction extends Action {
 		if (reqCode == null) {
 			reqCode = "paymentManagement";
 		}
+		if (reqCode.equalsIgnoreCase("deletePayment")) {
+			deletePayment(request);
+			reqCode = "paymentManagement";
+		}
 		System.out.println(reqCode);
 		if (reqCode.equalsIgnoreCase("paymentManagement") || reqCode.equals("gridJson")) {
 			return paymentManagement(request, mapping, form);
 		} else if (reqCode.equals("paymentEdit") || reqCode.equals("paymentView") || reqCode.equals("paymentNew")
 				|| reqCode.equals("paymentView")) {
-			return editPayment(request, mapping ,form);
+			return editPayment(request, mapping, form);
 		} else if (reqCode.equals("saveUpdatePayment")) {
 			return saveUpdatePayment(request, mapping, form);
 
@@ -99,16 +106,20 @@ public class PaymentAction extends Action {
 	private ActionForward editPayment(HttpServletRequest request, ActionMapping mapping, ActionForm form) {
 		PaymentENT paymentENT = new PaymentENT();
 		long paymentId;
-		if (request.getParameter("paymentId") != null) {
-			paymentId = Long.parseLong(request.getParameter("paymentId"));
-		} else {
-			request.setAttribute("paymentENT", paymentENT);
+		PaymentLST lst = (PaymentLST) form;
+		if (request.getParameter("paymentId") == null) {
 			return mapping.findForward("paymentEdit");
 		}
+		// request.setAttribute("paymentENT", paymentENT);
+
+		paymentId = Long.parseLong(request.getParameter("paymentId"));
+
 		paymentENT.setPaymentId(paymentId);
 		// saveTheForm();
 		try {
-			request.setAttribute("paymentENT", getPaymentDAO().getPaymentENT(paymentENT));
+			paymentENT = getPaymentDAO().getPaymentENT(paymentENT) ;
+			lst.setPaymentENT(paymentENT);
+			request.setAttribute("paymentLST",lst);
 		} catch (AMSException e) {
 			error = e.getMessage();
 			e.printStackTrace();
@@ -147,8 +158,16 @@ public class PaymentAction extends Action {
 	//
 	private ActionForward saveUpdatePayment(HttpServletRequest request, ActionMapping mapping, ActionForm form) {
 		PaymentLST lst = (PaymentLST) form;
-		PaymentENT paymentENT = lst.getSearchPayment();
+		PaymentENT paymentENT = lst.getPaymentENT();
 		try {
+			if(paymentENT.getDateTime()==null) {
+		   DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+           Date date = new Date( ) ;
+			
+		    date.setTime(Calendar.getInstance().getTime().getTime());
+			paymentENT.setDateTime(date) ;
+			paymentENT.setCreatorUsername(paymentENT.getUsername());
+			}
 			paymentENT = getPaymentDAO().savePayment(paymentENT);
 			success = "The user '" + paymentENT.getCreatorUsername() + "' saved successfully";
 		} catch (AMSException e) {
@@ -160,25 +179,26 @@ public class PaymentAction extends Action {
 		return mapping.findForward("paymentEdit");
 	}
 
-	//
-	// private void deleteUser(HttpServletRequest request) {
-	// String[] delID = request.getParameter("deleteID").split(",");
-	// ArrayList<UserENT> usersToDelete = new ArrayList<UserENT>();
-	// for (int i = 0; i < delID.length; i++) {
-	// UserENT user = new UserENT();
-	// usersToDelete.add(user);
-	// try {
-	// getUserDAO().deleteUsers(usersToDelete);
-	// success = "The user(s) removed successfully";
-	// } catch (AMSException e) {
-	// e.printStackTrace();
-	// error = AMSErrorHandler.handle(request, this, e, "", "");
-	// }
-	// }
-	// MessageENT m = new MessageENT(success, error);
-	// request.setAttribute("message", m);
-	// }
-	//
+	
+	 private void deletePayment(HttpServletRequest request) {
+	 String[] delID = request.getParameter("deleteID").split(",");
+	 ArrayList<PaymentENT> paymentsToDelete = new ArrayList<PaymentENT>();
+	 for (int i = 0; i < delID.length; i++) {
+	 PaymentENT payment = new PaymentENT() ;
+	 payment.setPaymentId(Long.parseLong(delID[i]));
+	 paymentsToDelete.add(payment);
+	 try {
+	 getPaymentDAO().removePayment(paymentsToDelete);
+	 success = "The user(s) removed successfully";
+	 } catch (AMSException e) {
+	 e.printStackTrace();
+	 error = AMSErrorHandler.handle(request, this, e, "", "");
+	 }
+	 }
+	 MessageENT m = new MessageENT(success, error);
+	 request.setAttribute("message", m);
+	 }
+	
 	private PaymentENT getPaymentENT(HttpServletRequest request) {
 		// date format for registration date
 		DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
@@ -189,7 +209,7 @@ public class PaymentAction extends Action {
 
 		}
 		if (paymentENT.getDateTime() == null)
-			paymentENT.setDateTime(Date.valueOf(df.format(Calendar.getInstance().getTime())));
+		//	paymentENT.setDateTime(Date.valueOf(df.format(Calendar.getInstance().getTime())));
 		paymentENT.setUsername(request.getParameter("userName"));
 		paymentENT.setCreatorUsername(request.getParameter("creatorUsername"));
 		paymentENT.setBankResponse(request.getParameter("bankResponse"));

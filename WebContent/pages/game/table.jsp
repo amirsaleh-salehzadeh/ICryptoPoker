@@ -27,6 +27,7 @@
 %>
 </head>
 <body>
+<div  id="connectionPopup" >Just some test stuff</div>
 	<div data-role="page">
 		<div data-role="panel" id="panelChat" data-display="overlay">
 			CHAT <a href="#tableFooter" data-mini="true"
@@ -37,7 +38,8 @@
 			<a href="#"
 				class="ui-btn ui-mini ui-icon-back ui-btn-icon-left ui-shadow-icon ui-corner-all"
 				onclick="leaveTable()" >Lobby</a>
-			<h3>
+			<h3><div id="connectionStatus" class="circleConnect circleConnected"></div>
+			
 				&nbsp;<%=request.getParameter("playerName")%></h3>
 			<a href="#" class="ui-btn ui-icon-shop ui-btn-icon-left"
 				>&nbsp;&cent;&nbsp;<%=player.getTotalChips()%></a>

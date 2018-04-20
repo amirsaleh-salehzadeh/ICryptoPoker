@@ -9,7 +9,7 @@
 <%
 	Player p = (Player) request.getAttribute("player");
 %>
-
+<div>
 <div class="ui-grid-b">
 	<div class="ui-block-a">
 		<img alt="chips" title="Total Chips" src="images/game/user.png"
@@ -93,8 +93,8 @@
 <!-- GAME LIST GRID -->
 
 
-<div class="ui-block-solo">
 
+<div class="tableContainer ">
 	<table data-role="table" id="table-lobby" class="ui-responsive"
 		data-mode="reflow">
 		<thead>
@@ -107,9 +107,7 @@
 		</thead>
 		<tbody id="lobbyTableTBody"></tbody>
 	</table>
-
 </div>
-
 <!-- 	POPUP DIV JOIN GAME -->
 
 

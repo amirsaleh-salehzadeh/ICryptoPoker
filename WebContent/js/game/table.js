@@ -35,6 +35,7 @@ function fitElementsWithinScreen() {
 			- $(".ui-content").height();
 	var content = screen - header - footer - contentCurrent;
 	$(".ui-content").height(content);
+	
 }
 
 function resetPlayerInfo() {
@@ -52,6 +53,7 @@ function resetPlayerInfo() {
 
 $(document).ready(
 		function() {
+		
 			var wsUri = "ws://" + document.location.host
 					+ "/ICryptoPoker/game/" + $("#gameID").val() + "/"
 					+ $("#playerID").val();
@@ -79,7 +81,7 @@ $(document).ready(
 			$(window).on("resize", function() {
 				fitElementsWithinScreen();
 			});
-			fitElementsWithinScreen();
+			fitElementsWithinScreen();			
 		});
 
 $(window).on("load", fitElementsWithinScreen);
@@ -146,3 +148,7 @@ function toggleFullScreen(elem) {
 function sitInPopupOpen() {
 	$("#popupSitIn").popup("open");
 }
+function openErrorPopup(content){
+	$("#errorContent").html(content);
+$("#errorPopup").popup();
+$("#errorPopup").popup("open");}

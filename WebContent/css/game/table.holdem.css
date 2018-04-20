@@ -263,3 +263,20 @@ html,body {
 		rgba(81, 89, 106, 0.5), inset -3px -15px 45px rgba(108, 112, 120, 0.8),
 		1px 5px 30px -4px rgba(142, 145, 151, 0.1) !important;
 }
+#errorPopup{
+	height:200px!important;
+    width:300px;
+    background-color: maroon;
+    	-webkit-box-shadow: -28px 2px 135px 0px rgba(255, 0, 0, 1);
+	-moz-box-shadow: -28px 2px 135px 0px rgba(255, 0, 0, 1);
+	box-shadow: -28px 2px 135px 0px rgba(255, 0, 0, 1);
+    top:48%;
+}
+#errorHeading{
+	
+	text-decoration: underline;
+	text-decoration: blink;	
+}
+#errorContent{
+	text-align: center;
+}

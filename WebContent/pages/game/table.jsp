@@ -232,6 +232,13 @@
 					class="actionButtons ui-btn ui-icon-action ui-btn-icon-left ui-shadow ui-corner-all ui-state-disabled">All-In</a>
 			</div>
 		</div>
+				<!-- ERROR POPUP to open use the openErrorPopup(content) function-->
+			<div data-role="popup" id="errorPopup" class="ui-content" >
+            <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+            <span id="errorHeading"><h1>ERROR!</h1> </span>
+            <span id="errorContent"></span>
+            </div>
 	</div>
+
 </body>
 </html>

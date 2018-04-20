@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import common.accounting.payment.PaymentENT;
+
 import common.accounting.sale.SaleENT;
 
 public class AccountENT {
@@ -24,7 +25,7 @@ public class AccountENT {
 		this.debitList.addAll(debitList) ;
 	}
 
-	public void addCreditList(List<PaymentENT> debitList) {
+	public void addCreditList(List<SaleENT> debitList) {
 		this.creditList.addAll(creditList) ;
 	}
 	public void setDebitAmount(double debitAmount) {

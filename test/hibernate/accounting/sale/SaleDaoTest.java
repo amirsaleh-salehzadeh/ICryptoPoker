@@ -2,7 +2,13 @@ package hibernate.accounting.sale;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+
 import org.junit.Test;
+
+import common.accounting.sale.SaleLST;
+import tools.AMSException;
+import common.accounting.sale.SaleENT ;
 
 public class SaleDaoTest {
 
@@ -13,12 +19,24 @@ public class SaleDaoTest {
 
 	@Test
 	public void testGetSaleLST() {
-		fail("Not yet implemented");
+		SaleLST saleLst = new SaleLST() ;
+		SaleDao saleDao = new SaleDao() ;
+		try {
+			saleLst.setUsername("neil");
+			saleLst = saleDao.getSaleLST(saleLst) ;
+		} catch (AMSException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		for(SaleENT ent : saleLst.getSaleENTs()) {
+			System.out.println(ent.getUsername());
+		}
+		assertNotNull(saleLst.getSaleENT());
 	}
 
 	@Test
 	public void testRemoveSales() {
-		fail("Not yet implemented");
+		
 	}
 
 }

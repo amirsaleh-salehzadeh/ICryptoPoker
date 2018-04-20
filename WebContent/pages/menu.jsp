@@ -64,6 +64,10 @@ body {
 					data-filtertext="form checkboxradio widget radio input radio buttons controlgroups"><a
 					id="btnMenu" class="userMenu ui-btn"
 					href="t_payment.do?reqCode=paymentManagement" data-ajax="false">Payment</a></li>
+					<li id="liMenu" class="userMenu"
+					data-filtertext="form checkboxradio widget radio input radio buttons controlgroups"><a
+					id="btnMenu" class="userMenu ui-btn"
+					href="t_sale.do?reqCode=saleManagement" data-ajax="false">Sale</a></li>
 			</ul>
 		</div>
 	</li>

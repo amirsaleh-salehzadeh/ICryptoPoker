@@ -11,7 +11,7 @@
   <property generated="never" lazy="false" name="username" type="java.lang.String">
    <column name="username"/>
   </property>
-  <property generated="never" lazy="false" name="payment_method" type="int">
+  <property generated="never" lazy="false" name="paymentMethod" type="int">
    <column name="payment_method"/>
   </property>
   <property generated="never" lazy="false" name="dateTime" type="date">

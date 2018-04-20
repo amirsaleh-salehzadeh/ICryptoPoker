@@ -2,18 +2,28 @@ package common.accounting.sale;
 
 import java.util.ArrayList;
 
+import org.apache.struts.action.ActionForm;
 
-public class SaleLST {
+public class SaleLST extends ActionForm {
+	static final long serialVersionUID = 42L;
 	ArrayList<SaleENT> saleENTs = new ArrayList<SaleENT>();
 	SaleENT saleENT;
+	String username;
 	private int currentPage = 0;
 	private int totalPages;
 	private int pageSize = 10;
 	private int totalItems;
 	private int first;
 	private boolean ascending = true;
-	private String sortedByField = "role_name";
+	private String sortedByField = "username";
 
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
 	public boolean isAscending() {
 		return ascending;
@@ -101,11 +111,14 @@ public class SaleLST {
 	 * @return the saleENTENTs
 	 */
 	public ArrayList<SaleENT> getSaleENTs() {
+		if (saleENTs == null)
+			saleENTs = new ArrayList<SaleENT>();
 		return saleENTs;
 	}
 
 	/**
-	 * @param saleENTENTs the saleENTENTs to set
+	 * @param saleENTENTs
+	 *            the saleENTENTs to set
 	 */
 	public void setSaleENTs(ArrayList<SaleENT> saleENTENTs) {
 		this.saleENTs = saleENTENTs;
@@ -115,15 +128,17 @@ public class SaleLST {
 	 * @return the saleENT
 	 */
 	public SaleENT getSaleENT() {
+		if (saleENT == null)
+			saleENT = new SaleENT();
 		return saleENT;
 	}
 
 	/**
-	 * @param saleENT the saleENT to set
+	 * @param saleENT
+	 *            the saleENT to set
 	 */
 	public void setSaleENT(SaleENT saleENT) {
 		this.saleENT = saleENT;
 	}
 
-	
 }

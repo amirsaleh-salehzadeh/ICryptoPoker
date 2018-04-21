@@ -28,17 +28,23 @@
 		<input type="hidden" name="reqCodeGrid" id="reqCodeGrid" value="">
 		<div class="ui-grid-solo" id="searchFilters">
 			<div class="ui-grid-solo">
-				<html:text name="paymentLST" property="searchUsername"
-					onkeyup="refreshGrid();" title="Username"></html:text>
+				<input type="text" name="searchUsername"
+					value="<bean:write name="paymentLST" property="searchUsername" />"
+					placeholder="username" maxlength="30" size="15"
+					onkeyup="refreshGrid();" data-mini="true">
 			</div>
 			<div class="ui-grid-a">
 				<div class="ui-block-a">
-					<html:text name="paymentLST" property="searchFromDate"
-						onkeyup="refreshGrid();" title="From Date"></html:text>
+					<input type="text" data-role="date" data-mini="true"
+						name="searchFromDate"
+						value="<bean:write name="paymentLST" property="searchFromDate" />"
+						onchange="refreshGrid();" data-date-format="yy-mm-dd">
 				</div>
 				<div class="ui-block-b">
-					<html:text name="paymentLST" property="searchToDate"
-						onkeyup="refreshGrid();" title="To Date" ></html:text>
+					<input type="text" data-role="date" data-mini="true"
+						name="searchToDate"
+						value="<bean:write name="paymentLST" property="searchToDate" />"
+						onchange="refreshGrid();" data-date-format="yy-mm-dd">
 				</div>
 			</div>
 		</div>

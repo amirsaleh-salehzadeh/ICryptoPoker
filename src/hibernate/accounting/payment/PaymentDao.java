@@ -1,6 +1,10 @@
 package hibernate.accounting.payment;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
@@ -9,6 +13,8 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.criterion.Expression;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 
 import tools.AMSException;
@@ -52,17 +58,26 @@ public class PaymentDao extends BaseHibernateDAO implements PaymentDaoInterface 
 		Criteria cr = session.createCriteria(PaymentENT.class);
 		try {
 			tx = session.beginTransaction();
-			if (paymentLSTSearch.getPaymentENT() != null) {
-				ents = (ArrayList<PaymentENT>) session.createQuery(
-						"FROM PaymentENT").list();
-			} else {
-				cr.add(Restrictions.ilike("username",
-						paymentLSTSearch.getSearchUsername()));
-				paymentLSTSearch.setTotalItems(cr.list().size());
-				cr.setFirstResult(paymentLSTSearch.getFirst());
-				cr.setMaxResults(paymentLSTSearch.getPageSize());
-				ents = ((ArrayList<PaymentENT>) cr.list());
+			// if (paymentLSTSearch.getPaymentENT() != null) {
+			ents = (ArrayList<PaymentENT>) session.createQuery(
+					"FROM PaymentENT").list();
+			// } else {
+			cr.add(Restrictions.like("username",
+					paymentLSTSearch.getSearchUsername(), MatchMode.ANYWHERE));
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			try {
+				cr.add(Expression.ge("dateTime",
+						sdf.parse(paymentLSTSearch.getSearchFromDate())));
+				cr.add(Expression.lt("dateTime",
+						sdf.parse(paymentLSTSearch.getSearchToDate())));
+			} catch (ParseException e) {
+				e.printStackTrace();
 			}
+			paymentLSTSearch.setTotalItems(cr.list().size());
+			cr.setFirstResult(paymentLSTSearch.getFirst());
+			cr.setMaxResults(paymentLSTSearch.getPageSize());
+			ents = ((ArrayList<PaymentENT>) cr.list());
+			// }
 			result.setPaymentENTs(ents);
 			tx.commit();
 		} catch (HibernateException e) {

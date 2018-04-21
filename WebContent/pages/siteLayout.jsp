@@ -18,6 +18,11 @@
 <link rel="stylesheet" href="css/jquery-mobile/jqm-demos.css">
 <link rel="stylesheet"
 	href="css/jquery-mobile/jquery.dataTables.min.css">
+
+<link rel="stylesheet"
+	href="css/jquery-mobile/jquery.mobile.datepicker.css">
+	<link rel="stylesheet"
+	href="css/jquery-mobile/jquery.mobile.datepicker.theme.css">
 <link rel="stylesheet" href="css/icryptopokermaincss.css">
 <script src="js/icryptopokermainscripts.js"></script>
 <script src="js/jquery/jquery.min.js"></script>
@@ -27,6 +32,8 @@
 <script src="js/jquery.dataTables.min.js"></script>
 <script src="js/dataTables.bootstrap.min.js"></script>
 <script src="js/dataTables.select.min.js"></script>
+<script src="js/jquery/jquery.mobile.datepicker.js"></script>
+<script src="js/jquery/datepicker.js"></script>
 <script type="text/javascript">
 	function showHideMainMenu() {
 		if ($("#mainMenu").css("display") == "none")
@@ -38,13 +45,13 @@
 		$("#mainMenu").css("top", $(".jqm-header").height());
 	});
 	function ShowLoadingScreen() {
-// 		$("#loadingOverlay").css("display", "block");
-// 		$("#loadingContent").css("display", "block");
-// 		$(".markerLoading").css('display', 'block').trigger("create");
-// 		$("#loadingContent").html("Loading. . ." + "</br>" + loadingContent);
+		// 		$("#loadingOverlay").css("display", "block");
+		// 		$("#loadingContent").css("display", "block");
+		// 		$(".markerLoading").css('display', 'block').trigger("create");
+		// 		$("#loadingContent").html("Loading. . ." + "</br>" + loadingContent);
 	}
-	function HideLoadingScreen(){
-		
+	function HideLoadingScreen() {
+
 	}
 </script>
 <%

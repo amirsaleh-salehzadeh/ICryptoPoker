@@ -44,6 +44,7 @@ public class PlayerStatusObject {
 	private String id;
 	private String name;
 	private String handRank;
+	private String token ;
 
 	/**
 	 * @return the handRank
@@ -159,5 +160,13 @@ public class PlayerStatusObject {
 
 	public void setAmountToCall(int amountToCall) {
 		this.amountToCall = amountToCall;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 }

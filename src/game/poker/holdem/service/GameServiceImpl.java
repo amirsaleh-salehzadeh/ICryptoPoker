@@ -37,6 +37,7 @@ import game.poker.holdem.holder.Board;
 import game.poker.holdem.util.GameUtil;
 import game.poker.holdem.util.PlayerUtil;
 import game.poker.holdem.view.PlayerStatusObject;
+import services.tokenization.Tokenization;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -146,8 +147,12 @@ public class GameServiceImpl implements GameServiceInterface {
 			PlayerStatusObject ptmp = playerService.buildPlayerStatus(
 					game.getId(), p.getId());
 			h.setGame(game);
+			Date date = new Date() ;
+			date.setSeconds(new Date().getSeconds()+ 20);
+			p.setPrivateKey(Tokenization.getPrivateKey( p, date));
 			if ((!p.getId().equals(playerId) || !game.isStarted())
 					&& !gs.equals(GameStatus.END_HAND)) {
+				p.setPrivateKey("");
 				ptmp.setCard1("card1" + playerId);
 				ptmp.setCard2("");
 			} else if (gs.equals(GameStatus.END_HAND)) {

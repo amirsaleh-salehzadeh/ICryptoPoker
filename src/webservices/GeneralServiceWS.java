@@ -45,7 +45,7 @@ import org.codehaus.jettison.json.JSONException;
 import tools.AMSException;
 
 import common.user.UserPassword;
-
+import game.poker.holdem.domain.Player;
 import hibernate.user.UserDAO;
 
 /**
@@ -97,8 +97,8 @@ public class GeneralServiceWS {
 			// both username and password are acceptable and it then send them to the server to be checked
 		try {
 			System.out.println("All is fine");
-			json = mapper.writeValueAsString(dao
-					.registerNewUser(new UserPassword(userName, userPassword)));
+			
+			json = mapper.writeValueAsString(dao.registerNewUser(new UserPassword(userName, userPassword))) ;
 		} catch (JsonGenerationException e) {
 			e.printStackTrace();
 		} catch (JsonMappingException e) {

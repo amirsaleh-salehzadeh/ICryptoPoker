@@ -26,7 +26,7 @@ public class TokenizationTest {
         token = Tokenization.getPublicKey(ent.getId(), ent, targetTime) ;
         System.out.println(token);
         assertNotNull(token);
-        assertEquals(true, Tokenization.verify(token,ent));
+        assertEquals(true, Tokenization.verifyPublic(token,ent));
         
         
 	}
@@ -37,13 +37,13 @@ public class TokenizationTest {
 		Date targetTime = new Date(); // now
 		targetTime.setMinutes(59);
 		token = Tokenization.getPublicKey(ent.getId(), ent, targetTime) ;
-		assertEquals("testing claim issue",true,Tokenization.verify(token,ent));
+		assertEquals("testing claim issue",true,Tokenization.verifyPublic(token,ent));
 		ent.setName("me");
-		assertEquals("testing claim issue",false,Tokenization.verify(token,ent));
-		assertEquals("testing if giving non token",false,Tokenization.verify("hello",ent));
+		assertEquals("testing claim issue",false,Tokenization.verifyPublic(token,ent));
+		assertEquals("testing if giving non token",false,Tokenization.verifyPublic("hello",ent));
 		targetTime.setMinutes(21);
 		token = Tokenization.getPublicKey(ent.getId(), ent, targetTime) ;
-		assertEquals("testing expiring",false, Tokenization.verify(token,ent)) ;
+		assertEquals("testing expiring",false, Tokenization.verifyPublic(token,ent)) ;
 		  
 		
 	}

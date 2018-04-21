@@ -43,6 +43,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import com.google.gson.Gson;
 
 import common.game.poker.holdem.GameENT;
+import services.tokenization.Tokenization;
 import services.websockets.TableWebsocket;
 import tools.AMSException;
 
@@ -104,17 +105,20 @@ public class PlayerServiceWS {
 		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
 		try {
+			if(Tokenization.verifyPrivate(player.getPrivateKey(),player)) {
 			if (hand == null)
 				json = mapper.writeValueAsString(Collections.singletonMap(
 						"success", false));
 			else
 				json = mapper.writeValueAsString(Collections.singletonMap(
 						"success", true));
+			
 			for (Table table : TableWebsocket.games) {
 				if (table.getGame().getId() == gameId) {
 					table.sendToAll("");
 				}
 			}
+			}else System.out.println("invalid token");
 		} catch (JsonGenerationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -154,6 +158,7 @@ public class PlayerServiceWS {
 		Player player = playerActionService.getPlayerById(playerId);
 		HandEntity hand = playerActionService.call(player, game);
 		Map<String, Object> resultMap = new HashMap<String, Object>();
+		
 		if (hand == null)
 			resultMap.put("success", false);
 		else
@@ -162,12 +167,16 @@ public class PlayerServiceWS {
 		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
 		try {
+			if(Tokenization.verifyPrivate(player.getPrivateKey(),player)) {
 			json = mapper.writeValueAsString(resultMap);
+			
 			for (Table table : TableWebsocket.games) {
 				if (table.getGame().getId() == gameId) {
 					table.sendToAll("");
 				}
 			}
+			}
+			else System.out.println("invalid token");
 		} catch (JsonGenerationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -207,6 +216,7 @@ public class PlayerServiceWS {
 		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
 		try {
+			if(Tokenization.verifyPrivate(player.getPrivateKey(),player)) {
 			if (hand == null)
 				json = mapper.writeValueAsString(Collections.singletonMap(
 						"success", false));
@@ -218,6 +228,7 @@ public class PlayerServiceWS {
 					table.sendToAll("");
 				}
 			}
+			}else System.out.println("invalid token");
 		} catch (JsonGenerationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -275,12 +286,14 @@ public class PlayerServiceWS {
 		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
 		try {
+			if(Tokenization.verifyPrivate(player.getPrivateKey(),player)) {
 			json = mapper.writeValueAsString(resultMap);
 			for (Table table : TableWebsocket.games) {
 				if (table.getGame().getId() == gameId) {
 					table.sendToAll("");
 				}
 			}
+			}else System.out.println("invalid token");
 		} catch (JsonGenerationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

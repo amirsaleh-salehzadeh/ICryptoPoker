@@ -13,6 +13,8 @@ public class Player implements Comparable<Player> {
 	private String registrationDate;
 	private String password;
     private String sessionId ;
+    private String publicKey ;
+    private String privateKey ;
 	// private int gender ;
 	// private Date dob ;
 	// private String surname ;
@@ -174,5 +176,21 @@ public class Player implements Comparable<Player> {
 
 	public void setSessionId(String sessionId) {
 		this.sessionId = sessionId;
+	}
+
+	public String getPublicKey() {
+		return publicKey;
+	}
+
+	public void setPublicKey(String publicKey) {
+		this.publicKey = publicKey;
+	}
+
+	public String getPrivateKey() {
+		return privateKey;
+	}
+
+	public void setPrivateKey(String privateKey) {
+		this.privateKey = privateKey;
 	}
 }

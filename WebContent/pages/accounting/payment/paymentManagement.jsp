@@ -24,11 +24,23 @@
 	<html:form styleId="dataFilterGridMainPage" action="payment.do">
 		<ams:message messageEntity="${message}"></ams:message>
 		<input type="hidden" name="reqCode" id="reqCode"
-			value="paymentManagement"> <input type="hidden"
-			name="reqCodeGrid" id="reqCodeGrid" value="">
+			value="paymentManagement">
+		<input type="hidden" name="reqCodeGrid" id="reqCodeGrid" value="">
 		<div class="ui-grid-solo" id="searchFilters">
-			<html:text name="paymentLST" property="paymentENT.username"
-				onkeyup="refreshGrid();" title="Username"></html:text> 
+			<div class="ui-grid-solo">
+				<html:text name="paymentLST" property="searchUsername"
+					onkeyup="refreshGrid();" title="Username"></html:text>
+			</div>
+			<div class="ui-grid-a">
+				<div class="ui-block-a">
+					<html:text name="paymentLST" property="searchFromDate"
+						onkeyup="refreshGrid();" title="From Date"></html:text>
+				</div>
+				<div class="ui-block-b">
+					<html:text name="paymentLST" property="searchToDate"
+						onkeyup="refreshGrid();" title="To Date" ></html:text>
+				</div>
+			</div>
 		</div>
 		<div class="ui-grid-solo">
 			<bean:define id="totalRows" name="paymentLST" property="totalItems"

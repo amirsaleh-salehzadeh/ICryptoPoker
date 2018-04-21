@@ -8,8 +8,9 @@ public class PaymentLST extends ActionForm {
 	static final long serialVersionUID = 42L;
 	ArrayList<PaymentENT> paymentENTs = new ArrayList<PaymentENT>();
 	PaymentENT paymentENT = new PaymentENT();
-	private String fromDate;
-	private String toDate;
+	private String searchFromDate;
+	private String searchToDate;
+	private String searchUsername;
 	private int currentPage = 0;
 	private int totalPages;
 	private int pageSize = 10;
@@ -18,20 +19,28 @@ public class PaymentLST extends ActionForm {
 	private boolean ascending = true;
 	private String sortedByField = "username";
 
-	public String getFromDate() {
-		return fromDate;
+	public String getSearchUsername() {
+		return searchUsername;
 	}
 
-	public void setFromDate(String fromDate) {
-		this.fromDate = fromDate;
+	public void setSearchUsername(String searchUsername) {
+		this.searchUsername = searchUsername;
 	}
 
-	public String getToDate() {
-		return toDate;
+	public String getSearchFromDate() {
+		return searchFromDate;
 	}
 
-	public void setToDate(String toDate) {
-		this.toDate = toDate;
+	public void setSearchFromDate(String searchFromDate) {
+		this.searchFromDate = searchFromDate;
+	}
+
+	public String getSearchToDate() {
+		return searchToDate;
+	}
+
+	public void setSearchToDate(String searchToDate) {
+		this.searchToDate = searchToDate;
 	}
 
 	public PaymentLST() {

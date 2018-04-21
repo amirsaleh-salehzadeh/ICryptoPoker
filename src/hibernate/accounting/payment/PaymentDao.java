@@ -29,7 +29,7 @@ public class PaymentDao extends BaseHibernateDAO implements PaymentDaoInterface 
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
-			
+
 			session.saveOrUpdate(ent);
 			tx.commit();
 		} catch (HibernateException e) {
@@ -43,7 +43,8 @@ public class PaymentDao extends BaseHibernateDAO implements PaymentDaoInterface 
 	}
 
 	@Override
-	public PaymentLST getPaymentLST(PaymentLST paymentLSTSearch) throws AMSException {
+	public PaymentLST getPaymentLST(PaymentLST paymentLSTSearch)
+			throws AMSException {
 		PaymentLST result = new PaymentLST();
 		Session session = getSession();
 		Transaction tx = null;
@@ -51,11 +52,12 @@ public class PaymentDao extends BaseHibernateDAO implements PaymentDaoInterface 
 		Criteria cr = session.createCriteria(PaymentENT.class);
 		try {
 			tx = session.beginTransaction();
-			if(paymentLSTSearch.getPaymentENT()!=null) {
-			ents = (ArrayList<PaymentENT>) session.createQuery("FROM PaymentENT").list();
-			
-			}else {
-				cr.add(Restrictions.ilike("username", paymentLSTSearch.getPaymentENT().getUsername()));
+			if (paymentLSTSearch.getPaymentENT() != null) {
+				ents = (ArrayList<PaymentENT>) session.createQuery(
+						"FROM PaymentENT").list();
+			} else {
+				cr.add(Restrictions.ilike("username",
+						paymentLSTSearch.getSearchUsername()));
 				paymentLSTSearch.setTotalItems(cr.list().size());
 				cr.setFirstResult(paymentLSTSearch.getFirst());
 				cr.setMaxResults(paymentLSTSearch.getPageSize());
@@ -74,7 +76,8 @@ public class PaymentDao extends BaseHibernateDAO implements PaymentDaoInterface 
 	}
 
 	@Override
-	public List<PaymentENT> searchCriteria(String accountName) throws AMSException {
+	public List<PaymentENT> searchCriteria(String accountName)
+			throws AMSException {
 		// TODO Auto-generated method stub
 
 		if (accountName == null) {
@@ -109,7 +112,8 @@ public class PaymentDao extends BaseHibernateDAO implements PaymentDaoInterface 
 
 		try {
 			tx = session.beginTransaction();
-			ent = (PaymentENT) session.get(PaymentENT.class, ent.getPaymentId());
+			ent = (PaymentENT) session
+					.get(PaymentENT.class, ent.getPaymentId());
 			tx.commit();
 		} catch (HibernateException e) {
 			if (tx != null)
@@ -124,17 +128,18 @@ public class PaymentDao extends BaseHibernateDAO implements PaymentDaoInterface 
 	@Override
 	public void removePayment(ArrayList<PaymentENT> ents) throws AMSException {
 		// TODO Auto-generated method stub
-		
+
 		Session session = getSession();
 		Transaction tx = null;
-		
+
 		try {
 			session.flush();
 			session.clear();
 			tx = session.beginTransaction();
 			Query query = null;
 			for (PaymentENT ent : ents) {
-				query = session.createQuery("DELETE PaymentENT p WHERE paymentId IN (:ids)");
+				query = session
+						.createQuery("DELETE PaymentENT p WHERE paymentId IN (:ids)");
 				query.setParameter("ids", ent.getPaymentId());
 				query.executeUpdate();
 				tx.commit();

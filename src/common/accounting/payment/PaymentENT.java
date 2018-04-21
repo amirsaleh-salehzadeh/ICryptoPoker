@@ -16,8 +16,6 @@ public class PaymentENT extends ActionForm {
 	private String bankResponse;
 	private int paymentType;
 
-
-
 	private String creatorUsername;
 
 	public long getPaymentId() {

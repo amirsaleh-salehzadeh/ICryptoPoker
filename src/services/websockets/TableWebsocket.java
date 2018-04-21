@@ -3,6 +3,8 @@ package services.websockets;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.websocket.CloseReason;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
 import javax.websocket.OnMessage;
@@ -63,7 +65,7 @@ public class TableWebsocket {
 
 	@OnClose
 	public void handleClose(Session user, @PathParam("uid") String uid,
-			@PathParam("guid") long guid) {
+			@PathParam("guid") long guid, CloseReason closeReason) {
 		System.out.println("close");
 		for (Table table : games) {
 			if (table.getGame().getId() == guid) {

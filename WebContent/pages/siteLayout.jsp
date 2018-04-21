@@ -15,13 +15,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet"
 	href="css/themes/default/jquery.mobile-1.4.5.min.css">
-<link rel="stylesheet" href="css/jquery-mobile/jqm-demos.css">
+<link rel="stylesheet"
+	href="css/themes/default/jquery.mobile.icons.min.css">
+<link rel="stylesheet" href="css/themes/default/theme-classic.css">
 <link rel="stylesheet"
 	href="css/jquery-mobile/jquery.dataTables.min.css">
-
 <link rel="stylesheet"
 	href="css/jquery-mobile/jquery.mobile.datepicker.css">
-	<link rel="stylesheet"
+<link rel="stylesheet"
 	href="css/jquery-mobile/jquery.mobile.datepicker.theme.css">
 <link rel="stylesheet" href="css/icryptopokermaincss.css">
 <script src="js/icryptopokermainscripts.js"></script>
@@ -35,23 +36,16 @@
 <script src="js/jquery/jquery.mobile.datepicker.js"></script>
 <script src="js/jquery/datepicker.js"></script>
 <script type="text/javascript">
-	function showHideMainMenu() {
-		if ($("#mainMenu").css("display") == "none")
-			$("#mainMenu").css("display", "block");
-		else
-			$("#mainMenu").css("display", "none");
-	}
-	$(document).ready(function() {
-		$("#mainMenu").css("top", $(".jqm-header").height());
-	});
 	function ShowLoadingScreen() {
-		// 		$("#loadingOverlay").css("display", "block");
-		// 		$("#loadingContent").css("display", "block");
-		// 		$(".markerLoading").css('display', 'block').trigger("create");
-		// 		$("#loadingContent").html("Loading. . ." + "</br>" + loadingContent);
+		$.mobile.loading("show", {
+			text : "Loading",
+			textVisible : true,
+			theme : "b",
+			textonly : false
+		});
 	}
 	function HideLoadingScreen() {
-
+		$.mobile.loading("hide");
 	}
 </script>
 <%
@@ -59,33 +53,23 @@
 	if (request.getRemoteUser() != null) {
 		UserDAO dao = new UserDAO();
 		u = dao.getUserENT(new UserENT(request.getRemoteUser()));
-
 	}
 %>
 </head>
 <body dir="ltr">
-	<div data-role="page" class="jqm-demos jqm-home">
-		<div data-role="header" class="jqm-header">
-			<h2>
-				<!-- 				iCrypt <img src="images/chipLogo.png" alt="ICryptoPoker" width="66" height="66" class="mainLogoIcon"> P <img -->
-				<!-- 					src="images/chipLogo.png" width="66" height="66" alt="ICryptoPoker" class="mainLogoIcon"> ker -->
-				<img alt="" src="images/icryptoLogo.png" style="width: 300px;">
-			</h2>
-			<a href="#"
-				class="menu-icon jqm-navmenu-link ui-btn ui-corner-all ui-btn-left"
-				onclick="showHideMainMenu()"></a>
-			<%
-				if (u.getUserName() != null && u.getUserName().length() > 1) {
-			%>
-			<span id="userInfoContainer"> Welcome <%=u.getName()%>&nbsp;<%=u.getSurName()%></span>
-			<%
-				}
-			%>
+	<div data-role="page">
+		<div data-role="header" class="ui-bar">
+			<h1 class="ui-title" role="heading" aria-level="1">i Crypto Poker</h1>
+			<a href="#mainMenu"
+				class="ui-btn-left ui-btn ui-icon-bars ui-btn-icon-notext ui-shadow ui-corner-all"></a>
 		</div>
-		<div data-role="content" id="mainBodyContents" class="jqm-content">
+		<div data-role="content" id="mainBodyContents">
 			<tiles:insert attribute="body" />
 		</div>
-		<div id="mainMenu" style="display: none;">
+		<!-- 		<div id="mainMenu" style="display: none;"> -->
+		<%-- 			<tiles:insert attribute="menu" /> --%>
+		<!-- 		</div> -->
+		<div data-role="panel" id="mainMenu" data-display="overlay">
 			<tiles:insert attribute="menu" />
 		</div>
 	</div>

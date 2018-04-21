@@ -13,14 +13,14 @@ body {
 
 	<li class="userMenu"
 		data-filtertext="form checkboxradio widget radio input radio buttons controlgroups">
-		<a id="btnHeading" href="../" data-ajax="false">Home</a>
+		<a href="../" data-ajax="false">Home</a>
 	</li>
 	<li id="liMenu" data-role="collapsible" data-enhanced="true"
 		data-collapsed-icon="carat-d" data-expanded-icon="carat-u"
 		data-iconpos="right" data-inset="false"
 		class=" ui-collapsible ui-collapsible-collapsed">
 		<h3 class="ui-collapsible-heading ui-collapsible-heading-collapsed">
-			<a id="btnHeading" href="#"
+			<a  href="#"
 				class="ui-collapsible-heading-toggle ui-btn ui-btn-icon-right ui-btn-inherit ui-icon-carat-d">
 				System Administration<span class="ui-collapsible-heading-status">
 					click to expand contents</span>
@@ -50,7 +50,7 @@ body {
 		data-iconpos="right" data-inset="false"
 		class=" ui-collapsible ui-collapsible-collapsed">
 		<h3 class="ui-collapsible-heading ui-collapsible-heading-collapsed">
-			<a id="btnHeading" href="#"
+			<a href="#"
 				class="ui-collapsible-heading-toggle ui-btn ui-btn-icon-right ui-btn-inherit ui-icon-carat-d">
 				Finance Administration<span class="ui-collapsible-heading-status">
 					click to expand contents</span>
@@ -76,7 +76,7 @@ body {
 		data-iconpos="right" data-inset="false"
 		class="userMenu ui-collapsible ui-collapsible-themed-content ui-collapsible-collapsed">
 		<h3 class="ui-collapsible-heading ui-collapsible-heading-collapsed">
-			<a id="btnHeading" href="#"
+			<a  href="#"
 				class="ui-collapsible-heading-toggle ui-btn ui-btn-icon-right ui-btn-inherit ui-icon-carat-d">
 				Personal<span class="ui-collapsible-heading-status"> click to
 					expand contents</span>
@@ -103,7 +103,7 @@ body {
 	</li>
 	<li class="userMenu"
 		data-filtertext="form checkboxradio widget radio input radio buttons controlgroups">
-		<a id="btnHeading" href="logOut.do" data-ajax="false">Logout</a>
+		<a href="logOut.do" data-ajax="false">Logout</a>
 	</li>
 
 </ul>

@@ -19,14 +19,15 @@
 <script src="js/game/game.js"></script>
 <link rel="stylesheet" href="css/game/table.holdem.css" />
 <link rel="stylesheet" href="css/game/table.timer.css" />
-<link rel="stylesheet" href="css/game/table.raise.action.controllers.css" />
+<link rel="stylesheet"
+	href="css/game/table.raise.action.controllers.css" />
 <%
 	Player player = (Player) request.getAttribute("player");
 	GameENT game = (GameENT) request.getAttribute("game");
 %>
 </head>
 <body>
-<div  id="connectionPopup" >Just some test stuff</div>
+	<div id="connectionPopup">Just some test stuff</div>
 	<div data-role="page">
 		<div data-role="panel" id="panelChat" data-display="overlay">
 			CHAT <a href="#tableFooter" data-mini="true"
@@ -36,12 +37,11 @@
 		<div data-role="header">
 			<a href="#"
 				class="ui-btn ui-mini ui-icon-back ui-btn-icon-left ui-shadow-icon ui-corner-all"
-				onclick="leaveTable()" >Lobby</a>
-			<h3><div id="connectionStatus" class="circleConnect circleConnected"></div>
-			
+				onclick="leaveTable()">Lobby</a>
+			<h3>
+				<div id="connectionStatus" class="circleConnect circleConnected"></div>
 				&nbsp;<%=request.getParameter("playerName")%></h3>
-			<a href="#" class="ui-btn ui-icon-shop ui-btn-icon-left"
-				>$<%=player.getTotalChips()%></a>
+			<a href="#" class="ui-btn ui-icon-shop ui-btn-icon-left">$<%=player.getTotalChips()%></a>
 		</div>
 		<!-- MIDDLE PANEL  -->
 		<div role="main" class="ui-content">
@@ -54,8 +54,7 @@
 			<!-- TOP GRID  -->
 			<div class="ui-grid-d ui-block-solo"
 				style="width: 100%; height: 20%;">
-				<div class="ui-block-a"
-					style="width: 20%; height: 100%;"></div>
+				<div class="ui-block-a" style="width: 20%; height: 100%;"></div>
 				<div class="ui-block-b sitPlaceContainer"
 					style="width: 20%; height: 100%;" data-sort='4'>
 					<div class='sitPlaceThumbnailEmpty'>&nbsp;</div>
@@ -156,8 +155,7 @@
 					</div>
 				</div>
 				<div class="ui-block-b sitPlaceContainer "
-					style="height: 100% !important; width: 40%;"
-					id="userSitPlace">
+					style="height: 100% !important; width: 40%;" id="userSitPlace">
 					<div class='sitPlaceThumbnailEmpty ui-bar ui-corner-all ui-bar-a'
 						onclick="sitInPopupOpen()">SEAT</div>
 				</div>
@@ -233,12 +231,13 @@
 					class="actionButtons ui-btn ui-icon-action ui-btn-icon-left ui-shadow ui-corner-all ui-state-disabled">All-In</a>
 			</div>
 		</div>
-				<!-- ERROR POPUP to open use the openErrorPopup(content) function-->
-			<div data-role="popup" id="errorPopup" class="ui-content" >
-            <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
-            <span id="errorHeading"><h1>ERROR!</h1> </span>
-            <span id="errorContent"></span>
-            </div>
+		<!-- ERROR POPUP to open use the openErrorPopup(content) function-->
+		<div data-role="popup" id="errorPopup" class="ui-content">
+			<a href="#" data-rel="back"
+				class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+			<span id="errorHeading"><h1>ERROR!</h1> </span> <span
+				id="errorContent"></span>
+		</div>
 	</div>
 
 </body>

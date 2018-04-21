@@ -10,7 +10,7 @@
 	Player p = (Player) request.getAttribute("player");
 %>
 <div class="ui-grid-b">
-	<div class="ui-block-a">
+	<div class="ui-block-a ui-bar-a">
 		<img alt="chips" title="Total Chips" src="images/game/user.png"
 			width="33px" height="33px">&nbsp;<span id="name"
 			class="spanTopBannerInfo"><%=p.getId()%><input type="hidden"
@@ -21,26 +21,26 @@
 	<!-- 	USER'S TOTAL CHIPS -->
 
 
-	<div class="ui-block-b">
+	<div class="ui-block-b ui-bar-a">
 		<img alt="chips" title="Total Chips" src="images/game/money.png"
 			width="33px" height="33px">&nbsp;<span id="chips"
-			class="spanTopBannerInfo">&nbsp;<%=p.getTotalChips()%></span>
+			class="spanTopBannerInfo">&nbsp;$<%=p.getTotalChips()%></span>
 	</div>
 
 
 	<!-- 	CREATE NEW GAME BUTTON AND POPUP -->
 
 
-	<div class="ui-block-c">
+	<div class="ui-block-c ui-bar-a">
 
 
 		<!-- 	CREATE NEW BUTTON -->
 
 
 		<a href="#popupCreateNewGame" data-rel="popup"
-			data-position-to="window" data-transition="pop"
-			class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-icon-plus ui-btn-icon-left ui-btn-b">Create
-			New Game</a>
+			data-position-to="window" data-transition="pop" data-role="button" role="button"
+			class="ui-btn ui-mini ui-icon-plus ui-btn-icon-left ui-shadow-icon ui-corner-all">New
+			Game</a>
 
 
 		<!-- 	POPUP DIV CREATE NEW -->
@@ -107,6 +107,8 @@
 		<tbody id="lobbyTableTBody"></tbody>
 	</table>
 </div>
+
+
 <!-- 	POPUP DIV JOIN GAME -->
 
 

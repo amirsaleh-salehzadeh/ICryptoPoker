@@ -88,7 +88,7 @@ public class PaymentAction extends Action {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		request.setAttribute("paymentLST", paymentLST);// we call it a bean named paymentLST
+		request.setAttribute("paymentLST", paymentLST);
 		Gson gson = new Gson();
 		String json = AMSUtililies.prepareTheJSONStringForDataTable(paymentLST.getCurrentPage(),
 				paymentLST.getTotalItems(), gson.toJson(paymentLST.getPaymentENTs()), "paymentId", success, error);

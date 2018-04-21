@@ -101,9 +101,11 @@ function updateGameInfo(data) {
 	if (data.gameStatus == "END_HAND") {
 		return endHand(data.players);
 	}
+
 	$(".tableCards").each(function() {
 		$(this).html('<img alt="" src="images/game/card.jpg">');
 	});
+
 	$(".actionButtons").each(function() {
 		$(this).addClass("ui-state-disabled");
 	});
@@ -231,6 +233,8 @@ function endHand(players) {
 												if (l.status == "WON_HAND") {
 													$(this).addClass("winner");
 												}
+											} else {
+												return true;
 											}
 										});
 					});
@@ -309,7 +313,8 @@ function addANewPlayerToTable(data) {
 								}
 								return false;
 							}
-						// set the content for the first time
+						// set the content of competitor players for the first
+						// time
 						if (($(this).children("div").hasClass(
 								"sitPlaceThumbnailEmpty") && $("#sitPlaceContainer"
 								+ id).length <= 0)) {
@@ -319,7 +324,11 @@ function addANewPlayerToTable(data) {
 									".amountToCallcontainer").css("display",
 									"none");
 							return false;
-						} else if ($("#sitPlaceContainer" + id).length > 0) {
+							// } else if ($("#sitPlaceContainer" + id).length >
+							// 0) {
+						} else if ("sitPlaceContainer" + id == $(this).attr(
+								"id")
+								&& $("#sitPlaceContainer" + id).length > 0) {
 							if ($("#sitPlaceContainer" + id).find(
 									".playersFinalCard").length > 0) {
 								$("#sitPlaceContainer" + id).html(content);
@@ -346,7 +355,7 @@ function addANewPlayerToTable(data) {
 							$("#sitPlaceContainer" + id).find(
 									".playerTotalChipsPlace").html("$" + chips);
 							// $("#sitPlaceContainer" + id).html(content);
-							return false;
+							return true;
 						} else
 							return true;
 					});

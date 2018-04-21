@@ -20,7 +20,6 @@
 <link rel="stylesheet" href="css/game/table.holdem.css" />
 <link rel="stylesheet" href="css/game/table.timer.css" />
 <link rel="stylesheet" href="css/game/table.raise.action.controllers.css" />
-
 <%
 	Player player = (Player) request.getAttribute("player");
 	GameENT game = (GameENT) request.getAttribute("game");
@@ -40,7 +39,7 @@
 			<h3>
 				&nbsp;<%=request.getParameter("playerName")%></h3>
 			<a href="#" class="ui-btn ui-icon-shop ui-btn-icon-left"
-				>&nbsp;&cent;&nbsp;<%=player.getTotalChips()%></a>
+				>$<%=player.getTotalChips()%></a>
 		</div>
 		<!-- MIDDLE PANEL  -->
 		<div role="main" class="ui-content">
@@ -142,13 +141,13 @@
 						<%=game.getName()%>
 					</div>
 					<div class="ui-block-solo ">
-						Small <img src="images/game/sb.png" width="20">&nbsp;&cent;<%
+						Small <img src="images/game/sb.png" width="20">$<%
 						out.write(game.getGameStructure().getCurrentBlindLevel().toString()
 								.split("_")[1]);
 					%>&nbsp;&nbsp;
 					</div>
 					<div class="ui-block-solo">
-						Big <img src="images/game/bb.png" width="20">&nbsp;&cent;<%
+						Big <img src="images/game/bb.png" width="20">$<%
 						out.write(game.getGameStructure().getCurrentBlindLevel().toString()
 								.split("_")[2]);
 					%>
@@ -164,7 +163,7 @@
 					id="raiseSliderContainer">
 					<input class="actionButtons ui-state-disabled" type="range"
 						name="sliderRaise" id="sliderRaise" data-show-value="true"
-						data-popup-enabled="true">
+						data-popup-enabled="true" data-highlight="true">
 				</div>
 			</div>
 			<!-- 		Sit In popup          -->

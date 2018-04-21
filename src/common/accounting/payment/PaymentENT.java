@@ -14,8 +14,6 @@ public class PaymentENT extends ActionForm {
 	private double amount;
 	private String reason;// integer
 	private String bankResponse;
-
-
 	private int paymentType;
 
 

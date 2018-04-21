@@ -107,6 +107,7 @@ function updateGameInfo(data) {
 	$(".actionButtons").each(function() {
 		$(this).addClass("ui-state-disabled");
 	});
+
 	$("#raiseSliderContainer").addClass("ui-state-disabled");
 	$("#handID").val(data.handId);
 	if (data.cards != null)

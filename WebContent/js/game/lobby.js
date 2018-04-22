@@ -71,16 +71,16 @@ function joinGame(gameID, min, max) {
 //			// player has enough chips for min and max
 //			$('#buyIn').attr("min", min);
 //			$('#buyIn').attr("max", max);
-			$("#popupJoinGame").popup("open");
-			$('#joingGameID').attr("value", gameID);
+//			$("#popupJoinGame").popup("open");
+//			$('#joingGameID').attr("value", gameID);
 //
 //		}
 		// set the on click for the Join button.
-		$('#joinGameBTN').click(function() {
-			$("#popupJoinGame").popup("close");
+//		$('#joinGameBTN').click(function() {
+//			$("#popupJoinGame").popup("close");
+//			buyInGame(gameID, $('#buyIn').val());
+//		});
 			buyInGame(gameID, $('#buyIn').val());
-		});
-
 	}
 
 }

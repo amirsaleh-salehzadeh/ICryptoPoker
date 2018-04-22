@@ -9,102 +9,85 @@ body {
 	-ms-user-select: none
 }
 </style>
-<ul class="jqm-list" data-role="listview">
-
-	<li class="userMenu"
-		data-filtertext="form checkboxradio widget radio input radio buttons controlgroups">
-		<a id="btnHeading" href="../" data-ajax="false">Home</a>
-	</li>
-	<li id="liMenu" data-role="collapsible" data-enhanced="true"
+<ul data-role="listview" id="leftSideMainMenu">
+	<li><a href="t_game.do?username=<%=request.getParameter("username") %>" data-ajax="false">Lobby</a></li>
+	<li><a href="#popupCreateNewGame" data-rel="popup"
+		data-position-to="window" data-transition="pop" data-role="button"
+		role="button"
+		class="ui-btn ui-mini ui-shadow-icon ui-corner-all">New
+			Game</a></li>
+	<li data-role="collapsible" data-enhanced="true"
 		data-collapsed-icon="carat-d" data-expanded-icon="carat-u"
 		data-iconpos="right" data-inset="false"
 		class=" ui-collapsible ui-collapsible-collapsed">
 		<h3 class="ui-collapsible-heading ui-collapsible-heading-collapsed">
-			<a id="btnHeading" href="#"
+			<a href="#"
 				class="ui-collapsible-heading-toggle ui-btn ui-btn-icon-right ui-btn-inherit ui-icon-carat-d">
 				System Administration<span class="ui-collapsible-heading-status">
 					click to expand contents</span>
 			</a>
 		</h3>
-		<div id="divMenu"
-			class=" ui-collapsible-content ui-body-inherit ui-collapsible-content-collapsed"
-			aria-hidden="true">
-			<ul id="ulMenu">
-				<li id="liMenu" class="userMenu"
-					data-filtertext="form checkboxradio widget radio input radio buttons controlgroups"><a
-					id="btnMenu" class="userMenu ui-btn"
-					href="t_user.do?reqCode=userManagement" data-ajax="false">User</a></li>
-				<li id="liMenu"
+		<div
+			class="divMenu ui-collapsible-content ui-body-inherit ui-collapsible-content-collapsed">
+			<ul>
+				<li><a class="ui-btn" href="t_user.do?reqCode=userManagement"
+					data-ajax="false">User</a></li>
+				<li
 					data-filtertext="form checkboxradio widget checkbox input checkboxes controlgroups"><a
-					id="btnMenu" class="userMenu ui-btn"
-					href="t_security.do?reqCode=roleManagement" data-ajax="false">Roles</a></li>
-				<li id="liMenu"
-					data-filtertext="form checkboxradio widget radio input radio buttons controlgroups"><a
-					id="btnMenu" class="userMenu ui-btn"
+					class="ui-btn" href="t_security.do?reqCode=roleManagement"
+					data-ajax="false">Roles</a></li>
+				<li><a class="ui-btn"
 					href="t_security.do?reqCode=groupManagement" data-ajax="false">Groups</a></li>
 			</ul>
 		</div>
 	</li>
-	<li id="liMenu" data-role="collapsible" data-enhanced="true"
+	<li data-role="collapsible" data-enhanced="true"
 		data-collapsed-icon="carat-d" data-expanded-icon="carat-u"
 		data-iconpos="right" data-inset="false"
-		class=" ui-collapsible ui-collapsible-collapsed">
+		class="ui-collapsible ui-collapsible-collapsed">
 		<h3 class="ui-collapsible-heading ui-collapsible-heading-collapsed">
-			<a id="btnHeading" href="#"
+			<a href="#"
 				class="ui-collapsible-heading-toggle ui-btn ui-btn-icon-right ui-btn-inherit ui-icon-carat-d">
 				Finance Administration<span class="ui-collapsible-heading-status">
 					click to expand contents</span>
 			</a>
 		</h3>
-		<div id="divMenu"
-			class=" ui-collapsible-content ui-body-inherit ui-collapsible-content-collapsed"
-			aria-hidden="true">
-			<ul id="ulMenu">
-				<li id="liMenu" class="userMenu"
-					data-filtertext="form checkboxradio widget radio input radio buttons controlgroups"><a
-					id="btnMenu" class="userMenu ui-btn"
+		<div
+			class="divMenu ui-collapsible-content ui-body-inherit ui-collapsible-content-collapsed">
+			<ul>
+				<li><a class="ui-btn"
 					href="t_payment.do?reqCode=paymentManagement" data-ajax="false">Payment</a></li>
-					<li id="liMenu" class="userMenu"
-					data-filtertext="form checkboxradio widget radio input radio buttons controlgroups"><a
-					id="btnMenu" class="userMenu ui-btn"
-					href="t_sale.do?reqCode=saleManagement" data-ajax="false">Sale</a></li>
+				<li><a class="ui-btn" href="t_sale.do?reqCode=saleManagement"
+					data-ajax="false">Sale</a></li>
 			</ul>
 		</div>
 	</li>
-	<li id="liMenu" data-role="collapsible" data-enhanced="true"
+	<li data-role="collapsible" data-enhanced="true"
 		data-collapsed-icon="carat-d" data-expanded-icon="carat-u"
 		data-iconpos="right" data-inset="false"
-		class="userMenu ui-collapsible ui-collapsible-themed-content ui-collapsible-collapsed">
+		class="ui-collapsible ui-collapsible-themed-content ui-collapsible-collapsed">
 		<h3 class="ui-collapsible-heading ui-collapsible-heading-collapsed">
-			<a id="btnHeading" href="#"
+			<a href="#"
 				class="ui-collapsible-heading-toggle ui-btn ui-btn-icon-right ui-btn-inherit ui-icon-carat-d">
 				Personal<span class="ui-collapsible-heading-status"> click to
 					expand contents</span>
 			</a>
 		</h3>
-		<div id="divMenu"
-			class="userMenu ui-collapsible-content ui-body-inherit ui-collapsible-content-collapsed"
-			aria-hidden="true">
-			<ul id="ulMenu">
-				<li id="liMenu"
-					data-filtertext="form checkboxradio widget radio input radio buttons controlgroups"><a
-					id="btnMenu" class="userMenu ui-btn"
-					href="t_user.do?reqCode=userManagement" data-ajax="false">Profile</a></li>
-				<li id="liMenu"
+		<div
+			class="divMenu ui-collapsible-content ui-body-inherit ui-collapsible-content-collapsed">
+			<ul>
+				<li><a class="ui-btn" href="t_user.do?reqCode=userManagement"
+					data-ajax="false">Profile</a></li>
+				<li
 					data-filtertext="form checkboxradio widget checkbox input checkboxes controlgroups"><a
-					id="btnMenu" class="userMenu ui-btn"
-					href="t_security.do?reqCode=roleManagement" data-ajax="false">Privacy</a></li>
-				<li id="liMenu"
-					data-filtertext="form checkboxradio widget radio input radio buttons controlgroups"><a
-					id="btnMenu" class="userMenu ui-btn"
+					class="ui-btn" href="t_security.do?reqCode=roleManagement"
+					data-ajax="false">Privacy</a></li>
+				<li><a class="ui-btn"
 					href="t_security.do?reqCode=groupManagement" data-ajax="false">Notification</a></li>
 			</ul>
 		</div>
 	</li>
-	<li class="userMenu"
-		data-filtertext="form checkboxradio widget radio input radio buttons controlgroups">
-		<a id="btnHeading" href="logOut.do" data-ajax="false">Logout</a>
-	</li>
+	<li><a href="logOut.do" data-ajax="false">Logout</a></li>
 
 </ul>
 <div data-role="popup" id="popupDialogDeleteConfirmation"

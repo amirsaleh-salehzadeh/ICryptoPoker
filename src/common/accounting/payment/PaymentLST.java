@@ -1,6 +1,9 @@
 package common.accounting.payment;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import org.apache.struts.action.ActionForm;
 
@@ -20,6 +23,8 @@ public class PaymentLST extends ActionForm {
 	private String sortedByField = "username";
 
 	public String getSearchUsername() {
+		if (searchUsername == null)
+			return "";
 		return searchUsername;
 	}
 
@@ -28,6 +33,14 @@ public class PaymentLST extends ActionForm {
 	}
 
 	public String getSearchFromDate() {
+		if (searchFromDate == null || searchFromDate.equalsIgnoreCase("")) {
+			Date referenceDate = new Date();
+			Calendar c = Calendar.getInstance();
+			c.setTime(referenceDate);
+			c.add(Calendar.MONTH, -3);
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			searchFromDate = sdf.format(c.getTime());
+		}
 		return searchFromDate;
 	}
 
@@ -36,6 +49,9 @@ public class PaymentLST extends ActionForm {
 	}
 
 	public String getSearchToDate() {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		if (searchToDate == null || searchToDate.equalsIgnoreCase(""))
+			searchToDate = sdf.format(new Date());
 		return searchToDate;
 	}
 
@@ -46,8 +62,10 @@ public class PaymentLST extends ActionForm {
 	public PaymentLST() {
 	}
 
-	public PaymentLST(ArrayList<PaymentENT> paymentENTs, PaymentENT searchPayment, int currentPage, int totalPages,
-			int pageSize, int totalItems, int first, boolean ascending, String sortedByField) {
+	public PaymentLST(ArrayList<PaymentENT> paymentENTs,
+			PaymentENT searchPayment, int currentPage, int totalPages,
+			int pageSize, int totalItems, int first, boolean ascending,
+			String sortedByField) {
 		super();
 		this.paymentENTs = paymentENTs;
 		this.paymentENT = searchPayment;
@@ -60,8 +78,8 @@ public class PaymentLST extends ActionForm {
 		this.sortedByField = sortedByField;
 	}
 
-	public PaymentLST(PaymentENT searchPayment, int currentPage, int pageSize, boolean ascending,
-			String sortedByField) {
+	public PaymentLST(PaymentENT searchPayment, int currentPage, int pageSize,
+			boolean ascending, String sortedByField) {
 		super();
 		this.paymentENT = searchPayment;
 		this.currentPage = currentPage;
@@ -71,8 +89,8 @@ public class PaymentLST extends ActionForm {
 	}
 
 	public ArrayList<PaymentENT> getPaymentENTs() {
-		if(paymentENTs==null)
-			paymentENTs = new ArrayList<PaymentENT>() ;
+		if (paymentENTs == null)
+			paymentENTs = new ArrayList<PaymentENT>();
 		return paymentENTs;
 	}
 
@@ -163,13 +181,13 @@ public class PaymentLST extends ActionForm {
 	}
 
 	public PaymentENT getPaymentENT() {
-		if(paymentENT==null)
-		paymentENT = new PaymentENT() ;
+		if (paymentENT == null)
+			paymentENT = new PaymentENT();
 		return paymentENT;
 	}
 
 	public void setPaymentENT(PaymentENT searchPayment) {
 		this.paymentENT = searchPayment;
 	}
-   
+
 }

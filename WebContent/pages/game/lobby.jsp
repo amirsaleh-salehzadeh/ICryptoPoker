@@ -45,7 +45,8 @@
 
 <!-- 	POPUP DIV CREATE NEW -->
 
-
+<input type="hidden" value="<%=p.getId()%>" id="playerName"
+	placeholder="Player Name">
 <div data-role="popup" id="popupCreateNewGame" data-dismissible="false"
 	style="max-width: 400px;">
 	<form action="#" id="createNewGameForm" method="post">

@@ -38,9 +38,10 @@
 			<a href="#"
 				class="ui-btn ui-mini ui-icon-back ui-btn-icon-left ui-shadow-icon ui-corner-all"
 				onclick="leaveTable()">Lobby</a>
-			
-				<div id="connectionStatus" class="circleConnect circleConnected"></div>
-				<h3>&nbsp;<%=request.getParameter("playerName")%></h3>
+
+			<div id="connectionStatus" class="circleConnect circleConnected"></div>
+			<h3>
+				&nbsp;<%=player.getId()%></h3>
 			<a href="#" class="ui-btn ui-icon-shop ui-btn-icon-left">$<%=player.getTotalChips()%></a>
 		</div>
 		<!-- MIDDLE PANEL  -->
@@ -50,7 +51,7 @@
 			<input type="hidden" id="gameID" value="<%=game.getId()%>"> <input
 				type="hidden" id="boardID" value="<%=game.getId()%>"> <input
 				type="hidden" id="handID" value=""> <input type="hidden"
-				id="playerID" value="<%=request.getParameter("playerName")%>">
+				id="playerID" value="<%=player.getId()%>">
 			<!-- TOP GRID  -->
 			<div class="ui-grid-d ui-block-solo"
 				style="width: 100%; height: 20%;">

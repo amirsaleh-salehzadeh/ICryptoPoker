@@ -45,7 +45,7 @@ public class GameAction extends Action {
 			long gameId = Long.parseLong(request.getParameter("gameId"));
 			GameENT game = gamedao.findById(gameId, null);
 			Player player = playerDaoImpl.findById(
-					request.getParameter("playerName"), null);
+					request.getParameter("username"), null);
 //			player.setName(request.getParameter("nickname"));
 			player = playerDaoImpl.merge(player, null);
 //			GameServiceImpl gameService = new GameServiceImpl();

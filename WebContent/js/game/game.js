@@ -76,7 +76,7 @@ function leaveTable() {
 	// async : true,
 	// success : function(data) {
 	// if (data.success == true)
-	window.location.replace('t_game.do');
+	window.location.replace('t_game.do?username='+$("#playerID").val());
 	// },
 	// error : function(xhr, ajaxOptions, thrownError) {
 	// alert(xhr.responseText);

@@ -44,7 +44,21 @@ public class PlayerStatusObject {
 	private String id;
 	private String name;
 	private String handRank;
+	private int totalChips;
 
+	/**
+	 * @return the totalChips
+	 */
+	public int getTotalChips() {
+		return totalChips;
+	}
+
+	/**
+	 * @param totalChips the totalChips to set
+	 */
+	public void setTotalChips(int totalChips) {
+		this.totalChips = totalChips;
+	}
 	/**
 	 * @return the handRank
 	 */

@@ -50,8 +50,9 @@ public class PlayerServiceManagerImpl implements PlayerServiceManager {
 
 		playerActionService = new PlayerActionServiceImpl();
 		Player player = playerActionService.getPlayerById(playerId);
-		PlayerStatusObject results = new PlayerStatusObject();
+		PlayerStatusObject results = new PlayerStatusObject();//add total chips
 		results.setName(player.getName());
+	    results.setTotalChips(player.getTotalChips());
 		handService = new PokerHandServiceImpl();
 
 		// ADDED THESE THREE LINES THERE WAS AN ERROR
@@ -60,7 +61,6 @@ public class PlayerServiceManagerImpl implements PlayerServiceManager {
 			handtmp.setGame(game);
 			game.setCurrentHand(handtmp);
 		}
-
 		// UNTIL HERE
 
 		// Get the player status.

@@ -233,11 +233,17 @@
 			</div>
 		</div>
 		<!-- ERROR POPUP to open use the openErrorPopup(content) function-->
-		<div data-role="popup" id="errorPopup" class="ui-content">
+		<div data-role="popup" id="errorPopupTable" class="ui-content">
+		<div data-role="header" data-theme="a">
+						<h1>ERROR!</h1>
+					</div>
+			<div id="errorContent" role="main" class="ui-content" data-overlay-theme="b"
+						data-dismissible="false">
+						
+						</div>
 			<a href="#" data-rel="back"
 				class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
-			<span id="errorHeading"><h1>ERROR!</h1> </span> <span
-				id="errorContent"></span>
+			 
 		</div>
 	</div>
 

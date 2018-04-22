@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 27, 2018 7:37:47 PM by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="game.poker.holdem.domain.Player" table="PLAYER">
+        <id name="id" type="java.lang.String">
+            <column name="ID" />
+            <generator class="assigned" />
+        </id>
+        <property name="gameId" type="long">
+            <column name="GAMEID" />
+        </property>
+        <property name="name" type="java.lang.String">
+            <column name="NAME" />
+        </property>
+        <property name="chips" type="int">
+            <column name="CHIPS" />
+        </property>
+        <property name="gamePosition" type="int">
+            <column name="GAMEPOSITION" />
+        </property>
+        <property name="finishPosition" type="int">
+            <column name="FINISHPOSITION" />
+        </property>
+        <property name="totalChips" type="int">
+            <column name="TOTALCHIPS" />
+        </property>
+        <property name="sittingOut" type="boolean">
+            <column name="SITTINGOUT" />
+        </property>
+        <property name="registrationDate" type="java.lang.String">
+            <column name="REGISTRATIONDATE" />
+        </property>
+        <property name="password" type="java.lang.String">
+            <column name="PASSWORD" />
+        </property>
+        <property name="sessionId" type="java.lang.String">
+            <column name="SESSIONID" />
+        </property>
+    </class>
+</hibernate-mapping>

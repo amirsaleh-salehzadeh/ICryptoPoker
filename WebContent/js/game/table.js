@@ -171,11 +171,12 @@ function toggleFullScreen(elem) {
 function sitInPopupOpen() {
 	$("#popupSitIn").popup("open");
 }
-function openErrorPopup(content){
-	$("#errorContent").html(content);
-$("#errorPopup").popup();
-$("#errorPopup").popup("open");}
 
+function openErrorPopupTable(content){
+	$("#errorContent").html(content);
+$("#errorPopupTable").popup();
+$("#errorPopupTable").popup("open");
+}
 
 
 

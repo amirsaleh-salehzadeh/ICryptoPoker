@@ -49,6 +49,7 @@ import tools.AMSException;
 import game.poker.holdem.dao.GameDaoImpl;
 import game.poker.holdem.dao.PlayerDaoImpl;
 import game.poker.holdem.domain.GameStatus;
+import game.poker.holdem.domain.GameStructure;
 import game.poker.holdem.domain.HandEntity;
 import game.poker.holdem.domain.Player;
 import game.poker.holdem.domain.PlayerStatus;
@@ -359,10 +360,31 @@ public class PlayerServiceWS {
 					.build();
 		// TODO Neil: check for sufficient fund here private boolean
 		// checkSufficientFundToJoinAGame(Player p, Game g) if not ERROR then
-		// sit
-		/**
+		// sit in
+		GameDaoImpl gamedao = new GameDaoImpl();
+		GameENT g = gamedao.findById(gameId, null);
+		int totalChips = player.getTotalChips();
+		int bigBlind = g.getGameStructure().getCurrentBlindLevel().getBigBlind();
+		if(totalChips<chips)
+			return Response
+					.serverError()
+					.entity("Insufficient chips to buy in. You only have " + totalChips + " chips.")
+					.build();
+		else if(chips<bigBlind*40)
+			return Response
+					.serverError()
+					.entity("Insufficient chips to meet the minimum buy in of "+ bigBlind*40 +" chips.")
+					.build();
+		else if(chips>bigBlind*200)
+			return Response
+					.serverError()
+					.entity("The maximum buy in amount is " +bigBlind*200+ " chips. Please select less chips.")
+					.build();
+		
+		/** basically the if above
 		 * Player decides to sit back in the game he/she sat out
 		 */
+		
 		if (player.getGameId() != 0 && player.isSittingOut())
 			try {
 				player = playerActionService.sitIn(player);

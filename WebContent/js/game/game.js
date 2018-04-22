@@ -386,7 +386,10 @@ function check() {
 				alert("check failed");
 		},
 		error : function(xhr, ajaxOptions, thrownError) {
-			alert(xhr.responseText);
+			//call error popup here
+			// change hidden input
+//			alert(xhr.responseText);
+			openErrorPopupTable(xhr.responseText);
 		}
 	});
 	clearInterval(timer);
@@ -405,7 +408,8 @@ function call() {
 				alert("check failed");
 		},
 		error : function(xhr, ajaxOptions, thrownError) {
-			alert(xhr.responseText);
+//			alert(xhr.responseText);
+			openErrorPopupTable(xhr.responseText);
 		}
 	});
 	clearInterval(timer);
@@ -424,7 +428,8 @@ function fold() {
 				alert("fold failed");
 		},
 		error : function(xhr, ajaxOptions, thrownError) {
-			alert(xhr.responseText);
+//			alert(xhr.responseText);
+			openErrorPopupTable(xhr.responseText);
 		}
 	});
 	clearInterval(timer);
@@ -444,7 +449,8 @@ function raise() {
 				alert("raise failed");
 		},
 		error : function(xhr, ajaxOptions, thrownError) {
-			alert(xhr.responseText);
+//			alert(xhr.responseText);
+			openErrorPopupTable(xhr.responseText);
 		}
 	});
 	clearInterval(timer);
@@ -466,7 +472,15 @@ function sitInTheGame() {
 				alert("raise failed");
 		},
 		error : function(xhr, ajaxOptions, thrownError) {
-			alert(xhr.responseText);
+			$("#popupSitIn").popup("close");
+//			delay needed for one popup to close so the other can open 
+//			and sets the sit in popup to open again after you close the error popup
+			setTimeout(function(){
+			openErrorPopupTable(xhr.responseText);
+			$("#errorPopupTable").on("popupafterclose", function () {
+				sitInPopupOpen();
+			});
+			},100);
 		}
 	});
 	clearInterval(timer);

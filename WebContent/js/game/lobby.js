@@ -23,7 +23,7 @@ function getAllGames() {
 		cache : false,
 		async : true,
 		beforeSend : function() {
-			ShowLoadingScreen();
+			ShowLoadingScreen();			
 		},
 		success : function(data) {
 			var tableRows = "";
@@ -42,11 +42,12 @@ function getAllGames() {
 			$("#table-lobby").trigger("create");
 		},
 		complete : function() {
-			HideLoadingScreen();
+			setTimeout(function(){HideLoadingScreen();} , 1000);
+			
 		},
 		error : function(xhr, ajaxOptions, thrownError) {
-			popErrorMessage("An error occured while removing the marker. "
-					+ thrownError);
+			openErrorPopupTable("An error occured while retrieving the games.");
+			
 		}
 	});
 }

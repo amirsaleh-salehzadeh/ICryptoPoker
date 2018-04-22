@@ -31,6 +31,7 @@
 <script src="js/icryptopokermainscripts.js"></script>
 <script src="js/jquery/jquery.min.js"></script>
 <script src="js/jquery.form.js"></script>
+<script src="js/jquery/jquery.js"></script>
 <script src="js/index.js"></script>
 <script src="js/jquery/jquery.mobile-1.4.5.min.js"></script>
 <script src="js/jquery.dataTables.min.js"></script>
@@ -38,13 +39,28 @@
 <script src="js/dataTables.select.min.js"></script>
 <script src="js/jquery/jquery.mobile.datepicker.js"></script>
 <script src="js/jquery/datepicker.js"></script>
+
 <script type="text/javascript">
 	function ShowLoadingScreen() {
+// 		var $this = $( this ),
+// 		theme = $this.jqmData( "theme" ) || $.mobile.loader.prototype.options.theme,
+// 		msgText = $this.jqmData( "msgtext" ) || $.mobile.loader.prototype.options.text,
+// 		textVisible = $this.jqmData( "textvisible" ) || $.mobile.loader.prototype.options.textVisible,
+// 		textonly = !!$this.jqmData( "textonly" );
+// 		html = $this.jqmData( "html" ) || "";
+// 		$.mobile.loading( "show", {
+// 		text: msgText,
+// 		textVisible: textVisible,
+// 		theme: theme,
+// 		textonly: textonly,
+// 		html: html
+// 		});
 		$.mobile.loading("show", {
 			text : "Loading",
 			textVisible : true,
 			theme : "b",
-			textonly : false
+			textonly : false,
+			html: "html"
 		});
 	}
 	function HideLoadingScreen() {

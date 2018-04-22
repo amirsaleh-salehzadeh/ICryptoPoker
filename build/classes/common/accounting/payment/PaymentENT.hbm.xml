@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 27, 2018 7:37:47 PM by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="common.accounting.payment.PaymentENT" table="finance_payments">
+        <id name="paymentId" type="long">
+            <column name="payment_id" />
+            <generator class="assigned" />
+        </id>
+        <property name="username" type="string">
+            <column name="username" />
+        </property>
+        <property name="dateTime" type="date">
+            <column name="date_time" />
+        </property>
+        <property name="status" type="int">
+            <column name="status" />
+        </property>
+        <property name="amount" type="double">
+            <column name="amount" />
+        </property>
+        <property name="reason" type="string">
+            <column name="payment_reason" />
+        </property>
+        <property name="bankResponse" type="string">
+            <column name="bank_response" />
+        </property>
+        <property name="paymentType" type="int">
+            <column name="payment_type" />
+        </property>
+        <property name="creatorUsername" type ="string">
+   <column name="creator_username"></column>
+  </property>
+    </class>
+</hibernate-mapping>

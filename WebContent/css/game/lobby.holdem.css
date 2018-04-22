@@ -1,5 +1,5 @@
-.ui-page {
-	height: 100% !important;
+.ui-content {
+	padding: 0em !important;
 }
 
 .spanTopBannerInfo {
@@ -19,12 +19,20 @@
 }
 
 #table-lobby th {
-	border: 2px black solid;
+	border: 2px solid #b00000;
 	text-align: center !important;
-	color: black;
+	color: white;
 	font-size: 11pt;
-	background-color: #ccc;
+	background-color: rgba(112, 0, 0, .33);
+	font-weight: normal;
 }
+
+/* thead { */
+/* 	position: fixed; */
+/* 	right: 0; */
+/* 	left: 0; */
+/* 	min-width: 100%; */
+/* } */
 
 #table-lobby tbody tr:nth-child(even) {
 	background-color: #666;

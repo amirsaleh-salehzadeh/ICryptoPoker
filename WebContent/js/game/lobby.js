@@ -56,25 +56,25 @@ function joinGame(gameID, min, max) {
 		alert("player name????");
 		return;
 	} else {
-		var playerChips = ($('#chips').html().split(";"))[1];
-		// player does not have enough chips to enter the game
-		if (playerChips < min) {
-			alert("not enough chips");
-
-		} else if (playerChips < max) {
-			// players chips are less than the max
-			$('#buyIn').attr("max", playerChips);
-			$('#buyIn').attr("min", min);
+//		var playerChips = ($('#chips').html().split(";"))[1];
+//		// player does not have enough chips to enter the game
+//		if (playerChips < min) {
+//			alert("not enough chips");
+//
+//		} else if (playerChips < max) {
+//			// players chips are less than the max
+//			$('#buyIn').attr("max", playerChips);
+//			$('#buyIn').attr("min", min);
+//			$("#popupJoinGame").popup("open");
+//			$('#joingGameID').attr("value", gameID);
+//		} else {
+//			// player has enough chips for min and max
+//			$('#buyIn').attr("min", min);
+//			$('#buyIn').attr("max", max);
 			$("#popupJoinGame").popup("open");
 			$('#joingGameID').attr("value", gameID);
-		} else {
-			// player has enough chips for min and max
-			$('#buyIn').attr("min", min);
-			$('#buyIn').attr("max", max);
-			$("#popupJoinGame").popup("open");
-			$('#joingGameID').attr("value", gameID);
-
-		}
+//
+//		}
 		// set the on click for the Join button.
 		$('#joinGameBTN').click(function() {
 			$("#popupJoinGame").popup("close");

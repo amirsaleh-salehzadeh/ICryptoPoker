@@ -1,3 +1,4 @@
+<%@page import="game.poker.holdem.domain.Player"%>
 <%@page import="hibernate.user.UserDAO"%>
 <%@page import="common.user.UserENT"%>
 <%@ page language="java" import="java.util.*"%>
@@ -14,10 +15,12 @@
 <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet"
-	href="css/themes/default/jquery.mobile-1.4.5.min.css">
-<link rel="stylesheet"
 	href="css/themes/default/jquery.mobile.icons.min.css">
 <link rel="stylesheet" href="css/themes/default/theme-classic.css">
+<link rel="stylesheet"
+	href="css/themes/default/jquery.mobile.structure-1.4.5.min.css">
+<!-- <link rel="stylesheet" -->
+<!-- 	href="css/themes/default/jquery.mobile-1.4.5.min.css"> -->
 <link rel="stylesheet"
 	href="css/jquery-mobile/jquery.dataTables.min.css">
 <link rel="stylesheet"
@@ -57,11 +60,26 @@
 %>
 </head>
 <body dir="ltr">
+	<%
+		Player p = (Player) request.getAttribute("player");
+	%>
 	<div data-role="page">
-		<div data-role="header" class="ui-bar">
-			<h1 class="ui-title" role="heading" aria-level="1">i Crypto Poker</h1>
-			<a href="#mainMenu"
-				class="ui-btn-left ui-btn ui-icon-bars ui-btn-icon-notext ui-shadow ui-corner-all"></a>
+		<div data-role="header" class="ui-bar" >
+<!-- 		data-position="fixed" -->
+			<a href="#mainMenu" data-role="button" role="button"
+				class="ui-btn ui-btn-left ui-icon-bars ui-btn-icon-notext ui-shadow ui-corner-all"></a>
+			<h1 aria-level="1" role="heading" class="ui-title">i Crypto
+				Poker</h1>
+
+			<a href="#playerPopupMenu" data-rel="popup" data-transition="slideup"
+				class="ui-btn-right ui-btn ui-icon-user ui-btn-icon-notext ui-btn-right ui-shadow ui-corner-all"
+				data-role="button" role="button"></a>
+			<div data-role="popup" id="playerPopupMenu" data-theme="a">
+				<ul data-role="listview" data-inset="true" style="min-width: 210px;">
+					<li data-role="list-divider"><%=p.getId()%></li>
+					<li>$<%=p.getTotalChips()%></li>
+				</ul>
+			</div>
 		</div>
 		<div data-role="content" id="mainBodyContents">
 			<tiles:insert attribute="body" />

@@ -4,6 +4,9 @@
  */
 package struts.actions.tiles;
 
+import game.poker.holdem.dao.PlayerDaoImpl;
+import game.poker.holdem.domain.Player;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.Action;
@@ -23,6 +26,10 @@ public class T_GameAction extends Action {
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response) {
 		// TODO Auto-generated method stub
+		PlayerDaoImpl playerDaoImpl = new PlayerDaoImpl();
+		Player player = playerDaoImpl.findById(
+				request.getParameter("username"), null);
+		request.setAttribute("player", player);
 		String reqCode=request.getParameter("reqCode");
 		if(reqCode==null||reqCode.equalsIgnoreCase(""))
 			reqCode = "goToLobby";

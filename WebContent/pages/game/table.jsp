@@ -38,9 +38,9 @@
 			<a href="#"
 				class="ui-btn ui-mini ui-icon-back ui-btn-icon-left ui-shadow-icon ui-corner-all"
 				onclick="leaveTable()">Lobby</a>
-			<h3>
+			
 				<div id="connectionStatus" class="circleConnect circleConnected"></div>
-				&nbsp;<%=request.getParameter("playerName")%></h3>
+				<h3>&nbsp;<%=request.getParameter("playerName")%></h3>
 			<a href="#" class="ui-btn ui-icon-shop ui-btn-icon-left">$<%=player.getTotalChips()%></a>
 		</div>
 		<!-- MIDDLE PANEL  -->

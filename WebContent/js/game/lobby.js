@@ -42,7 +42,7 @@ function getAllGames() {
 			$("#table-lobby").trigger("create");
 		},
 		complete : function() {
-			setTimeout(function(){HideLoadingScreen();} , 1000);
+			HideLoadingScreen();
 			
 		},
 		error : function(xhr, ajaxOptions, thrownError) {

@@ -73,7 +73,6 @@
 				class="ui-btn ui-btn-left ui-icon-bars ui-btn-icon-notext ui-shadow ui-corner-all"></a>
 			<h1 aria-level="1" role="heading" class="ui-title">i Crypto
 				Poker</h1>
-
 			<a href="#playerPopupMenu" data-rel="popup" data-transition="slideup"
 				class="ui-btn-right ui-btn ui-icon-user ui-btn-icon-notext ui-btn-right ui-shadow ui-corner-all"
 				data-role="button" role="button"></a>

@@ -215,11 +215,13 @@ CREATE TABLE `player` (
 --
 
 INSERT INTO `player` (`username`, `game_id`, `name`, `chips`, `total_chips`, `game_position`, `finished_place`, `sitting_out`, `password`, `public_key`, `registeration_date`) VALUES
-('amir', 0, 'amir', 0, 2000, 0, 0, 0, '202cb962ac59075b964b07152d234b70', NULL, 'Sat Mar 17 01:37:11 CAT 2018'),
-('neil', 0, 'neil', 0, 2000, 0, 0, 0, '202cb962ac59075b964b07152d234b70', NULL, 'Sat Mar 17 01:37:18 CAT 2018'),
-('test', 0, 'tes', 0, 2000, 0, 0, 0, '202cb962ac59075b964b07152d234b70', NULL, 'Sat Mar 17 01:37:26 CAT 2018'),
-('test2', 0, 'test2', 0, 2000, 0, 0, 0, '202cb962ac59075b964b07152d234b70', NULL, 'Sat Mar 17 01:37:36 CAT 2018'),
-('test3', 0, 'someName', 0, 2000, 0, 0, 0, '202cb962ac59075b964b07152d234b70', NULL, 'Sat Mar 17 01:37:44 CAT 2018');
+('amir', 0, 'amir', 0, 20000, 0, 0, 0, '202cb962ac59075b964b07152d234b70', NULL, 'Sat Mar 17 01:37:11 CAT 2018'),
+('neil', 0, 'neil', 0, 20000, 0, 0, 0, '202cb962ac59075b964b07152d234b70', NULL, 'Sat Mar 17 01:37:18 CAT 2018'),
+('test1', 0, 'test1', 0, 20000, 0, 0, 0, '202cb962ac59075b964b07152d234b70', NULL, 'Sat Mar 17 01:37:26 CAT 2018'),
+('test2', 0, 'test2', 0, 20000, 0, 0, 0, '202cb962ac59075b964b07152d234b70', NULL, 'Sat Mar 17 01:37:36 CAT 2018'),
+('test3', 0, 'test3', 0, 20000, 0, 0, 0, '202cb962ac59075b964b07152d234b70', NULL, 'Sat Mar 17 01:37:44 CAT 2018'),
+('test4', 0, 'test4', 0, 20000, 0, 0, 0, '202cb962ac59075b964b07152d234b70', NULL, 'Sat Mar 17 01:37:26 CAT 2018'),
+('test5', 0, 'test5', 0, 20000, 0, 0, 0, '202cb962ac59075b964b07152d234b70', NULL, 'Sat Mar 17 01:37:26 CAT 2018');
 
 -- --------------------------------------------------------
 

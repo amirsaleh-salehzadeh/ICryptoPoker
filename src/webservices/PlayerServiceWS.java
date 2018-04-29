@@ -106,8 +106,9 @@ public class PlayerServiceWS {
 		String json = "";
 		try {
 			if (hand == null)
-				json = mapper.writeValueAsString(Collections.singletonMap(
-						"success", false));
+				// json = mapper.writeValueAsString(Collections.singletonMap(
+				// "success", false));
+				return Response.serverError().entity("Failed to fold").build();
 			else
 				json = mapper.writeValueAsString(Collections.singletonMap(
 						"success", true));
@@ -156,7 +157,8 @@ public class PlayerServiceWS {
 		HandEntity hand = playerActionService.call(player, game);
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		if (hand == null)
-			resultMap.put("success", false);
+			// resultMap.put("success", false);
+			return Response.serverError().entity("Failed to Call").build();
 		else
 			resultMap.put("success", true);
 		resultMap.put("chips", player.getChips());
@@ -208,9 +210,12 @@ public class PlayerServiceWS {
 		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
 		try {
-			if (hand == null)
-				json = mapper.writeValueAsString(Collections.singletonMap(
-						"success", false));
+			if (hand == null) {
+				// json = mapper.writeValueAsString(Collections.singletonMap(
+				// "success", false));
+				return Response.serverError().entity("Check Failed").build();
+			}
+
 			else
 				json = mapper.writeValueAsString(Collections.singletonMap(
 						"success", true));
@@ -270,7 +275,8 @@ public class PlayerServiceWS {
 		HandEntity hand = playerActionService.bet(player, game, betAmount);
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		if (hand == null)
-			resultMap.put("success", false);
+			// resultMap.put("success", false);
+			return Response.serverError().entity("Failed to Bet").build();
 		else
 			resultMap.put("success", true);
 		ObjectMapper mapper = new ObjectMapper();
@@ -364,27 +370,29 @@ public class PlayerServiceWS {
 		GameDaoImpl gamedao = new GameDaoImpl();
 		GameENT g = gamedao.findById(gameId, null);
 		int totalChips = player.getTotalChips();
-		int bigBlind = g.getGameStructure().getCurrentBlindLevel().getBigBlind();
-		if(totalChips<chips)
+		int bigBlind = g.getGameStructure().getCurrentBlindLevel()
+				.getBigBlind();
+		if (totalChips < chips)
 			return Response
 					.serverError()
-					.entity("Insufficient chips to buy in. You only have " + totalChips + " chips.")
-					.build();
-		else if(chips<bigBlind*40)
+					.entity("Insufficient chips to buy in. You only have "
+							+ totalChips + " chips.").build();
+		else if (chips < bigBlind * 40)
 			return Response
 					.serverError()
-					.entity("Insufficient chips to meet the minimum buy in of "+ bigBlind*40 +" chips.")
-					.build();
-		else if(chips>bigBlind*200)
+					.entity("Insufficient chips to meet the minimum buy in of "
+							+ bigBlind * 40 + " chips.").build();
+		else if (chips > bigBlind * 200)
 			return Response
 					.serverError()
-					.entity("The maximum buy in amount is " +bigBlind*200+ " chips. Please select less chips.")
-					.build();
-		
-		/** basically the if above
-		 * Player decides to sit back in the game he/she sat out
+					.entity("The maximum buy in amount is " + bigBlind * 200
+							+ " chips. Please select less chips.").build();
+
+		/**
+		 * basically the if above Player decides to sit back in the game he/she
+		 * sat out
 		 */
-		
+
 		if (player.getGameId() != 0 && player.isSittingOut())
 			try {
 				player = playerActionService.sitIn(player);

@@ -245,6 +245,7 @@ public class GameServiceImpl implements GameServiceInterface {
 				if (shareOfPlayers > 0)
 					p.setTotalChips((int) (p.getChips() + p.getTotalChips() + Math
 							.round(shareOfPlayers)));
+				//TODO We shouldnt round here, we should add the rounded values to our own account
 				else if (game.getCurrentHand() != null)
 					p.setTotalChips(p.getChips() + p.getTotalChips()
 							+ game.getCurrentHand().getTotalBetAmount());

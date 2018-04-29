@@ -35,7 +35,7 @@ form {
 	margin: 1%;
 	padding: 1.5%;
 	color: white !important;
-	background-color: rgba(0, 0, 0, .9) !important;
+	background-color: rgba(0, 0, 0, 1) !important;
 	text-shadow: none !important;
 	border-radius: 0;
 	min-height: 0.5em;
@@ -47,7 +47,7 @@ form {
 
 #loginBtn,#registerBtn {
 	color: rgba(244, 244, 244, .9) !important;
-	background-color: rgba(66, 0, 0, .9) !important;
+	background-color: rgba(66, 0, 0, 1) !important;
 	font-weight: 700;
 	border-color: #b00000 !important;
 	vertical-align: middle;

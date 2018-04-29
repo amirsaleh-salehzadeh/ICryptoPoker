@@ -19,6 +19,12 @@ public class BaseHibernateDAO {
 	protected static final String DBDRIVER = "com.mysql.jdbc.Driver";
 	protected static final String USERNAME = "root";
 	protected static final String PASSWORD = "";
+	
+//	private static final String DBADDRESS = "jdbc:mysql://postgrad.nmmu.ac.za:3306/nmmumobile";
+//	private static final String DBDRIVER = "com.mysql.jdbc.Driver";
+//	private static final String USERNAME = "nmmu_mobile_user";
+//	private static final String PASSWORD = "Dfjr9bg834gmb";
+
 	public static SessionFactory sessionFactory;
 
 	public Connection getConnection() throws AMSException {

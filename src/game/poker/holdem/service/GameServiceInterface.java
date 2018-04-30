@@ -62,7 +62,7 @@ public interface GameServiceInterface {
 	 * @return Player with persisted context. Null if the game is not accepting
 	 *         new players.
 	 */
-	public Player addNewPlayerToGame(GameENT game, Player player);
+	public GameENT addNewPlayerToGame(GameENT game, Player player);
 
 	/**
 	 * Persist any changes to a {@link Player} domain object. Or create a new
@@ -86,5 +86,5 @@ public interface GameServiceInterface {
 	
 	public void closeTheGame(GameENT eitherGame, Player eitherPlayer);
 	
-	public void leaveTheGame(Player player);
+	public void leaveTheGame(Player player, GameENT game);
 }

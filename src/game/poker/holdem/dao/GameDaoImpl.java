@@ -202,6 +202,7 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDaoInterface {
 			ps.setLong(8, game.getId());
 			ps.executeUpdate();
 			ps.close();
+			game.setPlayers(getAllPlayersInGame(game.getId(), conn));
 			if (isNewConn) {
 				conn.commit();
 				conn.close();
@@ -474,6 +475,7 @@ public class GameDaoImpl extends BaseHibernateDAO implements GameDaoInterface {
 					game.setPlayerInBTN(player.findById(
 							rs.getString("btn_player_id"), conn));
 				game.setPlayers(getAllPlayersInGame(game.getId(), conn));
+				game.setPlayersRemaining(game.getPlayers().size());
 				games.add(game);
 
 			}

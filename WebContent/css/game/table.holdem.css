@@ -1,9 +1,3 @@
-html,body {
-	overflow: hidden;
-	max-width: 100%;
-	max-height: 100%;
-}
-
 #mainTable {
 	background-color: #008000;
 	-moz-box-shadow: inset 0 0 22px #000000;
@@ -33,6 +27,10 @@ html,body {
 .sitPlaceContainer {
 	position: relative;
 	z-index: 1;
+}
+
+.actionButtons {
+	margin: 0;
 }
 
 .playerNamePlace {
@@ -105,8 +103,21 @@ html,body {
 	margin: 0 !important;
 }
 
-.playersFinalCard{
-	
+.playersFinalCard {
+	position: fixed;
+	margin-left: 7px;
+}
+
+.handRankingRes {
+	position: absolute;
+	top: 33%;
+	left: 33%;
+	z-index: 11000;
+	font-size: 12pt;
+	background-color: rgba(0, 0, 0, .77);
+	border: solid 1px rgb(0, 0, 0);
+	border-radius: 3px;
+	padding: 3px;
 }
 
 #userSitPlace {
@@ -185,7 +196,6 @@ html,body {
 	box-shadow: -28px 2px 135px 0px rgba(255, 255, 255, 1);
 	/*  */
 	/* gold styling */
-	color: black !important;
 	background: rgba(252, 234, 187, 1);
 	background: -moz-linear-gradient(left, rgba(252, 234, 187, 1) 0%,
 		rgba(252, 205, 77, 1) 21%, rgba(248, 181, 0, 1) 38%,
@@ -213,46 +223,31 @@ html,body {
 	opacity: 0.5;
 }
 
-/* .loser { */
-/* 	/* 	the shadow for the loser box */
-* /
-	/* 	-webkit-box-shadow: -28px 2px 135px 0px rgba(255, 255, 255, 1); */
-	/* 	-moz-box-shadow: -28px 2px 135px 0px rgba(255, 255, 255, 1); */
-	/* 	box-shadow: -28px 2px 135px 0px rgb(234, 24, 24) !important; */
-	/* 	/*  */   
- 
-* /
-	/* 	/* red styling */   
- 
-* /
-	/* 	color: black !important; */
-	/* 	background: rgba(248, 80, 50, 1) !important; */
-	/* 	background: -moz-linear-gradient(left, rgba(248, 80, 50, 1) 0%, */
-	/* 		rgba(246, 41, 12, 1) 46%, rgba(241, 111, 92, 1) 61%, */
-	/* 		rgba(240, 47, 23, 1) 71%, rgba(231, 56, 39, 1) 100%) !important; */
-	/* 	background: -webkit-gradient(left top, right top, color-stop(0%, rgba(248, 80, 50, 1 */
-	/* 		)), color-stop(46%, rgba(246, 41, 12, 1)), */
-	/* 		color-stop(61%, rgba(241, 111, 92, 1)), */
-	/* 		color-stop(71%, rgba(240, 47, 23, 1)), */
-	/* 		color-stop(100%, rgba(231, 56, 39, 1))) !important; */
-	/* 	background: -webkit-linear-gradient(left, rgba(248, 80, 50, 1) 0%, */
-	/* 		rgba(246, 41, 12, 1) 46%, rgba(241, 111, 92, 1) 61%, */
-	/* 		rgba(240, 47, 23, 1) 71%, rgba(231, 56, 39, 1) 100%) !important; */
-	/* 	background: -o-linear-gradient(left, rgba(248, 80, 50, 1) 0%, */
-	/* 		rgba(246, 41, 12, 1) 46%, rgba(241, 111, 92, 1) 61%, */
-	/* 		rgba(240, 47, 23, 1) 71%, rgba(231, 56, 39, 1) 100%) !important; */
-	/* 	background: -ms-linear-gradient(left, rgba(248, 80, 50, 1) 0%, */
-	/* 		rgba(246, 41, 12, 1) 46%, rgba(241, 111, 92, 1) 61%, */
-	/* 		rgba(240, 47, 23, 1) 71%, rgba(231, 56, 39, 1) 100%) !important; */
-	/* 	background: linear-gradient(to right, rgba(248, 80, 50, 1) 0%, */
-	/* 		rgba(246, 41, 12, 1) 46%, rgba(241, 111, 92, 1) 61%, */
-	/* 		rgba(240, 47, 23, 1) 71%, rgba(231, 56, 39, 1) 100%) !important; */
-	/* 	/* 	 */   
- 
-* /
-	/* } */   
-.ui-btn {
-	margin: 0 !important;
+.loser {
+	-webkit-box-shadow: -28px 2px 135px 0px rgba(255, 255, 255, 1);
+	-moz-box-shadow: -28px 2px 135px 0px rgba(255, 255, 255, 1);
+	box-shadow: -28px 2px 135px 0px rgb(234, 24, 24) !important;
+	background: rgba(248, 80, 50, 1) !important;
+	background: -moz-linear-gradient(left, rgba(248, 80, 50, 1) 0%,
+		rgba(246, 41, 12, 1) 46%, rgba(241, 111, 92, 1) 61%,
+		rgba(240, 47, 23, 1) 71%, rgba(231, 56, 39, 1) 100%) !important;
+	background: -webkit-gradient(left top, right top, color-stop(0%, rgba(248, 80, 50, 1
+		)), color-stop(46%, rgba(246, 41, 12, 1)),
+		color-stop(61%, rgba(241, 111, 92, 1)),
+		color-stop(71%, rgba(240, 47, 23, 1)),
+		color-stop(100%, rgba(231, 56, 39, 1))) !important;
+	background: -webkit-linear-gradient(left, rgba(248, 80, 50, 1) 0%,
+		rgba(246, 41, 12, 1) 46%, rgba(241, 111, 92, 1) 61%,
+		rgba(240, 47, 23, 1) 71%, rgba(231, 56, 39, 1) 100%) !important;
+	background: -o-linear-gradient(left, rgba(248, 80, 50, 1) 0%,
+		rgba(246, 41, 12, 1) 46%, rgba(241, 111, 92, 1) 61%,
+		rgba(240, 47, 23, 1) 71%, rgba(231, 56, 39, 1) 100%) !important;
+	background: -ms-linear-gradient(left, rgba(248, 80, 50, 1) 0%,
+		rgba(246, 41, 12, 1) 46%, rgba(241, 111, 92, 1) 61%,
+		rgba(240, 47, 23, 1) 71%, rgba(231, 56, 39, 1) 100%) !important;
+	background: linear-gradient(to right, rgba(248, 80, 50, 1) 0%,
+		rgba(246, 41, 12, 1) 46%, rgba(241, 111, 92, 1) 61%,
+		rgba(240, 47, 23, 1) 71%, rgba(231, 56, 39, 1) 100%) !important;
 }
 
 .constantBannersTop {
@@ -263,54 +258,55 @@ html,body {
 		rgba(81, 89, 106, 0.5), inset -3px -15px 45px rgba(108, 112, 120, 0.8),
 		1px 5px 30px -4px rgba(142, 145, 151, 0.1) !important;
 }
-#errorPopupTable{
-	height:200px!important;
-    width:300px;
-    background-color: maroon;
-    	-webkit-box-shadow: -28px 2px 135px 0px rgba(255, 0, 0, 1);
+
+#errorPopupTable {
+	height: 200px !important;
+	width: 300px;
+	background-color: maroon;
+	-webkit-box-shadow: -28px 2px 135px 0px rgba(255, 0, 0, 1);
 	-moz-box-shadow: -28px 2px 135px 0px rgba(255, 0, 0, 1);
 	box-shadow: -28px 2px 135px 0px rgba(255, 0, 0, 1);
-    top:48%;
+	top: 48%;
 }
-#errorHeading{	
+
+#errorHeading {
 	text-decoration: underline;
 	text-decoration: blink;
-	text-align: center;	
-}
-#errorContent{
 	text-align: center;
 }
+
+#errorContent {
+	text-align: center;
+}
+
 .circleConnect {
 	display: inline-block;
-	width:20px;
-	height:20px;
-    border-radius: 50%;
-    behavior: url(PIE.htc); /* remove if you don't care about IE8 */
-}
-.circleConnected{
-	 background-color:green;
-	
-}
-.circleBadCon{
-	
-	 background-color:orange;
-}
-.circleDC{
-
-	 background-color:red;
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	behavior: url(PIE.htc); /* remove if you don't care about IE8 */
 }
 
-#connectionPopup{
-	display:none;
-	position:absolute;
+.circleConnected {
+	background-color: green;
+}
+
+.circleBadCon {
+	background-color: orange;
+}
+
+.circleDC {
+	background-color: red;
+}
+
+#connectionPopup {
+	display: none;
+	position: absolute;
 	border: solid 1px rgb(199, 199, 199);
-	width:100px;
-	height:70px;
+	width: 100px;
+	height: 70px;
 	left: 50%;
-	background-color: black!important;
-	color:white!important;
-	z-index:31;
-	
+	background-color: black !important;
+	color: white !important;
+	z-index: 31;
 }
-
-

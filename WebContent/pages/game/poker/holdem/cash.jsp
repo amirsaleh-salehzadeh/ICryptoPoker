@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/> <!--320-->
 <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 <link rel="stylesheet"
 	href="css/themes/default/jquery.mobile.icons.min.css">
@@ -42,7 +42,7 @@
 </head>
 <body>
 	<div id="connectionPopup">Just some test stuff</div>
-	<div data-role="page">
+	<div data-role="page" id="mainPageDiv">
 		<div data-role="panel" id="panelChat" data-display="overlay">
 			CHAT <a href="#tableFooter" data-mini="true"
 				class="ui-btn ui-icon-delete ui-btn-icon-left ui-shadow ui-corner-all"

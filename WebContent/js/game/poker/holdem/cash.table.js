@@ -13,17 +13,16 @@ function fitElementsWithinScreen() {
 							if (!$(this).hasClass("tableCards")) {
 								$(this)
 										.width(
-												$(this).parent().parent()
+												$(this).parent()
 														.height() * 0.7);
 								$(this).height(
-										$(this).parent().parent().height());
+										$(this).parent().height());
 							} else {
 								$(this)
 										.width(
 												$("#userSitPlace").height() * 0.7);
 								$(this).height($("#userSitPlace").height());
 							}
-							$(this).trigger("create");
 						}
 					});
 	var screen = $.mobile.getScreenHeight();
@@ -34,7 +33,8 @@ function fitElementsWithinScreen() {
 	var contentCurrent = $(".ui-content").outerHeight()
 			- $(".ui-content").height();
 	var content = screen - header - footer - contentCurrent;
-	$(".ui-content").height(content);
+	$(".ui-content").height(content).trigger("create");
+	$('page').trigger("create");
 
 }
 
@@ -63,9 +63,17 @@ $(document).ready(
 						"-moz-transform" : "rotate(90deg)",
 						"-o-transform" : "rotate(90deg)"
 					});
+				else
+					$('body').css({
+						"-webkit-transform" : "rotate(0deg)",
+						"transform" : "rotate(0deg)",
+						"-ms-transform" : "rotate(0deg)",
+						"-moz-transform" : "rotate(0deg)",
+						"-o-transform" : "rotate(0deg)"
+					});
 				fitElementsWithinScreen();
 			});
-			$.mobile.orientationChangeEnabled = false;
+			$(window).orientationchange();
 			var wsUri = "ws://" + document.location.host
 					+ "/ICryptoPoker/game/" + $("#gameID").val() + "/"
 					+ $("#playerID").val();

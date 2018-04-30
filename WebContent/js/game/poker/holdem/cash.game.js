@@ -102,9 +102,10 @@ function updateGameInfo(data) {
 		return endHand(data.players);
 	}
 
-	$(".tableCards").each(function() {
-		$(this).html('<img alt="" src="images/game/card.jpg">');
-	});
+	if (data.gameStatus != "NOT_STARTED")
+		$(".tableCards").each(function() {
+			$(this).html('<img alt="" src="images/game/card.jpg">');
+		});
 
 	$(".actionButtons").each(function() {
 		$(this).addClass("ui-state-disabled");
@@ -202,8 +203,10 @@ function updatePlayerInfo(data) {
 
 // if playersFinalCard exist remove all of them>>>last hand
 function endHand(players) {
-	console.log("GAME DONE");
+	console.log("ENDHHHHHHHHHHHHHHHH");
 	clearInterval(timer);
+	if(player.status=="FOLDED")
+		return false;
 	$(players)
 			.each(
 					function(k, l) {
@@ -212,17 +215,29 @@ function endHand(players) {
 										function() {
 											if ($(this).attr("id") == "sitPlaceContainer"
 													+ l.id) {
-												var res = "<div class='ui-grid-a playersFinalCard'><div class='ui-block-a card1 card'><img src='images/game/cards/"
+												var heightTMP = $(this)
+														.height() + 11;
+												var res = "<div class='ui-grid-a playersFinalCard' style='height: "
+														+ heightTMP
+														+ "px'><div class='ui-block-a card1 card' style='height: 100%'><img src='images/game/cards/"
 														+ l.card1
 														+ ".png' height='100%' /></div>"
-														+ "<div class='ui-block-b card2 card'><img src='images/game/cards/"
+														+ "<div class='ui-block-b card2 card' style='height: 100%'><img src='images/game/cards/"
 														+ l.card2
 														+ ".png' height='100%' /></div></div><div class='handRankingRes'>"
-														+ l.handRank + "</div>";
+														+ l.handRank.replace("_","") + "</div>";
 												$(this).html(res);
 												if (l.status == "WON_HAND") {
 													$(this).addClass("winner");
+												}else{
+													$(this).addClass("loser");
 												}
+												$(".card").each(
+														function() {
+															$(this).css(
+																	"height",
+																	"100%");
+														});
 											} else {
 												return true;
 											}
@@ -322,12 +337,15 @@ function addANewPlayerToTable(data) {
 								"id")
 								&& $("#sitPlaceContainer" + id).length > 0) {
 							if ($("#sitPlaceContainer" + id).find(
-									".playersFinalCard").length > 0) {
+									".playersFinalCard").length > 0
+									&& data.status != "NOT_STARTED"
+									&& data.status != "SEATING") {
 								$("#sitPlaceContainer" + id).html(content);
 								$("#sitPlaceContainer" + id).find(
 										".amountToCallcontainer").css(
 										"display", "none");
 								$(this).removeClass("winner");
+								$(this).removeClass("loser");
 								return;
 							}
 							// set the content in the next rounds

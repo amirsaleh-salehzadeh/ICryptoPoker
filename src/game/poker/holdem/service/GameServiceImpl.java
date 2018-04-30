@@ -77,7 +77,7 @@ public class GameServiceImpl implements GameServiceInterface {
 			List<BlindLevel> blinds = gs.getBlindLevels();
 			Collections.sort(blinds);
 			gs.setCurrentBlindLevel(blinds.get(0));
-		}
+		} 
 		// Get all players associated with the game.
 		// Assign random position. Save the player.
 		List<Player> players = new ArrayList<Player>();
@@ -99,7 +99,7 @@ public class GameServiceImpl implements GameServiceInterface {
 		return gameDao.merge(game, null);
 	}
 
-	public Player addNewPlayerToGame(GameENT game, Player player) {
+	public GameENT addNewPlayerToGame(GameENT game, Player player) {
 		if (game.isStarted() && game.getGameType() == GameType.TOURNAMENT) {
 			throw new IllegalStateException(
 					"Tournament in progress, no new players may join");
@@ -125,7 +125,15 @@ public class GameServiceImpl implements GameServiceInterface {
 		GameDaoImpl gameDao = new GameDaoImpl();
 		game.setPlayersRemaining(game.getPlayersRemaining() + 1);
 		game = gameDao.merge(game, null);
-		return player;
+		if (game.getPlayers().size() >= 2 && !game.isStarted())
+			try {
+				game = startGame(game);
+				PokerHandServiceImpl phand  = new PokerHandServiceImpl();
+				game.setCurrentHand(phand.startNewHand(game));
+			} catch (AMSException e) {
+				e.printStackTrace();
+			}
+		return gameDao.merge(game, null);
 	}
 
 	public String getGameStatusJSON(GameENT game, Map<String, Object> results,
@@ -245,7 +253,8 @@ public class GameServiceImpl implements GameServiceInterface {
 				if (shareOfPlayers > 0)
 					p.setTotalChips((int) (p.getChips() + p.getTotalChips() + Math
 							.round(shareOfPlayers)));
-				//TODO We shouldnt round here, we should add the rounded values to our own account
+				// TODO We shouldnt round here, we should add the rounded values
+				// to our own account
 				else if (game.getCurrentHand() != null)
 					p.setTotalChips(p.getChips() + p.getTotalChips()
 							+ game.getCurrentHand().getTotalBetAmount());
@@ -269,14 +278,13 @@ public class GameServiceImpl implements GameServiceInterface {
 	}
 
 	@Override
-	public void leaveTheGame(Player player) {
-		GameDaoImpl gdao = new GameDaoImpl();
-		GameENT game = gdao.findById(player.getGameId(), null);
+	public void leaveTheGame(Player player, GameENT game) {
 		PlayerDaoImpl pdao = new PlayerDaoImpl();
 		for (Player p : game.getPlayers()) {
 			if (p.getGamePosition() > player.getGamePosition()) {
 				p.setGamePosition(p.getGamePosition() - 1);
 				pdao.merge(p, null);
+
 			}
 		}
 		player.setGameId(0);

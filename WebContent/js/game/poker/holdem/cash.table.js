@@ -35,7 +35,7 @@ function fitElementsWithinScreen() {
 			- $(".ui-content").height();
 	var content = screen - header - footer - contentCurrent;
 	$(".ui-content").height(content);
-	
+
 }
 
 function resetPlayerInfo() {
@@ -53,7 +53,19 @@ function resetPlayerInfo() {
 
 $(document).ready(
 		function() {
-		
+			$(window).orientationchange();
+			$(window).on("orientationchange", function(event) {
+				if (event.orientation == "portrait")
+					$('body').css({
+						"-webkit-transform" : "rotate(90deg)",
+						"transform" : "rotate(90deg)",
+						"-ms-transform" : "rotate(90deg)",
+						"-moz-transform" : "rotate(90deg)",
+						"-o-transform" : "rotate(90deg)"
+					});
+				fitElementsWithinScreen();
+			});
+			$.mobile.orientationChangeEnabled = false;
 			var wsUri = "ws://" + document.location.host
 					+ "/ICryptoPoker/game/" + $("#gameID").val() + "/"
 					+ $("#playerID").val();
@@ -81,30 +93,7 @@ $(document).ready(
 			$(window).on("resize", function() {
 				fitElementsWithinScreen();
 			});
-			fitElementsWithinScreen();		
-			$("#connectionStatus").mouseover(
-					function(evt ) {
-						if ( $( "#connectionPopup" ).css( "display")=="none") {
-						
-							 $( "#connectionPopup" ).css( "left", evt.pageX +10);
-							 $( "#connectionPopup" ).css( "top", evt.pageY + 5);
-							 $( "#connectionPopup" ).css( "display", "block");
-						    evt.preventDefault();
-						   
-						}
-					   
-				
-				
-				
-			});
-			$("#connectionStatus").mouseout(	function(evt){
-				
-				if ( !$("#connectionPopup").parent().hasClass('ui-popup-hidden')) {
-					setTimeout(function(){ $( "#connectionPopup" ).css( "display", "none");}, 100);
-				;
-				}
-				
-			});
+			fitElementsWithinScreen();
 		});
 
 $(window).on("load", fitElementsWithinScreen);
@@ -169,16 +158,12 @@ function toggleFullScreen(elem) {
 }
 
 function sitInPopupOpen() {
+	$("#sitInBTN").removeClass("ui-state-disabled");
 	$("#popupSitIn").popup("open");
 }
 
-function openErrorPopupTable(content){
+function openErrorPopupTable(content) {
 	$("#errorContent").html(content);
-$("#errorPopupTable").popup();
-$("#errorPopupTable").popup("open");
+	$("#errorPopupTable").popup();
+	$("#errorPopupTable").popup("open");
 }
-
-
-
-
-

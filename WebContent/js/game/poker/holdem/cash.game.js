@@ -76,7 +76,7 @@ function leaveTable() {
 	// async : true,
 	// success : function(data) {
 	// if (data.success == true)
-	window.location.replace('t_game.do?username='+$("#playerID").val());
+	window.location.replace('t_game.do?username=' + $("#playerID").val());
 	// },
 	// error : function(xhr, ajaxOptions, thrownError) {
 	// alert(xhr.responseText);
@@ -180,7 +180,7 @@ function updatePlayerInfo(data) {
 		countDownTotal = 15000;
 		timeLeft = 0;
 		clearInterval(timer);
-		// timer = setInterval(setTimer, 1000);
+		timer = setInterval(setTimer, 1000);
 	} else if (data.status == "LOST_HAND") {
 		$('.playerInfo').each(function() {
 			if ("playerInfo" + playerId == this.id) {
@@ -189,17 +189,7 @@ function updatePlayerInfo(data) {
 			}
 		});
 
-	}
-
-	// else if (data.status == "WON_HAND") {
-	// $('.playerInfo').each(function() {
-	// if ("playerInfo" + playerId == this.id) {
-	// $(this).addClass("winner");
-	// $("#amountToCallcontainer" + playerId).html(data.handRank);
-	// }
-	// });
-	// }
-	else if (data.status == "SIT_OUT" || data.status == "SIT_OUT_GAME"
+	} else if (data.status == "SIT_OUT" || data.status == "SIT_OUT_GAME"
 			|| data.status == "SEATING") {
 		$('.playerInfo').each(function() {
 			if ("playerInfo" + playerId == this.id) {
@@ -311,6 +301,8 @@ function addANewPlayerToTable(data) {
 											".playerTotalChipsPlace").html(
 											"$" + chips);
 								}
+								$("#myTotalChips").text("$" + data.totalChips)
+										.trigger("create");
 								return false;
 							}
 						// set the content of competitor players for the first
@@ -346,7 +338,10 @@ function addANewPlayerToTable(data) {
 								$("#sitPlaceContainer" + id).find(
 										".amountToCallcontainer").html(
 										amountBetRound).trigger("create");
-							}
+							} else
+								$("#sitPlaceContainer" + id).find(
+										".amountToCallcontainer").css(
+										"display", "none");
 							if ($("#sitPlaceContainer" + id).find(
 									".amountToCallcontainer").html() == "")
 								$("#sitPlaceContainer" + id).find(
@@ -386,9 +381,9 @@ function check() {
 				alert("check failed");
 		},
 		error : function(xhr, ajaxOptions, thrownError) {
-			//call error popup here
+			// call error popup here
 			// change hidden input
-//			alert(xhr.responseText);
+			// alert(xhr.responseText);
 			openErrorPopupTable(xhr.responseText);
 		}
 	});
@@ -408,7 +403,7 @@ function call() {
 				alert("check failed");
 		},
 		error : function(xhr, ajaxOptions, thrownError) {
-//			alert(xhr.responseText);
+			// alert(xhr.responseText);
 			openErrorPopupTable(xhr.responseText);
 		}
 	});
@@ -428,7 +423,7 @@ function fold() {
 				alert("fold failed");
 		},
 		error : function(xhr, ajaxOptions, thrownError) {
-//			alert(xhr.responseText);
+			// alert(xhr.responseText);
 			openErrorPopupTable(xhr.responseText);
 		}
 	});
@@ -449,7 +444,7 @@ function raise() {
 				alert("raise failed");
 		},
 		error : function(xhr, ajaxOptions, thrownError) {
-//			alert(xhr.responseText);
+			// alert(xhr.responseText);
 			openErrorPopupTable(xhr.responseText);
 		}
 	});
@@ -461,6 +456,7 @@ function sitInTheGame() {
 			+ $("#gameID").val() + "&playerId=" + $("#playerID").val()
 			+ "&chips=" + $("#sitInChips").val() + "&nickname="
 			+ $("#nickname").val();
+	$("#sitInBTN").addClass("ui-state-disabled");
 	$.ajax({
 		url : url,
 		cache : false,
@@ -469,18 +465,19 @@ function sitInTheGame() {
 			if (data.success == true)
 				$("#popupSitIn").popup("close");
 			else
-				alert("raise failed");
+				openErrorPopupTable("sit in failed");
 		},
 		error : function(xhr, ajaxOptions, thrownError) {
 			$("#popupSitIn").popup("close");
-//			delay needed for one popup to close so the other can open 
-//			and sets the sit in popup to open again after you close the error popup
-			setTimeout(function(){
-			openErrorPopupTable(xhr.responseText);
-			$("#errorPopupTable").on("popupafterclose", function () {
-				sitInPopupOpen();
-			});
-			},100);
+			// delay needed for one popup to close so the other can open
+			// and sets the sit in popup to open again after you close the error
+			// popup
+			setTimeout(function() {
+				openErrorPopupTable(xhr.responseText);
+				$("#errorPopupTable").on("popupafterclose", function() {
+					sitInPopupOpen();
+				});
+			}, 100);
 		}
 	});
 	clearInterval(timer);

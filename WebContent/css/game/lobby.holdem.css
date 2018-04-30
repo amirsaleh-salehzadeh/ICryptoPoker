@@ -2,6 +2,10 @@
 	padding: 0em !important;
 }
 
+.ui-field-contain{
+	margin: 0 !important;
+}
+
 .spanTopBannerInfo {
 	padding-left: 3px;
 	width: 100%;

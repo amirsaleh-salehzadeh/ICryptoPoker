@@ -6,6 +6,8 @@ package struts.actions;
 
 import game.poker.holdem.dao.GameDaoImpl;
 import game.poker.holdem.dao.PlayerDaoImpl;
+import game.poker.holdem.domain.GameStructure;
+import game.poker.holdem.domain.GameType;
 import game.poker.holdem.domain.Player;
 import game.poker.holdem.service.GameServiceImpl;
 
@@ -46,6 +48,8 @@ public class GameAction extends Action {
 			GameENT game = gamedao.findById(gameId, null);
 			Player player = playerDaoImpl.findById(
 					request.getParameter("username"), null);
+			if(game.getGameType().equals(GameType.CASH))
+				reqCode = "goToCashGame";
 //			player.setName(request.getParameter("nickname"));
 			player = playerDaoImpl.merge(player, null);
 //			GameServiceImpl gameService = new GameServiceImpl();

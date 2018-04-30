@@ -11,14 +11,13 @@
 <script src="js/jquery/jquery.js"></script>
 <script type="text/javascript">
 	function registerNew() {
-		if ($("#uNameEmail").val() == "") {
-			return;
-		}
 		if ($("#reTypePassDiv").css("display") == "none") {
 			$("#reTypePassDiv").fadeIn(2000);
 			return;
 		}
-
+		if ($("#uNameEmail").val() == "") {
+			return;
+		}
 		if ($("#loginRePass").val() != $("#loginPass").val()) {
 			$("#message").hide();
 			$("#message").html("Password and Re-type of password DO NOT match");

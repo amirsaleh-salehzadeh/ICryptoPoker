@@ -32,8 +32,9 @@
 		</action>
 		<action path="/game" type="struts.actions.GameAction">
 			<set-property property="cancellable" value="true" />
-			<forward name="goToLobby" path="/pages/game/lobby.jsp" />
-			<forward name="joinAGame" path="/pages/game/table.jsp" />
+			<forward name="goToLobby" path="/pages/game/poker/holdem/lobby.jsp" />
+			<forward name="joinAGame" path="/pages/game/poker/holdem/tournament.jsp" />
+			<forward name="goToCashGame" path="/pages/game/poker/holdem/cash.jsp" />
 		</action>
 		<action path="/payment" type="struts.actions.PaymentAction"
 			name="paymentGrid">

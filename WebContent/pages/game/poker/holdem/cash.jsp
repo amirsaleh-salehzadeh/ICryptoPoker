@@ -15,8 +15,8 @@
 	href="css/themes/default/jquery.mobile.structure-1.4.5.min.css">
 <script src="js/jquery/jquery.min.js"></script>
 <script src="js/jquery/jquery.mobile-1.4.5.min.js"></script>
-<script src="js/game/table.js"></script>
-<script src="js/game/game.js"></script>
+<script src="js/game/poker/holdem/cash.table.js"></script>
+<script src="js/game/poker/holdem/cash.game.js"></script>
 <link rel="stylesheet" href="css/game/table.holdem.css" />
 <link rel="stylesheet" href="css/game/table.timer.css" />
 <link rel="stylesheet"
@@ -25,6 +25,20 @@
 	Player player = (Player) request.getAttribute("player");
 	GameENT game = (GameENT) request.getAttribute("game");
 %>
+<script type="text/javascript">
+	function ShowLoadingScreen() {
+		$.mobile.loading("show", {
+			text : "Loading",
+			textVisible : true,
+			theme : "b",
+			textonly : false,
+			html : "html"
+		});
+	}
+	function HideLoadingScreen() {
+		$.mobile.loading("hide");
+	}
+</script>
 </head>
 <body>
 	<div id="connectionPopup">Just some test stuff</div>
@@ -38,11 +52,10 @@
 			<a href="#"
 				class="ui-btn ui-mini ui-icon-back ui-btn-icon-left ui-shadow-icon ui-corner-all"
 				onclick="leaveTable()">Lobby</a>
-
-			<div id="connectionStatus" class="circleConnect circleConnected"></div>
 			<h3>
 				&nbsp;<%=player.getId()%></h3>
-			<a href="#" class="ui-btn ui-icon-shop ui-btn-icon-left">$<%=player.getTotalChips()%></a>
+			<a href="#" id="myTotalChips"
+				class="ui-btn ui-icon-shop ui-btn-icon-left">$<%=player.getTotalChips()%></a>
 		</div>
 		<!-- MIDDLE PANEL  -->
 		<div role="main" class="ui-content">
@@ -55,7 +68,11 @@
 			<!-- TOP GRID  -->
 			<div class="ui-grid-d ui-block-solo"
 				style="width: 100%; height: 20%;">
-				<div class="ui-block-a" style="width: 20%; height: 100%;"></div>
+				<div class="ui-block-a"
+					style="width: 20%; height: 100%; position: relative;">
+					<div id="connectionStatus" class="circleConnect circleConnected"
+						style="display: none;"></div>
+				</div>
 				<div class="ui-block-b sitPlaceContainer"
 					style="width: 20%; height: 100%;" data-sort='4'>
 					<div class='sitPlaceThumbnailEmpty'>&nbsp;</div>
@@ -167,35 +184,11 @@
 						data-popup-enabled="true" data-highlight="true">
 				</div>
 			</div>
-			<!-- 		Sit In popup          -->
-			<div data-role="popup" id="popupSitIn" data-overlay-theme="b"
-				data-dismissible="false">
-				<form>
-					<div data-role="header" data-theme="a">
-						<h1>Sit In</h1>
-					</div>
-					<div role="main" class="ui-content" data-overlay-theme="b"
-						data-dismissible="false">
-						<div class="ui-block-solo" style="height: 25%;">
-							<label for="buyIn">Entry Chips</label> <input type="number"
-								data-mini="true" id="sitInChips" value="100" placeholder="Chips">
-						</div>
-						<div class="ui-block-solo" style="height: 25%;">
-							<label for="buyIn">Nick Name</label> <input type="text"
-								data-mini="true" id="nickname" value="<%=player.getId()%>"
-								placeholder="Nick Name">
-							<!-- 	TODO : CHECK NICKNAME : It should be at least 3 words-->
-						</div>
 
-					</div>
-					            <a href="#"
-						class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-a"
-						data-rel="back" data-mini="true">Back</a>         <a href="#"
-						id="sitInBTN"
-						class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-a"
-						data-mini="true" onclick="sitInTheGame()">Join</a>     
-				</form>
-			</div>
+
+			<!-- 		Sit In popup          -->
+
+
 		</div>
 		<!-- FOOTER -->
 		<div data-role="footer" class="ui-grid-d" id="tableFooter">
@@ -234,16 +227,42 @@
 		</div>
 		<!-- ERROR POPUP to open use the openErrorPopup(content) function-->
 		<div data-role="popup" id="errorPopupTable" class="ui-content">
-		<div data-role="header" data-theme="a">
-						<h1>ERROR!</h1>
-					</div>
-			<div id="errorContent" role="main" class="ui-content" data-overlay-theme="b"
-						data-dismissible="false">
-						
-						</div>
+			<div data-role="header" data-theme="a">
+				<h1>ERROR!</h1>
+			</div>
+			<div id="errorContent" role="main" class="ui-content"
+				data-overlay-theme="b" data-dismissible="false"></div>
 			<a href="#" data-rel="back"
 				class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
-			 
+
+		</div>
+
+		<div data-role="popup" id="popupSitIn" data-dismissible="false">
+			<form>
+				<div data-role="header" data-theme="a">
+					<h1>Sit In</h1>
+				</div>
+				<div role="main" class="ui-content" data-overlay-theme="a"
+					data-theme="a">
+					<div class="ui-block-solo">
+						<label for="buyIn">Entry Chips</label> <input type="number"
+							data-mini="true" id="sitInChips" value="100" placeholder="Chips">
+					</div>
+					<div class="ui-block-solo">
+						<label for="buyIn">Nick Name</label> <input type="text"
+							data-mini="true" id="nickname" value="<%=player.getId()%>"
+							placeholder="Nick Name">
+						<!-- 	TODO : CHECK NICKNAME : It should be at least 3 words-->
+					</div>
+
+				</div>
+				            <a href="#"
+					class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-a"
+					data-rel="back" data-mini="true">Back</a>         <a href="#"
+					id="sitInBTN"
+					class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-a"
+					data-mini="true" onclick="sitInTheGame()">Join</a>     
+			</form>
 		</div>
 	</div>
 

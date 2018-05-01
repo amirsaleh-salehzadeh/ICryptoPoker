@@ -107,9 +107,12 @@ function updateGameInfo(data) {
 			$(this).html('<img alt="" src="images/game/card.jpg">');
 		});
 
-	$(".actionButtons").each(function() {
-		$(this).addClass("ui-state-disabled");
-	});
+	// $(".actionButtons").each(function() {
+	// $(this).addClass("ui-state-disabled");
+	// });
+	// $(".actionButtons").each(function() {
+	$(".actionButtons").addClass("ui-state-disabled");
+	// });
 
 	$("#raiseSliderContainer").addClass("ui-state-disabled");
 	$("#handID").val(data.handId);
@@ -121,21 +124,23 @@ function updateGameInfo(data) {
 	$(data.players).each(function(k, l) {
 		updatePlayerInfo(l);
 	});
-	if ($("#pscontainer" + data.POST_SB).length <= 0)
+	if (data.POST_SB != undefined
+			&& $("#pscontainer" + data.POST_SB).length >= 0
+			&& $("#pscontainer" + data.POST_SB).html().indexOf("sb.png") <= 0)
 		$("#pscontainer" + data.POST_SB).html(
-				'<img src="images/game/sb.png" height="100%" />');
-	if ($("#pscontainer" + data.POST_BB).length <= 0)
+				$("#pscontainer" + data.POST_SB).html()
+						+ '<img src="images/game/sb.png" height="100%" />');
+	if (data.POST_BB != undefined
+			&& $("#pscontainer" + data.POST_BB).length >= 0
+			&& $("#pscontainer" + data.POST_BB).html().indexOf("bb.png") <= 0)
 		$("#pscontainer" + data.POST_BB).html(
-				'<img src="images/game/bb.png" height="100%" />');
-	if ($("#pscontainer" + data.DEALER).length <= 0)
-		// if the div already contain info
+				$("#pscontainer" + data.POST_BB).html()
+						+ '<img src="images/game/bb.png" height="100%" />');
+	if (data.DEALER != undefined && $("#pscontainer" + data.DEALER).length >= 0
+			&& $("#pscontainer" + data.DEALER).html().indexOf("d.png") <= 0)
 		$("#pscontainer" + data.DEALER).html(
 				$("#pscontainer" + data.DEALER).html()
 						+ '<img src="images/game/d.png" height="100%" />');
-	// else
-	else
-		$("#pscontainer" + data.DEALER).html(
-				'<img src="images/game/d.png" height="100%" />');
 }
 
 function generateACard(cardVal, divID, cardNumber) {
@@ -163,9 +168,7 @@ function updatePlayerInfo(data) {
 			$("#checkBTN").attr("onclick", "check()").trigger("create");
 		}
 		if (playerId == $("#playerID").val()) {
-			$(".actionButtons").each(function() {
-				$(this).removeClass("ui-state-disabled");
-			});
+			$(".actionButtons").removeClass("ui-state-disabled");
 			$("#raiseSliderContainer").removeClass("ui-state-disabled");
 			if (atc > 0) {
 				$("#sliderRaise").attr("min", atc * 2);
@@ -177,12 +180,14 @@ function updatePlayerInfo(data) {
 		}
 		$("#sliderRaise").attr("value", $("#sliderRaise").attr("min")).slider(
 				"refresh");
-		playerToActId = playerId;
-		countDownTotal = 15000;
-		timeLeft = 0;
-		clearInterval(timer);
-		timer = setInterval(setTimer, 1000);
+		// playerToActId = playerId;
+		// countDownTotal = 15000;
+		// timeLeft = 0;
+		// clearInterval(timer);
+		// timer = setInterval(setTimer, 1000);
 	} else if (data.status == "LOST_HAND") {
+		$("#userSitPlace").removeClass("winner");
+		$("#userSitPlace").removeClass("loser");
 		$('.playerInfo').each(function() {
 			if ("playerInfo" + playerId == this.id) {
 				$(this).addClass("loser");
@@ -203,46 +208,58 @@ function updatePlayerInfo(data) {
 
 // if playersFinalCard exist remove all of them>>>last hand
 function endHand(players) {
-	console.log("ENDHHHHHHHHHHHHHHHH");
 	clearInterval(timer);
-	if(player.status=="FOLDED")
-		return false;
 	$(players)
 			.each(
 					function(k, l) {
-						$(".sitPlaceContainer")
-								.each(
-										function() {
-											if ($(this).attr("id") == "sitPlaceContainer"
-													+ l.id) {
-												var heightTMP = $(this)
-														.height() + 11;
-												var res = "<div class='ui-grid-a playersFinalCard' style='height: "
-														+ heightTMP
-														+ "px'><div class='ui-block-a card1 card' style='height: 100%'><img src='images/game/cards/"
-														+ l.card1
-														+ ".png' height='100%' /></div>"
-														+ "<div class='ui-block-b card2 card' style='height: 100%'><img src='images/game/cards/"
-														+ l.card2
-														+ ".png' height='100%' /></div></div><div class='handRankingRes'>"
-														+ l.handRank.replace("_","") + "</div>";
-												$(this).html(res);
-												if (l.status == "WON_HAND") {
-													$(this).addClass("winner");
-												}else{
-													$(this).addClass("loser");
-												}
-												$(".card").each(
-														function() {
-															$(this).css(
-																	"height",
-																	"100%");
-														});
-											} else {
-												return true;
-											}
-										});
+						if (l.status == "FOLDED")
+							return false;
+						if (l.id == $("#playerIDSittingDiv").val()) {
+							$("#userSitPlace").html(res);
+							if (l.status == "WON_HAND") {
+								$("#userSitPlace").addClass("winner");
+							} else {
+								$("#userSitPlace").addClass("loser");
+							}
+							return true;
+						} else
+							for ( var int = 1; int <= 9; int++) {
+								if ($('*[data-sort="' + int + '"]').attr("id") == undefined)
+									continue;
+								if (($('*[data-sort="' + int + '"]').attr("id") == "sitPlaceContainer"
+										+ l.id)
+										&& l.card1 != null
+										&& l.card1.length > 0) {
+									console.log($('*[data-sort="' + int + '"]')
+											.attr("id"));
+									var heightTMP = $(
+											'*[data-sort="' + int + '"]')
+											.height() + 11;
+									var res = "<div class='ui-grid-a playersFinalCard' style='height: "
+											+ heightTMP
+											+ "px'><div class='ui-block-a card1 card' style='height: 100%'><img src='images/game/cards/"
+											+ l.card1
+											+ ".png' height='100%' /></div>"
+											+ "<div class='ui-block-b card2 card' style='height: 100%'><img src='images/game/cards/"
+											+ l.card2
+											+ ".png' height='100%' /></div></div><div class='handRankingRes'>"
+											+ l.handRank + "</div>";
+									$('*[data-sort="' + int + '"]').html(res);
+									if (l.status == "WON_HAND") {
+										$('*[data-sort="' + int + '"]')
+												.addClass("winner");
+									} else {
+										$('*[data-sort="' + int + '"]')
+												.addClass("loser");
+									}
+
+									$(".card").each(function() {
+										$(this).css("height", "100%");
+									});
+								}
+							}
 					});
+	$(".pscontainer").html("");
 	return true;
 
 }
@@ -256,122 +273,106 @@ function addANewPlayerToTable(data) {
 		betDivShow = true;
 	} else
 		amountBetRound = "";
-	$(".sitPlaceContainer")
-			.each(
-					function() {
-						if (content == "")
-							if (id != $("#playerID").val()) {
-								// content for other players around the table
-								content = "<input type='hidden' class='playerIDSittingDiv' id='"
-										+ id
-										+ "'> <div class='ui-block-solo playerInfo' id='playerInfo"
-										+ id
-										+ "'>"
-										+ "<div class='ui-block-solo w3-light-grey w3-round w3-tiny'>"
-										+ "<div class='w3-container w3-round' style='width:100%; height:5px;' id='timer"
-										+ id
-										+ "'></div></div>"
-										+ "<div class='ui-block-solo otherPlayersName'>"
-										+ name
-										+ "</div><div class='ui-block-solo ui-grid-a'>"
-										+ "<div class='ui-block-a pscontainer' id='pscontainer"
-										+ id
-										+ "'></div>"
-										+ "<div class='ui-block-b playerTotalChipsPlace'> $"
-										+ chips
-										+ "</div></div><div class='amountToCallcontainer' id='amountToCallcontainer"
-										+ id
-										+ "'>"
-										+ amountBetRound
-										+ "</div></div>";
-							} else if (data.status != "SIT_OUT_GAME"
-									&& data.status != "SIT_OUT") {
-								// the player user's sitplace
-								if ($("#userSitPlace").find(
-										".amountToCallcontainer").length <= 0) {
-									content = "<input type='hidden' class='playerIDSittingDiv' id='"
-											+ id
-											+ "'><div class='ui-grid-a'><div class='ui-block-a'><div class='ui-block-solo playerInfo' id='playerInfo"
-											+ id
-											+ "'>"
-											+ "<div class='ui-block-solo w3-light-grey w3-round w3-tiny'>"
-											+ "<div class='w3-container w3-round' style='width:100%; height:11px;' id='timer"
-											+ id
-											+ "'></div></div>"
-											+ "<div class='ui-grid-a ui-block-solo'>"
-											+ "<div class='ui-block-a pscontainer' id='pscontainer"
-											+ id
-											+ "'></div>"
-											+ "<div class='ui-block-b playerTotalChipsPlace'> $"
-											+ chips
-											+ "</div></div></div></div>"
-											+ "<div class='ui-block-b ui-grid-a playerCardsContainer' id='cards"
-											+ id
-											+ "'><div class='ui-block-a card1 card'></div><div class='ui-block-b card2 card'></div>"
-											+ "</div></div>";
-									$("#userSitPlace").html(content);
-								} else {
-									// Update the player user's chips value
-									$("#userSitPlace").find(
-											".playerTotalChipsPlace").html(
-											"$" + chips);
-								}
-								$("#myTotalChips").text("$" + data.totalChips)
-										.trigger("create");
-								return false;
-							}
-						// set the content of competitor players for the first
-						// time
-						if (($(this).children("div").hasClass(
-								"sitPlaceThumbnailEmpty") && $("#sitPlaceContainer"
-								+ id).length <= 0)) {
-							$(this).html(content);
-							$(this).attr("id", "sitPlaceContainer" + id);
-							$("#sitPlaceContainer" + id).find(
-									".amountToCallcontainer").css("display",
-									"none");
-							return false;
-							// } else if ($("#sitPlaceContainer" + id).length >
-							// 0) {
-						} else if ("sitPlaceContainer" + id == $(this).attr(
-								"id")
-								&& $("#sitPlaceContainer" + id).length > 0) {
-							if ($("#sitPlaceContainer" + id).find(
-									".playersFinalCard").length > 0
-									&& data.status != "NOT_STARTED"
-									&& data.status != "SEATING") {
-								$("#sitPlaceContainer" + id).html(content);
-								$("#sitPlaceContainer" + id).find(
-										".amountToCallcontainer").css(
-										"display", "none");
-								$(this).removeClass("winner");
-								$(this).removeClass("loser");
-								return;
-							}
-							// set the content in the next rounds
-							if (betDivShow) {
-								$("#sitPlaceContainer" + id).find(
-										".amountToCallcontainer").css(
-										"display", "block");
-								$("#sitPlaceContainer" + id).find(
-										".amountToCallcontainer").html(
-										amountBetRound).trigger("create");
-							} else
-								$("#sitPlaceContainer" + id).find(
-										".amountToCallcontainer").css(
-										"display", "none");
-							if ($("#sitPlaceContainer" + id).find(
-									".amountToCallcontainer").html() == "")
-								$("#sitPlaceContainer" + id).find(
-										".amountToCallcontainer").css(
-										"display", "none");
-							$("#sitPlaceContainer" + id).find(
-									".playerTotalChipsPlace").html("$" + chips);
-							// $("#sitPlaceContainer" + id).html(content);
-							return true;
-						} else
-							return true;
-					});
+	for ( var int = 1; int <= 9; int++) {
+		if (content == "")
+			if (id != $("#playerID").val()) {
+				// content for other players around the table
+				content = "<div class='ui-block-solo playerInfo' id='playerInfo"
+						+ id
+						+ "'>"
+						+ "<div class='ui-block-solo w3-light-grey w3-round w3-tiny'>"
+						+ "<div class='w3-container w3-round' style='width:100%; height:5px;' id='timer"
+						+ id
+						+ "'></div></div>"
+						+ "<div class='ui-block-solo otherPlayersName'>"
+						+ name
+						+ "</div><div class='ui-block-solo ui-grid-a'>"
+						+ "<div class='ui-block-a pscontainer' id='pscontainer"
+						+ id
+						+ "'></div>"
+						+ "<div class='ui-block-b playerTotalChipsPlace'> $"
+						+ chips
+						+ "</div></div><div class='amountToCallcontainer' id='amountToCallcontainer"
+						+ id + "'>" + amountBetRound + "</div></div>";
+			} else if (data.status != "SIT_OUT_GAME"
+					&& data.status != "SIT_OUT") {
+				// the player user's sitplace
+				if ($("#userSitPlace").find(".amountToCallcontainer").length <= 0
+						&& $("#playerIDSittingDiv").length <= 0) {
+					content = "<input type='hidden' id='playerIDSittingDiv' value='"
+							+ id
+							+ "'><div class='ui-grid-a'><div class='ui-block-a'><div class='ui-block-solo playerInfo' id='playerInfo"
+							+ id
+							+ "'>"
+							+ "<div class='ui-block-solo w3-light-grey w3-round w3-tiny'>"
+							+ "<div class='w3-container w3-round' style='width:100%; height:11px;' id='timer"
+							+ id
+							+ "'></div></div>"
+							+ "<div class='ui-grid-a ui-block-solo'>"
+							+ "<div class='ui-block-a pscontainer' id='pscontainer"
+							+ id
+							+ "'></div>"
+							+ "<div class='ui-block-b playerTotalChipsPlace'> $"
+							+ chips
+							+ "</div></div></div></div>"
+							+ "<div class='ui-block-b ui-grid-a playerCardsContainer' id='cards"
+							+ id
+							+ "'><div class='ui-block-a card1 card'></div><div class='ui-block-b card2 card'></div>"
+							+ "</div></div>";
+					$("#userSitPlace").html(content);
+				} else {
+					// Update the player user's chips value
+					$("#userSitPlace").find(".playerTotalChipsPlace").html(
+							"$" + chips);
+				}
+				$("#myTotalChips").text("$" + data.totalChips)
+						.trigger("create");
+				break;
+			}
+		// set the content of competitor players for the first
+		// time
+		if ($("#sitPlaceContainer" + id).length > 0) {
+			if ($("#sitPlaceContainer" + id).find(".playersFinalCard").length > 0
+					&& data.status != "NOT_STARTED" && data.status != "SEATING") {
+				$("#sitPlaceContainer" + id).html(content);
+				$("#sitPlaceContainer" + id).find(".amountToCallcontainer")
+						.css("display", "none");
+				break;
+			}
+			// set the content in the next rounds
+			if (betDivShow) {
+				$("#sitPlaceContainer" + id).find(".amountToCallcontainer")
+						.css("display", "block");
+				$("#sitPlaceContainer" + id).find(".amountToCallcontainer")
+						.html(amountBetRound).trigger("create");
+			} else
+				$("#sitPlaceContainer" + id).find(".amountToCallcontainer")
+						.css("display", "none");
+			if ($("#sitPlaceContainer" + id).find(".amountToCallcontainer")
+					.html() == "")
+				$("#sitPlaceContainer" + id).find(".amountToCallcontainer")
+						.css("display", "none");
+			$("#sitPlaceContainer" + id).find(".playerTotalChipsPlace").html(
+					"$" + chips);
+			$("#userSitPlace").removeClass("winner");
+			$("#userSitPlace").removeClass("loser");
+			$("#sitPlaceContainer" + id).removeClass("winner");
+			$("#sitPlaceContainer" + id).removeClass("loser");
+			break;
+		} else if (($('*[data-sort="' + int + '"]').children("div").hasClass(
+				"sitPlaceThumbnailEmpty") && $("#sitPlaceContainer" + id).length <= 0)
+				|| data.status == "NOT_STARTED") {
+			$('*[data-sort="' + int + '"]').html(content);
+			$('*[data-sort="' + int + '"]')
+					.attr("id", "sitPlaceContainer" + id);
+			$("#sitPlaceContainer" + id).find(".amountToCallcontainer").css(
+					"display", "none");
+			$("#sitPlaceContainer" + id).removeClass("winner");
+			$("#sitPlaceContainer" + id).removeClass("loser");
+			break;
+		} else
+			continue;
+	}
 
 }
 
@@ -390,6 +391,7 @@ function check() {
 	var url = "/ICryptoPoker/REST/GetPlayerServiceWS/check?gameId="
 			+ $("#gameID").val() + "&playerId=" + $("#playerID").val();
 	$("#raiseSliderContainer").addClass("ui-state-disabled");
+	$(".actionButtons").addClass("ui-state-disabled");
 	$.ajax({
 		url : url,
 		cache : false,
@@ -412,6 +414,7 @@ function call() {
 	var url = "/ICryptoPoker/REST/GetPlayerServiceWS/call?gameId="
 			+ $("#gameID").val() + "&playerId=" + $("#playerID").val();
 	$("#raiseSliderContainer").addClass("ui-state-disabled");
+	$(".actionButtons").addClass("ui-state-disabled");
 	$.ajax({
 		url : url,
 		cache : false,
@@ -432,6 +435,7 @@ function fold() {
 	var url = "/ICryptoPoker/REST/GetPlayerServiceWS/fold?gameId="
 			+ $("#gameID").val() + "&playerId=" + $("#playerID").val();
 	$("#raiseSliderContainer").addClass("ui-state-disabled");
+	$(".actionButtons").addClass("ui-state-disabled");
 	$.ajax({
 		url : url,
 		cache : false,

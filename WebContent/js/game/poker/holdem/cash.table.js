@@ -2,29 +2,24 @@ var webSocket;
 var wsUri = "";
 
 function fitElementsWithinScreen() {
-	$(".card")
-			.each(
-					function() {
-						if ($(this).html().length > 0) {
-							$(".playerCardsContainer").width(
-									$("#userSitPlace").height() * 1.5);
-							$(".playerCardsContainer").height(
-									$("#userSitPlace").height());
-							if (!$(this).hasClass("tableCards")) {
-								$(this)
-										.width(
-												$(this).parent()
-														.height() * 0.7);
-								$(this).height(
-										$(this).parent().height());
-							} else {
-								$(this)
-										.width(
-												$("#userSitPlace").height() * 0.7);
-								$(this).height($("#userSitPlace").height());
-							}
-						}
-					});
+	$(".card").each(
+			function() {
+				if ($(this).html().length > 0) {
+					$(".playerCardsContainer").width(
+							$("#userSitPlace").height() * 1.5);
+					$(".playerCardsContainer").height(
+							$("#userSitPlace").height());
+					if (!$(this).hasClass("tableCards")) {
+						$(this).width($(this).parent().height() * 0.7);
+						$(this).height($(this).parent().height());
+					} else {
+						var cardWidth = Math
+								.round(($(this).parent().width() - 33) / 5);
+						$(this).width(cardWidth);
+						$(this).height(cardWidth * 1.3);
+					}
+				}
+			});
 	var screen = $.mobile.getScreenHeight();
 	var header = $(".ui-header").hasClass("ui-header-fixed") ? $(".ui-header")
 			.outerHeight() - 1 : $(".ui-header").outerHeight();
@@ -32,7 +27,7 @@ function fitElementsWithinScreen() {
 			.outerHeight() - 1 : $(".ui-footer").outerHeight();
 	var contentCurrent = $(".ui-content").outerHeight()
 			- $(".ui-content").height();
-	var content = screen - header - footer - contentCurrent;
+	var content = screen - footer - contentCurrent;
 	$(".ui-content").height(content).trigger("create");
 	$('page').trigger("create");
 
@@ -143,6 +138,13 @@ function toggleFullScreen(elem) {
 			|| (document.msFullscreenElement !== undefined && document.msFullscreenElement === null)
 			|| (document.mozFullScreen !== undefined && !document.mozFullScreen)
 			|| (document.webkitIsFullScreen !== undefined && !document.webkitIsFullScreen)) {
+		$('body').css({
+			"-webkit-transform" : "rotate(90deg)",
+			"transform" : "rotate(90deg)",
+			"-ms-transform" : "rotate(90deg)",
+			"-moz-transform" : "rotate(90deg)",
+			"-o-transform" : "rotate(90deg)"
+		});
 		if (elem.requestFullScreen) {
 			elem.requestFullScreen();
 		} else if (elem.mozRequestFullScreen) {
@@ -153,6 +155,13 @@ function toggleFullScreen(elem) {
 			elem.msRequestFullscreen();
 		}
 	} else {
+		$('body').css({
+			"-webkit-transform" : "rotate(0deg)",
+			"transform" : "rotate(0deg)",
+			"-ms-transform" : "rotate(0deg)",
+			"-moz-transform" : "rotate(0deg)",
+			"-o-transform" : "rotate(0deg)"
+		});
 		if (document.cancelFullScreen) {
 			document.cancelFullScreen();
 		} else if (document.mozCancelFullScreen) {
@@ -167,6 +176,13 @@ function toggleFullScreen(elem) {
 
 function sitInPopupOpen() {
 	$("#sitInBTN").removeClass("ui-state-disabled");
+	$('#popupSitIn').on({
+		  popupbeforeposition: function() {
+		    var maxHeight = $(window).height() - 30;
+		    $('#popupSitIn').css('max-height', '100%');
+		    $('#popupSitIn').css('height','100%');
+		  }
+		});
 	$("#popupSitIn").popup("open");
 }
 

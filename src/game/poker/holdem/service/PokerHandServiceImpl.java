@@ -137,7 +137,9 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 							.setFinishPosition(game.getPlayersRemaining());
 					game.setPlayersRemaining(game.getPlayersRemaining() - 1);
 					playerDao.merge(ph.getPlayer(), null);
-					hand = sitOutCurrentPlayer(game, ph.getPlayer());
+//					hand = sitOutCurrentPlayer(game, ph.getPlayer());
+					GameServiceImpl gm = new GameServiceImpl();
+					gm.leaveTheGame(ph.getPlayer(), game);
 				}
 			}
 
@@ -186,15 +188,16 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 				table.sendToAll("");
 			}
 		}
-		System.out.println("finishHandAndGame before thread");
-		GameDaoImpl gameDao = new GameDaoImpl();
-		game.setCurrentHand(null);
-		game.setStarted(false);
-		game = gameDao.merge(game, null);
+		final GameENT gameThread = game;
 		ScheduledFuture<?> countdown = scheduler.schedule(new Runnable() {
 			@Override
 			public void run() {
 				System.out.println("finishHandAndGame inside the thread");
+				System.out.println("finishHandAndGame before thread");
+				GameDaoImpl gameDao = new GameDaoImpl();
+				gameThread.setCurrentHand(null);
+				gameThread.setStarted(false);
+				gameDao.merge(gameThread, null);
 				scheduler.shutdownNow();
 				for (Table table : TableWebsocket.games) {
 					if (table.getGame().getId() == gameId) {

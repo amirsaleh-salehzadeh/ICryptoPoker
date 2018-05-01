@@ -6,7 +6,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/> <!--320-->
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+<!--320-->
 <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 <link rel="stylesheet"
 	href="css/themes/default/jquery.mobile.icons.min.css">
@@ -48,15 +50,6 @@
 				class="ui-btn ui-icon-delete ui-btn-icon-left ui-shadow ui-corner-all"
 				data-rel="close">Close Panel</a>
 		</div>
-		<div data-role="header">
-			<a href="#"
-				class="ui-btn ui-mini ui-icon-back ui-btn-icon-left ui-shadow-icon ui-corner-all"
-				onclick="leaveTable()">Lobby</a>
-			<h3>
-				&nbsp;<%=player.getId()%></h3>
-			<a href="#" id="myTotalChips"
-				class="ui-btn ui-icon-shop ui-btn-icon-left">$<%=player.getTotalChips()%></a>
-		</div>
 		<!-- MIDDLE PANEL  -->
 		<div role="main" class="ui-content">
 			<input type="hidden" id="isStarted" value="<%=game.isStarted()%>">
@@ -68,10 +61,12 @@
 			<!-- TOP GRID  -->
 			<div class="ui-grid-d ui-block-solo"
 				style="width: 100%; height: 20%;">
-				<div class="ui-block-a"
-					style="width: 20%; height: 100%; position: relative;">
+				<div class="ui-block-a" style="width: 20%; height: 100%;">
 					<div id="connectionStatus" class="circleConnect circleConnected"
 						style="display: none;"></div>
+					<a href="#"
+						class="ui-btn ui-mini ui-icon-back ui-btn-icon-left ui-shadow-icon ui-corner-all"
+						onclick="leaveTable()">Lobby</a>
 				</div>
 				<div class="ui-block-b sitPlaceContainer"
 					style="width: 20%; height: 100%;" data-sort='4'>
@@ -85,7 +80,10 @@
 					style="width: 20%; height: 100%;" data-sort='6'>
 					<div class='sitPlaceThumbnailEmpty'>&nbsp;</div>
 				</div>
-				<div class="ui-block-e" style="width: 20%; height: 100%;"></div>
+				<div class="ui-block-e" style="width: 20%; height: 100%;">
+					<a href="#" id="myTotalChips"
+						class="ui-btn ui-mini ui-icon-shop ui-btn-icon-left">$<%=player.getTotalChips()%></a>
+				</div>
 			</div>
 			<!-- MIDDLE GRID  -->
 			<div class="ui-grid-b ui-block-solo"
@@ -254,14 +252,13 @@
 							placeholder="Nick Name">
 						<!-- 	TODO : CHECK NICKNAME : It should be at least 3 words-->
 					</div>
-
+					<a href="#"
+						class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-a"
+						data-rel="back" data-mini="true">Back</a>         <a href="#"
+						id="sitInBTN"
+						class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-a"
+						data-mini="true" onclick="sitInTheGame()">Join</a>
 				</div>
-				            <a href="#"
-					class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-a"
-					data-rel="back" data-mini="true">Back</a>         <a href="#"
-					id="sitInBTN"
-					class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-a"
-					data-mini="true" onclick="sitInTheGame()">Join</a>     
 			</form>
 		</div>
 	</div>

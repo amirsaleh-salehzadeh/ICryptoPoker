@@ -4,6 +4,7 @@
  */
 package struts.actions;
 
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -12,12 +13,10 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
-public class LogOutAction extends Action {
-	public ActionForward execute(ActionMapping mapping, ActionForm form,HttpServletRequest request, HttpServletResponse response) {
-		//response.setCharacterEncoding("utf8");
-//		if("logOut".equalsIgnoreCase(request.getParameter("reqCode"))){
-			request.getSession().invalidate();
-//		}
-		return new ActionForward("logout","welcome.do",true);
+public class WelcomeAction extends Action {
+	public ActionForward execute(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response) {
+		String reqCode = request.getParameter("reqCode");
+		return mapping.findForward("welcome");
 	}
 }

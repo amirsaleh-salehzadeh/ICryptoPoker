@@ -70,7 +70,7 @@
 	<security-constraint>
 		<web-resource-collection>
 			<web-resource-name></web-resource-name>
-			<url-pattern>/game.do/*</url-pattern>
+			<url-pattern>/t_game.do/*</url-pattern>
 			<http-method>GET</http-method>
 			<http-method>POST</http-method>
 		</web-resource-collection>
@@ -81,7 +81,7 @@
 	<security-constraint>
 		<web-resource-collection>
 			<web-resource-name></web-resource-name>
-			<url-pattern>/t_game.do/*</url-pattern>
+			<url-pattern>/welcome.do/*</url-pattern>
 			<http-method>GET</http-method>
 			<http-method>POST</http-method>
 		</web-resource-collection>

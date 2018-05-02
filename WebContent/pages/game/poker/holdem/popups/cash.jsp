@@ -9,7 +9,6 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
 <!--320-->
-<meta name="theme-color" content="#222222">
 <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 <link rel="stylesheet"
 	href="css/themes/default/jquery.mobile.icons.min.css">
@@ -41,7 +40,6 @@
 	function hideLoadingScreen() {
 		$.mobile.loading("hide");
 	}
-
 </script>
 </head>
 <body>

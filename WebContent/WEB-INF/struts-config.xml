@@ -7,7 +7,6 @@
 		<form-bean name="paymentGrid" type="common.accounting.payment.PaymentLST" />
 		<form-bean name="saleGrid" type="common.accounting.sale.SaleLST" />
 		<form-bean name="roleGrid" type="common.security.RoleLST" />
-
 	</form-beans>
 	<global-exceptions />
 	<global-forwards />
@@ -19,7 +18,6 @@
 			<forward name="roleEdit" path="/pages/security/roleEdit.jsp" />
 			<forward name="gridJson" path="/pages/json.jsp" />
 		</action>
-
 		<action path="/user" type="struts.actions.UserAction">
 			<set-property property="cancellable" value="true" />
 			<forward name="userManagement" path="/pages/user/userManagement.jsp" />
@@ -49,6 +47,10 @@
 			<forward name="saleEdit" path="/pages/accounting/sale/saleEdit.jsp" />
 			<forward name="saleManagement" path="/pages/accounting/sale/saleManagement.jsp" />
 			<forward name="gridJson" path="/pages/json.jsp" />
+		</action>
+		<action path="/welcome" type="struts.actions.WelcomeAction" name="welcomeGrid">
+			<set-property property="cancellable" value="true" />
+			<forward name="welcome" path="/pages/welcome.jsp" />
 		</action>
 		<action parameter="reqCode" path="/logOut" type="struts.actions.LogOutAction">
 			<set-property property="cancellable" value="true" />

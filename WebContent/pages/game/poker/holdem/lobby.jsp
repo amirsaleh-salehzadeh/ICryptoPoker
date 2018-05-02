@@ -17,22 +17,22 @@
 	style="max-width: 400px;">
 	<form action="#" id="createNewGameForm" method="post">
 		<div data-role="header" data-theme="a">
-			<h1>Create New GAME</h1>
+			<h3>Create New GAME</h3>
 		</div>
 		<div role="main" class="ui-content" data-overlay-theme="a"
 			data-theme="a" data-dismissible="false">
-			<div class="ui-field-contain">
+			<div class="ui-block-solo ui-field-contain">
 				<label for="gameType">Game Type</label> <select id="gameType"
 					name="gameType" data-mini="true" data-inline="true">
 					<option value="0" selected="selected">Cash</option>
 					<option value="1">Tournament</option>
 				</select>   
 			</div>
-			<div class="ui-field-contain">
+			<div class="ui-block-solo">
 				<label for="name">Game Name</label> <input type="text"
 					name="gameName" placeholder="Game Name" data-mini="true">
 			</div>
-			<div class="ui-field-contain">
+			<div class="ui-block-solo ui-field-contain">
 				<label for="select-SB-CreateNew">Small / Blind</label> <select
 					name="blindLevel" id="select-SB-CreateNew" data-mini="true"
 					data-inline="true">
@@ -41,20 +41,25 @@
 							String val = cur.toString().split("_")[1] + "/"
 									+ cur.toString().split("_")[2];
 					%>
-					<option value="<%=cur.toString()%>">
-						<%=val%></option>
+					<option value="<%=cur.toString()%>"><%=val%></option>
 					<%
 						}
 					%>
 				</select>
 			</div>
+			<div class="ui-grid-a ui-block-solo">
+				<div class="ui-block-a">
+					<a href="#" class="ui-btn ui-corner-all ui-shadow ui-mini ui-btn-a"
+						data-rel="back">Cancel</a>    
+				</div>
+				<div class="ui-block-b">
+					<a href="#" class="ui-btn ui-corner-all ui-shadow ui-mini ui-btn-a"
+						data-rel="back" onclick="createNewGame()">Save</a>     
+				</div>
+
+			</div>
 		</div>
 	</form>
-	            <a href="#"
-		class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-a"
-		data-rel="back">Cancel</a>         <a href="#"
-		class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-a"
-		data-rel="back" onclick="createNewGame()">Save</a>     
 </div>
 
 
@@ -86,7 +91,7 @@
 					<td data-priority="2"><%=gameListIteration.getName()%></td>
 					<td><%=smallBig[1] + " / " + smallBig[2]%></td>
 					<td data-priority="3"><%=Integer.parseInt(smallBig[2]) * 40 + " / "
-							+ Integer.parseInt(smallBig[2]) * 200%></td>
+						+ Integer.parseInt(smallBig[2]) * 200%></td>
 					<td data-priority="1"><%=gameListIteration.getPlayersRemaining() + "/10"%></td>
 				</tr>
 			</logic:iterate>

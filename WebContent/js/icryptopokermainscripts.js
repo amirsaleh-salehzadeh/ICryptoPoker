@@ -1,3 +1,13 @@
+function openCreateNewGame() {
+	setTimeout(function() {
+		$("#popupCreateNewGame").popup({
+			positionTo : "window"
+		});
+		$("#popupCreateNewGame").trigger('create').popup('open');
+	}, 500);
+	// });
+	$("#playerPopupMenu").popup("close");
+}
 function refreshPlaceHolders() {
 	$('input[type=text]').each(function() {
 		$(this).attr("placeholder", $(this).attr("title"));

@@ -156,8 +156,10 @@ function generateACard(cardVal, divID, cardNumber) {
 function updatePlayerInfo(data) {
 	var playerId = data.id;
 	addANewPlayerToTable(data);
-	if (data.status != "NOT_STARTED" && data.status != "SEATING")
+	if (data.status != "NOT_STARTED" && data.status != "SEATING"){
+		$(".pscontainer").html("");
 		dealCards2Players(data, playerId);
+	}
 	if (data.status == "ACTION_TO_CHECK" || data.status == "ACTION_TO_CALL") {
 		var atc = parseInt(data.amountToCall);
 		if (data.status == "ACTION_TO_CALL") {
@@ -180,11 +182,11 @@ function updatePlayerInfo(data) {
 		}
 		$("#sliderRaise").attr("value", $("#sliderRaise").attr("min")).slider(
 				"refresh");
-		// playerToActId = playerId;
-		// countDownTotal = 15000;
-		// timeLeft = 0;
-		// clearInterval(timer);
-		// timer = setInterval(setTimer, 1000);
+		 playerToActId = playerId;
+		 countDownTotal = 15000;
+		 timeLeft = 0;
+		 clearInterval(timer);
+		 timer = setInterval(setTimer, 1000);
 	} else if (data.status == "LOST_HAND") {
 		$("#userSitPlace").removeClass("winner");
 		$("#userSitPlace").removeClass("loser");

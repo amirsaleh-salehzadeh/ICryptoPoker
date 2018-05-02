@@ -68,12 +68,12 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 		}
 		handDao = new HandDaoImpl();
 		Player next = new Player();
-		if (!forceFold && hand.getPlayers().size() > 2)
+		if (!forceFold && hand.getPlayers().size() <= 2)
 			next = PlayerUtil.getNextPlayerToAct(hand, player);
 		if (!PlayerUtil.removePlayerFromHand(player, hand)) {
 			return null;
 		}
-		if (!forceFold && hand.getPlayers().size() > 2)
+		if (!forceFold && hand.getPlayers().size() <= 2)
 			hand.setCurrentToAct(next);
 		hand.setGame(game);
 		hand = handDao.merge(hand, null);

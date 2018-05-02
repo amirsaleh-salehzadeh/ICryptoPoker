@@ -1,3 +1,4 @@
+<%@page import="game.poker.holdem.domain.BlindLevel"%>
 <%@page import="game.poker.holdem.dao.PlayerDaoImpl"%>
 <%@page import="game.poker.holdem.domain.Player"%>
 <%@page import="hibernate.user.UserDAO"%>
@@ -9,12 +10,14 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
+<meta name="theme-color" content="#222222">
 <meta http-equiv="Cache-Control"
 	content="no-cache, no-store, must-revalidate" />
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />
 <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
 <link rel="stylesheet"
 	href="css/themes/default/jquery.mobile.icons.min.css">
 <link rel="stylesheet" href="css/themes/default/theme-classic.css">
@@ -39,28 +42,6 @@
 <script src="js/jquery/jquery.mobile.datepicker.js"></script>
 <script src="js/jquery/datepicker.js"></script>
 <script src="js/icryptopokermainscripts.js"></script>
-<script type="text/javascript">
-	window
-			.addEventListener(
-					'load',
-					function(e) {
-
-						window.applicationCache
-								.addEventListener(
-										'updateready',
-										function(e) {
-											if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
-												// Browser downloaded a new app cache.
-												if (confirm('A new version of this site is available. Load it?')) {
-													window.location.reload();
-												}
-											} else {
-												// Manifest didn't changed. Nothing new to server.
-											}
-										}, false);
-
-					}, false);
-</script>
 <%
 	Player p = (Player) request.getAttribute("player");
 	if (request.getRemoteUser() != null || p == null) {
@@ -80,21 +61,22 @@
 			<a href="#playerPopupMenu" data-rel="popup" data-transition="slideup"
 				class="ui-btn-right ui-btn ui-icon-user ui-btn-icon-notext ui-btn-right ui-shadow ui-corner-all"
 				data-role="button" role="button"></a>
-			<div data-role="popup" id="playerPopupMenu" data-theme="a">
-				<ul data-role="listview" data-inset="true" style="min-width: 210px;">
-					<li data-role="list-divider"><%=p.getId()%></li>
-					<li>$<%=p.getTotalChips()%></li>
-				</ul>
-			</div>
 		</div>
 		<div data-role="content" id="mainBodyContents">
 			<tiles:insert attribute="body" />
 		</div>
-		<!-- 		<div id="mainMenu" style="display: none;"> -->
-		<%-- 			<tiles:insert attribute="menu" /> --%>
-		<!-- 		</div> -->
 		<div data-role="panel" id="mainMenu" data-display="overlay">
 			<tiles:insert attribute="menu" />
+		</div>
+		<div data-role="popup" id="playerPopupMenu" data-theme="a">
+			<ul data-role="listview" data-inset="true" style="min-width: 210px;">
+				<li data-role="list-divider"><%=p.getId()%></li>
+				<li>$<%=p.getTotalChips()%></li>
+				<li><a href="#" onclick="openCreateNewGame();" data-rel="popup"
+					data-position-to="window" data-transition="pop" data-role="button"
+					role="button" class="ui-btn ui-mini ui-shadow-icon ui-corner-all">New
+						Game</a></li>
+			</ul>
 		</div>
 	</div>
 </body>

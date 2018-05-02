@@ -45,27 +45,28 @@ function resetPlayerInfo() {
 	else
 		return;
 }
-
+var orientation = "";
 $(document).ready(
 		function() {
 			$(window).orientationchange();
 			$(window).on("orientationchange", function(event) {
-				if (event.orientation == "portrait")
-					$('body').css({
-						"-webkit-transform" : "rotate(90deg)",
-						"transform" : "rotate(90deg)",
-						"-ms-transform" : "rotate(90deg)",
-						"-moz-transform" : "rotate(90deg)",
-						"-o-transform" : "rotate(90deg)"
-					});
-				else
-					$('body').css({
-						"-webkit-transform" : "rotate(0deg)",
-						"transform" : "rotate(0deg)",
-						"-ms-transform" : "rotate(0deg)",
-						"-moz-transform" : "rotate(0deg)",
-						"-o-transform" : "rotate(0deg)"
-					});
+				orientation = event.orientation;
+//				if (orientation == "portrait")
+//					$('body').css({
+//						"-webkit-transform" : "rotate(90deg)",
+//						"transform" : "rotate(90deg)",
+//						"-ms-transform" : "rotate(90deg)",
+//						"-moz-transform" : "rotate(90deg)",
+//						"-o-transform" : "rotate(90deg)"
+//					});
+//				else
+//					$('body').css({
+//						"-webkit-transform" : "rotate(0deg)",
+//						"transform" : "rotate(0deg)",
+//						"-ms-transform" : "rotate(0deg)",
+//						"-moz-transform" : "rotate(0deg)",
+//						"-o-transform" : "rotate(0deg)"
+//					});
 				fitElementsWithinScreen();
 			});
 			$(window).orientationchange();
@@ -138,13 +139,22 @@ function toggleFullScreen(elem) {
 			|| (document.msFullscreenElement !== undefined && document.msFullscreenElement === null)
 			|| (document.mozFullScreen !== undefined && !document.mozFullScreen)
 			|| (document.webkitIsFullScreen !== undefined && !document.webkitIsFullScreen)) {
-		$('body').css({
-			"-webkit-transform" : "rotate(90deg)",
-			"transform" : "rotate(90deg)",
-			"-ms-transform" : "rotate(90deg)",
-			"-moz-transform" : "rotate(90deg)",
-			"-o-transform" : "rotate(90deg)"
-		});
+//		if (orientation == "portrait")
+//			$('body').css({
+//				"-webkit-transform" : "rotate(90deg)",
+//				"transform" : "rotate(90deg)",
+//				"-ms-transform" : "rotate(90deg)",
+//				"-moz-transform" : "rotate(90deg)",
+//				"-o-transform" : "rotate(90deg)"
+//			});
+//		else
+//			$('body').css({
+//				"-webkit-transform" : "rotate(0deg)",
+//				"transform" : "rotate(0deg)",
+//				"-ms-transform" : "rotate(0deg)",
+//				"-moz-transform" : "rotate(0deg)",
+//				"-o-transform" : "rotate(0deg)"
+//			});
 		if (elem.requestFullScreen) {
 			elem.requestFullScreen();
 		} else if (elem.mozRequestFullScreen) {
@@ -154,14 +164,24 @@ function toggleFullScreen(elem) {
 		} else if (elem.msRequestFullscreen) {
 			elem.msRequestFullscreen();
 		}
+		fitElementsWithinScreen();
 	} else {
-		$('body').css({
-			"-webkit-transform" : "rotate(0deg)",
-			"transform" : "rotate(0deg)",
-			"-ms-transform" : "rotate(0deg)",
-			"-moz-transform" : "rotate(0deg)",
-			"-o-transform" : "rotate(0deg)"
-		});
+//		if (orientation == "portrait")
+//			$('body').css({
+//				"-webkit-transform" : "rotate(90deg)",
+//				"transform" : "rotate(90deg)",
+//				"-ms-transform" : "rotate(90deg)",
+//				"-moz-transform" : "rotate(90deg)",
+//				"-o-transform" : "rotate(90deg)"
+//			});
+//		else
+//			$('body').css({
+//				"-webkit-transform" : "rotate(0deg)",
+//				"transform" : "rotate(0deg)",
+//				"-ms-transform" : "rotate(0deg)",
+//				"-moz-transform" : "rotate(0deg)",
+//				"-o-transform" : "rotate(0deg)"
+//			});
 		if (document.cancelFullScreen) {
 			document.cancelFullScreen();
 		} else if (document.mozCancelFullScreen) {
@@ -171,6 +191,7 @@ function toggleFullScreen(elem) {
 		} else if (document.msExitFullscreen) {
 			document.msExitFullscreen();
 		}
+//		fitElementsWithinScreen();
 	}
 }
 

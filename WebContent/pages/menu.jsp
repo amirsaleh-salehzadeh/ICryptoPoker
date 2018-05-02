@@ -10,12 +10,24 @@ body {
 }
 </style>
 <ul data-role="listview" id="leftSideMainMenu">
-	<li><a href="t_game.do?username=<%=request.getParameter("username") %>" data-ajax="false">Lobby</a></li>
-	<li><a href="#popupCreateNewGame" data-rel="popup"
-		data-position-to="window" data-transition="pop" data-role="button"
-		role="button"
-		class="ui-btn ui-mini ui-shadow-icon ui-corner-all">New
-			Game</a></li>
+	<li><a href="welcome.do" data-ajax="false">Home</a></li>
+	<li data-role="collapsible" data-enhanced="true"
+		data-collapsed-icon="carat-d" data-expanded-icon="carat-u"
+		data-iconpos="right" data-inset="false"
+		class=" ui-collapsible ui-collapsible-collapsed">
+		<h3 class="ui-collapsible-heading ui-collapsible-heading-collapsed">
+			<a href="#"
+				class="ui-collapsible-heading-toggle ui-btn ui-btn-icon-right ui-btn-inherit ui-icon-carat-d">
+				Games<span class="ui-collapsible-heading-status"></span>
+			</a>
+		</h3>
+		<div
+			class="divMenu ui-collapsible-content ui-body-inherit ui-collapsible-content-collapsed">
+			<ul>
+				<li><a href="t_game.do" data-ajax="false">Poker Texas Holdem</a></li>
+			</ul>
+		</div>
+	</li>
 	<li data-role="collapsible" data-enhanced="true"
 		data-collapsed-icon="carat-d" data-expanded-icon="carat-u"
 		data-iconpos="right" data-inset="false"

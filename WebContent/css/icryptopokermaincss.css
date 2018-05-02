@@ -289,6 +289,9 @@ table.dataTable tbody tr:nth-child(even) {
 
 table.dataTable tbody th,table.dataTable tbody td {
 	padding: 1px 3px;
+	color: black !important;
+	font-size: 10pt !important;
+	text-shadow: none;
 }
 
 table.dataTable.row-border tbody tr:first-child th,table.dataTable.row-border tbody tr:first-child td,table.dataTable.display tbody tr:first-child th,table.dataTable.display tbody tr:first-child td
@@ -647,7 +650,6 @@ table.dataTable,table.dataTable th,table.dataTable td {
 	width: 200;
 }
 
-
 /* MAKE PANEL SCROLLABLE START */
 .ui-panel {
 	top: -1px;
@@ -693,7 +695,6 @@ table.dataTable,table.dataTable th,table.dataTable td {
 }
 
 /* END */
-
 a.ui-btn {
 	margin: 0;
 }

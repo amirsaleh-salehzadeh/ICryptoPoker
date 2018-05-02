@@ -27,7 +27,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher; 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.ws.rs.GET;
@@ -62,54 +62,64 @@ public class GeneralServiceWS {
 	@Path("/RegisterNew")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response registerNew(@QueryParam("userName") String userName,
-			@QueryParam("userPassword") String userPassword)  {
+			@QueryParam("userPassword") String userPassword) {
 		ObjectMapper mapper = new ObjectMapper();
 		String json = "";
 		UserDAO dao = new UserDAO();
-//      This regex checks for any special characters in the username but allows underscore and must be 3-30 characters		
-	
-		Pattern userNameCheck = Pattern.compile("^[a-zA-Z0-9][a-zA-Z0-9_]{2,29}$", Pattern.CASE_INSENSITIVE);
+		// This regex checks for any special characters in the username but
+		// allows underscore and must be 3-30 characters
+
+		Pattern userNameCheck = Pattern.compile(
+				"^[a-zA-Z0-9][a-zA-Z0-9_]{2,29}$", Pattern.CASE_INSENSITIVE);
 		Matcher mu = userNameCheck.matcher(userName);
 		boolean boolUName = mu.find();
-		
-//		userPasswordCheck regex will enforce these rules:
-//
-//			At least one upper case English letter, (?=.*?[A-Z])
-//			At least one lower case English letter, (?=.*?[a-z])
-//			At least one digit, (?=.*?[0-9])
-//			At least one special character, (?=.*?[#?!@$%^&*-])
-//			Minimum eight in length .{8,} (with the anchors)
-		
-		Pattern userPasswordCheck = Pattern.compile("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$");
+
+		// userPasswordCheck regex will enforce these rules:
+		//
+		// At least one upper case English letter, (?=.*?[A-Z])
+		// At least one lower case English letter, (?=.*?[a-z])
+		// At least one digit, (?=.*?[0-9])
+		// At least one special character, (?=.*?[#?!@$%^&*-])
+		// Minimum eight in length .{8,} (with the anchors)
+
+		Pattern userPasswordCheck = Pattern
+				.compile("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$");
 		Matcher mp = userPasswordCheck.matcher(userPassword);
 		boolean boolPass = mp.find();
-		if (boolUName){
-//			Display that the username has a special character and must be changed
-		   System.out.println("There is a special character in my string");
-		   return Response.serverError().entity("Your username must be betweeen 3 and 30 characters long and may not contain a special character.").build();
+		if (!boolUName) {
+			// Display that the username has a special character and must be
+			// changed
+			System.out.println("There is a special character in my string");
+			return Response
+					.serverError()
+					.entity("Your username must be betweeen 3 and 30 characters long and may not contain a special character.")
+					.build();
+		} else if (!boolPass) {
+			// Display that the password does not meet the criteria
+			System.out.println("Password does not meet the criteria");
+
+			return Response
+					.serverError()
+					.entity("Password must be at least 8 characters long and have at least 1 upper and lowercase letter,1 number and a special character.")
+					.build();
+		} else {
+			// both username and password are acceptable and it then send them
+			// to the server to be checked
+			try {
+				json = mapper.writeValueAsString(dao
+						.registerNewUser(new UserPassword(userName,
+								userPassword)));
+			} catch (JsonGenerationException e) {
+				e.printStackTrace();
+			} catch (JsonMappingException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (AMSException e) {
+				return Response.serverError().entity(e.getMessage()).build();
+			}
+			return Response.ok(json, MediaType.APPLICATION_JSON).build();
 		}
-		else if (!boolPass){
-//			Display that the password does not meet the criteria
-		   System.out.println("Password does not meet the criteria");
-		   
-		   return Response.serverError().entity("Password must be at least 8 characters long and have at least 1 upper and lowercase letter,1 number and a special character.").build();
-		}else{
-			// both username and password are acceptable and it then send them to the server to be checked
-		try {
-			System.out.println("All is fine");
-			json = mapper.writeValueAsString(dao
-					.registerNewUser(new UserPassword(userName, userPassword)));
-		} catch (JsonGenerationException e) {
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (AMSException e) {
-			return Response.serverError().entity(e.getMessage()).build();
-		} 
-		return Response.ok(json, MediaType.APPLICATION_JSON).build();
 	}
-		}
 
 }

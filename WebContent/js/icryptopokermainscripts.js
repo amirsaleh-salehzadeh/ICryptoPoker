@@ -28,12 +28,12 @@ function callAnAction(url) {
 
 function saveTheForm() {
 	var url = $("#dataFilterGridMainPage").attr("action");
-//	url += "?" + $("#dataFilterGridMainPage").serialize();
+	// url += "?" + $("#dataFilterGridMainPage").serialize();
 	$.ajax({
 		url : url,
 		cache : false,
-		type: 'POST',
-		data: $("#dataFilterGridMainPage").serialize(),
+		type : 'POST',
+		data : $("#dataFilterGridMainPage").serialize(),
 		success : function(data) {
 			$("#mainBodyContents").html("");
 			$("#mainBodyContents").html(data).trigger("create");
@@ -90,4 +90,17 @@ function showPopupDialogDeleteConfirmation(reqCode) {
 	$.mobile.changePage("#popupDialogDeleteConfirmation");
 	$("#popupDialogDeleteConfirmation").trigger("create");
 	$("#popupDialogDeleteConfirmation").popup("open");
+}
+
+function showLoading() {
+	$.mobile.loading("show", {
+		text : "Loading",
+		textVisible : false,
+		theme : "a",
+		textonly : false,
+		html : ""
+	});
+}
+function hideLoadingScreen() {
+	$.mobile.loading("hide");
 }

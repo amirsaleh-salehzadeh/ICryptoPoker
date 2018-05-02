@@ -37,7 +37,7 @@
 			html : "html"
 		});
 	}
-	function HideLoadingScreen() {
+	function hideLoadingScreen() {
 		$.mobile.loading("hide");
 	}
 </script>
@@ -81,8 +81,16 @@
 					<div class='sitPlaceThumbnailEmpty'>&nbsp;</div>
 				</div>
 				<div class="ui-block-e" style="width: 20%; height: 100%;">
-					<a href="#" id="myTotalChips"
-						class="ui-btn ui-mini ui-icon-shop ui-btn-icon-left">$<%=player.getTotalChips()%></a>
+					<a href="#playerPopupMenu" data-rel="popup"
+						data-transition="slideup"
+						class="ui-btn ui-mini  ui-btn-icon-left 
+						ui-icon-user  ui-shadow ui-corner-all"><%=player.getId()%></a>
+					<div data-role="popup" id="playerPopupMenu" data-theme="a">
+						<ul data-role="listview" data-inset="true"
+							style="min-width: 210px;">
+							<li id="myTotalChips">$<%=player.getTotalChips()%></li>
+						</ul>
+					</div>
 				</div>
 			</div>
 			<!-- MIDDLE GRID  -->

@@ -18,6 +18,6 @@ public class LogOutAction extends Action {
 //		if("logOut".equalsIgnoreCase(request.getParameter("reqCode"))){
 			request.getSession().invalidate();
 //		}
-		return new ActionForward("logout","t_location.do?reqCode=pathManagement",true);
+		return new ActionForward("logout","t_game.do",true);
 	}
 }

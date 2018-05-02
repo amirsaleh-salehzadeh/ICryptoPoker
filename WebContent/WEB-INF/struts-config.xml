@@ -26,7 +26,7 @@
 			<forward name="userEdit" path="/pages/user/userEdit.jsp" />
 			<forward name="passwordChange" path="/pages/user/passwordChange.jsp" />
 			<forward name="userRole" path="/pages/user/userRole.jsp" />
-			<forward name="login" path="/login.html" />
+			<forward name="login" path="/login.jsp" />
 			<forward name="register" path="/pages/user/register.html" />
 			<forward name="gridJson" path="/pages/json.jsp" />
 		</action>

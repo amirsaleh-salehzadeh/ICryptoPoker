@@ -28,26 +28,20 @@ public class GameAction extends Action {
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response) {
 		String reqCode = request.getParameter("reqCode");
-		// try {
-		// request.login("admin", "111");
-		// System.out.println(request.getRemoteUser());
-		// } catch (ServletException e) {
-		// return new ActionRedirect("/login.html");
-		// // e.printStackTrace();
-		// }
 		PlayerDaoImpl playerDaoImpl = new PlayerDaoImpl();
+		GameDaoImpl gamedao = new GameDaoImpl();
 		if (reqCode == null || reqCode.equalsIgnoreCase("")) {
 			Player player = playerDaoImpl.findById(
-					request.getParameter("username"), null);
+					request.getRemoteUser(), null);
 			request.setAttribute("player", player);
+			request.setAttribute("games", gamedao.getAllGames(null));
 			reqCode = "goToLobby";
 		}
 		if (reqCode.equalsIgnoreCase("joinAGame")) {
-			GameDaoImpl gamedao = new GameDaoImpl();
 			long gameId = Long.parseLong(request.getParameter("gameId"));
 			GameENT game = gamedao.findById(gameId, null);
 			Player player = playerDaoImpl.findById(
-					request.getParameter("username"), null);
+					request.getRemoteUser(), null);
 			if(game.getGameType().equals(GameType.CASH))
 				reqCode = "goToCashGame";
 //			player.setName(request.getParameter("nickname"));

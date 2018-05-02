@@ -28,7 +28,7 @@ public class T_GameAction extends Action {
 		// TODO Auto-generated method stub
 		PlayerDaoImpl playerDaoImpl = new PlayerDaoImpl();
 		Player player = playerDaoImpl.findById(
-				request.getParameter("username"), null);
+				request.getRemoteUser(), null);
 		request.setAttribute("player", player);
 		String reqCode=request.getParameter("reqCode");
 		if(reqCode==null||reqCode.equalsIgnoreCase(""))

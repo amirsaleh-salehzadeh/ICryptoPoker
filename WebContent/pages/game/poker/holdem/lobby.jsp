@@ -1,9 +1,9 @@
 <%@page import="game.poker.holdem.domain.Player"%>
 <%@page import="common.user.UserENT"%>
 <%@page import="game.poker.holdem.domain.BlindLevel"%>
+<%@ taglib prefix="logic" uri="/WEB-INF/struts-logic.tld"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <link rel="stylesheet" href="css/game/lobby.holdem.css" />
 <script src="js/game/poker/holdem/lobby.js"></script>
 <%
@@ -73,34 +73,23 @@
 				<th data-priority="1">Players</th>
 			</tr>
 		</thead>
-		<tbody id="lobbyTableTBody"></tbody>
+		<tbody>
+			<logic:iterate id="gameListIteration" indexId="rowId" name="games"
+				type="common.game.poker.holdem.GameENT">
+				<%
+					String[] smallBig = gameListIteration.getGameStructure()
+								.getCurrentBlindLevel().name().split("_");
+				%>
+				<tr
+					onclick="<%="joinGame(" + gameListIteration.getId() + ","
+						+ smallBig[1] + "," + smallBig[2] + ")"%>">
+					<td data-priority="2"><%=gameListIteration.getName()%></td>
+					<td><%=smallBig[1] + " / " + smallBig[2]%></td>
+					<td data-priority="3"><%=Integer.parseInt(smallBig[2]) * 40 + " / "
+							+ Integer.parseInt(smallBig[2]) * 200%></td>
+					<td data-priority="1"><%=gameListIteration.getPlayersRemaining() + "/10"%></td>
+				</tr>
+			</logic:iterate>
+		</tbody>
 	</table>
 </div>
-
-
-<!-- 	POPUP DIV JOIN GAME -->
-
-
-<!-- <div data-role="popup" id="popupJoinGame" data-overlay-theme="b" -->
-<!-- 	data-theme="b" data-dismissible="false" style="max-width: 400px;"> -->
-<!-- 	<form action="#" id="createNewGameForm" method="post"> -->
-<!-- 		<input type="hidden" name="joinGameID" id="joinGameID" value="1"> -->
-<!-- 		<div data-role="header" data-theme="a"> -->
-<!-- 			<h1>Join Game</h1> -->
-<!-- 		</div> -->
-<!-- 		<div role="main" class="ui-content" data-overlay-theme="b" -->
-<!-- 			data-theme="b" data-dismissible="false"> -->
-<!-- 			<div class="ui-block-solo" style="height: 25%;"> -->
-<!-- 				<label for="buyIn">Entry Chips</label> <input type="number" -->
-<!-- 					data-mini="true" id="buyIn" value="0" placeholder="Chips"> -->
-<!-- 				<label for="buyIn">Nick Name</label> <input type="text" -->
-<!-- 					data-mini="true" id="nickname" placeholder="Nickname"> -->
-<!-- 			</div> -->
-<!-- 		</div> -->
-<!-- 	</form> -->
-<!-- 	            <a href="#" -->
-<!-- 		class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" -->
-<!-- 		data-rel="back">Cancel</a>         <a href="#" id="joinGameBTN" -->
-<!-- 		class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b">Join</a> -->
-<!-- 	     -->
-<!-- </div> -->

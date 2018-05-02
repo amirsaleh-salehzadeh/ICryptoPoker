@@ -1,3 +1,4 @@
+<%@page import="game.poker.holdem.dao.PlayerDaoImpl"%>
 <%@page import="game.poker.holdem.domain.Player"%>
 <%@page import="hibernate.user.UserDAO"%>
 <%@page import="common.user.UserENT"%>
@@ -28,10 +29,8 @@
 <link rel="stylesheet"
 	href="css/jquery-mobile/jquery.mobile.datepicker.theme.css">
 <link rel="stylesheet" href="css/icryptopokermaincss.css">
-<script src="js/icryptopokermainscripts.js"></script>
 <script src="js/jquery/jquery.min.js"></script>
 <script src="js/jquery.form.js"></script>
-<script src="js/jquery/jquery.js"></script>
 <script src="js/index.js"></script>
 <script src="js/jquery/jquery.mobile-1.4.5.min.js"></script>
 <script src="js/jquery.dataTables.min.js"></script>
@@ -39,36 +38,41 @@
 <script src="js/dataTables.select.min.js"></script>
 <script src="js/jquery/jquery.mobile.datepicker.js"></script>
 <script src="js/jquery/datepicker.js"></script>
-
+<script src="js/icryptopokermainscripts.js"></script>
 <script type="text/javascript">
-	function ShowLoadingScreen() {
-		$.mobile.loading("show", {
-			text : "Loading",
-			textVisible : true,
-			theme : "b",
-			textonly : false,
-			html: "html"
-		});
-	}
-	function HideLoadingScreen() {
-		$.mobile.loading("hide");
-	}
+	window
+			.addEventListener(
+					'load',
+					function(e) {
+
+						window.applicationCache
+								.addEventListener(
+										'updateready',
+										function(e) {
+											if (window.applicationCache.status == window.applicationCache.UPDATEREADY) {
+												// Browser downloaded a new app cache.
+												if (confirm('A new version of this site is available. Load it?')) {
+													window.location.reload();
+												}
+											} else {
+												// Manifest didn't changed. Nothing new to server.
+											}
+										}, false);
+
+					}, false);
 </script>
 <%
-	UserENT u = new UserENT();
-	if (request.getRemoteUser() != null) {
-		UserDAO dao = new UserDAO();
-		u = dao.getUserENT(new UserENT(request.getRemoteUser()));
+	Player p = (Player) request.getAttribute("player");
+	if (request.getRemoteUser() != null || p == null) {
+		PlayerDaoImpl pl = new PlayerDaoImpl();
+		p = pl.findById(request.getRemoteUser(), null);
 	}
 %>
 </head>
 <body dir="ltr">
-	<%
-		Player p = (Player) request.getAttribute("player");
-	%>
 	<div data-role="page">
-		<div data-role="header" class="ui-bar" >
-<!-- 		data-position="fixed" -->
+		<div data-role="header" class="ui-bar">
+			<!-- 		data-position="fixed" -->
 			<a href="#mainMenu" data-role="button" role="button"
 				class="ui-btn ui-btn-left ui-icon-bars ui-btn-icon-notext ui-shadow ui-corner-all"></a>
 			<h1 aria-level="1" role="heading" class="ui-title">i Crypto

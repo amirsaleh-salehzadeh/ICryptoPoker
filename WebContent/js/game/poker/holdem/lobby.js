@@ -1,5 +1,5 @@
 //$(document).ready(getAllGames());
-$(window).load(getAllGames());
+//$(window).load(getAllGames());
 $.fn.serializeObject = function() {
 	var o = {};
 	var a = this.serializeArray();
@@ -16,71 +16,46 @@ $.fn.serializeObject = function() {
 	return o;
 };
 
-function getAllGames() {
-	var url = "/ICryptoPoker/REST/GetGameServiceWS/GetAllGames";
-	$.ajax({
-		url : url,
-		cache : false,
-		async : true,
-		beforeSend : function() {
-			ShowLoadingScreen();			
-		},
-		success : function(data) {
-			var tableRows = "";
-			$.each(data, function(k, l) {
-				var smallBig = l.gameStructure.currentBlindLevel.split("_");
-				tableRows += "<tr onclick='joinGame(" + l.id + ","
-						+ smallBig[1] + "," + smallBig[2] + ")'><td>" + l.name
-						+ "</td><td>";
-
-				tableRows += smallBig[1] + " / " + smallBig[2] + "</td><td>";
-				tableRows += parseInt(smallBig[2]) * 40 + " / "
-						+ parseInt(smallBig[2]) * 200 + "</td><td>"
-						+ l.playersRemaining + " / 10</td></tr>";
-			});
-			$("#lobbyTableTBody").html(tableRows);
-			$("#table-lobby").trigger("create");
-		},
-		complete : function() {
-			HideLoadingScreen();
-			
-		},
-		error : function(xhr, ajaxOptions, thrownError) {
-			openErrorPopupTable("An error occured while retrieving the games.");
-			
-		}
-	});
-}
+//function getAllGames() {
+//	var url = "/ICryptoPoker/REST/GetGameServiceWS/GetAllGames";
+//	$.ajax({
+//		url : url,
+//		cache : false,
+//		async : true,
+////		beforeSend : function() {
+////			setTimeout(showLoading, 1000);
+////		},
+//		success : function(data) {
+//			var tableRows = "";
+//			$.each(data, function(k, l) {
+//				var smallBig = l.gameStructure.currentBlindLevel.split("_");
+//				tableRows += "<tr onclick='joinGame(" + l.id + ","
+//						+ smallBig[1] + "," + smallBig[2] + ")'><td>" + l.name
+//						+ "</td><td>";
+//
+//				tableRows += smallBig[1] + " / " + smallBig[2] + "</td><td>";
+//				tableRows += parseInt(smallBig[2]) * 40 + " / "
+//						+ parseInt(smallBig[2]) * 200 + "</td><td>"
+//						+ l.playersRemaining + " / 10</td></tr>";
+//			});
+//			$("#lobbyTableTBody").html(tableRows);
+//			$("#table-lobby").trigger("create");
+//		},
+////		complete : function() {
+////			setTimeout(hideLoadingScreen, 2000);
+////		},
+//		error : function(xhr, ajaxOptions, thrownError) {
+//			openErrorPopupTable("An error occured while retrieving the games.");
+//			
+//		}
+//	});
+//}
 
 function joinGame(gameID, min, max) {
 	if ($("#playerName").val() == "") {
 		alert("player name????");
 		return;
 	} else {
-//		var playerChips = ($('#chips').html().split(";"))[1];
-//		// player does not have enough chips to enter the game
-//		if (playerChips < min) {
-//			alert("not enough chips");
-//
-//		} else if (playerChips < max) {
-//			// players chips are less than the max
-//			$('#buyIn').attr("max", playerChips);
-//			$('#buyIn').attr("min", min);
-//			$("#popupJoinGame").popup("open");
-//			$('#joingGameID').attr("value", gameID);
-//		} else {
-//			// player has enough chips for min and max
-//			$('#buyIn').attr("min", min);
-//			$('#buyIn').attr("max", max);
-//			$("#popupJoinGame").popup("open");
-//			$('#joingGameID').attr("value", gameID);
-//
-//		}
-		// set the on click for the Join button.
-//		$('#joinGameBTN').click(function() {
-//			$("#popupJoinGame").popup("close");
-//			buyInGame(gameID, $('#buyIn').val());
-//		});
 			buyInGame(gameID, $('#buyIn').val());
 	}
 
@@ -88,9 +63,7 @@ function joinGame(gameID, min, max) {
 
 function buyInGame(gameID, chips) {
 	// takes the game ID and chips player bought in with and joins the game
-	window.location.replace("game.do?reqCode=joinAGame&gameId=" + gameID
-			+ "&username=" + $("#playerName").val() + "&chips=" + chips
-			+ "&nickname=" + $("#nickname").val());
+	window.location.replace("game.do?reqCode=joinAGame&gameId=" + gameID);
 }
 
 function createNewGame() {

@@ -67,23 +67,23 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 			return null;
 		}
 		handDao = new HandDaoImpl();
-		Player next = new Player();
-		if (!forceFold && hand.getPlayers().size() <= 2)
-			next = PlayerUtil.getNextPlayerToAct(hand, player);
-		if (!PlayerUtil.removePlayerFromHand(player, hand)) {
-			return null;
-		}
-		if (!forceFold && hand.getPlayers().size() <= 2)
-			hand.setCurrentToAct(next);
-		hand.setGame(game);
-		hand = handDao.merge(hand, null);
-		game.setCurrentHand(hand);
 		PokerHandServiceImpl phs = new PokerHandServiceImpl();
 		int numberOfPH = 0;
+		Player next = new Player();
 		for (PlayerHand ph : hand.getPlayers())
 			if (ph.getStatus() != PlayerHandStatus.FOLDED) {
 				numberOfPH++;
 			}
+		if (!forceFold && hand.getPlayers().size() > 1)
+			next = PlayerUtil.getNextPlayerToAct(hand, player);
+		if (!PlayerUtil.removePlayerFromHand(player, hand)) {
+			return null;
+		}
+		if (!forceFold && hand.getPlayers().size() > 1)
+			hand.setCurrentToAct(next);
+		hand.setGame(game);
+		hand = handDao.merge(hand, null);
+		game.setCurrentHand(hand);
 		if (numberOfPH <= 1)
 			try {
 				phs.endHand(game);

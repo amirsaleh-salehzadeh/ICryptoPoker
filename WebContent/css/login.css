@@ -7,14 +7,11 @@ html {
 
 #loginContents {
 	position: absolute;
-	top: 10%;
 	left: 10%;
 	right: 10%;
 	display: inline;
 	border: 3px solid #b00000;
 	padding: 1%;
-	min-width: 410px;
-	max-height: 90%;
 	background-color: rgba(143, 0, 0, .1);
 }
 

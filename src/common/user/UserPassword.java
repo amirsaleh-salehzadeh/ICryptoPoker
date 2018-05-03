@@ -18,7 +18,7 @@ public class UserPassword {
 	}
 
 	public void setUserName(String userName) {
-		this.userName = userName;
+		this.userName = userName.toLowerCase();
 	}
 
 	public String getUserPassword() {

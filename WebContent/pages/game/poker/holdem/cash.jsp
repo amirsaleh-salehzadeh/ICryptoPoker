@@ -41,7 +41,6 @@
 	function hideLoadingScreen() {
 		$.mobile.loading("hide");
 	}
-
 </script>
 </head>
 <body>
@@ -210,7 +209,6 @@
 					<a href="#" data-mini="true"
 						class="ui-btn ui-corner-all ui-icon-plus ui-btn-icon-notext ui-shadow ui-btn-inline ui-btn-a"
 						onclick="toggleFullScreen(document.body);">NOTEXT</a>
-
 				</div>
 			</div>
 			<div class="ui-block-b" style="width: 17%">
@@ -242,11 +240,10 @@
 				data-overlay-theme="b" data-dismissible="false"></div>
 			<a href="#" data-rel="back"
 				class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
-
 		</div>
 
 		<div data-role="popup" id="popupSitIn" data-dismissible="false">
-			<form>
+			<form onsubmit="return sitInTheGame()" action="#">
 				<div data-role="header" data-theme="a">
 					<h1>Sit In</h1>
 				</div>
@@ -262,12 +259,17 @@
 							placeholder="Nick Name">
 						<!-- 	TODO : CHECK NICKNAME : It should be at least 3 words-->
 					</div>
-					<a href="#"
-						class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-a"
-						data-rel="back" data-mini="true">Back</a>         <a href="#"
-						id="sitInBTN"
-						class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-a"
-						data-mini="true" onclick="sitInTheGame()">Join</a>
+					<div class="ui-grid-a ui-block-solo">
+						<div class="ui-block-a">
+							<a href="#"
+								class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-a"
+								data-rel="back" data-mini="true">Back</a>
+						</div>
+						<div class="ui-block-b">
+							<input type="submit" id="sitInBTN" value="Join"
+								class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-a" />
+						</div>
+					</div>
 				</div>
 			</form>
 		</div>

@@ -93,34 +93,58 @@ function updateGameInfo(data) {
 	if (data.gameStatus == "NOT_STARTED") {
 		$("#handPotContainer").html('Game is not started');
 		$("#sliderRaise").slider();
-	} else
+	} else {
 		$("#handPotContainer").html(
 				'<img alt="" src="images/game/stack.png" height="100%"><span>&nbsp;$&nbsp;'
 						+ data.pot + '&nbsp;</span>');
-	fitElementsWithinScreen();
-	if (data.gameStatus == "END_HAND") {
-		return endHand(data.players);
-	}
-
-	if (data.gameStatus != "NOT_STARTED")
 		$(".tableCards").each(function() {
 			$(this).html('<img alt="" src="images/game/card.jpg">');
 		});
+		if (data.gameStatus == "PREFLOP") {
+			var noOfSitPlayers = 0;
+			$(".sitPlaceContainer").each(function() {
+				if ($(this).html().indexOf("sitPlaceThumbnailEmpty") <= 0) {
+					noOfSitPlayers++;
+				}
+			});
+			console.log("no of divs" + noOfSitPlayers + " pl: "
+					+ data.players.length);
+			$(".pscontainer").html("");
+			if (noOfSitPlayers < data.players.length) {
+				var removePlayerStat = false;
+				$(".sitPlaceContainer").each(function() {
+					var divId = this.id;
+					var leftPlayer = null;
+					if (divId.indexOf("sitPlaceThumbnailEmpty") <= 0)
+						$(data.players).each(function(k, l) {
+							if (divId == "sitPlaceContainer" + l.id) {
+								noOfSitPlayers++;
+								leftPlayer = l;
+								removePlayerStat = true;
+								return true;
+							}
+						});
+					if (removePlayerStat && leftPlayer != null) {
+						removePlayer(leftPlayer.id);
+						console.log("LEFTTTTTTTT" + leftPlayer.id);
+					}
+				});
+			}
+		}
 
-	// $(".actionButtons").each(function() {
-	// $(this).addClass("ui-state-disabled");
-	// });
-	// $(".actionButtons").each(function() {
+	}
+	fitElementsWithinScreen();
 	$(".actionButtons").addClass("ui-state-disabled");
-	// });
-
 	$("#raiseSliderContainer").addClass("ui-state-disabled");
-	$("#handID").val(data.handId);
 	if (data.cards != null)
 		$(data.cards).each(function(k, l) {
 			generateACard(l, "flopsContainer", k + 1);
 		});
+	if (data.gameStatus == "END_HAND") {
+		return endHand(data.players);
+	}
 
+	$("#handID").val(data.handId);
 	$(data.players).each(function(k, l) {
 		updatePlayerInfo(l);
 	});
@@ -156,8 +180,7 @@ function generateACard(cardVal, divID, cardNumber) {
 function updatePlayerInfo(data) {
 	var playerId = data.id;
 	addANewPlayerToTable(data);
-	if (data.status != "NOT_STARTED" && data.status != "SEATING"){
-		$(".pscontainer").html("");
+	if (data.status != "NOT_STARTED" && data.status != "SEATING") {
 		dealCards2Players(data, playerId);
 	}
 	if (data.status == "ACTION_TO_CHECK" || data.status == "ACTION_TO_CALL") {
@@ -182,11 +205,11 @@ function updatePlayerInfo(data) {
 		}
 		$("#sliderRaise").attr("value", $("#sliderRaise").attr("min")).slider(
 				"refresh");
-		 playerToActId = playerId;
-		 countDownTotal = 15000;
-		 timeLeft = 0;
-		 clearInterval(timer);
-		 timer = setInterval(setTimer, 1000);
+		playerToActId = playerId;
+		countDownTotal = 15000;
+		timeLeft = 0;
+		clearInterval(timer);
+		timer = setInterval(setTimer, 1000);
 	} else if (data.status == "LOST_HAND") {
 		$("#userSitPlace").removeClass("winner");
 		$("#userSitPlace").removeClass("loser");
@@ -505,6 +528,7 @@ function sitInTheGame() {
 		}
 	});
 	clearInterval(timer);
+	return false;
 }
 
 function allIn() {

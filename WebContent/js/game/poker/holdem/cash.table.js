@@ -197,13 +197,9 @@ function toggleFullScreen(elem) {
 
 function sitInPopupOpen() {
 	$("#sitInBTN").removeClass("ui-state-disabled");
-	$('#popupSitIn').on({
-		  popupbeforeposition: function() {
-		    var maxHeight = $(window).height() - 30;
-		    $('#popupSitIn').css('max-height', '100%');
-		    $('#popupSitIn').css('height','100%');
-		  }
-		});
+	$("#popupSitIn").popup({
+		positionTo : "window"
+	});
 	$("#popupSitIn").popup("open");
 }
 

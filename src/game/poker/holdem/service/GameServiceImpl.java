@@ -32,6 +32,7 @@ import game.poker.holdem.domain.GameType;
 import game.poker.holdem.domain.HandEntity;
 import game.poker.holdem.domain.Player;
 import game.poker.holdem.domain.PlayerHand;
+import game.poker.holdem.domain.Table;
 import game.poker.holdem.eval.HandRank;
 import game.poker.holdem.holder.Board;
 import game.poker.holdem.util.GameUtil;
@@ -53,6 +54,7 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import common.game.poker.holdem.GameENT;
+import services.websockets.TableWebsocket;
 import tools.AMSException;
 
 public class GameServiceImpl implements GameServiceInterface {
@@ -77,7 +79,7 @@ public class GameServiceImpl implements GameServiceInterface {
 			List<BlindLevel> blinds = gs.getBlindLevels();
 			Collections.sort(blinds);
 			gs.setCurrentBlindLevel(blinds.get(0));
-		} 
+		}
 		// Get all players associated with the game.
 		// Assign random position. Save the player.
 		List<Player> players = new ArrayList<Player>();
@@ -128,7 +130,7 @@ public class GameServiceImpl implements GameServiceInterface {
 		if (game.getPlayers().size() >= 2 && !game.isStarted())
 			try {
 				game = startGame(game);
-				PokerHandServiceImpl phand  = new PokerHandServiceImpl();
+				PokerHandServiceImpl phand = new PokerHandServiceImpl();
 				game.setCurrentHand(phand.startNewHand(game));
 			} catch (AMSException e) {
 				e.printStackTrace();
@@ -250,6 +252,8 @@ public class GameServiceImpl implements GameServiceInterface {
 				shareOfPlayers = game.getCurrentHand().getTotalBetAmount()
 						/ players.size();
 			for (Player p : players) {
+				if (p.getChips() == 0)
+					continue;
 				if (shareOfPlayers > 0)
 					p.setTotalChips((int) (p.getChips() + p.getTotalChips() + Math
 							.round(shareOfPlayers)));
@@ -294,5 +298,10 @@ public class GameServiceImpl implements GameServiceInterface {
 		player.setGamePosition(0);
 		player.setFinishPosition(0);
 		pdao.merge(player, null);
+		for (Table table : TableWebsocket.games) {
+			if (table.getGame().getId() == game.getId()) {
+				table.sendToAll("");
+			}
+		}
 	}
 }

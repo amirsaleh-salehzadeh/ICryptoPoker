@@ -88,11 +88,11 @@
 		<form name="loginForm" method="POST" action="j_security_check">
 			<div class="ui-block-solo">
 				<input type="text" name="j_username" id="uNameEmail" value=""
-					placeholder="Username" class="inptxt" />
+					placeholder="Username" class="inptxt ui-mini" />
 			</div>
 			<div class="ui-block-solo">
 				<input type="password" name="j_password" id="loginPass" value=""
-					placeholder="Password" class="inptxt" />
+					placeholder="Password" class="inptxt ui-mini ui-corner-all" />
 			</div>
 			<div class="ui-block-solo" id="reTypePassDiv"
 				style="display: none; text-align: center;">

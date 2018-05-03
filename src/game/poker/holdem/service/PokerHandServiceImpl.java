@@ -121,6 +121,7 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		HandEntity hand = game.getCurrentHand();
 		int counterToFindLastHand = 0;
 		List<Player> players = new ArrayList<Player>();
+		int timer = 10;
 		if (hand != null) {
 			hand.setGame(game);
 			List<PlayerHand> phs = new ArrayList<PlayerHand>();
@@ -137,7 +138,7 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 							.setFinishPosition(game.getPlayersRemaining());
 					game.setPlayersRemaining(game.getPlayersRemaining() - 1);
 					playerDao.merge(ph.getPlayer(), null);
-//					hand = sitOutCurrentPlayer(game, ph.getPlayer());
+					// hand = sitOutCurrentPlayer(game, ph.getPlayer());
 					GameServiceImpl gm = new GameServiceImpl();
 					gm.leaveTheGame(ph.getPlayer(), game);
 				}
@@ -171,15 +172,17 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 			game = gameDao.merge(game, null);
 
 			// Remove Deck from database. No need to keep that around anymore
+			if (hand.getCards() == null || hand.getCards().size() < 5)
+				timer = 1;
 			hand.setCards(new ArrayList<Card>());
 			hand.setCurrentToAct(null);
 			hand.setGame(game);
 			handDao.merge(hand, null);
-		}
+		} else
+			timer = 1;
 		final long gameId = game.getId();
 		final ScheduledExecutorService scheduler = Executors
 				.newScheduledThreadPool(1);
-		int timer = 10;
 		// when the second last player leaves
 		if (game.getPlayers().size() == counterToFindLastHand + 1)
 			timer = 1;
@@ -376,6 +379,11 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 		hand.setGame(game);
 		PlayerActionServiceImpl playerActionServiceImpl = new PlayerActionServiceImpl();
 		playerActionServiceImpl.fold(currentPlayer, game, true);
+		for (Table table : TableWebsocket.games) {
+			if (table.getGame().getId() == game.getId()) {
+				table.sendToAll("");
+			}
+		}
 		return hand;
 	}
 

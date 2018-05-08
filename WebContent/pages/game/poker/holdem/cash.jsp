@@ -23,6 +23,8 @@
 <link rel="stylesheet" href="css/game/table.holdem.css" />
 <link rel="stylesheet" href="css/game/table.timer.css" />
 <link rel="stylesheet"
+	href="css/jquery-mobile/jqm-icon-pack-fa-builder.css" />
+<link rel="stylesheet"
 	href="css/game/table.raise.action.controllers.css" />
 <%
 	Player player = (Player) request.getAttribute("player");
@@ -47,8 +49,9 @@
 	<div id="connectionPopup">Just some test stuff</div>
 	<div data-role="page" id="mainPageDiv">
 		<div data-role="panel" id="panelChat" data-display="overlay">
-			CHAT <a href="#tableFooter" data-mini="true"
-				class="ui-btn ui-icon-delete ui-btn-icon-left ui-shadow ui-corner-all"
+			<div class="ui-block-solo" style="height: 100%;"></div>
+			<a href="#tableFooter" data-mini="true"
+				class="ui-btn ui-mini ui-icon-delete ui-btn-icon-left ui-shadow ui-corner-all"
 				data-rel="close">Close Panel</a>
 		</div>
 		<!-- MIDDLE PANEL  -->
@@ -118,7 +121,7 @@
 					<div class="ui-block-solo" id="handPotContainer"
 						style="height: 20%; width: 100%;"></div>
 					<div class="ui-block-solo ui-grid-b"
-						style="height: 70%; width: 100%;">
+						style="height: 65%; width: 100%;">
 						<div class="ui-block-a" style="height: 100%; width: 10%;"></div>
 						<div class="ui-block-b ui-grid-d" id="flopsContainer"
 							style="height: 100%; width: 80%;">
@@ -140,7 +143,22 @@
 						</div>
 						<div class="ui-block-c" style="height: 100%; width: 10%;"></div>
 					</div>
-					<div class="ui-block-solo" style="height: 10%; width: 100%;">
+					<div class="ui-block-solo ui-grid-c"
+						style="height: 15%; width: 100%;">
+						<div class="ui-block-a " style="font-size: 9pt;"></div>
+						<div class="ui-block-b " style="font-size: 9pt;">
+							Small <img src="images/game/sb.png" width="20">$<%
+							out.write(game.getGameStructure().getCurrentBlindLevel().toString()
+									.split("_")[1]);
+						%>&nbsp;&nbsp;
+						</div>
+						<div class="ui-block-b" style="font-size: 9pt;">
+							Big <img src="images/game/bb.png" width="20">$<%
+							out.write(game.getGameStructure().getCurrentBlindLevel().toString()
+									.split("_")[2]);
+						%>
+						</div>
+						<div class="ui-block-d " style="font-size: 9pt;"></div>
 					</div>
 				</div>
 				<!-- MIDDLE-RIGHT GRID  -->
@@ -166,18 +184,6 @@
 						style="text-align: center;">
 						<%=game.getName()%>
 					</div>
-					<div class="ui-block-solo ">
-						Small <img src="images/game/sb.png" width="20">$<%
-						out.write(game.getGameStructure().getCurrentBlindLevel().toString()
-								.split("_")[1]);
-					%>&nbsp;&nbsp;
-					</div>
-					<div class="ui-block-solo">
-						Big <img src="images/game/bb.png" width="20">$<%
-						out.write(game.getGameStructure().getCurrentBlindLevel().toString()
-								.split("_")[2]);
-					%>
-					</div>
 				</div>
 				<div class="ui-block-b sitPlaceContainer "
 					style="height: 100% !important; width: 40%;" id="userSitPlace">
@@ -199,16 +205,21 @@
 		</div>
 		<!-- FOOTER -->
 		<div data-role="footer" class="ui-grid-d" id="tableFooter">
-			<div class="ui-block-a ui-grid-a" style="width: 32%">
-				<div class="ui-block-a">
+			<div class="ui-block-a ui-grid-b" style="width: 32%">
+				<div class="ui-block-a" style="width: 50%">
 					<a href="#panelChat" data-mini="true"
 						class="ui-btn ui-icon-comment ui-btn-icon-left ui-shadow ui-corner-all"
 						onclick="toggleChat();">Chat</a>
 				</div>
-				<div class="ui-block-b">
+				<div class="ui-block-b" style="width: 25%">
 					<a href="#" data-mini="true"
 						class="ui-btn ui-corner-all ui-icon-plus ui-btn-icon-notext ui-shadow ui-btn-inline ui-btn-a"
 						onclick="toggleFullScreen(document.body);">NOTEXT</a>
+				</div>
+				<div class="ui-block-c" style="width: 25%">
+					<a href="#" data-mini="true"
+						class="ui-btn ui-corner-all ui-btn-icon-notext ui-shadow ui-btn-inline ui-btn-a volume-off"
+						onclick="audioMute(this);">NOTEXT</a>
 				</div>
 			</div>
 			<div class="ui-block-b" style="width: 17%">

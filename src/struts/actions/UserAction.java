@@ -383,11 +383,6 @@ public class UserAction extends Action {
 			pageNo = Integer.parseInt(request.getParameter("currentPage"));
 		if (request.getParameter("pageSize") != null)
 			pageSize = Integer.parseInt(request.getParameter("pageSize"));
-		int clientID = 0;
-		if (request.getParameter("clientID") != null
-				&& !request.getParameter("clientID").equals(""))
-			clientID = Integer.parseInt(request.getParameter("clientID"));
-//		userENT.setUserName(search);
 		UserLST userLST = new UserLST();
 		userLST.setPageSize(pageSize);
 		userLST.setSearchUser(userENT);

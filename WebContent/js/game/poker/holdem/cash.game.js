@@ -25,7 +25,7 @@ var countDownTotal = 15000;
 var timeLeft = 0;
 var playerToActId;
 var timer;
-
+var playSound = true;
 function setTimer() {
 	if (timeLeft == 0)
 		timeLeft = countDownTotal - 1000;
@@ -45,6 +45,19 @@ function setTimer() {
 		}
 	}
 };
+
+function audioMute(button) {
+	if ($(button).hasClass("volume-off")) {
+		$(button).removeClass("volume-off");
+		$(button).addClass("volume-on");
+		playSound = false;
+	} else if ($(button).hasClass("volume-on")) {
+		$(button).removeClass("volume-on");
+		$(button).addClass("volume-off");
+		playSound = true;
+	} else
+		return;
+}
 
 function getColorForPercentage(pct) {
 	for ( var i = 1; i < percentColors.length - 1; i++) {
@@ -171,6 +184,10 @@ function generateACard(cardVal, divID, cardNumber) {
 	var res = "<img src='images/game/cards/" + cardVal
 			+ ".png' height='100%' />";
 	if (divID == "flopsContainer") {
+		if(playSound){
+			var audioss = new Audio('soundEffects/cardPlace1.wav');
+			audioss.play();
+		}
 		$("#flop" + cardNumber).html(res).trigger("create");
 	} else {
 		$("#" + divID).find(".card" + cardNumber).html(res).trigger("create");
@@ -183,8 +200,12 @@ function updatePlayerInfo(data) {
 	if (data.status != "NOT_STARTED" && data.status != "SEATING") {
 		dealCards2Players(data, playerId);
 	}
+	var atc = parseInt(data.amountToCall);
+	if(playSound && atc > 0){
+		var audioss = new Audio('soundEffects/chipsHandle6.wav');
+		audioss.play();
+	}
 	if (data.status == "ACTION_TO_CHECK" || data.status == "ACTION_TO_CALL") {
-		var atc = parseInt(data.amountToCall);
 		if (data.status == "ACTION_TO_CALL") {
 			$("#checkBTN").text("Call $" + atc);
 			$("#checkBTN").attr("onclick", "call()").trigger("create");
@@ -203,8 +224,7 @@ function updatePlayerInfo(data) {
 			$("#sliderRaise").attr("max", parseInt(data.chips)).slider(
 					"refresh");
 		}
-		$("#sliderRaise").attr("value", $("#sliderRaise").attr("min")).slider(
-				"refresh");
+		$("#sliderRaise").val($("#sliderRaise").attr("min")).slider("refresh");
 		playerToActId = playerId;
 		countDownTotal = 15000;
 		timeLeft = 0;

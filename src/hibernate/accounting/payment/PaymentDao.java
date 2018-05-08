@@ -68,7 +68,7 @@ public class PaymentDao extends BaseHibernateDAO implements PaymentDaoInterface 
 			try {
 				cr.add(Expression.ge("dateTime",
 						sdf.parse(paymentLSTSearch.getSearchFromDate())));
-				cr.add(Expression.lt("dateTime",
+				cr.add(Expression.le("dateTime",
 						sdf.parse(paymentLSTSearch.getSearchToDate())));
 			} catch (ParseException e) {
 				e.printStackTrace();

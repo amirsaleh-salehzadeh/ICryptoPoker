@@ -70,15 +70,15 @@ public class PlayerActionServiceImpl implements PlayerActionServiceInterface {
 		PokerHandServiceImpl phs = new PokerHandServiceImpl();
 		int numberOfPH = 0;
 		Player next = new Player();
+		if (!PlayerUtil.removePlayerFromHand(player, hand)) {
+			return null;
+		}
 		for (PlayerHand ph : hand.getPlayers())
 			if (ph.getStatus() != PlayerHandStatus.FOLDED) {
 				numberOfPH++;
 			}
 		if (!forceFold && hand.getPlayers().size() > 1)
 			next = PlayerUtil.getNextPlayerToAct(hand, player);
-		if (!PlayerUtil.removePlayerFromHand(player, hand)) {
-			return null;
-		}
 		if (!forceFold && hand.getPlayers().size() > 1)
 			hand.setCurrentToAct(next);
 		hand.setGame(game);

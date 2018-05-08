@@ -25,6 +25,7 @@
 		$("#messageSuccess").fadeOut(1000);
 		$("#reTypePassDiv").fadeOut(1000);
 		// 		if ($("#reTypePassDiv").css("display") == "none") {
+		$("#reTypePassDiv").css("display", "block");
 		$("#reTypePassDiv").fadeIn(1000);
 		// 			return;
 		// 		}
@@ -97,7 +98,7 @@
 			<div class="ui-block-solo" id="reTypePassDiv"
 				style="display: none; text-align: center;">
 				<input type="password" name="loginPass" id="loginRePass" value=""
-					placeholder="Re-Type Password" />
+					placeholder="Re-Type Password" class="inptxt ui-mini ui-corner-all" />
 			</div>
 			<div class="ui-grid-a ui-block-solo">
 				<div class="ui-block-a">

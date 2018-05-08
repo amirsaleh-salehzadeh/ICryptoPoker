@@ -24,7 +24,8 @@ body {
 		<div
 			class="divMenu ui-collapsible-content ui-body-inherit ui-collapsible-content-collapsed">
 			<ul>
-				<li><a href="t_game.do" data-ajax="false">Poker Texas Holdem</a></li>
+				<li><a class="ui-btn" href="t_game.do"
+					data-ajax="false">Poker Texas Holdem</a></li>
 			</ul>
 		</div>
 	</li>

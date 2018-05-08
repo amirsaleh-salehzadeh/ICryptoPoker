@@ -132,6 +132,7 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 			// Use this to determine finish position if multiple players are
 			// eliminated on the same hand.
 			Collections.sort(phs, new PlayerHandBetAmountComparator());
+			int foldedCounter = 0;
 			for (PlayerHand ph : phs) {
 				if (ph.getPlayer().getChips() <= 0) {
 					ph.getPlayer()
@@ -141,7 +142,8 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 					// hand = sitOutCurrentPlayer(game, ph.getPlayer());
 					GameServiceImpl gm = new GameServiceImpl();
 					gm.leaveTheGame(ph.getPlayer(), game);
-				}
+				} else if (ph.getStatus() != PlayerHandStatus.FOLDED)
+					foldedCounter++;
 			}
 
 			// For all players in the game, remove any who are out of chips
@@ -172,7 +174,9 @@ public class PokerHandServiceImpl implements PokerHandServiceInterface {
 			game = gameDao.merge(game, null);
 
 			// Remove Deck from database. No need to keep that around anymore
-			if (hand.getCards() == null || hand.getCards().size() < 5)
+			// if (hand.getCards() == null || hand.getCards().size() < 5)
+			// timer = 1;
+			if (foldedCounter == 1)
 				timer = 1;
 			hand.setCards(new ArrayList<Card>());
 			hand.setCurrentToAct(null);

@@ -68,7 +68,7 @@ public class GeneralServiceWS {
 		UserDAO dao = new UserDAO();
 //      This regex checks for any special characters in the username but allows underscore and must be 3-30 characters		
 	
-		Pattern userNameCheck = Pattern.compile("^[a-zA-Z0-9][a-zA-Z0-9_]{2,29}$", Pattern.CASE_INSENSITIVE);
+		Pattern userNameCheck = Pattern.compile("^[a-zA-Z0-9][a-zA-Z0-9_]{2,29}$");
 		Matcher mu = userNameCheck.matcher(userName);
 		boolean boolUName = mu.find();
 		
@@ -83,7 +83,7 @@ public class GeneralServiceWS {
 		Pattern userPasswordCheck = Pattern.compile("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$");
 		Matcher mp = userPasswordCheck.matcher(userPassword);
 		boolean boolPass = mp.find();
-		if (boolUName){
+		if (!boolUName){
 //			Display that the username has a special character and must be changed
 		   System.out.println("There is a special character in my string");
 		   return Response.serverError().entity("Your username must be betweeen 3 and 30 characters long and may not contain a special character.").build();
